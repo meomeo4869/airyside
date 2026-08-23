@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="card">
+    <h2>Cổng Đăng Nhập</h2>
+    
+    <label>Bạn là ai dạ?</label><br>
+    <select id="roleSelect" onchange="hienThiMatKhau()">
+      <option value="khach">Khách Hàng</option>
+      <option value="staff">Nhân Sự</option>
+      <option value="admin">Chủ Page</option>
+    </select>
+    <br><br>
+
+    <!-- KHU VỰC 1: Dành cho Khách -->
+    <div id="khuVucKhach">
+      <button onclick="window.location.href='index.html'">Vào Đặt Đơn Ngay</button>
+    </div>
+
+    <!-- KHU VỰC 2: Nhập Pass (Cho Staff/Admin) -->
+    <div id="khuVucPass" style="display: none;">
+      <label>Mật mã bí mật:</label><br>
+      <input type="password" id="matKhau" placeholder="Nhập pass vào đây nha...">
+      <br><br>
+      <button onclick="kiemTraPass()">Xác Nhận Mật Khẩu</button>
+    </div>
+
+    <!-- KHU VỰC 3: Chọn Tên (Chỉ hiện khi Staff nhập đúng pass) -->
+    <div id="khuVucChonStaff" style="display: none;">
+      <label>Bồ là ai dạ?</label><br>
+      <select id="chonStaff">
+        <option value="🌸">Michii 🌸</option>
+        <option value="🍓">Bé Dâu 🍓</option>
+        <option value="⚡">SkyBoy ⚡</option>
+      </select>
+      <br><br>
+      <button onclick="vaoTrangStaff()">Vào Ca Làm Việc</button>
+    </div>
+  </div>
+
+  <script>
+    // Phép thuật 1: Phân luồng hiển thị rành mạch
+    function hienThiMatKhau() {
+      var vaiTro = document.getElementById("roleSelect").value;
+      var khach = document.getElementById("khuVucKhach");
+      var pass = document.getElementById("khuVucPass");
+      var staff = document.getElementById("khuVucChonStaff");
+      
+      // Giấu hết đi trước cho an toàn
+      khach.style.display = "none";
+      pass.style.display = "none";
+      staff.style.display = "none";
+      
+      if (vaiTro == "khach") {
+        khach.style.display = "block"; // Chỉ hiện nút khách
+      } else {
+        pass.style.display = "block"; // Chỉ hiện ô pass
+      }
+    }
+
+    // Phép thuật 2: Kiểm tra ổ khóa
+    function kiemTraPass() {
+      var vaiTro = document.getElementById("roleSelect").value;
+      var pass = document.getElementById("matKhau").value;
+
+      if (vaiTro == "staff" && pass == "staff123") {
+        document.getElementById("khuVucPass").style.display = "none";
+        document.getElementById("khuVucChonStaff").style.display = "block";
+      } else if (vaiTro == "admin" && pass == "boss123") {
+        alert("Chào mừng Admin quyền lực! (Trang Admin mình chưa xây nha)");
+      } else {
+        alert("Sai mật khẩu rồi bồ ơi!");
+      }
+    }
+
+    // Phép thuật 3: Bỏ túi Icon
+    function vaoTrangStaff() {
+      var iconStaff = document.getElementById("chonStaff").value;
+      localStorage.setItem("myIcon", iconStaff);
+      window.location.href = "staff.html";
+    }
+
+    // Đánh thức phép thuật lúc vừa vào trang
+    hienThiMatKhau();
+  </script>
+
+</body>
+</html>

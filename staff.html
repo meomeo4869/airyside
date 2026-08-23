@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="staff-layout">
+
+  <!-- ========================================== -->
+  <!-- 1. GIAO DIỆN KHUNG THÔNG BÁO TRƯỢT (SIDEBAR) -->
+  <!-- ========================================== -->
+  <div class="toggle-btn" onclick="moThongBao()">◀</div>
+
+  <div id="sidePanel" class="side-panel">
+    <div class="noti-header">
+      <h3>Thông Báo 🔔</h3>
+      <button onclick="moThongBao()" class="close-btn">✖</button>
+    </div>
+    <div class="noti-card">
+      <strong>Hệ thống</strong> <span class="time">19:00</span>
+      <p>Admin nhắc nhở staff check lịch tuần này nha.</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 2. GIAO DIỆN LỊCH LÀM VIỆC CỦA STAFF      -->
+  <!-- ========================================== -->
+  <div class="schedule-section">
+    <h2>Lịch Đăng Ký Ca Làm Việc</h2>
+    <table class="schedule-table" id="bangLich">
+      <tr>
+        <th>Staff / Ca</th>
+        <th>18:00 - 20:00</th>
+        <th>20:00 - 22:00</th>
+        <th>22:00 - 24:00</th>
+      </tr>
+      <tr>
+        <td><strong>Michii 🌸</strong></td>
+        <td class="ca-lam" onclick="doiTrangThai(this)">Trống</td>
+        <td class="ca-lam" onclick="doiTrangThai(this)">Trống</td>
+        <td class="ca-lam" onclick="doiTrangThai(this)">Trống</td>
+      </tr>
+    </table>
+    <br>
+    <button onclick="themStaff()" style="background-color: #4CAF50; padding: 6px 12px; font-size: 13px;">➕ Thêm Staff</button>
+    <button onclick="xoaStaff()" style="background-color: #f44336; padding: 6px 12px; font-size: 13px;">➖ Bớt Staff</button>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 3. GIAO DIỆN KHU VỰC ORDER (GRID 3 CỘT)    -->
+  <!-- ========================================== -->
+  <div class="order-section">
+    <h2>Đơn Hàng Mới Nhất</h2>
+    <div id="danhSachDonHang" class="order-grid">
+      <!-- Các card đơn hàng sẽ được JS render vào đây -->
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 4. GIAO DIỆN LỊCH CHẤM CÔNG HÀNG THÁNG    -->
+  <!-- ========================================== -->
+  <div class="gamification-section">
+    <h2>Lịch Chấm Công 🏆</h2>
+    <div class="calendar-grid" id="achievementCalendar"></div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 5. GIAO DIỆN KHUNG CHAT MINI (PHONG CÁCH ZALO) -->
+  <!-- ========================================== -->
+  <div id="chatBox" class="chat-container">
+    <div class="chat-header">
+      <span id="chatTenStaff">Staff đang kết nối...</span>
+      <button class="close-chat" onclick="dongChat()">✕</button>
+    </div>
+
+    <div class="chat-pinned">
+      📌 <strong id="chatGhimOrder">Yêu cầu đơn hàng...</strong>
+    </div>
+
+    <div class="chat-body" id="chatBody">
+      <div id="manHinhKetBan" class="friend-code-section" style="margin-top: 20px;">
+        <p style="font-size: 13px;">Nhập mã kết bạn Sky để chat:</p>
+        <input type="text" id="maKetBan" placeholder="Mã kết bạn...">
+        <button onclick="xacNhanMa()" style="padding: 6px 12px;">Gửi Mã</button>
+      </div>
+      <div id="manHinhTinNhan" class="message-section" style="display: none;"></div>
+    </div>
+
+    <div class="chat-footer">
+      <input type="text" id="nhapTinNhan" placeholder="Aa..." disabled>
+      <button id="btnGuiTin" class="btn-icon" disabled>➤</button>
+      <button id="btnHoanThanh" class="btn-done" disabled onclick="hoanThanhDon()">✔</button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 6. GIAO DIỆN MODAL POPUP CHI TIẾT ĐƠN HÀNG -->
+  <!-- ========================================== -->
+  <div id="modalChiTiet" class="modal-overlay">
+    <div class="modal-content">
+      <button class="btn-dong-modal" onclick="dongModal()">✕</button>
+      <h2 id="modalTieuDe" style="margin-top:0; font-size: 18px;">Chi Tiết Đơn Hàng</h2>
+      <p><strong>Khách hàng:</strong> <span id="modalKhach"></span></p>
+      <p><strong>Giờ bắt đầu:</strong> <span id="modalGio"></span></p>
+      <p><strong>Yêu cầu chi tiết:</strong></p>
+      <div id="modalYeuCau" style="background: #f0f2f5; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px;"></div>
+      
+      <!-- Nút nhận đơn đồng bộ bên trong popup -->
+      <button class="btn-nhan-don" id="modalBtnNhan" style="width: 100%; padding: 12px;" onclick="chotDon(this, 22)">Nhận Đơn Này</button>
+    </div>
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- 7. PHẦN NÃO BỘ JAVASCRIPT (ĐƯỢC GOM THEO TỪNG CỤM LOGIC) -->
+  <!-- ======================================================= -->
+  <script>
+    // --- [LOGIC 1]: THÔNG BÁO & LỊCH CHẤM CÔNG ---
+    function moThongBao() {
+      document.getElementById("sidePanel").classList.toggle("panel-open");
+    }
+
+    function taoLich() {
+      var lich = document.getElementById("achievementCalendar");
+      lich.innerHTML = "";
+      for (var i = 1; i <= 30; i++) {
+        lich.innerHTML += '<div class="day-box" id="ngay-' + i + '">' + i + '</div>';
+      }
+    }
+    taoLich();
+
+    // --- [LOGIC 2]: QUẢN LÝ LỊCH CA LÀM VIỆC CỦA STAFF ---
+    function doiTrangThai(o) {
+      if (o.classList.contains("available")) {
+        o.className = "ca-lam busy";
+        o.innerHTML = "Bận";
+      } else {
+        o.className = "ca-lam available";
+        o.innerHTML = "Rảnh";
+      }
+    }
+
+    function themStaff() {
+      var tenMoi = prompt("Nhập tên Staff mới:");
+      if (tenMoi) {
+        var table = document.getElementById("bangLich");
+        var row = table.insertRow(-1);
+        row.innerHTML = `<td><strong>${tenMoi}</strong></td>
+                         <td class="ca-lam" onclick="doiTrangThai(this)">Trống</td>
+                         <td class="ca-lam" onclick="doiTrangThai(this)">Trống</td>
+                         <td class="ca-lam" onclick="doiTrangThai(this)">Trống</td>`;
+      }
+    }
+
+    function xoaStaff() {
+      var table = document.getElementById("bangLich");
+      if (table.rows.length > 2) {
+        table.deleteRow(-1);
+      } else {
+        alert("Phải giữ lại ít nhất 1 staff chứ bồ!");
+      }
+    }
+
+    // --- [LOGIC 3 & 4]: QUẢN LÝ ORDER, LƯỚI DANH SÁCH & MODAL POPUP ---
+    var iconCuaToi = localStorage.getItem("myIcon") || "⭐";
+
+    // Bắt sóng đơn mới gửi từ tab Khách
+    window.addEventListener('storage', function(sukien) {
+      if (sukien.key === 'tinHieuDonMoi' || sukien.key === 'danhSachDonSky') {
+        taiTatCaDonHang();
+      }
+    });
+
+    // Vẽ toàn bộ danh sách đơn ra khung lưới
+    function taiTatCaDonHang() {
+      var danhSach = JSON.parse(localStorage.getItem("danhSachDonSky")) || [];
+      var baoTu = document.getElementById("danhSachDonHang");
+      baoTu.innerHTML = "";
+
+      if (danhSach.length === 0) {
+        baoTu.innerHTML = "<p style='grid-column: 1/-1; color: #888;'>Hiện chưa có đơn hàng nào.</p>";
+        return;
+      }
+
+      danhSach.forEach(function(donHang) {
+        var trangThaiNut = donHang.daNhan 
+          ? `<button class="btn-nhan-don" style="background-color: #ccc; cursor: not-allowed;" disabled>ĐÃ NHẬN ✔️</button>` 
+          : `<button id="btn-${donHang.id}" class="btn-nhan-don" onclick="event.stopPropagation(); chotDon('${donHang.id}', 22)">Nhận Đơn</button>`;
+
+        var HTMLCard = `
+          <div class="order-card" onclick='moModal(${JSON.stringify(donHang)})'>
+            <div class="order-icon-box">📦</div>
+            <h3>${donHang.mangDichVu.toUpperCase()}</h3>
+            <p><strong>Khách:</strong> ${donHang.tenKhach}</p>
+            <p style="font-size: 12px; color: #666;">Giờ: ${donHang.gio}</p>
+            ${trangThaiNut}
+          </div>
+        `;
+        baoTu.innerHTML += HTMLCard;
+      });
+    }
+
+    // Nhận đơn theo ID chính xác (đồng bộ cả card và modal)
+    function chotDon(maDon, ngay) {
+      var danhSach = JSON.parse(localStorage.getItem("danhSachDonSky")) || [];
+      var donDuocNhan = null;
+
+      danhSach.forEach(function(dh) {
+        if (dh.id === maDon) {
+          dh.daNhan = true;
+          donDuocNhan = dh;
+        }
+      });
+
+      localStorage.setItem("danhSachDonSky", JSON.stringify(danhSach));
+      taiTatCaDonHang();
+      dongModal();
+
+      // Chấm công
+      var oNgay = document.getElementById("ngay-" + ngay);
+      if (oNgay && !oNgay.classList.contains("has-order")) {
+        oNgay.classList.add("has-order");
+        oNgay.innerHTML = iconCuaToi;
+      }
+
+      // Mở chat
+      if (donDuocNhan) {
+        document.getElementById("chatGhimOrder").innerHTML = `Yêu cầu: ${donDuocNhan.mangDichVu} - ${donDuocNhan.cuThe} (${donDuocNhan.gio})`;
+      }
+      document.getElementById("chatBox").style.display = "flex";
+      document.getElementById("chatTenStaff").innerHTML = "Chat: Staff " + iconCuaToi;
+    }
+
+    // Modal hiển thị chi tiết
+    function moModal(dh) {
+      document.getElementById("modalTieuDe").innerText = "Đơn: " + dh.mangDichVu.toUpperCase() + " (" + dh.cuThe + ")";
+      document.getElementById("modalKhach").innerText = dh.tenKhach;
+      document.getElementById("modalGio").innerText = dh.gio || "Không có giờ cụ thể";
+      document.getElementById("modalYeuCau").innerText = dh.yeuCau || "Không có yêu cầu đặc biệt.";
+      
+      var nutModal = document.getElementById("modalBtnNhan");
+      if (dh.daNhan) {
+        nutModal.innerText = "ĐÃ NHẬN ✔️";
+        nutModal.style.backgroundColor = "#ccc";
+        nutModal.disabled = true;
+      } else {
+        nutModal.innerText = "Nhận Đơn Này";
+        nutModal.style.backgroundColor = "#81c784";
+        nutModal.disabled = false;
+        nutModal.onclick = function() { chotDon(dh.id, 22); };
+      }
+
+      document.getElementById("modalChiTiet").style.display = "flex";
+    }
+
+    function dongModal() {
+      document.getElementById("modalChiTiet").style.display = "none";
+    }
+
+    // --- [LOGIC 5]: QUẢN LÝ KHUNG CHAT MINI ---
+    function dongChat() {
+      document.getElementById("chatBox").style.display = "none";
+    }
+
+    function xacNhanMa() {
+      var ma = document.getElementById("maKetBan").value;
+      if (ma !== "") {
+        document.getElementById("manHinhKetBan").style.display = "none";
+        document.getElementById("manHinhTinNhan").style.display = "block";
+        document.getElementById("nhapTinNhan").disabled = false;
+        document.getElementById("btnGuiTin").disabled = false;
+        document.getElementById("btnHoanThanh").disabled = false;
+        document.getElementById("manHinhTinNhan").innerHTML += '<div class="msg left"><strong>Hệ thống:</strong> Đã nhận mã [' + ma + ']!</div>';
+      } else {
+        alert("Phải nhập mã kết bạn mới cho chat nghen!");
+      }
+    }
+
+    function hoanThanhDon() {
+      if (confirm("Xác nhận hoàn thành đơn này?")) {
+        alert("Đơn hàng đã hoàn tất!");
+        dongChat();
+      }
+    }
+
+    // Tự động tải đơn khi vừa mở trang
+    taiTatCaDonHang();
+  </script>
+
+</body>
+</html>
