@@ -71,7 +71,8 @@
         document.getElementById("khuVucPass").style.display = "none";
         document.getElementById("khuVucChonStaff").style.display = "block";
       } else if (vaiTro == "admin" && pass == "boss123") {
-        alert("Chào mừng Admin quyền lực! (Trang Admin mình chưa xây nha)");
+        // Chuyển thẳng vào Dashboard Quản Trị
+        window.location.href = "admin.html";
       } else {
         alert("Sai mật khẩu rồi bồ ơi!");
       }
