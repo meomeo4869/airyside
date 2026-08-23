@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đặt Dịch Vụ Sky</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Thư viện Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -44,11 +50,25 @@
     <div id="manHinhCho" style="display: none; text-align: center; padding: 30px 0;">
       <div class="spinner"></div>
       <br>
-      <p style="color: #ffb088; font-weight: bold;">Đang chuyển đơn cho Staff, bồ chờ xíu nha...</p>
+      <p style="color: #ffb088; font-weight: bold;">Đang chuyển đơn lên hệ thống, bồ chờ xíu nha...</p>
     </div>
   </div>
 
   <script>
+    // Cấu hình Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCEuMuKn4ZrzQNQCYnxt9XeNpPUsfQk54c",
+      authDomain: "ordersky.firebaseapp.com",
+      databaseURL: "https://ordersky-default-rtdb.firebaseio.com",
+      projectId: "ordersky",
+      storageBucket: "ordersky.firebasestorage.app",
+      messagingSenderId: "332284986658",
+      appId: "1:332284986658:web:02c42c4181900fc2e0917b",
+      measurementId: "G-35XQCYMK8V"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
     function checkOrder() {
       var tenKhach = document.getElementById("playerName").value;
       var mang = document.getElementById("mangDichVu").value;
@@ -66,29 +86,25 @@
         alert("Bạn ơi, nhớ chọn giờ bắt đầu dịch vụ nha!");
       } else {
         var donHangMoi = {
-          id: "DH_" + Date.now(), // Tạo mã đơn duy nhất
           tenKhach: tenKhach,
           mangDichVu: mang,
           cuThe: cuThe,
           gio: gio,
           yeuCau: yc,
-          daNhan: false
+          daNhan: false,
+          thoiGianTao: Date.now()
         };
 
-        // Lấy danh sách cũ ra, thêm đơn mới vào mảng
-        var danhSach = JSON.parse(localStorage.getItem("danhSachDonSky")) || [];
-        danhSach.unshift(donHangMoi); // Đơn mới nhất lên đầu
-        localStorage.setItem("danhSachDonSky", JSON.stringify(danhSach));
-        
-        // Kích hoạt tín hiệu bộ nhớ
-        localStorage.setItem("tinHieuDonMoi", Date.now());
-
-        document.getElementById("formKhach").style.display = "none";
-        document.getElementById("manHinhCho").style.display = "block";
-
-        setTimeout(function() {
-          alert("Hệ thống đã chuyển đơn cho Staff thành công!");
-        }, 1500);
+        // Gửi đơn lên Firebase Cloud
+        db.ref('donHangSky').push(donHangMoi).then(function() {
+          document.getElementById("formKhach").style.display = "none";
+          document.getElementById("manHinhCho").style.display = "block";
+          setTimeout(function() {
+            alert("Hệ thống đã nhận được đơn của bạn thành công!");
+          }, 1000);
+        }).catch(function(error) {
+          alert("Lỗi kết nối: " + error.message);
+        });
       }
     }
 
