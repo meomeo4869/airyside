@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đặt Dịch Vụ Sky</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Thư viện Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
@@ -14,7 +13,6 @@
   <div class="card">
     <h2>Form Đặt Dịch Vụ Sky</h2>
 
-    <!-- KHU VỰC 1: Form điền thông tin -->
     <div id="formKhach">
       <label>Tên của bạn:</label> <br>
       <input type="text" id="playerName" placeholder="Nhập tên vào đây nha...">
@@ -23,30 +21,36 @@
       <label>Bạn muốn đặt dịch vụ nào?</label> <br>
       <select id="mangDichVu" onchange="doiTuyChon()">
         <option value="chua_chon">-- Chọn mảng dịch vụ --</option>
-        <option value="uber">Uber</option>
-        <option value="host">Host</option>
-        <option value="logacc">Log acc</option>
+        <option value="uber">Uber Dẫn Tour</option>
+        <option value="host">Host Đồng Hành</option>
+        <option value="logacc">Log Acc Trọn Gói</option>
       </select>
       <br><br>
 
-      <label>Cụ thể</label> <br>
+      <label>Cụ thể:</label> <br>
       <select id="cuThe">
         <option value="none">-- Vui lòng chọn mảng ở trên trước --</option>
       </select>
       <br><br>
 
-      <label>Giờ bắt đầu dịch vụ (Bắt buộc):</label> <br>
-      <input type="time" id="gioBatDau">
+      <label>Lịch hẹn (Ngày & Giờ bắt đầu):</label> <br>
+      <input type="datetime-local" id="thoiGianBatDau">
       <br><br>
 
-      <label>Yêu cầu của bạn:</label> <br>
-      <input type="text" id="yeuCau" placeholder="Yêu cầu...">
+      <label>Hình thức thanh toán:</label> <br>
+      <select id="phuongThucTT">
+        <option value="Tien_VND">💵 Tiền mặt (Chuyển khoản / Momo)</option>
+        <option value="Tim_Sky">💖 Trái tim trong game (Tim Sky)</option>
+      </select>
+      <br><br>
+
+      <label>Yêu cầu hoặc ghi chú thêm:</label> <br>
+      <input type="text" id="yeuCau" placeholder="Yêu cầu chi tiết...">
       <br><br>
 
       <button onclick="checkOrder()">Xác Nhận Đặt Đơn</button>
     </div>
 
-    <!-- KHU VỰC 2: Màn hình chờ -->
     <div id="manHinhCho" style="display: none; text-align: center; padding: 30px 0;">
       <div class="spinner"></div>
       <br>
@@ -55,7 +59,6 @@
   </div>
 
   <script>
-    // Cấu hình Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyCEuMuKn4ZrzQNQCYnxt9XeNpPUsfQk54c",
       authDomain: "ordersky.firebaseapp.com",
@@ -70,11 +73,12 @@
     const db = firebase.database();
 
     function checkOrder() {
-      var tenKhach = document.getElementById("playerName").value;
+      var tenKhach = document.getElementById("playerName").value.trim();
       var mang = document.getElementById("mangDichVu").value;
       var cuThe = document.getElementById("cuThe").value;
-      var gio = document.getElementById("gioBatDau").value;
-      var yc = document.getElementById("yeuCau").value;
+      var thoiGian = document.getElementById("thoiGianBatDau").value;
+      var pttt = document.getElementById("phuongThucTT").value;
+      var yc = document.getElementById("yeuCau").value.trim();
 
       if (tenKhach == "") {
         alert("Bạn ơi, chưa nhập tên kìa!");
@@ -82,30 +86,34 @@
         alert("Bạn ơi, nhớ chọn mảng dịch vụ nha!");
       } else if (cuThe == "none") {
         alert("Bạn ơi, chọn dịch vụ cụ thể ở ô bên dưới nha!");
-      } else if (gio == "") {
-        alert("Bạn ơi, nhớ chọn giờ bắt đầu dịch vụ nha!");
+      } else if (thoiGian == "") {
+        alert("Bạn ơi, nhớ chọn ngày và giờ hẹn dịch vụ nha!");
       } else {
+        var dt = new Date(thoiGian);
+        var tgDinhDang = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')} ngày ${dt.getDate()}/${dt.getMonth()+1}/${dt.getFullYear()}`;
+
         var donHangMoi = {
           tenKhach: tenKhach,
           mangDichVu: mang,
           cuThe: cuThe,
-          gio: gio,
-          yeuCau: yc,
+          thoiGianHen: tgDinhDang,
+          rawTime: thoiGian,
+          thanhToan: pttt,
+          yeuCau: yc || "Không có yêu cầu đặc biệt",
           daNhan: false,
+          trangThai: "dang_cho",
           thoiGianTao: Date.now()
         };
 
-        // Gửi đơn lên Firebase Cloud và chuyển về Sảnh Chờ (lobby.html)
         var newOrderRef = db.ref('donHangSky').push();
         newOrderRef.set(donHangMoi).then(function() {
           localStorage.setItem("myCurrentOrderId", newOrderRef.key);
-          
           document.getElementById("formKhach").style.display = "none";
           document.getElementById("manHinhCho").style.display = "block";
           
           setTimeout(function() {
             window.location.href = "lobby.html";
-          }, 1200);
+          }, 1000);
         }).catch(function(error) {
           alert("Lỗi kết nối: " + error.message);
         });
