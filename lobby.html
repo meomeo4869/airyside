@@ -17,8 +17,7 @@
       <div id="statusText">
         <strong>Đơn của bạn:</strong> Đang tìm Staff phù hợp... ⏳
       </div>
-      <div style="margin-left: auto; display: flex; gap: 8px;">
-        <button id="btnDoiGio" class="btn-doi-gio" onclick="moDoiLich()">⏰ Dời Giờ</button>
+      <div style="margin-left: auto;">
         <button id="btnOpenChat" class="btn-chat-lobby" onclick="moChatLobby()" style="display: none;">💬 Nhắn Staff</button>
       </div>
     </div>
@@ -81,31 +80,19 @@
         <div class="terms-box">
           <h3>📜 Điều Khoản & Quyền Lợi</h3>
           <p>✔ <strong>Thanh toán:</strong> Nhận chuyển khoản ngân hàng hoặc trả Tim trực tiếp.</p>
-          <p>✔ <strong>Đổi giờ hẹn:</strong> Khách có thể dời giờ trực tiếp trên Sảnh.</p>
+          <p>✔ <strong>Đúng hẹn:</strong> Trao đổi lịch trình trực tiếp qua khung Chat với Staff.</p>
           <p>✔ <strong>Bảo đảm:</strong> Hoàn tiền / Tim 100% nếu phát sinh sự cố từ Staff.</p>
         </div>
       </div>
     </section>
 
-    <!-- TƯỜNG FEEDBACK TỰ ĐỘNG CẬP NHẬT -->
+    <!-- TƯỜNG FEEDBACK REALTIME -->
     <section class="lobby-section">
       <h2>⭐ Feedback Từ Khách Hàng (Mới Nhất)</h2>
       <div class="feedback-grid" id="feedbackWall">
         <p style="grid-column: 1/-1; color: #888;">Đang tải feedback...</p>
       </div>
     </section>
-  </div>
-
-  <!-- MODAL DỜI LỊCH HẸN -->
-  <div id="modalDoiLich" class="modal-overlay">
-    <div class="modal-content" style="text-align: center;">
-      <h3>Dời Lịch Hẹn Đơn</h3>
-      <p>Chọn thời gian mới cho chuyến đi của bồ:</p>
-      <input type="datetime-local" id="gioMoi" style="margin-bottom: 15px;">
-      <br>
-      <button onclick="xacNhanDoiLich()" style="background: #ff7f50;">Cập Nhật Thời Gian</button>
-      <button onclick="dongDoiLich()" style="background: #ccc; margin-left: 8px;">Đóng</button>
-    </div>
   </div>
 
   <!-- KHUNG CHAT MINI TẠI SẢNH -->
@@ -118,7 +105,6 @@
       📌 <strong id="chatGhimKhach">Mã kết bạn & Trao đổi</strong>
     </div>
     
-    <!-- BANNER ĐÓNG BĂNG KHI STAFF BẤM HOÀN TẤT -->
     <div id="bannerDongBangKhach" class="chat-frozen-banner" style="display: none;">
       ⚠️ Staff đã xác nhận hoàn thành đơn. Hãy bấm ✔ để hoàn tất!
     </div>
@@ -175,7 +161,6 @@
     var currentTenKhach = "Khách Hàng";
     var selectedStar = 5;
 
-    // Lắng nghe tiến trình đơn của khách
     if (currentOrderId) {
       db.ref('donHangSky/' + currentOrderId).on('value', function(snapshot) {
         var don = snapshot.val();
@@ -211,26 +196,6 @@
       });
     }
 
-    // Dời lịch
-    function moDoiLich() { document.getElementById("modalDoiLich").style.display = "flex"; }
-    function dongDoiLich() { document.getElementById("modalDoiLich").style.display = "none"; }
-    function xacNhanDoiLich() {
-      var gioMoi = document.getElementById("gioMoi").value;
-      if (gioMoi && currentOrderId) {
-        var dt = new Date(gioMoi);
-        var tgFormat = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')} ngày ${dt.getDate()}/${dt.getMonth()+1}/${dt.getFullYear()}`;
-        
-        db.ref('donHangSky/' + currentOrderId).update({
-          thoiGianHen: tgFormat,
-          rawTime: gioMoi
-        }).then(function() {
-          dongDoiLich();
-          alert("Đã cập nhật giờ hẹn mới thành công!");
-        });
-      }
-    }
-
-    // Tường Feedback Realtime
     db.ref('feedbacks').on('value', function(snapshot) {
       var data = snapshot.val();
       var wall = document.getElementById("feedbackWall");
@@ -254,7 +219,6 @@
       });
     });
 
-    // Chat 2 chiều
     function langNghePhongChat(idDon) {
       db.ref('phongChat/' + idDon).on('value', function(snap) {
         var data = snap.val();
@@ -326,7 +290,6 @@
       }
     }
 
-    // Sao sáng vàng
     function renderStars(count) {
       var stars = document.querySelectorAll('.star');
       stars.forEach(function(star) {
