@@ -10,6 +10,9 @@
 </head>
 <body class="staff-layout">
 
+  <!-- CỤM BONG BÓNG CHATHEAD NỔI GÓC MÀN HÌNH -->
+  <div id="chatheadsList" class="chatheads-container"></div>
+
   <div class="toggle-btn" onclick="moThongBao()">◀</div>
 
   <div id="sidePanel" class="side-panel">
@@ -18,8 +21,8 @@
       <button onclick="moThongBao()" class="close-btn">✖</button>
     </div>
     <div class="noti-card">
-      <strong>Hệ thống</strong> <span class="time">19:00</span>
-      <p>Nhớ bấm dấu ✔ khi hoàn thành xong đơn nha staff ơi.</p>
+      <strong>Hệ thống</strong> <span class="time">Hôm nay</span>
+      <p>Staff có thể bấm các icon tròn góc phải để chuyển qua lại giữa các phòng chat nha.</p>
     </div>
   </div>
 
@@ -50,7 +53,7 @@
   </div>
 
   <div class="gamification-section">
-    <h2>Lịch Chấm Công 🏆</h2>
+    <h2>Lịch Chấm Công Tháng Này 🏆</h2>
     <div class="calendar-grid" id="achievementCalendar"></div>
   </div>
 
@@ -63,6 +66,12 @@
     <div class="chat-pinned">
       📌 <strong id="chatGhimOrder">Yêu cầu đơn hàng...</strong>
     </div>
+
+    <!-- BANNER ĐÓNG BĂNG KHI KHÁCH BẤM HOÀN TẤT -->
+    <div id="bannerDongBangStaff" class="chat-frozen-banner" style="display: none;">
+      ⚠️ Khách hàng đã bấm xác nhận hoàn tất. Hãy bấm ✔ để kết thúc ca!
+    </div>
+
     <div class="chat-body" id="chatBody">
       <div id="manHinhKetBanStaff" style="text-align: center; margin-top: 20px;">
         <p style="font-size: 13px;">Nhập mã kết bạn Sky:</p>
@@ -84,7 +93,8 @@
       <button class="btn-dong-modal" onclick="dongModal()">✕</button>
       <h2 id="modalTieuDe" style="margin-top:0; font-size: 18px;">Chi Tiết Đơn Hàng</h2>
       <p><strong>Khách hàng:</strong> <span id="modalKhach"></span></p>
-      <p><strong>Giờ bắt đầu:</strong> <span id="modalGio"></span></p>
+      <p><strong>Lịch hẹn:</strong> <span id="modalGio" style="color: #e65100; font-weight: bold;"></span></p>
+      <p><strong>Thanh toán:</strong> <span id="modalTT" style="color: #2e7d32; font-weight: bold;"></span></p>
       <p><strong>Yêu cầu chi tiết:</strong></p>
       <div id="modalYeuCau" style="background: #f0f2f5; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px;"></div>
       <button class="btn-nhan-don" id="modalBtnNhan" style="width: 100%; padding: 12px;">Nhận Đơn Này</button>
@@ -107,13 +117,15 @@
 
     var iconCuaToi = localStorage.getItem("myIcon") || "🌸";
     var dangXuLyDonId = null;
+    var danhSachDonDangLam = {}; // Lưu trữ để vẽ bong bóng chat
 
     function moThongBao() { document.getElementById("sidePanel").classList.toggle("panel-open"); }
 
+    // Tạo lịch 31 ngày
     function taoLich() {
       var lich = document.getElementById("achievementCalendar");
       lich.innerHTML = "";
-      for (var i = 1; i <= 30; i++) {
+      for (var i = 1; i <= 31; i++) {
         lich.innerHTML += '<div class="day-box" id="ngay-' + i + '">' + i + '</div>';
       }
     }
@@ -138,7 +150,7 @@
 
     function xoaStaff() {
       var table = document.getElementById("bangLich");
-      if (table.rows.length > 2) { table.deleteRow(-1); }
+      if (table.rows.length > 2) table.deleteRow(-1);
     }
 
     // 1. Lắng nghe đơn hàng
@@ -146,38 +158,53 @@
       var danhSach = snapshot.val();
       var baoTu = document.getElementById("danhSachDonHang");
       baoTu.innerHTML = "";
+      danhSachDonDangLam = {};
 
       if (!danhSach) {
         baoTu.innerHTML = "<p style='grid-column: 1/-1; color: #888;'>Hiện chưa có đơn hàng nào.</p>";
+        capNhatBongBongChat();
         return;
       }
 
       var keys = Object.keys(danhSach).reverse();
+      var coDon = false;
+
       keys.forEach(function(key) {
         var donHang = danhSach[key];
         donHang.id = key;
 
-        if (donHang.trangThai === "hoan_thanh") return; // Ẩn các đơn đã xong
+        if (donHang.trangThai === "hoan_thanh") return;
 
+        // Nếu đơn do chính staff này nhận và chưa hoàn thành -> gom vào bong bóng
+        if (donHang.daNhan && donHang.staffNhan === iconCuaToi) {
+          danhSachDonDangLam[key] = donHang;
+        }
+
+        coDon = true;
+        var ttLabel = donHang.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền mặt";
         var trangThaiNut = donHang.daNhan 
           ? `<button class="btn-nhan-don" style="background-color: #ccc; cursor: not-allowed;" disabled>ĐÃ NHẬN (${donHang.staffNhan})</button>` 
-          : `<button id="btn-${key}" class="btn-nhan-don" onclick="event.stopPropagation(); chotDon('${key}', 22)">Nhận Đơn</button>`;
+          : `<button id="btn-${key}" class="btn-nhan-don" onclick="event.stopPropagation(); chotDon('${key}')">Nhận Đơn</button>`;
 
         var HTMLCard = `
           <div class="order-card" onclick='moModal(${JSON.stringify(donHang)})'>
             <div class="order-icon-box">📦</div>
             <h3>${donHang.mangDichVu.toUpperCase()}</h3>
             <p><strong>Khách:</strong> ${donHang.tenKhach}</p>
-            <p style="font-size: 12px; color: #666;">Giờ: ${donHang.gio}</p>
+            <p style="font-size: 11px; color: #e65100;"><strong>Hẹn:</strong> ${donHang.thoiGianHen}</p>
+            <p style="font-size: 11px; color: #2e7d32;"><strong>TT:</strong> ${ttLabel}</p>
             ${trangThaiNut}
           </div>
         `;
         baoTu.innerHTML += HTMLCard;
       });
+
+      if (!coDon) baoTu.innerHTML = "<p style='grid-column: 1/-1; color: #888;'>Các đơn hàng đều đã hoàn tất!</p>";
+      capNhatBongBongChat();
     });
 
-    // 2. Nhận đơn
-    function chotDon(maDon, ngay) {
+    // 2. Nhận đơn & Tự động chấm công theo ngày thực tế
+    function chotDon(maDon) {
       dangXuLyDonId = maDon;
       db.ref('donHangSky/' + maDon).update({
         daNhan: true,
@@ -185,24 +212,57 @@
       }).then(function() {
         dongModal();
 
-        var oNgay = document.getElementById("ngay-" + ngay);
+        // 7. Chấm công tự động lấy đúng ngày hôm nay
+        var homNay = new Date().getDate();
+        var oNgay = document.getElementById("ngay-" + homNay);
         if (oNgay && !oNgay.classList.contains("has-order")) {
           oNgay.classList.add("has-order");
           oNgay.innerHTML = iconCuaToi;
         }
 
-        db.ref('donHangSky/' + maDon).once('value').then(function(res) {
-          var dh = res.val();
-          document.getElementById("chatGhimOrder").innerHTML = `Đơn: ${dh.mangDichVu} (${dh.gio})`;
-          document.getElementById("chatBox").style.display = "flex";
-          document.getElementById("chatTenStaff").innerHTML = "Chat: " + dh.tenKhach + " ⇋ Staff " + iconCuaToi;
-          
-          langNghePhongChatStaff(maDon);
-        });
+        moPhongChatTheoDon(maDon);
       });
     }
 
-    // 3. Chat 2 chiều phía Staff
+    // 9. Cập nhật bong bóng Chathead nổi
+    function capNhatBongBongChat() {
+      var box = document.getElementById("chatheadsList");
+      box.innerHTML = "";
+
+      Object.keys(danhSachDonDangLam).forEach(function(idDon) {
+        var dh = danhSachDonDangLam[idDon];
+        var isAct = dangXuLyDonId === idDon ? "active" : "";
+        box.innerHTML += `
+          <div class="chathead-bubble ${isAct}" onclick="moPhongChatTheoDon('${idDon}')" title="${dh.tenKhach} (${dh.mangDichVu})">
+            <span>${dh.tenKhach.charAt(0).toUpperCase()}</span>
+          </div>
+        `;
+      });
+    }
+
+    function moPhongChatTheoDon(idDon) {
+      dangXuLyDonId = idDon;
+      capNhatBongBongChat();
+
+      db.ref('donHangSky/' + idDon).once('value').then(function(res) {
+        var dh = res.val();
+        document.getElementById("chatGhimOrder").innerHTML = `Đơn: ${dh.mangDichVu} (${dh.thoiGianHen})`;
+        document.getElementById("chatBox").style.display = "flex";
+        document.getElementById("chatTenStaff").innerHTML = "Chat: " + dh.tenKhach + " ⇋ Staff " + iconCuaToi;
+
+        // 8. Đóng băng nếu khách đã bấm xong
+        if (dh.khachHoanThanh) {
+          document.getElementById("bannerDongBangStaff").style.display = "block";
+          document.getElementById("nhapTinStaff").disabled = true;
+          document.getElementById("btnGuiTinStaff").disabled = true;
+        } else {
+          document.getElementById("bannerDongBangStaff").style.display = "none";
+        }
+
+        langNghePhongChatStaff(idDon);
+      });
+    }
+
     function langNghePhongChatStaff(idDon) {
       db.ref('phongChat/' + idDon).on('value', function(snap) {
         var data = snap.val();
@@ -210,8 +270,10 @@
           if (data.maKetBan) {
             document.getElementById("manHinhKetBanStaff").style.display = "none";
             document.getElementById("tinNhanStaff").style.display = "block";
-            document.getElementById("nhapTinStaff").disabled = false;
-            document.getElementById("btnGuiTinStaff").disabled = false;
+            if (!document.getElementById("bannerDongBangStaff").style.display || document.getElementById("bannerDongBangStaff").style.display === "none") {
+              document.getElementById("nhapTinStaff").disabled = false;
+              document.getElementById("btnGuiTinStaff").disabled = false;
+            }
             document.getElementById("btnHoanThanhStaff").disabled = false;
           }
 
@@ -250,19 +312,22 @@
       }
     }
 
-    // 4. Hoàn thành đơn 2 chiều
     function xacNhanXongStaff() {
-      if (confirm("Staff xác nhận đã hoàn thành ca này?")) {
+      if (confirm("Staff xác nhận ca làm việc đã hoàn thành?")) {
         db.ref('donHangSky/' + dangXuLyDonId).update({ staffHoanThanh: true });
-        
+        db.ref('phongChat/' + dangXuLyDonId + '/tinNhan').push({
+          nguoiGui: "Hệ thống",
+          noiDung: "Staff đã xác nhận hoàn thành đơn!"
+        });
+
         db.ref('donHangSky/' + dangXuLyDonId).once('value').then(function(snap) {
           var dh = snap.val();
           if (dh.khachHoanThanh) {
             db.ref('donHangSky/' + dangXuLyDonId).update({ trangThai: "hoan_thanh" });
-            alert("Cả 2 bên đã xác nhận! Đơn hàng hoàn tất.");
+            alert("Cả 2 bên đã hoàn tất! Đơn được chuyển vào sổ lưu trữ.");
             dongChat();
           } else {
-            alert("Đã xác nhận hoàn thành! Đang chờ Khách bấm xác nhận trên Sảnh.");
+            alert("Đã xác nhận xong! Đang chờ Khách bấm xác nhận trên Sảnh.");
           }
         });
       }
@@ -271,7 +336,8 @@
     function moModal(dh) {
       document.getElementById("modalTieuDe").innerText = "Đơn: " + dh.mangDichVu.toUpperCase() + " (" + dh.cuThe + ")";
       document.getElementById("modalKhach").innerText = dh.tenKhach;
-      document.getElementById("modalGio").innerText = dh.gio || "Không có giờ cụ thể";
+      document.getElementById("modalGio").innerText = dh.thoiGianHen || "Chưa có";
+      document.getElementById("modalTT").innerText = dh.thanhToan === "Tim_Sky" ? "💖 Trả bằng Tim Sky" : "💵 Trả bằng Tiền mặt (VND)";
       document.getElementById("modalYeuCau").innerText = dh.yeuCau || "Không có yêu cầu đặc biệt.";
       
       var nutModal = document.getElementById("modalBtnNhan");
@@ -283,7 +349,7 @@
         nutModal.innerText = "Nhận Đơn Này";
         nutModal.style.backgroundColor = "#81c784";
         nutModal.disabled = false;
-        nutModal.onclick = function() { chotDon(dh.id, 22); };
+        nutModal.onclick = function() { chotDon(dh.id); };
       }
       document.getElementById("modalChiTiet").style.display = "flex";
     }
