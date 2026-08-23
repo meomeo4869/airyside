@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sảnh Chờ Sky - Ngôi Nhà Chung</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+</head>
+<body class="lobby-layout">
+
+  <!-- BANNER TRẠNG THÁI ĐƠN HÀNG TRỰC TIẾP (Chỉ hiện khi khách có đặt đơn) -->
+  <div id="liveOrderBanner" class="status-banner" style="display: none;">
+    <div class="banner-content">
+      <span class="pulse-dot"></span>
+      <div id="statusText">
+        <strong>Đơn của bạn:</strong> Đang tìm Staff phù hợp... ⏳
+      </div>
+      <button id="btnOpenChat" class="btn-chat-lobby" onclick="moChatLobby()" style="display: none;">💬 Nhắn với Staff</button>
+    </div>
+  </div>
+
+  <!-- NÚT ĐẶT ĐƠN NHANH NỔI (LUÔN SẴN SÀNG) -->
+  <div class="floating-order-btn" onclick="window.location.href='order.html'">
+    ✨ Đặt Đơn Ngay
+  </div>
+
+  <div class="lobby-container">
+    <header class="lobby-header">
+      <h1>🏰 Chào Mừng Đến Với Sảnh Sky</h1>
+      <p>Nơi thư giãn, xem bảng giá và theo dõi dịch vụ đồng hành cùng bạn</p>
+    </header>
+
+    <!-- 1. BẢNG GIÁ DỊCH VỤ -->
+    <section class="lobby-section">
+      <h2>💎 Bảng Giá Dịch Vụ</h2>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <h3>🚗 Uber Dẫn Tour</h3>
+          <p class="price-tag">15k - 30k / Chuyến</p>
+          <ul>
+            <li>Nhặt 15 nến / Xám nến</li>
+            <li>Hỗ trợ làm nhiệm vụ ngày (Quest)</li>
+            <li>Nhặt Wing, đi Eden an toàn</li>
+          </ul>
+        </div>
+        <div class="price-card popular">
+          <div class="badge">Phổ Biến</div>
+          <h3>✨ Host Đồng Hành</h3>
+          <p class="price-tag">20k - 50k / Giờ</p>
+          <ul>
+            <li>Trò chuyện, tâm sự giải tỏa</li>
+            <li>Đàn hát theo yêu cầu</li>
+            <li>Fakelove, chụp ảnh kỷ niệm</li>
+          </ul>
+        </div>
+        <div class="price-card">
+          <h3>🔑 Log Acc Trọn Gói</h3>
+          <p class="price-tag">Theo ngày / Tuần</p>
+          <ul>
+            <li>Chạy nến đều đặn mỗi ngày</li>
+            <li>Bảo mật tài khoản tuyệt đối</li>
+            <li>Gửi video nghiệm thu sau ca</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. LỊCH LÀM VIỆC & ĐIỀU KHOẢN -->
+    <section class="lobby-section">
+      <div class="terms-container">
+        <div class="terms-box">
+          <h3>⏰ Lịch Hoạt Động Của Page</h3>
+          <p>• <strong>Ca Sáng:</strong> 08:00 - 12:00</p>
+          <p>• <strong>Ca Chiều:</strong> 13:30 - 17:30</p>
+          <p>• <strong>Ca Tối (Cao điểm):</strong> 18:00 - 24:00</p>
+        </div>
+        <div class="terms-box">
+          <h3>📜 Điều Khoản & Quyền Lợi</h3>
+          <p>✔ <strong>Bảo mật:</strong> Không tự ý chia sẻ thông tin tài khoản của khách.</p>
+          <p>✔ <strong>Đúng giờ:</strong> Staff có mặt đúng khung giờ đã đăng ký.</p>
+          <p>✔ <strong>Bồi thường:</strong> Hoàn tiền 100% nếu phát sinh sự cố từ phía Staff.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. TƯỜNG FEEDBACK TỪ KHÁCH HÀNG -->
+    <section class="lobby-section">
+      <h2>⭐ Feedback Từ Khách Cũ</h2>
+      <div class="feedback-grid">
+        <div class="feedback-card">
+          <div class="feedback-stars">⭐⭐⭐⭐⭐</div>
+          <p>"Michii đàn siêu hay, nói chuyện dễ thương xỉu luôn á! Sẽ ủng hộ dài dài."</p>
+          <span class="feedback-author">- Bé Bơ (Khách Host)</span>
+        </div>
+        <div class="feedback-card">
+          <div class="feedback-stars">⭐⭐⭐⭐⭐</div>
+          <p>"Uber chạy nến siêu nhanh, chưa đầy 45p đã xong 15 nến rồi. Quá uy tín."</p>
+          <span class="feedback-author">- Minh Triết (Khách Uber)</span>
+        </div>
+        <div class="feedback-card">
+          <div class="feedback-stars">⭐⭐⭐⭐⭐</div>
+          <p>"Dịch vụ chu đáo, dẫn đi Eden an toàn không rớt một cánh nào luôn."</p>
+          <span class="feedback-author">- SkyWalker_99</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- KHUNG CHAT MINI TẠI SẢNH (DÀNH CHO KHÁCH) -->
+  <div id="chatBoxKhach" class="chat-container">
+    <div class="chat-header">
+      <span id="chatTitleKhach">Phòng Chat Với Staff</span>
+      <button class="close-chat" onclick="dongChatKhach()">✕</button>
+    </div>
+    <div class="chat-pinned">
+      📌 <strong id="chatGhimKhach">Kết nối trực tiếp với Staff nhận đơn</strong>
+    </div>
+    <div class="chat-body" id="chatBodyKhach">
+      <div class="msg left"><strong>Staff:</strong> Chào bạn nha, bạn gửi mã kết bạn Sky để mình kết bạn vào game nhé!</div>
+    </div>
+    <div class="chat-footer">
+      <input type="text" id="nhapTinKhach" placeholder="Gửi mã hoặc nhắn tin...">
+      <button class="btn-done" onclick="guiTinKhach()">➤</button>
+    </div>
+  </div>
+
+  <!-- LOGIC FIREBASE THEO DÕI ĐƠN & CHAT -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCEuMuKn4ZrzQNQCYnxt9XeNpPUsfQk54c",
+      authDomain: "ordersky.firebaseapp.com",
+      databaseURL: "https://ordersky-default-rtdb.firebaseio.com",
+      projectId: "ordersky",
+      storageBucket: "ordersky.firebasestorage.app",
+      messagingSenderId: "332284986658",
+      appId: "1:332284986658:web:02c42c4181900fc2e0917b",
+      measurementId: "G-35XQCYMK8V"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    var currentOrderId = localStorage.getItem("myCurrentOrderId");
+
+    // Lắng nghe trạng thái đơn của chính khách này
+    if (currentOrderId) {
+      document.getElementById("liveOrderBanner").style.display = "block";
+
+      db.ref('donHangSky/' + currentOrderId).on('value', function(snapshot) {
+        var don = snapshot.val();
+        if (don) {
+          if (don.daNhan) {
+            document.getElementById("statusText").innerHTML = `<strong>Đơn:</strong> Staff <strong>${don.staffNhan || "🌸"}</strong> đã nhận đơn của bạn! 🎉`;
+            document.getElementById("btnOpenChat").style.display = "inline-block";
+          } else {
+            document.getElementById("statusText").innerHTML = `<strong>Đơn:</strong> ${don.mangDichVu.toUpperCase()} - Đang tìm Staff phù hợp... ⏳`;
+            document.getElementById("btnOpenChat").style.display = "none";
+          }
+        }
+      });
+    }
+
+    function moChatLobby() {
+      document.getElementById("chatBoxKhach").style.display = "flex";
+    }
+
+    function dongChatKhach() {
+      document.getElementById("chatBoxKhach").style.display = "none";
+    }
+
+    function guiTinKhach() {
+      var txt = document.getElementById("nhapTinKhach").value;
+      if (txt.trim() !== "") {
+        var box = document.getElementById("chatBodyKhach");
+        box.innerHTML += `<div class="msg right"><strong>Bạn:</strong> ${txt}</div>`;
+        document.getElementById("nhapTinKhach").value = "";
+        box.scrollTop = box.scrollHeight;
+      }
+    }
+  </script>
+</body>
+</html>
