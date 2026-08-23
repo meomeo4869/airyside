@@ -10,7 +10,7 @@
 </head>
 <body class="lobby-layout">
 
-  <!-- BANNER TIẾN TRÌNH ĐƠN CỦA KHÁCH -->
+  <!-- BANNER TIẾN TRÌNH ĐƠN -->
   <div id="liveOrderBanner" class="status-banner" style="display: none;">
     <div class="banner-content">
       <span class="pulse-dot"></span>
@@ -33,14 +33,14 @@
       <p>Nơi thư giãn, xem bảng giá và theo dõi dịch vụ đồng hành cùng bạn</p>
     </header>
 
-    <!-- BẢNG GIÁ DỊCH VỤ -->
+    <!-- BẢNG GIÁ REALTIME ĐƯỢC ADMIN CẬP NHẬT -->
     <section class="lobby-section">
       <h2>💎 Bảng Giá Dịch Vụ</h2>
       <div class="pricing-grid">
         <div class="price-card">
           <h3>🚗 Uber Dẫn Tour</h3>
-          <p class="price-tag">15k VND hoặc 3 Tim</p>
-          <ul>
+          <p class="price-tag" id="giaUber">15k VND hoặc 3 Tim</p>
+          <ul id="moTaUber">
             <li>Nhặt 15 nến / Xám nến</li>
             <li>Hỗ trợ làm nhiệm vụ ngày (Quest)</li>
             <li>Nhặt Wing, đi Eden an toàn</li>
@@ -49,8 +49,8 @@
         <div class="price-card popular">
           <div class="badge">Phổ Biến</div>
           <h3>✨ Host Đồng Hành</h3>
-          <p class="price-tag">25k VND hoặc 5 Tim / Giờ</p>
-          <ul>
+          <p class="price-tag" id="giaHost">25k VND hoặc 5 Tim / Giờ</p>
+          <ul id="moTaHost">
             <li>Trò chuyện, tâm sự giải tỏa</li>
             <li>Đàn hát theo yêu cầu</li>
             <li>Fakelove, chụp ảnh kỷ niệm</li>
@@ -58,8 +58,8 @@
         </div>
         <div class="price-card">
           <h3>🔑 Log Acc Trọn Gói</h3>
-          <p class="price-tag">Theo ngày / Tuần</p>
-          <ul>
+          <p class="price-tag" id="giaLogAcc">Theo ngày / Tuần</p>
+          <ul id="moTaLogAcc">
             <li>Chạy nến đều đặn mỗi ngày</li>
             <li>Bảo mật tài khoản tuyệt đối</li>
             <li>Gửi video nghiệm thu sau ca</li>
@@ -68,25 +68,29 @@
       </div>
     </section>
 
-    <!-- LỊCH HOẠT ĐỘNG & ĐIỀU KHOẢN -->
+    <!-- LỊCH HOẠT ĐỘNG & ĐIỀU KHOẢN TỪ ADMIN -->
     <section class="lobby-section">
       <div class="terms-container">
         <div class="terms-box">
           <h3>⏰ Lịch Hoạt Động Của Page</h3>
-          <p>• <strong>Ca Sáng:</strong> 08:00 - 12:00</p>
-          <p>• <strong>Ca Chiều:</strong> 13:30 - 17:30</p>
-          <p>• <strong>Ca Tối (Cao điểm):</strong> 18:00 - 24:00</p>
+          <div id="noiDungLichPage" style="white-space: pre-line; line-height: 1.6;">
+            • Ca Sáng: 08:00 - 12:00
+            • Ca Chiều: 13:30 - 17:30
+            • Ca Tối (Cao điểm): 18:00 - 24:00
+          </div>
         </div>
         <div class="terms-box">
           <h3>📜 Điều Khoản & Quyền Lợi</h3>
-          <p>✔ <strong>Thanh toán:</strong> Nhận chuyển khoản ngân hàng hoặc trả Tim trực tiếp.</p>
-          <p>✔ <strong>Đúng hẹn:</strong> Trao đổi lịch trình trực tiếp qua khung Chat với Staff.</p>
-          <p>✔ <strong>Bảo đảm:</strong> Hoàn tiền / Tim 100% nếu phát sinh sự cố từ Staff.</p>
+          <div id="noiDungDieuKhoan" style="white-space: pre-line; line-height: 1.6;">
+            ✔ Thanh toán: Nhận chuyển khoản ngân hàng hoặc trả Tim trực tiếp.
+            ✔ Đúng hẹn: Trao đổi lịch trình trực tiếp qua khung Chat với Staff.
+            ✔ Bảo đảm: Hoàn tiền / Tim 100% nếu phát sinh sự cố từ Staff.
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- TƯỜNG FEEDBACK REALTIME -->
+    <!-- TƯỜNG FEEDBACK -->
     <section class="lobby-section">
       <h2>⭐ Feedback Từ Khách Hàng (Mới Nhất)</h2>
       <div class="feedback-grid" id="feedbackWall">
@@ -95,7 +99,7 @@
     </section>
   </div>
 
-  <!-- KHUNG CHAT MINI TẠI SẢNH -->
+  <!-- KHUNG CHAT MINI -->
   <div id="chatBoxKhach" class="chat-container">
     <div class="chat-header">
       <span id="chatTitleKhach">Chat Với Staff</span>
@@ -104,11 +108,9 @@
     <div class="chat-pinned">
       📌 <strong id="chatGhimKhach">Mã kết bạn & Trao đổi</strong>
     </div>
-    
     <div id="bannerDongBangKhach" class="chat-frozen-banner" style="display: none;">
       ⚠️ Staff đã xác nhận hoàn thành đơn. Hãy bấm ✔ để hoàn tất!
     </div>
-
     <div class="chat-body" id="chatBodyKhach">
       <div id="manHinhKetBanKhach" style="text-align: center; margin-top: 20px;">
         <p style="font-size: 13px;">Gửi mã kết bạn Sky để mở chat:</p>
@@ -120,16 +122,15 @@
     <div class="chat-footer">
       <input type="text" id="nhapTinKhach" placeholder="Nhập tin nhắn..." disabled onkeypress="if(event.key==='Enter') guiTinKhach()">
       <button id="btnGuiTinKhach" class="btn-icon" disabled onclick="guiTinKhach()">➤</button>
-      <button id="btnXacNhanHoanThanhKhach" class="btn-done" disabled onclick="xacNhanXongKhach()" title="Xác nhận hoàn thành ca">✔</button>
+      <button id="btnXacNhanHoanThanhKhach" class="btn-done" disabled onclick="xacNhanXongKhach()" title="Xác nhận hoàn tất">✔</button>
     </div>
   </div>
 
-  <!-- POPUP ĐÁNH GIÁ VỚI SAO SÁNG VÀNG -->
+  <!-- POPUP ĐÁNH GIÁ -->
   <div id="modalFeedback" class="modal-overlay">
     <div class="modal-content" style="text-align: center;">
       <h3>Hoàn Tất Đơn Hàng 🎉</h3>
       <p>Bồ thấy dịch vụ của Staff thế nào nè?</p>
-      
       <div class="star-rating" id="starContainer">
         <span class="star lit" data-val="1" onclick="setRating(1)" onmouseover="hoverRating(1)" onmouseout="resetHover()">★</span>
         <span class="star lit" data-val="2" onclick="setRating(2)" onmouseover="hoverRating(2)" onmouseout="resetHover()">★</span>
@@ -137,7 +138,6 @@
         <span class="star lit" data-val="4" onclick="setRating(4)" onmouseover="hoverRating(4)" onmouseout="resetHover()">★</span>
         <span class="star lit" data-val="5" onclick="setRating(5)" onmouseover="hoverRating(5)" onmouseout="resetHover()">★</span>
       </div>
-
       <input type="text" id="loiNhanFeedback" placeholder="Để lại vài dòng cảm nhận..." style="width: 90%; margin-bottom: 15px;">
       <button onclick="guiFeedback()" style="width: 100%; background: #4CAF50;">Gửi Đánh Giá</button>
     </div>
@@ -156,6 +156,18 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
+
+    // 1. Tải Bảng Giá & Điều Khoản động từ Firebase
+    db.ref('caiDatPage').on('value', function(snapshot) {
+      var set = snapshot.val();
+      if (set) {
+        if (set.giaUber) document.getElementById("giaUber").innerText = set.giaUber;
+        if (set.giaHost) document.getElementById("giaHost").innerText = set.giaHost;
+        if (set.giaLogAcc) document.getElementById("giaLogAcc").innerText = set.giaLogAcc;
+        if (set.lichPage) document.getElementById("noiDungLichPage").innerText = set.lichPage;
+        if (set.dieuKhoan) document.getElementById("noiDungDieuKhoan").innerText = set.dieuKhoan;
+      }
+    });
 
     var currentOrderId = localStorage.getItem("myCurrentOrderId");
     var currentTenKhach = "Khách Hàng";
@@ -196,24 +208,22 @@
       });
     }
 
+    // Feedback
     db.ref('feedbacks').on('value', function(snapshot) {
       var data = snapshot.val();
       var wall = document.getElementById("feedbackWall");
       wall.innerHTML = "";
-
       if (!data) {
-        wall.innerHTML = "<p style='grid-column: 1/-1; color: #888;'>Chưa có đánh giá nào, hãy là người đầu tiên!</p>";
+        wall.innerHTML = "<p style='grid-column: 1/-1; color: #888;'>Chưa có đánh giá nào.</p>";
         return;
       }
-
-      var list = Object.values(data).reverse();
-      list.forEach(function(fb) {
+      Object.values(data).reverse().forEach(function(fb) {
         var starStr = "★".repeat(fb.sao || 5);
         wall.innerHTML += `
           <div class="feedback-card">
             <div class="feedback-stars" style="color: #ffb703; font-size: 16px;">${starStr}</div>
             <p>"${fb.nhanXet}"</p>
-            <span class="feedback-author">- ${fb.tenKhach || "Khách hàng giấu tên"}</span>
+            <span class="feedback-author">- ${fb.tenKhach || "Khách hàng"}</span>
           </div>
         `;
       });
@@ -278,7 +288,6 @@
           nguoiGui: "Hệ thống",
           noiDung: "Khách hàng đã bấm xác nhận hoàn tất ca!"
         });
-
         db.ref('donHangSky/' + currentOrderId).once('value').then(function(snap) {
           var dh = snap.val();
           if (dh.staffHoanThanh) {
