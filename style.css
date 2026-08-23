@@ -306,3 +306,196 @@ button:hover { background-color: #ff4500; }
   display: flex; align-items: center; justify-content: center; border-radius: 50%;
 }
 .btn-dong-modal:hover { background-color: rgba(0, 0, 0, 0.05); color: #000; }
+
+/* ========================================= */
+/* 7. PHONG CÁCH SẢNH CHỜ (LOBBY)            */
+/* ========================================= */
+body.lobby-layout {
+  display: block;
+  height: auto;
+  background-color: #f0f4f9;
+}
+
+.lobby-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 30px 20px 80px 20px;
+}
+
+.lobby-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.lobby-header h1 {
+  color: #1a2a3a;
+  margin-bottom: 8px;
+}
+
+.lobby-header p {
+  color: #667;
+  font-size: 15px;
+}
+
+.lobby-section {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 14px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.lobby-section h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #222;
+  border-left: 4px solid #ff7f50;
+  padding-left: 10px;
+}
+
+/* Bảng giá */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.price-card {
+  background: #fdfdfd;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.price-card.popular {
+  border: 2px solid #ff7f50;
+  background: #fffaf8;
+}
+
+.price-card .badge {
+  position: absolute;
+  top: -10px; right: 15px;
+  background: #ff7f50;
+  color: white;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.price-tag {
+  font-size: 18px;
+  font-weight: bold;
+  color: #e65100;
+  margin: 10px 0;
+}
+
+.price-card ul {
+  text-align: left;
+  padding-left: 18px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Điều khoản & Lịch */
+.terms-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.terms-box {
+  background: #f8fafc;
+  padding: 15px 20px;
+  border-radius: 10px;
+  border: 1px solid #eef2f6;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.terms-box h3 { margin-top: 0; font-size: 15px; color: #333; }
+
+/* Feedback */
+.feedback-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.feedback-card {
+  background: #fafbfc;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px dashed #cbd5e1;
+}
+
+.feedback-stars { margin-bottom: 8px; font-size: 12px; }
+.feedback-card p { font-size: 13px; color: #444; font-style: italic; margin-bottom: 8px; }
+.feedback-author { font-size: 12px; font-weight: bold; color: #ff7f50; }
+
+/* Nút đặt đơn nổi */
+.floating-order-btn {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  background: linear-gradient(135deg, #ff7f50, #ff5722);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 0 6px 20px rgba(255, 87, 34, 0.4);
+  cursor: pointer;
+  z-index: 999;
+  transition: 0.2s;
+}
+
+.floating-order-btn:hover { transform: translateY(-3px); }
+
+/* Banner đơn hàng trực tiếp */
+.status-banner {
+  background: #1e293b;
+  color: white;
+  padding: 12px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.banner-content {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.pulse-dot {
+  width: 10px; height: 10px;
+  background-color: #4ade80;
+  border-radius: 50%;
+  animation: nhapNhay 1.5s infinite;
+}
+
+@keyframes nhapNhay {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}
+
+.btn-chat-lobby {
+  background: #0068ff;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: auto;
+}
