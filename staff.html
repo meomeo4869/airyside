@@ -5,15 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bàn Làm Việc Staff</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Thư viện Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body class="staff-layout">
 
-  <!-- ========================================== -->
-  <!-- 1. GIAO DIỆN KHUNG THÔNG BÁO TRƯỢT (SIDEBAR) -->
-  <!-- ========================================== -->
   <div class="toggle-btn" onclick="moThongBao()">◀</div>
 
   <div id="sidePanel" class="side-panel">
@@ -23,13 +19,10 @@
     </div>
     <div class="noti-card">
       <strong>Hệ thống</strong> <span class="time">19:00</span>
-      <p>Admin nhắc nhở staff check lịch tuần này nha.</p>
+      <p>Nhớ bấm dấu ✔ khi hoàn thành xong đơn nha staff ơi.</p>
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- 2. GIAO DIỆN LỊCH LÀM VIỆC CỦA STAFF      -->
-  <!-- ========================================== -->
   <div class="schedule-section">
     <h2>Lịch Đăng Ký Ca Làm Việc</h2>
     <table class="schedule-table" id="bangLich">
@@ -51,56 +44,41 @@
     <button onclick="xoaStaff()" style="background-color: #f44336; padding: 6px 12px; font-size: 13px;">➖ Bớt Staff</button>
   </div>
 
-  <!-- ========================================== -->
-  <!-- 3. GIAO DIỆN KHU VỰC ORDER (GRID 3 CỘT)    -->
-  <!-- ========================================== -->
   <div class="order-section">
     <h2>Đơn Hàng Mới Nhất (Realtime)</h2>
-    <div id="danhSachDonHang" class="order-grid">
-      <!-- Firebase sẽ tự động đẩy card vào đây -->
-    </div>
+    <div id="danhSachDonHang" class="order-grid"></div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- 4. GIAO DIỆN LỊCH CHẤM CÔNG HÀNG THÁNG    -->
-  <!-- ========================================== -->
   <div class="gamification-section">
     <h2>Lịch Chấm Công 🏆</h2>
     <div class="calendar-grid" id="achievementCalendar"></div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- 5. GIAO DIỆN KHUNG CHAT MINI               -->
-  <!-- ========================================== -->
+  <!-- KHUNG CHAT CỦA STAFF -->
   <div id="chatBox" class="chat-container">
     <div class="chat-header">
       <span id="chatTenStaff">Staff đang kết nối...</span>
       <button class="close-chat" onclick="dongChat()">✕</button>
     </div>
-
     <div class="chat-pinned">
       📌 <strong id="chatGhimOrder">Yêu cầu đơn hàng...</strong>
     </div>
-
     <div class="chat-body" id="chatBody">
-      <div id="manHinhKetBan" class="friend-code-section" style="margin-top: 20px;">
-        <p style="font-size: 13px;">Nhập mã kết bạn Sky để chat:</p>
-        <input type="text" id="maKetBan" placeholder="Mã kết bạn...">
-        <button onclick="xacNhanMa()" style="padding: 6px 12px;">Gửi Mã</button>
+      <div id="manHinhKetBanStaff" style="text-align: center; margin-top: 20px;">
+        <p style="font-size: 13px;">Nhập mã kết bạn Sky:</p>
+        <input type="text" id="maKetBanStaff" placeholder="Mã kết bạn..." style="width: 80%; margin-bottom: 8px;">
+        <button onclick="xacNhanMaStaff()" style="padding: 6px 12px; font-size: 12px;">Gửi Mã</button>
       </div>
-      <div id="manHinhTinNhan" class="message-section" style="display: none;"></div>
+      <div id="tinNhanStaff" style="display: none;"></div>
     </div>
-
     <div class="chat-footer">
-      <input type="text" id="nhapTinNhan" placeholder="Aa..." disabled>
-      <button id="btnGuiTin" class="btn-icon" disabled>➤</button>
-      <button id="btnHoanThanh" class="btn-done" disabled onclick="hoanThanhDon()">✔</button>
+      <input type="text" id="nhapTinStaff" placeholder="Nhập tin nhắn..." disabled onkeypress="if(event.key==='Enter') guiTinStaff()">
+      <button id="btnGuiTinStaff" class="btn-icon" disabled onclick="guiTinStaff()">➤</button>
+      <button id="btnHoanThanhStaff" class="btn-done" disabled onclick="xacNhanXongStaff()" title="Xác nhận hoàn tất">✔</button>
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- 6. GIAO DIỆN MODAL POPUP CHI TIẾT ĐƠN HÀNG -->
-  <!-- ========================================== -->
+  <!-- POPUP CHI TIẾT ĐƠN -->
   <div id="modalChiTiet" class="modal-overlay">
     <div class="modal-content">
       <button class="btn-dong-modal" onclick="dongModal()">✕</button>
@@ -109,16 +87,11 @@
       <p><strong>Giờ bắt đầu:</strong> <span id="modalGio"></span></p>
       <p><strong>Yêu cầu chi tiết:</strong></p>
       <div id="modalYeuCau" style="background: #f0f2f5; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px;"></div>
-      
       <button class="btn-nhan-don" id="modalBtnNhan" style="width: 100%; padding: 12px;">Nhận Đơn Này</button>
     </div>
   </div>
 
-  <!-- ======================================================= -->
-  <!-- 7. PHẦN NÃO BỘ JAVASCRIPT & KẾT NỐI REALTIME DATABASE    -->
-  <!-- ======================================================= -->
   <script>
-    // Cấu hình Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyCEuMuKn4ZrzQNQCYnxt9XeNpPUsfQk54c",
       authDomain: "ordersky.firebaseapp.com",
@@ -132,10 +105,10 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // --- [LOGIC 1]: THÔNG BÁO & LỊCH CHẤM CÔNG ---
-    function moThongBao() {
-      document.getElementById("sidePanel").classList.toggle("panel-open");
-    }
+    var iconCuaToi = localStorage.getItem("myIcon") || "🌸";
+    var dangXuLyDonId = null;
+
+    function moThongBao() { document.getElementById("sidePanel").classList.toggle("panel-open"); }
 
     function taoLich() {
       var lich = document.getElementById("achievementCalendar");
@@ -146,14 +119,11 @@
     }
     taoLich();
 
-    // --- [LOGIC 2]: QUẢN LÝ LỊCH CA LÀM VIỆC CỦA STAFF ---
     function doiTrangThai(o) {
       if (o.classList.contains("available")) {
-        o.className = "ca-lam busy";
-        o.innerHTML = "Bận";
+        o.className = "ca-lam busy"; o.innerHTML = "Bận";
       } else {
-        o.className = "ca-lam available";
-        o.innerHTML = "Rảnh";
+        o.className = "ca-lam available"; o.innerHTML = "Rảnh";
       }
     }
 
@@ -162,26 +132,16 @@
       if (tenMoi) {
         var table = document.getElementById("bangLich");
         var row = table.insertRow(-1);
-        row.innerHTML = `<td><strong>${tenMoi}</strong></td>
-                         <td class="ca-lam" onclick="doiTrangThai(this)">Trống</td>
-                         <td class="ca-lam" onclick="doiTrangThai(this)">Trống</td>
-                         <td class="ca-lam" onclick="doiTrangThai(this)">Trống</td>`;
+        row.innerHTML = `<td><strong>${tenMoi}</strong></td><td class="ca-lam" onclick="doiTrangThai(this)">Trống</td><td class="ca-lam" onclick="doiTrangThai(this)">Trống</td><td class="ca-lam" onclick="doiTrangThai(this)">Trống</td>`;
       }
     }
 
     function xoaStaff() {
       var table = document.getElementById("bangLich");
-      if (table.rows.length > 2) {
-        table.deleteRow(-1);
-      } else {
-        alert("Phải giữ lại ít nhất 1 staff chứ bồ!");
-      }
+      if (table.rows.length > 2) { table.deleteRow(-1); }
     }
 
-    // --- [LOGIC 3]: LẮNG NGHE ĐƠN REALTIME TỪ CLOUD ---
-    var iconCuaToi = localStorage.getItem("myIcon") || "⭐";
-
-    // Lắng nghe dữ liệu thay đổi từ Firebase liên tục
+    // 1. Lắng nghe đơn hàng
     db.ref('donHangSky').on('value', function(snapshot) {
       var danhSach = snapshot.val();
       var baoTu = document.getElementById("danhSachDonHang");
@@ -192,14 +152,15 @@
         return;
       }
 
-      // Đảo ngược thứ tự để đơn mới nhất lên đầu
       var keys = Object.keys(danhSach).reverse();
       keys.forEach(function(key) {
         var donHang = danhSach[key];
         donHang.id = key;
 
+        if (donHang.trangThai === "hoan_thanh") return; // Ẩn các đơn đã xong
+
         var trangThaiNut = donHang.daNhan 
-          ? `<button class="btn-nhan-don" style="background-color: #ccc; cursor: not-allowed;" disabled>ĐÃ NHẬN ✔️</button>` 
+          ? `<button class="btn-nhan-don" style="background-color: #ccc; cursor: not-allowed;" disabled>ĐÃ NHẬN (${donHang.staffNhan})</button>` 
           : `<button id="btn-${key}" class="btn-nhan-don" onclick="event.stopPropagation(); chotDon('${key}', 22)">Nhận Đơn</button>`;
 
         var HTMLCard = `
@@ -215,32 +176,98 @@
       });
     });
 
-    // Nhận đơn đồng bộ lên Cloud Database
+    // 2. Nhận đơn
     function chotDon(maDon, ngay) {
+      dangXuLyDonId = maDon;
       db.ref('donHangSky/' + maDon).update({
         daNhan: true,
         staffNhan: iconCuaToi
       }).then(function() {
         dongModal();
 
-        // Chấm công
         var oNgay = document.getElementById("ngay-" + ngay);
         if (oNgay && !oNgay.classList.contains("has-order")) {
           oNgay.classList.add("has-order");
           oNgay.innerHTML = iconCuaToi;
         }
 
-        // Mở chat
         db.ref('donHangSky/' + maDon).once('value').then(function(res) {
           var dh = res.val();
-          document.getElementById("chatGhimOrder").innerHTML = `Yêu cầu: ${dh.mangDichVu} - ${dh.cuThe} (${dh.gio})`;
+          document.getElementById("chatGhimOrder").innerHTML = `Đơn: ${dh.mangDichVu} (${dh.gio})`;
           document.getElementById("chatBox").style.display = "flex";
-          document.getElementById("chatTenStaff").innerHTML = "Chat: Staff " + iconCuaToi;
+          document.getElementById("chatTenStaff").innerHTML = "Chat: " + dh.tenKhach + " ⇋ Staff " + iconCuaToi;
+          
+          langNghePhongChatStaff(maDon);
         });
       });
     }
 
-    // Modal phóng to
+    // 3. Chat 2 chiều phía Staff
+    function langNghePhongChatStaff(idDon) {
+      db.ref('phongChat/' + idDon).on('value', function(snap) {
+        var data = snap.val();
+        if (data) {
+          if (data.maKetBan) {
+            document.getElementById("manHinhKetBanStaff").style.display = "none";
+            document.getElementById("tinNhanStaff").style.display = "block";
+            document.getElementById("nhapTinStaff").disabled = false;
+            document.getElementById("btnGuiTinStaff").disabled = false;
+            document.getElementById("btnHoanThanhStaff").disabled = false;
+          }
+
+          if (data.tinNhan) {
+            var body = document.getElementById("tinNhanStaff");
+            body.innerHTML = "";
+            Object.values(data.tinNhan).forEach(function(msg) {
+              var loai = msg.nguoiGui === "Staff" ? "msg right" : "msg left";
+              body.innerHTML += `<div class="${loai}"><strong>${msg.nguoiGui}:</strong> ${msg.noiDung}</div>`;
+            });
+            body.scrollTop = body.scrollHeight;
+          }
+        }
+      });
+    }
+
+    function xacNhanMaStaff() {
+      var ma = document.getElementById("maKetBanStaff").value.trim();
+      if (ma && dangXuLyDonId) {
+        db.ref('phongChat/' + dangXuLyDonId).update({ maKetBan: ma });
+        db.ref('phongChat/' + dangXuLyDonId + '/tinNhan').push({
+          nguoiGui: "Hệ thống",
+          noiDung: "Mã kết bạn Sky: " + ma
+        });
+      }
+    }
+
+    function guiTinStaff() {
+      var txt = document.getElementById("nhapTinStaff").value.trim();
+      if (txt && dangXuLyDonId) {
+        db.ref('phongChat/' + dangXuLyDonId + '/tinNhan').push({
+          nguoiGui: "Staff",
+          noiDung: txt
+        });
+        document.getElementById("nhapTinStaff").value = "";
+      }
+    }
+
+    // 4. Hoàn thành đơn 2 chiều
+    function xacNhanXongStaff() {
+      if (confirm("Staff xác nhận đã hoàn thành ca này?")) {
+        db.ref('donHangSky/' + dangXuLyDonId).update({ staffHoanThanh: true });
+        
+        db.ref('donHangSky/' + dangXuLyDonId).once('value').then(function(snap) {
+          var dh = snap.val();
+          if (dh.khachHoanThanh) {
+            db.ref('donHangSky/' + dangXuLyDonId).update({ trangThai: "hoan_thanh" });
+            alert("Cả 2 bên đã xác nhận! Đơn hàng hoàn tất.");
+            dongChat();
+          } else {
+            alert("Đã xác nhận hoàn thành! Đang chờ Khách bấm xác nhận trên Sảnh.");
+          }
+        });
+      }
+    }
+
     function moModal(dh) {
       document.getElementById("modalTieuDe").innerText = "Đơn: " + dh.mangDichVu.toUpperCase() + " (" + dh.cuThe + ")";
       document.getElementById("modalKhach").innerText = dh.tenKhach;
@@ -249,7 +276,7 @@
       
       var nutModal = document.getElementById("modalBtnNhan");
       if (dh.daNhan) {
-        nutModal.innerText = "ĐÃ NHẬN ✔️";
+        nutModal.innerText = "ĐÃ NHẬN (" + (dh.staffNhan || "") + ")";
         nutModal.style.backgroundColor = "#ccc";
         nutModal.disabled = true;
       } else {
@@ -258,40 +285,11 @@
         nutModal.disabled = false;
         nutModal.onclick = function() { chotDon(dh.id, 22); };
       }
-
       document.getElementById("modalChiTiet").style.display = "flex";
     }
 
-    function dongModal() {
-      document.getElementById("modalChiTiet").style.display = "none";
-    }
-
-    // Quản lý Chat Mini
-    function dongChat() {
-      document.getElementById("chatBox").style.display = "none";
-    }
-
-    function xacNhanMa() {
-      var ma = document.getElementById("maKetBan").value;
-      if (ma !== "") {
-        document.getElementById("manHinhKetBan").style.display = "none";
-        document.getElementById("manHinhTinNhan").style.display = "block";
-        document.getElementById("nhapTinNhan").disabled = false;
-        document.getElementById("btnGuiTin").disabled = false;
-        document.getElementById("btnHoanThanh").disabled = false;
-        document.getElementById("manHinhTinNhan").innerHTML += '<div class="msg left"><strong>Hệ thống:</strong> Đã nhận mã [' + ma + ']!</div>';
-      } else {
-        alert("Phải nhập mã kết bạn mới cho chat nghen!");
-      }
-    }
-
-    function hoanThanhDon() {
-      if (confirm("Xác nhận hoàn thành đơn này?")) {
-        alert("Đơn hàng đã hoàn tất!");
-        dongChat();
-      }
-    }
+    function dongModal() { document.getElementById("modalChiTiet").style.display = "none"; }
+    function dongChat() { document.getElementById("chatBox").style.display = "none"; }
   </script>
-
 </body>
 </html>
