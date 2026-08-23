@@ -13,50 +13,79 @@
   <!-- THANH ĐIỀU HƯỚNG ADMIN -->
   <div class="admin-header">
     <div class="admin-brand">
-      <h2>👑 Quản Trị Viên Page Sky</h2>
-      <p>Tổng quan vận hành, doanh thu & chất lượng dịch vụ</p>
+      <h2>👑 Quản Trị Viên Sky (Admin)</h2>
+      <p>Tổng quan vận hành, quản lý doanh thu, nhân sự & chất lượng dịch vụ</p>
     </div>
     <button class="btn-logout" onclick="window.location.href='index.html'">Đăng Xuất</button>
   </div>
 
   <div class="admin-container">
 
+    <!-- 7. KHU VỰC PHÁT THÔNG BÁO CHO STAFF -->
+    <section class="admin-section" style="border-left: 4px solid #0068ff;">
+      <div class="section-title-box">
+        <h3>📢 Gửi Thông Báo Khẩn Cho Staff (Side Panel)</h3>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <input type="text" id="noiDungThongBao" placeholder="Nhập lời nhắn gửi xuống sidebar staff..." style="flex: 1;">
+        <button onclick="guiThongBaoAdmin()" style="background: #0068ff; white-space: nowrap;">Gửi Thông Báo 🔔</button>
+      </div>
+    </section>
+
     <!-- 1. THỐNG KÊ DOANH THU & SỐ LƯỢNG CA -->
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-icon">📦</div>
         <div class="stat-info">
-          <span class="stat-title">Đơn Đang Chờ / Chạy</span>
+          <span class="stat-title">Đơn Đang Chạy</span>
           <h3 id="statDonDangChay">0</h3>
         </div>
       </div>
-
       <div class="stat-card">
         <div class="stat-icon">✔️</div>
         <div class="stat-info">
-          <span class="stat-title">Ca Đã Hoàn Tất</span>
+          <span class="stat-title">Ca Hoàn Tất</span>
           <h3 id="statDonXong">0</h3>
         </div>
       </div>
-
       <div class="stat-card">
         <div class="stat-icon">💵</div>
         <div class="stat-info">
-          <span class="stat-title">Tổng Đơn Tiền Mặt</span>
+          <span class="stat-title">Tổng Tiền Mặt</span>
           <h3 id="statTienMat">0 ca</h3>
         </div>
       </div>
-
       <div class="stat-card">
         <div class="stat-icon">💖</div>
         <div class="stat-info">
-          <span class="stat-title">Tổng Đơn Trả Tim</span>
+          <span class="stat-title">Tổng Trả Tim</span>
           <h3 id="statTimSky">0 ca</h3>
         </div>
       </div>
     </div>
 
-    <!-- 2. DANH SÁCH HÓA ĐƠN ĐÃ HOÀN TẤT (LƯU TRỮ) -->
+    <!-- 6. KHU VỰC BẢNG GIÁ & QUY ĐỊNH CỦA PAGE -->
+    <section class="admin-section">
+      <div class="section-title-box">
+        <h3>💎 Bảng Giá & Điều Khoản Đang Áp Dụng</h3>
+      </div>
+      <div class="pricing-grid" style="margin-bottom: 15px;">
+        <div class="price-card">
+          <h4>🚗 Uber Dẫn Tour</h4>
+          <p class="price-tag" style="font-size: 15px;">15k VND / 3 Tim</p>
+        </div>
+        <div class="price-card popular">
+          <h4>✨ Host Đồng Hành</h4>
+          <p class="price-tag" style="font-size: 15px;">25k VND / 5 Tim</p>
+        </div>
+        <div class="price-card">
+          <h4>🔑 Log Acc Trọn Gói</h4>
+          <p class="price-tag" style="font-size: 15px;">Theo ngày / tuần</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. SỔ LƯU TRỮ HÓA ĐƠN ĐÃ HOÀN TẤT -->
     <section class="admin-section">
       <div class="section-title-box">
         <h3>📑 Sổ Lưu Trữ Hóa Đơn Đã Hoàn Thành</h3>
@@ -82,7 +111,7 @@
       </div>
     </section>
 
-    <!-- 3. THEO DÕI CÁC ĐƠN ĐANG CHỜ HOẶC ĐANG TRONG CA -->
+    <!-- 3. THEO DÕI ĐƠN ĐANG CHỜ HOẶC ĐANG CHẠY -->
     <section class="admin-section">
       <div class="section-title-box">
         <h3>⏳ Đơn Hàng Đang Tiến Hành / Chờ Nhận</h3>
@@ -106,10 +135,10 @@
       </div>
     </section>
 
-    <!-- 4. QUẢN LÝ TẤT CẢ FEEDBACK & ĐÁNH GIÁ CỦA KHÁCH -->
+    <!-- 5. QUẢN LÝ FEEDBACK & QUYỀN XÓA CỦA ADMIN -->
     <section class="admin-section">
       <div class="section-title-box">
-        <h3>⭐ Nhật Ký Đánh Giá Từ Khách Hàng</h3>
+        <h3>⭐ Nhật Ký Feedback Của Khách (Admin có quyền xóa)</h3>
       </div>
       <div class="feedback-admin-grid" id="bangAdminFeedback">
         <p style="color: #888;">Đang tải danh sách feedback...</p>
@@ -132,7 +161,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 1. Lắng nghe toàn bộ đơn hàng
+    // 1. Lắng nghe đơn hàng
     db.ref('donHangSky').on('value', function(snapshot) {
       var data = snapshot.val();
       var tbodyHoaDon = document.getElementById("bangHoaDon");
@@ -147,11 +176,7 @@
         return;
       }
 
-      var countXong = 0;
-      var countChay = 0;
-      var countTien = 0;
-      var countTim = 0;
-
+      var countXong = 0, countChay = 0, countTien = 0, countTim = 0;
       var keys = Object.keys(data).reverse();
 
       keys.forEach(function(key) {
@@ -184,22 +209,15 @@
               <td>${dh.thoiGianHen || "N/A"}</td>
               <td>${ttText}</td>
               <td>${staffStatus}</td>
-              <td>
-                <button class="btn-xoa" onclick="xoaDon('${key}')">Hủy / Xóa</button>
-              </td>
+              <td><button class="btn-xoa" onclick="xoaDon('${key}')">Hủy Đơn</button></td>
             </tr>
           `;
         }
       });
 
-      if (countXong === 0) {
-        tbodyHoaDon.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#888;">Chưa có hóa đơn nào được chốt.</td></tr>`;
-      }
-      if (countChay === 0) {
-        tbodyDangChay.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#888;">Tất cả đơn đều đã hoàn thành xong.</td></tr>`;
-      }
+      if (countXong === 0) tbodyHoaDon.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#888;">Chưa có hóa đơn nào được chốt.</td></tr>`;
+      if (countChay === 0) tbodyDangChay.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#888;">Tất cả đơn đều đã hoàn tất.</td></tr>`;
 
-      // Cập nhật số liệu thống kê
       document.getElementById("statDonDangChay").innerText = countChay;
       document.getElementById("statDonXong").innerText = countXong;
       document.getElementById("countHoaDon").innerText = countXong + " hóa đơn";
@@ -207,7 +225,7 @@
       document.getElementById("statTimSky").innerText = countTim + " ca";
     });
 
-    // 2. Lắng nghe Feedback từ khách
+    // 5. Lắng nghe Feedback & Nút xóa cho Admin
     db.ref('feedbacks').on('value', function(snapshot) {
       var fbData = snapshot.val();
       var box = document.getElementById("bangAdminFeedback");
@@ -230,17 +248,42 @@
               <span style="color: #ffb703; font-size: 15px;">${starStr}</span>
             </div>
             <p style="margin: 0 0 8px 0; font-size: 13px; color: #444;">"${item.nhanXet}"</p>
-            <div style="font-size: 11px; color: #888;">Mã đơn: ${item.donId ? item.donId.substring(1, 8) : "N/A"}</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 11px; color: #888;">Mã: ${item.donId ? item.donId.substring(1, 8) : "N/A"}</span>
+              <button class="btn-xoa" onclick="xoaFeedback('${k}')" style="font-size: 11px; padding: 2px 6px;">Xóa 🗑️</button>
+            </div>
           </div>
         `;
       });
     });
 
-    // 3. Chức năng hủy / xóa đơn dành riêng cho Admin
+    function xoaFeedback(fbId) {
+      if (confirm("Admin có chắc muốn xóa đánh giá này không?")) {
+        db.ref('feedbacks/' + fbId).remove().then(function() {
+          alert("Đã xóa feedback thành công!");
+        });
+      }
+    }
+
     function xoaDon(idDon) {
-      if (confirm("Admin có chắc muốn hủy và xóa đơn này không?")) {
-        db.ref('donHangSky/' + idDon).remove().then(function() {
-          alert("Đã xóa đơn thành công!");
+      if (confirm("Admin có chắc muốn hủy đơn này không?")) {
+        db.ref('donHangSky/' + idDon).remove();
+      }
+    }
+
+    // 7. Gửi thông báo từ Admin xuống Staff
+    function guiThongBaoAdmin() {
+      var text = document.getElementById("noiDungThongBao").value.trim();
+      if (text) {
+        var dt = new Date();
+        var timeStr = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')}`;
+        db.ref('thongBaoAdmin').push({
+          noiDung: text,
+          gio: timeStr,
+          thoiGian: Date.now()
+        }).then(function() {
+          document.getElementById("noiDungThongBao").value = "";
+          alert("Đã gửi thông báo đến toàn bộ Staff thành công!");
         });
       }
     }
