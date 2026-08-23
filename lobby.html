@@ -10,18 +10,20 @@
 </head>
 <body class="lobby-layout">
 
-  <!-- BANNER TRẠNG THÁI ĐƠN HÀNG (Chỉ hiện cho đúng khách đã đặt) -->
+  <!-- BANNER TIẾN TRÌNH ĐƠN CỦA KHÁCH -->
   <div id="liveOrderBanner" class="status-banner" style="display: none;">
     <div class="banner-content">
       <span class="pulse-dot"></span>
       <div id="statusText">
         <strong>Đơn của bạn:</strong> Đang tìm Staff phù hợp... ⏳
       </div>
-      <button id="btnOpenChat" class="btn-chat-lobby" onclick="moChatLobby()" style="display: none;">💬 Nhắn với Staff</button>
+      <div style="margin-left: auto; display: flex; gap: 8px;">
+        <button id="btnDoiGio" class="btn-doi-gio" onclick="moDoiLich()">⏰ Dời Giờ</button>
+        <button id="btnOpenChat" class="btn-chat-lobby" onclick="moChatLobby()" style="display: none;">💬 Nhắn Staff</button>
+      </div>
     </div>
   </div>
 
-  <!-- NÚT ĐẶT ĐƠN NHANH NỔI -->
   <div class="floating-order-btn" onclick="window.location.href='order.html'">
     ✨ Đặt Đơn Ngay
   </div>
@@ -32,13 +34,13 @@
       <p>Nơi thư giãn, xem bảng giá và theo dõi dịch vụ đồng hành cùng bạn</p>
     </header>
 
-    <!-- 1. BẢNG GIÁ DỊCH VỤ -->
+    <!-- BẢNG GIÁ DỊCH VỤ -->
     <section class="lobby-section">
       <h2>💎 Bảng Giá Dịch Vụ</h2>
       <div class="pricing-grid">
         <div class="price-card">
           <h3>🚗 Uber Dẫn Tour</h3>
-          <p class="price-tag">15k - 30k / Chuyến</p>
+          <p class="price-tag">15k VND hoặc 3 Tim</p>
           <ul>
             <li>Nhặt 15 nến / Xám nến</li>
             <li>Hỗ trợ làm nhiệm vụ ngày (Quest)</li>
@@ -48,7 +50,7 @@
         <div class="price-card popular">
           <div class="badge">Phổ Biến</div>
           <h3>✨ Host Đồng Hành</h3>
-          <p class="price-tag">20k - 50k / Giờ</p>
+          <p class="price-tag">25k VND hoặc 5 Tim / Giờ</p>
           <ul>
             <li>Trò chuyện, tâm sự giải tỏa</li>
             <li>Đàn hát theo yêu cầu</li>
@@ -67,7 +69,7 @@
       </div>
     </section>
 
-    <!-- 2. LỊCH LÀM VIỆC & ĐIỀU KHOẢN -->
+    <!-- LỊCH HOẠT ĐỘNG & ĐIỀU KHOẢN -->
     <section class="lobby-section">
       <div class="terms-container">
         <div class="terms-box">
@@ -78,37 +80,50 @@
         </div>
         <div class="terms-box">
           <h3>📜 Điều Khoản & Quyền Lợi</h3>
-          <p>✔ <strong>Bảo mật:</strong> Không tự ý chia sẻ thông tin tài khoản của khách.</p>
-          <p>✔ <strong>Đúng giờ:</strong> Staff có mặt đúng khung giờ đã đăng ký.</p>
-          <p>✔ <strong>Bồi thường:</strong> Hoàn tiền 100% nếu phát sinh sự cố từ phía Staff.</p>
+          <p>✔ <strong>Thanh toán:</strong> Nhận chuyển khoản ngân hàng hoặc trả Tim trực tiếp.</p>
+          <p>✔ <strong>Đổi giờ hẹn:</strong> Khách có thể dời giờ trực tiếp trên Sảnh.</p>
+          <p>✔ <strong>Bảo đảm:</strong> Hoàn tiền / Tim 100% nếu phát sinh sự cố từ Staff.</p>
         </div>
       </div>
     </section>
 
-    <!-- 3. TƯỜNG FEEDBACK TỪ KHÁCH HÀNG -->
+    <!-- TƯỜNG FEEDBACK TỰ ĐỘNG CẬP NHẬT -->
     <section class="lobby-section">
-      <h2>⭐ Feedback Từ Khách Hàng</h2>
+      <h2>⭐ Feedback Từ Khách Hàng (Mới Nhất)</h2>
       <div class="feedback-grid" id="feedbackWall">
-        <div class="feedback-card">
-          <div class="feedback-stars">⭐⭐⭐⭐⭐</div>
-          <p>"Michii đàn siêu hay, nói chuyện dễ thương xỉu luôn á!"</p>
-          <span class="feedback-author">- Bé Bơ (Khách Host)</span>
-        </div>
+        <p style="grid-column: 1/-1; color: #888;">Đang tải feedback...</p>
       </div>
     </section>
   </div>
 
-  <!-- KHUNG CHAT MINI TẠI SẢNH (DÀNH CHO KHÁCH) -->
+  <!-- MODAL DỜI LỊCH HẸN -->
+  <div id="modalDoiLich" class="modal-overlay">
+    <div class="modal-content" style="text-align: center;">
+      <h3>Dời Lịch Hẹn Đơn</h3>
+      <p>Chọn thời gian mới cho chuyến đi của bồ:</p>
+      <input type="datetime-local" id="gioMoi" style="margin-bottom: 15px;">
+      <br>
+      <button onclick="xacNhanDoiLich()" style="background: #ff7f50;">Cập Nhật Thời Gian</button>
+      <button onclick="dongDoiLich()" style="background: #ccc; margin-left: 8px;">Đóng</button>
+    </div>
+  </div>
+
+  <!-- KHUNG CHAT MINI TẠI SẢNH -->
   <div id="chatBoxKhach" class="chat-container">
     <div class="chat-header">
       <span id="chatTitleKhach">Chat Với Staff</span>
       <button class="close-chat" onclick="dongChatKhach()">✕</button>
     </div>
     <div class="chat-pinned">
-      📌 <strong id="chatGhimKhach">Kết nối mã kết bạn Sky</strong>
+      📌 <strong id="chatGhimKhach">Mã kết bạn & Trao đổi</strong>
     </div>
+    
+    <!-- BANNER ĐÓNG BĂNG KHI STAFF BẤM HOÀN TẤT -->
+    <div id="bannerDongBangKhach" class="chat-frozen-banner" style="display: none;">
+      ⚠️ Staff đã xác nhận hoàn thành đơn. Hãy bấm ✔ để hoàn tất!
+    </div>
+
     <div class="chat-body" id="chatBodyKhach">
-      <!-- Khu vực nhập mã kết bạn nếu chưa ai gửi -->
       <div id="manHinhKetBanKhach" style="text-align: center; margin-top: 20px;">
         <p style="font-size: 13px;">Gửi mã kết bạn Sky để mở chat:</p>
         <input type="text" id="maKetBanKhach" placeholder="Dán mã kết bạn..." style="width: 80%; margin-bottom: 8px;">
@@ -119,22 +134,24 @@
     <div class="chat-footer">
       <input type="text" id="nhapTinKhach" placeholder="Nhập tin nhắn..." disabled onkeypress="if(event.key==='Enter') guiTinKhach()">
       <button id="btnGuiTinKhach" class="btn-icon" disabled onclick="guiTinKhach()">➤</button>
-      <button id="btnXacNhanHoanThanhKhach" class="btn-done" disabled onclick="xacNhanXongKhach()" title="Xác nhận hoàn thành đơn">✔</button>
+      <button id="btnXacNhanHoanThanhKhach" class="btn-done" disabled onclick="xacNhanXongKhach()" title="Xác nhận hoàn thành ca">✔</button>
     </div>
   </div>
 
-  <!-- POPUP FEEDBACK & ĐÁNH GIÁ SAU KHI XONG ĐƠN -->
+  <!-- POPUP ĐÁNH GIÁ VỚI SAO SÁNG VÀNG -->
   <div id="modalFeedback" class="modal-overlay">
     <div class="modal-content" style="text-align: center;">
       <h3>Hoàn Tất Đơn Hàng 🎉</h3>
       <p>Bồ thấy dịch vụ của Staff thế nào nè?</p>
-      <div style="font-size: 24px; margin: 15px 0; cursor: pointer;" id="starBox">
-        <span onclick="chonSao(1)">⭐</span>
-        <span onclick="chonSao(2)">⭐</span>
-        <span onclick="chonSao(3)">⭐</span>
-        <span onclick="chonSao(4)">⭐</span>
-        <span onclick="chonSao(5)">⭐</span>
+      
+      <div class="star-rating" id="starContainer">
+        <span class="star lit" data-val="1" onclick="setRating(1)" onmouseover="hoverRating(1)" onmouseout="resetHover()">★</span>
+        <span class="star lit" data-val="2" onclick="setRating(2)" onmouseover="hoverRating(2)" onmouseout="resetHover()">★</span>
+        <span class="star lit" data-val="3" onclick="setRating(3)" onmouseover="hoverRating(3)" onmouseout="resetHover()">★</span>
+        <span class="star lit" data-val="4" onclick="setRating(4)" onmouseover="hoverRating(4)" onmouseout="resetHover()">★</span>
+        <span class="star lit" data-val="5" onclick="setRating(5)" onmouseover="hoverRating(5)" onmouseout="resetHover()">★</span>
       </div>
+
       <input type="text" id="loiNhanFeedback" placeholder="Để lại vài dòng cảm nhận..." style="width: 90%; margin-bottom: 15px;">
       <button onclick="guiFeedback()" style="width: 100%; background: #4CAF50;">Gửi Đánh Giá</button>
     </div>
@@ -155,39 +172,89 @@
     const db = firebase.database();
 
     var currentOrderId = localStorage.getItem("myCurrentOrderId");
-    var soSaoDanhGia = 5;
+    var currentTenKhach = "Khách Hàng";
+    var selectedStar = 5;
 
-    // 1. Lắng nghe trạng thái đơn của khách này
+    // Lắng nghe tiến trình đơn của khách
     if (currentOrderId) {
       db.ref('donHangSky/' + currentOrderId).on('value', function(snapshot) {
         var don = snapshot.val();
         if (don) {
+          currentTenKhach = don.tenKhach;
           document.getElementById("liveOrderBanner").style.display = "block";
 
           if (don.trangThai === "hoan_thanh") {
-            // Cả 2 bên đã bấm hoàn tất
             document.getElementById("liveOrderBanner").style.display = "none";
             document.getElementById("chatBoxKhach").style.display = "none";
             document.getElementById("modalFeedback").style.display = "flex";
             return;
           }
 
+          var thanhToanText = don.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền mặt";
+
+          if (don.staffHoanThanh) {
+            document.getElementById("bannerDongBangKhach").style.display = "block";
+            document.getElementById("nhapTinKhach").disabled = true;
+            document.getElementById("btnGuiTinKhach").disabled = true;
+          }
+
           if (don.daNhan) {
-            document.getElementById("statusText").innerHTML = `<strong>Đơn:</strong> Staff <strong>${don.staffNhan || "🌸"}</strong> đã nhận đơn! 🎉`;
+            document.getElementById("statusText").innerHTML = `<strong>Đơn:</strong> Staff <strong>${don.staffNhan || "🌸"}</strong> đã nhận! (${don.thoiGianHen}) | TT: ${thanhToanText}`;
             document.getElementById("btnOpenChat").style.display = "inline-block";
             document.getElementById("chatTitleKhach").innerText = "Chat với Staff " + (don.staffNhan || "🌸");
-            
-            // Bắt đầu lắng nghe tin nhắn trong phòng chat
             langNghePhongChat(currentOrderId);
           } else {
-            document.getElementById("statusText").innerHTML = `<strong>Đơn:</strong> ${don.mangDichVu.toUpperCase()} - Đang tìm Staff phù hợp... ⏳`;
+            document.getElementById("statusText").innerHTML = `<strong>Đơn:</strong> ${don.mangDichVu.toUpperCase()} - Hẹn: <strong>${don.thoiGianHen}</strong> (${thanhToanText}) ⏳`;
             document.getElementById("btnOpenChat").style.display = "none";
           }
         }
       });
     }
 
-    // 2. Chat 2 chiều thời gian thực
+    // Dời lịch
+    function moDoiLich() { document.getElementById("modalDoiLich").style.display = "flex"; }
+    function dongDoiLich() { document.getElementById("modalDoiLich").style.display = "none"; }
+    function xacNhanDoiLich() {
+      var gioMoi = document.getElementById("gioMoi").value;
+      if (gioMoi && currentOrderId) {
+        var dt = new Date(gioMoi);
+        var tgFormat = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')} ngày ${dt.getDate()}/${dt.getMonth()+1}/${dt.getFullYear()}`;
+        
+        db.ref('donHangSky/' + currentOrderId).update({
+          thoiGianHen: tgFormat,
+          rawTime: gioMoi
+        }).then(function() {
+          dongDoiLich();
+          alert("Đã cập nhật giờ hẹn mới thành công!");
+        });
+      }
+    }
+
+    // Tường Feedback Realtime
+    db.ref('feedbacks').on('value', function(snapshot) {
+      var data = snapshot.val();
+      var wall = document.getElementById("feedbackWall");
+      wall.innerHTML = "";
+
+      if (!data) {
+        wall.innerHTML = "<p style='grid-column: 1/-1; color: #888;'>Chưa có đánh giá nào, hãy là người đầu tiên!</p>";
+        return;
+      }
+
+      var list = Object.values(data).reverse();
+      list.forEach(function(fb) {
+        var starStr = "★".repeat(fb.sao || 5);
+        wall.innerHTML += `
+          <div class="feedback-card">
+            <div class="feedback-stars" style="color: #ffb703; font-size: 16px;">${starStr}</div>
+            <p>"${fb.nhanXet}"</p>
+            <span class="feedback-author">- ${fb.tenKhach || "Khách hàng giấu tên"}</span>
+          </div>
+        `;
+      });
+    });
+
+    // Chat 2 chiều
     function langNghePhongChat(idDon) {
       db.ref('phongChat/' + idDon).on('value', function(snap) {
         var data = snap.val();
@@ -195,12 +262,13 @@
           if (data.maKetBan) {
             document.getElementById("manHinhKetBanKhach").style.display = "none";
             document.getElementById("tinNhanKhach").style.display = "block";
-            document.getElementById("nhapTinKhach").disabled = false;
-            document.getElementById("btnGuiTinKhach").disabled = false;
+            if (!document.getElementById("bannerDongBangKhach").style.display || document.getElementById("bannerDongBangKhach").style.display === "none") {
+              document.getElementById("nhapTinKhach").disabled = false;
+              document.getElementById("btnGuiTinKhach").disabled = false;
+            }
             document.getElementById("btnXacNhanHoanThanhKhach").disabled = false;
           }
 
-          // Vẽ toàn bộ tin nhắn
           if (data.tinNhan) {
             var body = document.getElementById("tinNhanKhach");
             body.innerHTML = "";
@@ -222,8 +290,6 @@
           nguoiGui: "Hệ thống",
           noiDung: "Mã kết bạn Sky: " + ma
         });
-      } else {
-        alert("Bồ nhập mã kết bạn nha!");
       }
     }
 
@@ -241,42 +307,50 @@
     function moChatLobby() { document.getElementById("chatBoxKhach").style.display = "flex"; }
     function dongChatKhach() { document.getElementById("chatBoxKhach").style.display = "none"; }
 
-    // 3. Cơ chế xác nhận hoàn tất 2 chiều
     function xacNhanXongKhach() {
-      if (confirm("Bồ xác nhận đã hoàn thành xong chuyến đi cùng Staff?")) {
+      if (confirm("Xác nhận chuyến đi đã hoàn tất cùng Staff?")) {
         db.ref('donHangSky/' + currentOrderId).update({ khachHoanThanh: true });
-        kiemTraHoanTat(currentOrderId);
+        db.ref('phongChat/' + currentOrderId + '/tinNhan').push({
+          nguoiGui: "Hệ thống",
+          noiDung: "Khách hàng đã bấm xác nhận hoàn tất ca!"
+        });
+
+        db.ref('donHangSky/' + currentOrderId).once('value').then(function(snap) {
+          var dh = snap.val();
+          if (dh.staffHoanThanh) {
+            db.ref('donHangSky/' + currentOrderId).update({ trangThai: "hoan_thanh" });
+          } else {
+            alert("Đã xác nhận hoàn thành! Đang đợi Staff cùng bấm xác nhận.");
+          }
+        });
       }
     }
 
-    function kiemTraHoanTat(idDon) {
-      db.ref('donHangSky/' + idDon).once('value').then(function(snap) {
-        var dh = snap.val();
-        if (dh.staffHoanThanh) {
-          db.ref('donHangSky/' + idDon).update({ trangThai: "hoan_thanh" });
-        } else {
-          alert("Bồ đã xác nhận hoàn thành! Đang chờ Staff bấm xác nhận nữa nha.");
-        }
+    // Sao sáng vàng
+    function renderStars(count) {
+      var stars = document.querySelectorAll('.star');
+      stars.forEach(function(star) {
+        var val = parseInt(star.getAttribute('data-val'));
+        if (val <= count) star.classList.add('lit');
+        else star.classList.remove('lit');
       });
     }
-
-    // 4. Feedback sau ca
-    function chonSao(sao) {
-      soSaoDanhGia = sao;
-      alert("Đã chọn " + sao + " sao ⭐");
-    }
+    function hoverRating(n) { renderStars(n); }
+    function resetHover() { renderStars(selectedStar); }
+    function setRating(n) { selectedStar = n; renderStars(n); }
 
     function guiFeedback() {
-      var loiNhan = document.getElementById("loiNhanFeedback").value;
+      var txt = document.getElementById("loiNhanFeedback").value.trim();
       db.ref('feedbacks').push({
         donId: currentOrderId,
-        sao: soSaoDanhGia,
-        nhanXet: loiNhan || "Rất hài lòng!",
+        tenKhach: currentTenKhach,
+        sao: selectedStar,
+        nhanXet: txt || "Dịch vụ rất tốt và uy tín!",
         thoiGian: Date.now()
       });
-      localStorage.removeItem("myCurrentOrderId"); // Xóa đơn cũ để khách có thể đặt đơn mới
+      localStorage.removeItem("myCurrentOrderId");
       document.getElementById("modalFeedback").style.display = "none";
-      alert("Cảm ơn bồ đã đánh giá dịch vụ nha! Chúc bồ chơi game vui vẻ ❤️");
+      alert("Cảm ơn bồ đã đánh giá nha! ✨");
       location.reload();
     }
   </script>
