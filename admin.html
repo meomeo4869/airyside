@@ -10,18 +10,17 @@
 </head>
 <body class="admin-layout">
 
-  <!-- THANH ĐIỀU HƯỚNG ADMIN -->
   <div class="admin-header">
     <div class="admin-brand">
       <h2>👑 Quản Trị Viên Sky (Admin)</h2>
-      <p>Tổng quan vận hành, quản lý doanh thu, nhân sự & chất lượng dịch vụ</p>
+      <p>Bảng điều khiển trung tâm & Cài đặt cấu hình Page</p>
     </div>
     <button class="btn-logout" onclick="window.location.href='index.html'">Đăng Xuất</button>
   </div>
 
   <div class="admin-container">
 
-    <!-- 7. KHU VỰC PHÁT THÔNG BÁO CHO STAFF -->
+    <!-- PHÁT THÔNG BÁO CHO STAFF -->
     <section class="admin-section" style="border-left: 4px solid #0068ff;">
       <div class="section-title-box">
         <h3>📢 Gửi Thông Báo Khẩn Cho Staff (Side Panel)</h3>
@@ -32,7 +31,7 @@
       </div>
     </section>
 
-    <!-- 1. THỐNG KÊ DOANH THU & SỐ LƯỢNG CA -->
+    <!-- THỐNG KÊ DOANH THU -->
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-icon">📦</div>
@@ -64,28 +63,42 @@
       </div>
     </div>
 
-    <!-- 6. KHU VỰC BẢNG GIÁ & QUY ĐỊNH CỦA PAGE -->
-    <section class="admin-section">
+    <!-- KHU VỰC CHỈNH SỬA BẢNG GIÁ & ĐIỀU KHOẢN TRỰC TIẾP -->
+    <section class="admin-section" style="border-left: 4px solid #ff7f50;">
       <div class="section-title-box">
-        <h3>💎 Bảng Giá & Điều Khoản Đang Áp Dụng</h3>
+        <h3>⚙️ Chỉnh Sửa Bảng Giá & Điều Khoản Sảnh Chờ (Lobby)</h3>
       </div>
-      <div class="pricing-grid" style="margin-bottom: 15px;">
-        <div class="price-card">
-          <h4>🚗 Uber Dẫn Tour</h4>
-          <p class="price-tag" style="font-size: 15px;">15k VND / 3 Tim</p>
+      
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px;">
+        <div>
+          <label><strong>Giá Uber Dẫn Tour:</strong></label>
+          <input type="text" id="adminGiaUber" placeholder="vd: 15k VND hoặc 3 Tim" style="width: 100%; margin-top: 5px;">
         </div>
-        <div class="price-card popular">
-          <h4>✨ Host Đồng Hành</h4>
-          <p class="price-tag" style="font-size: 15px;">25k VND / 5 Tim</p>
+        <div>
+          <label><strong>Giá Host Đồng Hành:</strong></label>
+          <input type="text" id="adminGiaHost" placeholder="vd: 25k VND hoặc 5 Tim / Giờ" style="width: 100%; margin-top: 5px;">
         </div>
-        <div class="price-card">
-          <h4>🔑 Log Acc Trọn Gói</h4>
-          <p class="price-tag" style="font-size: 15px;">Theo ngày / tuần</p>
+        <div>
+          <label><strong>Giá Log Acc:</strong></label>
+          <input type="text" id="adminGiaLogAcc" placeholder="vd: Theo ngày / Tuần" style="width: 100%; margin-top: 5px;">
         </div>
       </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+        <div>
+          <label><strong>Lịch Hoạt Động Page:</strong></label>
+          <textarea id="adminLichPage" rows="4" style="width: 100%; margin-top: 5px; font-family: inherit;"></textarea>
+        </div>
+        <div>
+          <label><strong>Điều Khoản & Quyền Lợi:</strong></label>
+          <textarea id="adminDieuKhoan" rows="4" style="width: 100%; margin-top: 5px; font-family: inherit;"></textarea>
+        </div>
+      </div>
+
+      <button onclick="luuCaiDatPage()" style="background: #4CAF50; padding: 10px 20px; font-weight: bold;">💾 Lưu Thay Đổi Lên Sảnh</button>
     </section>
 
-    <!-- 2. SỔ LƯU TRỮ HÓA ĐƠN ĐÃ HOÀN TẤT -->
+    <!-- SỔ LƯU TRỮ HÓA ĐƠN -->
     <section class="admin-section">
       <div class="section-title-box">
         <h3>📑 Sổ Lưu Trữ Hóa Đơn Đã Hoàn Thành</h3>
@@ -111,7 +124,7 @@
       </div>
     </section>
 
-    <!-- 3. THEO DÕI ĐƠN ĐANG CHỜ HOẶC ĐANG CHẠY -->
+    <!-- THEO DÕI ĐƠN ĐANG CHẠY -->
     <section class="admin-section">
       <div class="section-title-box">
         <h3>⏳ Đơn Hàng Đang Tiến Hành / Chờ Nhận</h3>
@@ -135,13 +148,13 @@
       </div>
     </section>
 
-    <!-- 5. QUẢN LÝ FEEDBACK & QUYỀN XÓA CỦA ADMIN -->
+    <!-- QUẢN LÝ FEEDBACK & XÓA -->
     <section class="admin-section">
       <div class="section-title-box">
         <h3>⭐ Nhật Ký Feedback Của Khách (Admin có quyền xóa)</h3>
       </div>
       <div class="feedback-admin-grid" id="bangAdminFeedback">
-        <p style="color: #888;">Đang tải danh sách feedback...</p>
+        <p style="color: #888;">Đang tải feedback...</p>
       </div>
     </section>
 
@@ -161,7 +174,32 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 1. Lắng nghe đơn hàng
+    // 1. Tải cài đặt trang hiện tại
+    db.ref('caiDatPage').once('value').then(function(snap) {
+      var set = snap.val();
+      if (set) {
+        document.getElementById("adminGiaUber").value = set.giaUber || "15k VND hoặc 3 Tim";
+        document.getElementById("adminGiaHost").value = set.giaHost || "25k VND hoặc 5 Tim / Giờ";
+        document.getElementById("adminGiaLogAcc").value = set.giaLogAcc || "Theo ngày / Tuần";
+        document.getElementById("adminLichPage").value = set.lichPage || "• Ca Sáng: 08:00 - 12:00\n• Ca Chiều: 13:30 - 17:30\n• Ca Tối: 18:00 - 24:00";
+        document.getElementById("adminDieuKhoan").value = set.dieuKhoan || "✔ Thanh toán: Chuyển khoản ngân hàng hoặc trả Tim.\n✔ Đúng hẹn: Trao đổi qua mini chat.\n✔ Bảo đảm: Hoàn tiền 100% nếu phát sinh lỗi từ Staff.";
+      }
+    });
+
+    // 2. Lưu cài đặt trang lên Firebase
+    function luuCaiDatPage() {
+      db.ref('caiDatPage').update({
+        giaUber: document.getElementById("adminGiaUber").value,
+        giaHost: document.getElementById("adminGiaHost").value,
+        giaLogAcc: document.getElementById("adminGiaLogAcc").value,
+        lichPage: document.getElementById("adminLichPage").value,
+        dieuKhoan: document.getElementById("adminDieuKhoan").value
+      }).then(function() {
+        alert("Đã cập nhật Bảng Giá & Điều Khoản lên Sảnh Chờ thành công!");
+      });
+    }
+
+    // 3. Lắng nghe đơn hàng
     db.ref('donHangSky').on('value', function(snapshot) {
       var data = snapshot.val();
       var tbodyHoaDon = document.getElementById("bangHoaDon");
@@ -225,7 +263,7 @@
       document.getElementById("statTimSky").innerText = countTim + " ca";
     });
 
-    // 5. Lắng nghe Feedback & Nút xóa cho Admin
+    // 4. Lắng nghe Feedback & Xóa
     db.ref('feedbacks').on('value', function(snapshot) {
       var fbData = snapshot.val();
       var box = document.getElementById("bangAdminFeedback");
@@ -271,7 +309,7 @@
       }
     }
 
-    // 7. Gửi thông báo từ Admin xuống Staff
+    // 5. Gửi thông báo từ Admin xuống Staff
     function guiThongBaoAdmin() {
       var text = document.getElementById("noiDungThongBao").value.trim();
       if (text) {
