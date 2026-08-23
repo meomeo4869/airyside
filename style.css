@@ -657,3 +657,86 @@ body.admin-layout {
   border-radius: 10px;
   padding: 14px;
 }
+
+/* ========================================= */
+/* 9. BONG BÓNG CHATHEAD NỔI (CHATHEADS)     */
+/* ========================================= */
+.chatheads-container {
+  position: fixed;
+  right: 20px;
+  bottom: 90px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 12px;
+  z-index: 10000;
+}
+
+.chathead-bubble {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s, border 0.2s;
+  border: 3px solid #ff7f50;
+  user-select: none;
+}
+
+.chathead-bubble:hover {
+  transform: scale(1.1);
+}
+
+.chathead-bubble.active {
+  border-color: #4CAF50;
+}
+
+.chathead-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #f44336;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sao đánh giá */
+.star-rating {
+  font-size: 32px;
+  margin: 15px 0;
+  display: inline-flex;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+.star {
+  color: #ccc;
+  transition: color 0.15s, transform 0.15s;
+}
+.star.lit {
+  color: #ffb703;
+  text-shadow: 0 0 8px rgba(255, 183, 3, 0.4);
+}
+.star:hover { transform: scale(1.2); }
+
+/* Đóng băng chat */
+.chat-frozen-banner {
+  background: #fff3cd;
+  color: #856404;
+  padding: 8px 12px;
+  font-size: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ffeeba;
+  font-weight: bold;
+}
