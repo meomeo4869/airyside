@@ -95,13 +95,17 @@
           thoiGianTao: Date.now()
         };
 
-        // Gửi đơn lên Firebase Cloud
-        db.ref('donHangSky').push(donHangMoi).then(function() {
+        // Gửi đơn lên Firebase Cloud và chuyển về Sảnh Chờ (lobby.html)
+        var newOrderRef = db.ref('donHangSky').push();
+        newOrderRef.set(donHangMoi).then(function() {
+          localStorage.setItem("myCurrentOrderId", newOrderRef.key);
+          
           document.getElementById("formKhach").style.display = "none";
           document.getElementById("manHinhCho").style.display = "block";
+          
           setTimeout(function() {
-            alert("Hệ thống đã nhận được đơn của bạn thành công!");
-          }, 1000);
+            window.location.href = "lobby.html";
+          }, 1200);
         }).catch(function(error) {
           alert("Lỗi kết nối: " + error.message);
         });
