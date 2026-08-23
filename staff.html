@@ -10,19 +10,21 @@
 </head>
 <body class="staff-layout">
 
-  <!-- CỤM BONG BÓNG CHATHEAD NỔI GÓC MÀN HÌNH -->
+  <!-- CỤM BONG BÓNG CHATHEAD NỔI CỐ ĐỊNH -->
   <div id="chatheadsList" class="chatheads-container"></div>
 
   <div class="toggle-btn" onclick="moThongBao()">◀</div>
 
   <div id="sidePanel" class="side-panel">
     <div class="noti-header">
-      <h3>Thông Báo 🔔</h3>
+      <h3>Thông Báo Từ Admin 🔔</h3>
       <button onclick="moThongBao()" class="close-btn">✖</button>
     </div>
-    <div class="noti-card">
-      <strong>Hệ thống</strong> <span class="time">Hôm nay</span>
-      <p>Staff có thể bấm các icon tròn góc phải để chuyển qua lại giữa các phòng chat nha.</p>
+    <div id="danhSachThongBaoAdmin">
+      <div class="noti-card">
+        <strong>Hệ thống</strong> <span class="time">Mới</span>
+        <p>Chào mừng staff đến với ca làm việc hôm nay!</p>
+      </div>
     </div>
   </div>
 
@@ -57,7 +59,15 @@
     <div class="calendar-grid" id="achievementCalendar"></div>
   </div>
 
-  <!-- KHUNG CHAT CỦA STAFF -->
+  <!-- XEM FEEDBACK DÀNH CHO STAFF -->
+  <div class="schedule-section">
+    <h2>⭐ Feedback Khách Hàng Đánh Giá</h2>
+    <div class="feedback-grid" id="staffFeedbackGrid">
+      <p style="grid-column:1/-1; color:#888;">Đang tải feedback...</p>
+    </div>
+  </div>
+
+  <!-- KHUNG CHAT MINI STAFF -->
   <div id="chatBox" class="chat-container">
     <div class="chat-header">
       <span id="chatTenStaff">Staff đang kết nối...</span>
@@ -67,7 +77,6 @@
       📌 <strong id="chatGhimOrder">Yêu cầu đơn hàng...</strong>
     </div>
 
-    <!-- BANNER ĐÓNG BĂNG KHI KHÁCH BẤM HOÀN TẤT -->
     <div id="bannerDongBangStaff" class="chat-frozen-banner" style="display: none;">
       ⚠️ Khách hàng đã bấm xác nhận hoàn tất. Hãy bấm ✔ để kết thúc ca!
     </div>
@@ -117,11 +126,11 @@
 
     var iconCuaToi = localStorage.getItem("myIcon") || "🌸";
     var dangXuLyDonId = null;
-    var danhSachDonDangLam = {}; // Lưu trữ để vẽ bong bóng chat
+    var danhSachDonDangLam = {};
 
     function moThongBao() { document.getElementById("sidePanel").classList.toggle("panel-open"); }
 
-    // Tạo lịch 31 ngày
+    // 1. Tạo lịch & Lắng nghe chấm công từ Firebase
     function taoLich() {
       var lich = document.getElementById("achievementCalendar");
       lich.innerHTML = "";
@@ -130,6 +139,57 @@
       }
     }
     taoLich();
+
+    db.ref('chamCong/' + iconCuaToi).on('value', function(snapshot) {
+      var chamCongData = snapshot.val();
+      if (chamCongData) {
+        Object.keys(chamCongData).forEach(function(dayNum) {
+          var oNgay = document.getElementById("ngay-" + dayNum);
+          if (oNgay) {
+            oNgay.classList.add("has-order");
+            oNgay.innerHTML = iconCuaToi;
+          }
+        });
+      }
+    });
+
+    // 7. Nhận thông báo từ Admin gửi vào Side Panel
+    db.ref('thongBaoAdmin').on('value', function(snap) {
+      var notis = snap.val();
+      var box = document.getElementById("danhSachThongBaoAdmin");
+      if (notis) {
+        box.innerHTML = "";
+        Object.values(notis).reverse().forEach(function(n) {
+          box.innerHTML += `
+            <div class="noti-card">
+              <strong>Admin:</strong> <span class="time">${n.gio || "Vừa xong"}</span>
+              <p>${n.noiDung}</p>
+            </div>
+          `;
+        });
+      }
+    });
+
+    // Xem feedback phía staff
+    db.ref('feedbacks').on('value', function(snap) {
+      var data = snap.val();
+      var box = document.getElementById("staffFeedbackGrid");
+      box.innerHTML = "";
+      if (!data) {
+        box.innerHTML = "<p style='grid-column:1/-1; color:#888;'>Chưa có feedback nào.</p>";
+        return;
+      }
+      Object.values(data).reverse().forEach(function(fb) {
+        var starStr = "★".repeat(fb.sao || 5);
+        box.innerHTML += `
+          <div class="feedback-card">
+            <div class="feedback-stars" style="color: #ffb703;">${starStr}</div>
+            <p>"${fb.nhanXet}"</p>
+            <span class="feedback-author">- ${fb.tenKhach}</span>
+          </div>
+        `;
+      });
+    });
 
     function doiTrangThai(o) {
       if (o.classList.contains("available")) {
@@ -153,7 +213,7 @@
       if (table.rows.length > 2) table.deleteRow(-1);
     }
 
-    // 1. Lắng nghe đơn hàng
+    // Lắng nghe đơn hàng
     db.ref('donHangSky').on('value', function(snapshot) {
       var danhSach = snapshot.val();
       var baoTu = document.getElementById("danhSachDonHang");
@@ -175,7 +235,6 @@
 
         if (donHang.trangThai === "hoan_thanh") return;
 
-        // Nếu đơn do chính staff này nhận và chưa hoàn thành -> gom vào bong bóng
         if (donHang.daNhan && donHang.staffNhan === iconCuaToi) {
           danhSachDonDangLam[key] = donHang;
         }
@@ -203,7 +262,7 @@
       capNhatBongBongChat();
     });
 
-    // 2. Nhận đơn & Tự động chấm công theo ngày thực tế
+    // Nhận đơn & Lưu ngày chấm công lên Cloud
     function chotDon(maDon) {
       dangXuLyDonId = maDon;
       db.ref('donHangSky/' + maDon).update({
@@ -212,19 +271,14 @@
       }).then(function() {
         dongModal();
 
-        // 7. Chấm công tự động lấy đúng ngày hôm nay
         var homNay = new Date().getDate();
-        var oNgay = document.getElementById("ngay-" + homNay);
-        if (oNgay && !oNgay.classList.contains("has-order")) {
-          oNgay.classList.add("has-order");
-          oNgay.innerHTML = iconCuaToi;
-        }
+        db.ref('chamCong/' + iconCuaToi + '/' + homNay).set(true);
 
         moPhongChatTheoDon(maDon);
       });
     }
 
-    // 9. Cập nhật bong bóng Chathead nổi
+    // 3. Bong bóng chathead
     function capNhatBongBongChat() {
       var box = document.getElementById("chatheadsList");
       box.innerHTML = "";
@@ -250,7 +304,6 @@
         document.getElementById("chatBox").style.display = "flex";
         document.getElementById("chatTenStaff").innerHTML = "Chat: " + dh.tenKhach + " ⇋ Staff " + iconCuaToi;
 
-        // 8. Đóng băng nếu khách đã bấm xong
         if (dh.khachHoanThanh) {
           document.getElementById("bannerDongBangStaff").style.display = "block";
           document.getElementById("nhapTinStaff").disabled = true;
