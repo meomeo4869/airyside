@@ -740,3 +740,119 @@ body.admin-layout {
   border-bottom: 1px solid #ffeeba;
   font-weight: bold;
 }
+
+/* ========================================= */
+/* 10. BẢNG GIÁ CHI TIẾT & THÔNG BÁO LOBBY   */
+/* ========================================= */
+.lobby-announcement {
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+  border: 1px solid #ffb74d;
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.15);
+}
+
+.announcement-icon {
+  font-size: 28px;
+}
+
+.announcement-text strong {
+  color: #e65100;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+.announcement-text p {
+  margin: 3px 0 0 0;
+  font-size: 14px;
+  color: #3e2723;
+  font-weight: 500;
+}
+
+/* Lưới 3 bảng giá chi tiết */
+.detailed-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.price-category-card {
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+}
+
+.popular-card {
+  border: 2px solid #ff7f50;
+  position: relative;
+}
+
+.category-header {
+  padding: 18px;
+  text-align: center;
+  color: white;
+}
+
+.uber-header { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.host-header { background: linear-gradient(135deg, #ff7f50, #ea580c); }
+.log-header { background: linear-gradient(135deg, #10b981, #047857); }
+
+.category-header h3 { margin: 0 0 4px 0; font-size: 16px; }
+.category-header p { margin: 0; font-size: 12px; opacity: 0.9; }
+
+.category-body {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.service-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  background: #f8fafc;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.service-item span { color: #475569; font-weight: 500; }
+.service-item strong { color: #e65100; font-size: 12px; text-align: right; }
+
+/* Ô chỉnh sửa giá phía Admin */
+.announcement-control-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.admin-price-box {
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-price-box label {
+  font-size: 12px;
+  color: #475569;
+  font-weight: bold;
+}
+
+.admin-price-box input {
+  padding: 6px 10px;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
