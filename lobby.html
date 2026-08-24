@@ -10,7 +10,7 @@
 </head>
 <body class="lobby-layout">
 
-  <!-- BANNER TIẾN TRÌNH ĐƠN -->
+  <!-- BANNER TIẾN TRÌNH ĐƠN CỦA KHÁCH -->
   <div id="liveOrderBanner" class="status-banner" style="display: none;">
     <div class="banner-content">
       <span class="pulse-dot"></span>
@@ -28,47 +28,118 @@
   </div>
 
   <div class="lobby-container">
+    
+    <!-- KHUNG THÔNG BÁO TỪ ADMIN / PAGE TỚI KHÁCH HÀNG -->
+    <div id="boxThongBaoPage" class="lobby-announcement" style="display: none;">
+      <span class="announcement-icon">📢</span>
+      <div class="announcement-text">
+        <strong>THÔNG BÁO TỪ PAGE:</strong>
+        <p id="noiDungThongBaoPage">Chào mừng bạn đến với Dịch Vụ Sky!</p>
+      </div>
+    </div>
+
     <header class="lobby-header">
       <h1>🏰 Chào Mừng Đến Với Sảnh Sky</h1>
-      <p>Nơi thư giãn, xem bảng giá và theo dõi dịch vụ đồng hành cùng bạn</p>
+      <p>Nơi thư giãn, xem bảng giá chi tiết và kết nối cùng đội ngũ đồng hành</p>
     </header>
 
-    <!-- BẢNG GIÁ REALTIME ĐƯỢC ADMIN CẬP NHẬT -->
+    <!-- BẢNG GIÁ CHI TIẾT 3 MẢNG (UBER - HOST - LOG ACC) -->
     <section class="lobby-section">
-      <h2>💎 Bảng Giá Dịch Vụ</h2>
-      <div class="pricing-grid">
-        <div class="price-card">
-          <h3>🚗 Uber Dẫn Tour</h3>
-          <p class="price-tag" id="giaUber">15k VND hoặc 3 Tim</p>
-          <ul id="moTaUber">
-            <li>Nhặt 15 nến / Xám nến</li>
-            <li>Hỗ trợ làm nhiệm vụ ngày (Quest)</li>
-            <li>Nhặt Wing, đi Eden an toàn</li>
-          </ul>
+      <h2>💎 Bảng Giá Dịch Vụ Chi Tiết</h2>
+      
+      <div class="detailed-pricing-grid">
+        
+        <!-- CỘT 1: UBER DẪN TOUR -->
+        <div class="price-category-card">
+          <div class="category-header uber-header">
+            <h3>🚗 UBER DẪN TOUR</h3>
+            <p>Hộ tống an toàn, hoàn thành nhanh gọn</p>
+          </div>
+          <div class="category-body">
+            <div class="service-item">
+              <span>Nhặt 15 Nến</span>
+              <strong id="p_uber_15nen">3.000đ / 1 Tim</strong>
+            </div>
+            <div class="service-item">
+              <span>Nhặt 15 Nến + Quest</span>
+              <strong id="p_uber_15nen_quest">5.000đ / 1 Tim</strong>
+            </div>
+            <div class="service-item">
+              <span>Xám Nến (Full vạch)</span>
+              <strong id="p_uber_xamnen">8.000đ / 2 Tim</strong>
+            </div>
+            <div class="service-item">
+              <span>Xám Nến + Quest</span>
+              <strong id="p_uber_xamnen_quest">12.000đ / 3 Tim</strong>
+            </div>
+            <div class="service-item">
+              <span>Full Nhặt Cánh (Wing)</span>
+              <strong id="p_uber_nhatcanh">10.000đ / 2 Tim</strong>
+            </div>
+            <div class="service-item">
+              <span>Dẫn Đi Eden Full Ca</span>
+              <strong id="p_uber_eden">8.000đ / 2 Tim</strong>
+            </div>
+          </div>
         </div>
-        <div class="price-card popular">
-          <div class="badge">Phổ Biến</div>
-          <h3>✨ Host Đồng Hành</h3>
-          <p class="price-tag" id="giaHost">25k VND hoặc 5 Tim / Giờ</p>
-          <ul id="moTaHost">
-            <li>Trò chuyện, tâm sự giải tỏa</li>
-            <li>Đàn hát theo yêu cầu</li>
-            <li>Fakelove, chụp ảnh kỷ niệm</li>
-          </ul>
+
+        <!-- CỘT 2: HOST ĐỒNG HÀNH -->
+        <div class="price-category-card popular-card">
+          <div class="category-header host-header">
+            <div class="badge">Yêu Thích</div>
+            <h3>✨ HOST ĐỒNG HÀNH</h3>
+            <p>Trò chuyện, đàn hát & chữa lành</p>
+          </div>
+          <div class="category-body">
+            <div class="service-item">
+              <span>Tâm Sự / Trò Chuyện (1h)</span>
+              <strong id="p_host_tamsu">20.000đ / 4 Tim</strong>
+            </div>
+            <div class="service-item">
+              <span>Đàn Hát Theo Yêu Cầu (1h)</span>
+              <strong id="p_host_dan">25.000đ / 5 Tim</strong>
+            </div>
+            <div class="service-item">
+              <span>Fakelove / Ghép Đôi (1h)</span>
+              <strong id="p_host_nguoiyeu">30.000đ / 6 Tim</strong>
+            </div>
+            <div class="service-item">
+              <span>Treo Máy Ngủ Cùng (Đêm)</span>
+              <strong id="p_host_treomay">15.000đ / 3 Tim</strong>
+            </div>
+          </div>
         </div>
-        <div class="price-card">
-          <h3>🔑 Log Acc Trọn Gói</h3>
-          <p class="price-tag" id="giaLogAcc">Theo ngày / Tuần</p>
-          <ul id="moTaLogAcc">
-            <li>Chạy nến đều đặn mỗi ngày</li>
-            <li>Bảo mật tài khoản tuyệt đối</li>
-            <li>Gửi video nghiệm thu sau ca</li>
-          </ul>
+
+        <!-- CỘT 3: LOG ACC TRỌN GÓI -->
+        <div class="price-category-card">
+          <div class="category-header log-header">
+            <h3>🔑 LOG ACC TRỌN GÓI</h3>
+            <p>Bảo mật tuyệt đối, bàn giao chuẩn giờ</p>
+          </div>
+          <div class="category-body">
+            <div class="service-item">
+              <span>Chạy 15 Nến / Ngày</span>
+              <strong id="p_log_15nen">5.000đ / 1 Tim</strong>
+            </div>
+            <div class="service-item">
+              <span>Chạy Xám Nến + Quest / Ngày</span>
+              <strong id="p_log_xamnen">15.000đ / 3 Tim</strong>
+            </div>
+            <div class="service-item">
+              <span>Gói Tuần (7 Ngày Xám Nến)</span>
+              <strong id="p_log_tuan">90.000đ / 18 Tim</strong>
+            </div>
+            <div class="service-item">
+              <span>Gói Tháng (30 Ngày Full)</span>
+              <strong id="p_log_thang">350.000đ / 70 Tim</strong>
+            </div>
+          </div>
         </div>
+
       </div>
     </section>
 
-    <!-- LỊCH HOẠT ĐỘNG & ĐIỀU KHOẢN TỪ ADMIN -->
+    <!-- LỊCH HOẠT ĐỘNG & ĐIỀU KHOẢN -->
     <section class="lobby-section">
       <div class="terms-container">
         <div class="terms-box">
@@ -82,9 +153,9 @@
         <div class="terms-box">
           <h3>📜 Điều Khoản & Quyền Lợi</h3>
           <div id="noiDungDieuKhoan" style="white-space: pre-line; line-height: 1.6;">
-            ✔ Thanh toán: Nhận chuyển khoản ngân hàng hoặc trả Tim trực tiếp.
-            ✔ Đúng hẹn: Trao đổi lịch trình trực tiếp qua khung Chat với Staff.
-            ✔ Bảo đảm: Hoàn tiền / Tim 100% nếu phát sinh sự cố từ Staff.
+            ✔ Thanh toán: Chuyển khoản ngân hàng hoặc trả Tim trực tiếp.
+            ✔ Đúng hẹn: Trao đổi chi tiết lịch trình với Staff trong khung chat.
+            ✔ Bảo đảm: Hoàn tiền / Tim 100% nếu phát sinh lỗi từ phía Staff.
           </div>
         </div>
       </div>
@@ -99,7 +170,7 @@
     </section>
   </div>
 
-  <!-- KHUNG CHAT MINI -->
+  <!-- KHUNG CHAT MINI TẠI SẢNH -->
   <div id="chatBoxKhach" class="chat-container">
     <div class="chat-header">
       <span id="chatTitleKhach">Chat Với Staff</span>
@@ -157,15 +228,34 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 1. Tải Bảng Giá & Điều Khoản động từ Firebase
+    // 1. Tải bảng giá chi tiết & cài đặt từ Firebase
+    db.ref('bangGiaChiTiet').on('value', function(snap) {
+      var bg = snap.val();
+      if (bg) {
+        Object.keys(bg).forEach(function(k) {
+          var el = document.getElementById("p_" + k);
+          if (el) el.innerText = bg[k];
+        });
+      }
+    });
+
     db.ref('caiDatPage').on('value', function(snapshot) {
       var set = snapshot.val();
       if (set) {
-        if (set.giaUber) document.getElementById("giaUber").innerText = set.giaUber;
-        if (set.giaHost) document.getElementById("giaHost").innerText = set.giaHost;
-        if (set.giaLogAcc) document.getElementById("giaLogAcc").innerText = set.giaLogAcc;
         if (set.lichPage) document.getElementById("noiDungLichPage").innerText = set.lichPage;
         if (set.dieuKhoan) document.getElementById("noiDungDieuKhoan").innerText = set.dieuKhoan;
+      }
+    });
+
+    // 2. Tải thông báo Sảnh của Admin
+    db.ref('thongBaoLobby').on('value', function(snap) {
+      var tb = snap.val();
+      var box = document.getElementById("boxThongBaoPage");
+      if (tb && tb.noiDung && tb.noiDung.trim() !== "") {
+        box.style.display = "flex";
+        document.getElementById("noiDungThongBaoPage").innerText = tb.noiDung;
+      } else {
+        box.style.display = "none";
       }
     });
 
