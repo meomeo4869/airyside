@@ -214,6 +214,11 @@
     }
 
     // Lắng nghe đơn hàng
+    // Lấy kỹ năng của Staff đang đăng nhập
+    var mySkills = JSON.parse(localStorage.getItem("myStaffSkills") || '["uber", "host", "logacc"]');
+    var myStaffName = localStorage.getItem("myStaffName") || "Staff";
+
+    // Lắng nghe đơn hàng & LỌC THEO KỸ NĂNG CỦA STAFF
     db.ref('donHangSky').on('value', function(snapshot) {
       var danhSach = snapshot.val();
       var baoTu = document.getElementById("danhSachDonHang");
@@ -227,7 +232,7 @@
       }
 
       var keys = Object.keys(danhSach).reverse();
-      var coDon = false;
+      var coDonPhuHop = false;
 
       keys.forEach(function(key) {
         var donHang = danhSach[key];
@@ -235,11 +240,17 @@
 
         if (donHang.trangThai === "hoan_thanh") return;
 
+        // Lưu đơn đang chạy của staff này để mở bong bóng chat
         if (donHang.daNhan && donHang.staffNhan === iconCuaToi) {
           danhSachDonDangLam[key] = donHang;
         }
 
-        coDon = true;
+        // LỌC CHỈ HIỆN ĐƠN NẰM TRONG KỸ NĂNG STAFF ĐƯỢC PHÂN QUYỀN
+        if (!mySkills.includes(donHang.mangDichVu)) {
+          return; // Bỏ qua đơn nếu không thuộc kỹ năng của Staff này
+        }
+
+        coDonPhuHop = true;
         var ttLabel = donHang.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền mặt";
         var trangThaiNut = donHang.daNhan 
           ? `<button class="btn-nhan-don" style="background-color: #ccc; cursor: not-allowed;" disabled>ĐÃ NHẬN (${donHang.staffNhan})</button>` 
@@ -258,7 +269,9 @@
         baoTu.innerHTML += HTMLCard;
       });
 
-      if (!coDon) baoTu.innerHTML = "<p style='grid-column: 1/-1; color: #888;'>Các đơn hàng đều đã hoàn tất!</p>";
+      if (!coDonPhuHop) {
+        baoTu.innerHTML = `<p style='grid-column: 1/-1; color: #888;'>Hiện không có đơn nào thuộc mảng kỹ năng của bạn (${mySkills.join(", ")}).</p>`;
+      }
       capNhatBongBongChat();
     });
 
