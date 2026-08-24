@@ -84,58 +84,100 @@
       </div>
     </div>
 
-    <!-- KHU VỰC CHỈNH SỬA GIÁ TỪNG DỊCH VỤ CỤ THỂ (3 MẢNG) -->
+    <!-- KHU VỰC CHỈNH SỬA GIÁ TỪNG DỊCH VỤ CỤ THỂ (3 CỘT DỌC) -->
     <section class="admin-section" style="border-left: 4px solid #4CAF50;">
       <div class="section-title-box">
         <h3>⚙️ Chỉnh Sửa Bảng Giá Từng Dịch Vụ Cụ Thể (Cập nhật Sảnh)</h3>
       </div>
       
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px;">
+      <div class="admin-price-columns">
         
         <!-- Cột Uber -->
         <div class="admin-price-box">
-          <h4 style="color: #ff7f50; margin-top: 0;">🚗 Giá Uber</h4>
-          <label>Nhặt 15 Nến:</label>
-          <input type="text" id="adm_uber_15nen">
-          <label>15 Nến + Quest:</label>
-          <input type="text" id="adm_uber_15nen_quest">
-          <label>Xám Nến:</label>
-          <input type="text" id="adm_uber_xamnen">
-          <label>Xám Nến + Quest:</label>
-          <input type="text" id="adm_uber_xamnen_quest">
-          <label>Nhặt Cánh (Wing):</label>
-          <input type="text" id="adm_uber_nhatcanh">
-          <label>Đi Eden:</label>
-          <input type="text" id="adm_uber_eden">
+          <h4 style="color: #3b82f6;">🚗 Giá Uber Dẫn Tour</h4>
+          <div class="admin-input-row">
+            <label>Nhặt 15 Nến:</label>
+            <input type="text" id="adm_uber_15nen">
+          </div>
+          <div class="admin-input-row">
+            <label>15 Nến + Quest:</label>
+            <input type="text" id="adm_uber_15nen_quest">
+          </div>
+          <div class="admin-input-row">
+            <label>Xám Nến (Full vạch):</label>
+            <input type="text" id="adm_uber_xamnen">
+          </div>
+          <div class="admin-input-row">
+            <label>Xám Nến + Quest:</label>
+            <input type="text" id="adm_uber_xamnen_quest">
+          </div>
+          <div class="admin-input-row">
+            <label>Nhặt Cánh (Wing):</label>
+            <input type="text" id="adm_uber_nhatcanh">
+          </div>
+          <div class="admin-input-row">
+            <label>Dẫn Đi Eden:</label>
+            <input type="text" id="adm_uber_eden">
+          </div>
         </div>
 
         <!-- Cột Host -->
         <div class="admin-price-box">
-          <h4 style="color: #ff5722; margin-top: 0;">✨ Giá Host</h4>
-          <label>Tâm Sự (1h):</label>
-          <input type="text" id="adm_host_tamsu">
-          <label>Đàn Hát (1h):</label>
-          <input type="text" id="adm_host_dan">
-          <label>Fakelove (1h):</label>
-          <input type="text" id="adm_host_nguoiyeu">
-          <label>Treo Máy Ngủ (Đêm):</label>
-          <input type="text" id="adm_host_treomay">
+          <h4 style="color: #ff7f50;">✨ Giá Host Đồng Hành</h4>
+          <div class="admin-input-row">
+            <label>Tâm Sự (1h):</label>
+            <input type="text" id="adm_host_tamsu">
+          </div>
+          <div class="admin-input-row">
+            <label>Đàn Hát Theo Yêu Cầu (1h):</label>
+            <input type="text" id="adm_host_dan">
+          </div>
+          <div class="admin-input-row">
+            <label>Fakelove / Ghép Đôi (1h):</label>
+            <input type="text" id="adm_host_nguoiyeu">
+          </div>
+          <div class="admin-input-row">
+            <label>Treo Máy Ngủ Cùng (Đêm):</label>
+            <input type="text" id="adm_host_treomay">
+          </div>
         </div>
 
         <!-- Cột Log Acc -->
         <div class="admin-price-box">
-          <h4 style="color: #4CAF50; margin-top: 0;">🔑 Giá Log Acc</h4>
-          <label>15 Nến / Ngày:</label>
-          <input type="text" id="adm_log_15nen">
-          <label>Xám Nến + Quest / Ngày:</label>
-          <input type="text" id="adm_log_xamnen">
-          <label>Gói Tuần (7 Ngày):</label>
-          <input type="text" id="adm_log_tuan">
-          <label>Gói Tháng (30 Ngày):</label>
-          <input type="text" id="adm_log_thang">
+          <h4 style="color: #10b981;">🔑 Giá Log Acc Trọn Gói</h4>
+          <div class="admin-input-row">
+            <label>15 Nến / Ngày:</label>
+            <input type="text" id="adm_log_15nen">
+          </div>
+          <div class="admin-input-row">
+            <label>Xám Nến + Quest / Ngày:</label>
+            <input type="text" id="adm_log_xamnen">
+          </div>
+          <div class="admin-input-row">
+            <label>Gói Tuần (7 Ngày):</label>
+            <input type="text" id="adm_log_tuan">
+          </div>
+          <div class="admin-input-row">
+            <label>Gói Tháng (30 Ngày Full):</label>
+            <input type="text" id="adm_log_thang">
+          </div>
         </div>
 
       </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+        <div>
+          <label><strong>Lịch Hoạt Động Page:</strong></label>
+          <textarea id="adminLichPage" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit;"></textarea>
+        </div>
+        <div>
+          <label><strong>Điều Khoản & Quyền Lợi:</strong></label>
+          <textarea id="adminDieuKhoan" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit;"></textarea>
+        </div>
+      </div>
+
+      <button onclick="luuToanBoGiaVaCaiDat()" style="background: #4CAF50; padding: 12px 25px; font-weight: bold; font-size: 14px;">💾 Lưu Bảng Giá & Cài Đặt Lên Sảnh</button>
+    </section>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
         <div>
