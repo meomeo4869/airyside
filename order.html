@@ -14,7 +14,7 @@
     <h2>Form Đặt Dịch Vụ Sky</h2>
 
     <div id="formKhach">
-      <label>Tên của bạn:</label> <br>
+      <label>Tên của bạn (Tên ingame):</label> <br>
       <input type="text" id="playerName" placeholder="Nhập tên vào đây nha...">
       <br><br>
 
@@ -40,21 +40,55 @@
       <label>Hình thức thanh toán:</label> <br>
       <select id="phuongThucTT">
         <option value="Tien_VND">💵 Tiền mặt (Chuyển khoản / Momo)</option>
-        <option value="Tim_Sky">💖 Trái tim trong game (Tim Sky)</option>
+        <option value="Tim_Sky">💖 Tim Sky (Vật phẩm game)</option>
       </select>
       <br><br>
 
       <label>Yêu cầu hoặc ghi chú thêm:</label> <br>
-      <input type="text" id="yeuCau" placeholder="Yêu cầu chi tiết...">
+      <input type="text" id="yeuCau" placeholder="Ghi chú chi tiết...">
       <br><br>
 
-      <button onclick="checkOrder()">Xác Nhận Đặt Đơn</button>
+      <button onclick="kiemTraVaHienHoaDon()">Xem Hóa Đơn & Đặt Đơn</button>
     </div>
+  </div>
 
-    <div id="manHinhCho" style="display: none; text-align: center; padding: 30px 0;">
-      <div class="spinner"></div>
-      <br>
-      <p style="color: #ffb088; font-weight: bold;">Đang chuyển đơn lên hệ thống, bồ chờ xíu nha...</p>
+  <!-- POPUP HÓA ĐƠN THEO ĐÚNG BẢN VẼ PHÁC THẢO -->
+  <div id="modalHoaDonOrder" class="modal-overlay">
+    <div class="modal-content" style="max-width: 380px; padding: 20px; border: 2px solid #333; border-radius: 12px; background: white;">
+      
+      <div style="border-bottom: 2px solid #333; padding-bottom: 6px; margin-bottom: 15px; text-align: center;">
+        <h3 style="margin: 0; text-transform: uppercase; letter-spacing: 1px;">_ HÓA ĐƠN ĐẶT ĐƠN _</h3>
+      </div>
+
+      <!-- Khu vực hiển thị giá tiền/tim -->
+      <div id="boxHienThiTien" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
+        <div style="display: flex; justify-content: space-between; font-size: 14px;">
+          <span><strong>Cọc (50%):</strong></span>
+          <span id="txtTienCoc" style="color: #ea580c; font-weight: bold; border-bottom: 1px solid #333; min-width: 100px; text-align: right;">Đang tính...</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 14px;">
+          <span><strong>Số tiền còn lại:</strong></span>
+          <span id="txtTienConLai" style="border-bottom: 1px solid #333; min-width: 100px; text-align: right;">Đang tính...</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 15px; margin-top: 4px;">
+          <span><strong>Tổng hóa đơn:</strong></span>
+          <span id="txtTongHoaDon" style="color: #16a34a; font-weight: bold; border-bottom: 2px solid #333; min-width: 100px; text-align: right;">Đang tính...</span>
+        </div>
+      </div>
+
+      <!-- Phân cách điều khoản -->
+      <div style="border-top: 2px solid #333; padding-top: 10px; font-size: 12px; color: #475569; line-height: 1.5; margin-bottom: 18px;">
+        <strong style="color: #1e293b;">- Một số quy định & điều khoản:</strong>
+        <p style="margin: 4px 0 0 0;">• Tiền cọc 50% được chuyển sau khi Staff nhận đơn trong khung chat.</p>
+        <p style="margin: 2px 0 0 0;">• Đơn Tim Sky không cần cọc, thanh toán trả tim mỗi ngày sau ca.</p>
+        <p style="margin: 2px 0 0 0;">• Hoàn tiền / Tim 100% nếu phát sinh sự cố từ phía Staff.</p>
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <button onclick="xacNhanLuuDon()" style="flex: 2; background: #ea580c; font-weight: bold; padding: 10px;">Xác Nhận & Vào Sảnh ✨</button>
+        <button onclick="dongModalHoaDon()" style="flex: 1; background: #e2e8f0; color: #333; padding: 10px;">Sửa Lại</button>
+      </div>
+
     </div>
   </div>
 
@@ -72,7 +106,11 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Lắng nghe sự kiện thay đổi mảng dịch vụ trực tiếp
+    var bangGiaData = {};
+    db.ref('bangGiaChiTiet').on('value', function(snap) {
+      bangGiaData = snap.val() || {};
+    });
+
     document.getElementById("mangDichVu").addEventListener("change", function() {
       var mang = this.value;
       var oCuThe = document.getElementById("cuThe");
@@ -99,17 +137,19 @@
       } else if (mang === "logacc") {
         oCuThe.innerHTML = `
           <option value="none">-- Chọn dịch vụ Log Acc --</option>
-          <option value="log_15nen">Chạy 15 nến / Ngày</option>
-          <option value="log_xamnen">Chạy xám nến + Quest / Ngày</option>
-          <option value="log_tuan">Gói tuần (7 ngày)</option>
-          <option value="log_thang">Gói tháng (30 ngày)</option>
+          <option value="15nen">Chạy 15 nến / Ngày</option>
+          <option value="xamnen">Chạy xám nến + Quest / Ngày</option>
+          <option value="tuan">Gói tuần (7 ngày)</option>
+          <option value="thang">Gói tháng (30 ngày)</option>
         `;
       } else {
         oCuThe.innerHTML = '<option value="none">-- Vui lòng chọn mảng ở trên trước --</option>';
       }
     });
 
-    function checkOrder() {
+    var donHangTamThoi = null;
+
+    function kiemTraVaHienHoaDon() {
       var tenKhach = document.getElementById("playerName").value.trim();
       var mang = document.getElementById("mangDichVu").value;
       var cuThe = document.getElementById("cuThe").value;
@@ -117,47 +157,74 @@
       var pttt = document.getElementById("phuongThucTT").value;
       var yc = document.getElementById("yeuCau").value.trim();
 
-      if (tenKhach === "") {
-        alert("Bạn ơi, chưa nhập tên kìa!");
-      } else if (mang === "chua_chon") {
-        alert("Bạn ơi, nhớ chọn mảng dịch vụ nha!");
-      } else if (cuThe === "none") {
-        alert("Bạn ơi, chọn dịch vụ cụ thể ở ô bên dưới nha!");
-      } else if (thoiGian === "") {
-        alert("Bạn ơi, nhớ chọn ngày và giờ hẹn dịch vụ nha!");
-      } else {
+      if (tenKhach === "") { alert("Bạn ơi, chưa nhập tên kìa!"); return; }
+
+      // Kiểm tra Blacklist
+      db.ref('blackListKhach/' + tenKhach.toLowerCase()).once('value').then(function(snap) {
+        if (snap.exists()) {
+          alert("⛔ Tên của bạn đang nằm trong danh sách cấm của Page. Vui lòng liên hệ Admin!");
+          return;
+        }
+
+        if (mang === "chua_chon" || cuThe === "none" || thoiGian === "") {
+          alert("Bồ vui lòng điền đầy đủ mảng dịch vụ và giờ hẹn nha!");
+          return;
+        }
+
         var dt = new Date(thoiGian);
         var tgDinhDang = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')} ngày ${dt.getDate()}/${dt.getMonth()+1}/${dt.getFullYear()}`;
 
-        var donHangMoi = {
+        // Lấy giá từ database bảng giá
+        var keyGia = mang + "_" + cuThe;
+        var giaNiemYet = bangGiaData[keyGia] || "";
+
+        donHangTamThoi = {
           tenKhach: tenKhach,
           mangDichVu: mang,
           cuThe: cuThe,
           thoiGianHen: tgDinhDang,
           rawTime: thoiGian,
           thanhToan: pttt,
+          giaNiemYet: giaNiemYet,
+          daCoc: false,
           yeuCau: yc || "Không có yêu cầu đặc biệt",
           daNhan: false,
           trangThai: "dang_cho",
           thoiGianTao: Date.now()
         };
 
-        var newOrderRef = db.ref('donHangSky').push();
-        newOrderRef.set(donHangMoi).then(function() {
-          var myOrders = JSON.parse(localStorage.getItem("myOrderIdsList") || "[]");
-          myOrders.push(newOrderRef.key);
-          localStorage.setItem("myOrderIdsList", JSON.stringify(myOrders));
+        // Tính toán hiển thị lên hóa đơn
+        if (pttt === "Tim_Sky") {
+          document.getElementById("txtTongHoaDon").innerText = giaNiemYet ? giaNiemYet : "Theo thỏa thuận";
+          document.getElementById("txtTienCoc").innerText = "0 Tim (Không cần cọc)";
+          document.getElementById("txtTienConLai").innerText = giaNiemYet ? giaNiemYet : "Trả tim sau ca";
+        } else {
+          document.getElementById("txtTongHoaDon").innerText = giaNiemYet ? giaNiemYet : "Chưa nhập giá";
+          document.getElementById("txtTienCoc").innerText = giaNiemYet ? "50% giá trị đơn" : "50%";
+          document.getElementById("txtTienConLai").innerText = giaNiemYet ? "50% còn lại" : "50%";
+        }
 
-          document.getElementById("formKhach").style.display = "none";
-          document.getElementById("manHinhCho").style.display = "block";
-          
-          setTimeout(function() {
-            window.location.href = "lobby.html";
-          }, 1000);
-        }).catch(function(error) {
-          alert("Lỗi kết nối: " + error.message);
-        });
-      }
+        document.getElementById("modalHoaDonOrder").style.display = "flex";
+      });
+    }
+
+    function dongModalHoaDon() {
+      document.getElementById("modalHoaDonOrder").style.display = "none";
+    }
+
+    function xacNhanLuuDon() {
+      if (!donHangTamThoi) return;
+
+      var newOrderRef = db.ref('donHangSky').push();
+      newOrderRef.set(donHangTamThoi).then(function() {
+        var myOrders = JSON.parse(localStorage.getItem("myOrderIdsList") || "[]");
+        myOrders.push(newOrderRef.key);
+        localStorage.setItem("myOrderIdsList", JSON.stringify(myOrders));
+
+        window.location.href = "lobby.html";
+      }).catch(function(error) {
+        alert("Lỗi kết nối: " + error.message);
+      });
     }
   </script>
 </body>
