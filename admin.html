@@ -20,16 +20,37 @@
 
   <div class="admin-container">
 
-    <!-- PHÁT THÔNG BÁO CHO STAFF -->
-    <section class="admin-section" style="border-left: 4px solid #0068ff;">
-      <div class="section-title-box">
-        <h3>📢 Gửi Thông Báo Khẩn Cho Staff (Side Panel)</h3>
-      </div>
-      <div style="display: flex; gap: 10px;">
-        <input type="text" id="noiDungThongBao" placeholder="Nhập lời nhắn gửi xuống sidebar staff..." style="flex: 1;">
-        <button onclick="guiThongBaoAdmin()" style="background: #0068ff; white-space: nowrap;">Gửi Thông Báo 🔔</button>
-      </div>
-    </section>
+    <!-- KHU VỰC PHÁT THÔNG BÁO (CHIA 2 KÊNH: SẢNH KHÁCH & STAFF) -->
+    <div class="announcement-control-grid">
+      
+      <!-- 1. Kênh Sảnh Chờ (Khách xem) -->
+      <section class="admin-section" style="border-left: 4px solid #ff7f50;">
+        <div class="section-title-box">
+          <h3>📢 Thông Báo Tại Sảnh Chờ (Khách Xem)</h3>
+        </div>
+        <p style="font-size: 12px; color: #666; margin-top: -10px; margin-bottom: 10px;">
+          (Dùng cho: Ưu đãi, Page tạm nghỉ, Full slot nhận đơn trong ngày...)
+        </p>
+        <textarea id="tbLobbyInput" rows="2" placeholder="Nhập thông báo hiển thị tại đầu Sảnh..." style="width: 100%; margin-bottom: 8px; font-family: inherit;"></textarea>
+        <div style="display: flex; gap: 8px;">
+          <button onclick="guiThongBaoLobby()" style="background: #ff7f50;">Đăng Lên Sảnh ✨</button>
+          <button onclick="xoaThongBaoLobby()" style="background: #ccc; color: #333;">Tắt / Xóa Thông Báo</button>
+        </div>
+      </section>
+
+      <!-- 2. Kênh Nội Bộ Staff (Side Panel) -->
+      <section class="admin-section" style="border-left: 4px solid #0068ff;">
+        <div class="section-title-box">
+          <h3>🔔 Gửi Thông Báo Cho Staff (Side Panel)</h3>
+        </div>
+        <p style="font-size: 12px; color: #666; margin-top: -10px; margin-bottom: 10px;">
+          (Dùng cho: Nhắc check lịch ca, bàn giao đơn, thông báo nội bộ...)
+        </p>
+        <textarea id="noiDungThongBao" rows="2" placeholder="Nhập lời nhắn gửi sidebar staff..." style="width: 100%; margin-bottom: 8px; font-family: inherit;"></textarea>
+        <button onclick="guiThongBaoAdmin()" style="background: #0068ff;">Gửi Tới Staff 🚀</button>
+      </section>
+
+    </div>
 
     <!-- THỐNG KÊ DOANH THU -->
     <div class="stats-grid">
@@ -63,39 +84,71 @@
       </div>
     </div>
 
-    <!-- KHU VỰC CHỈNH SỬA BẢNG GIÁ & ĐIỀU KHOẢN TRỰC TIẾP -->
-    <section class="admin-section" style="border-left: 4px solid #ff7f50;">
+    <!-- KHU VỰC CHỈNH SỬA GIÁ TỪNG DỊCH VỤ CỤ THỂ (3 MẢNG) -->
+    <section class="admin-section" style="border-left: 4px solid #4CAF50;">
       <div class="section-title-box">
-        <h3>⚙️ Chỉnh Sửa Bảng Giá & Điều Khoản Sảnh Chờ (Lobby)</h3>
+        <h3>⚙️ Chỉnh Sửa Bảng Giá Từng Dịch Vụ Cụ Thể (Cập nhật Sảnh)</h3>
       </div>
       
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px;">
-        <div>
-          <label><strong>Giá Uber Dẫn Tour:</strong></label>
-          <input type="text" id="adminGiaUber" placeholder="vd: 15k VND hoặc 3 Tim" style="width: 100%; margin-top: 5px;">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px;">
+        
+        <!-- Cột Uber -->
+        <div class="admin-price-box">
+          <h4 style="color: #ff7f50; margin-top: 0;">🚗 Giá Uber</h4>
+          <label>Nhặt 15 Nến:</label>
+          <input type="text" id="adm_uber_15nen">
+          <label>15 Nến + Quest:</label>
+          <input type="text" id="adm_uber_15nen_quest">
+          <label>Xám Nến:</label>
+          <input type="text" id="adm_uber_xamnen">
+          <label>Xám Nến + Quest:</label>
+          <input type="text" id="adm_uber_xamnen_quest">
+          <label>Nhặt Cánh (Wing):</label>
+          <input type="text" id="adm_uber_nhatcanh">
+          <label>Đi Eden:</label>
+          <input type="text" id="adm_uber_eden">
         </div>
-        <div>
-          <label><strong>Giá Host Đồng Hành:</strong></label>
-          <input type="text" id="adminGiaHost" placeholder="vd: 25k VND hoặc 5 Tim / Giờ" style="width: 100%; margin-top: 5px;">
+
+        <!-- Cột Host -->
+        <div class="admin-price-box">
+          <h4 style="color: #ff5722; margin-top: 0;">✨ Giá Host</h4>
+          <label>Tâm Sự (1h):</label>
+          <input type="text" id="adm_host_tamsu">
+          <label>Đàn Hát (1h):</label>
+          <input type="text" id="adm_host_dan">
+          <label>Fakelove (1h):</label>
+          <input type="text" id="adm_host_nguoiyeu">
+          <label>Treo Máy Ngủ (Đêm):</label>
+          <input type="text" id="adm_host_treomay">
         </div>
-        <div>
-          <label><strong>Giá Log Acc:</strong></label>
-          <input type="text" id="adminGiaLogAcc" placeholder="vd: Theo ngày / Tuần" style="width: 100%; margin-top: 5px;">
+
+        <!-- Cột Log Acc -->
+        <div class="admin-price-box">
+          <h4 style="color: #4CAF50; margin-top: 0;">🔑 Giá Log Acc</h4>
+          <label>15 Nến / Ngày:</label>
+          <input type="text" id="adm_log_15nen">
+          <label>Xám Nến + Quest / Ngày:</label>
+          <input type="text" id="adm_log_xamnen">
+          <label>Gói Tuần (7 Ngày):</label>
+          <input type="text" id="adm_log_tuan">
+          <label>Gói Tháng (30 Ngày):</label>
+          <input type="text" id="adm_log_thang">
         </div>
+
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
         <div>
           <label><strong>Lịch Hoạt Động Page:</strong></label>
-          <textarea id="adminLichPage" rows="4" style="width: 100%; margin-top: 5px; font-family: inherit;"></textarea>
+          <textarea id="adminLichPage" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit;"></textarea>
         </div>
         <div>
           <label><strong>Điều Khoản & Quyền Lợi:</strong></label>
-          <textarea id="adminDieuKhoan" rows="4" style="width: 100%; margin-top: 5px; font-family: inherit;"></textarea>
+          <textarea id="adminDieuKhoan" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit;"></textarea>
         </div>
       </div>
 
-      <button onclick="luuCaiDatPage()" style="background: #4CAF50; padding: 10px 20px; font-weight: bold;">💾 Lưu Thay Đổi Lên Sảnh</button>
+      <button onclick="luuToanBoGiaVaCaiDat()" style="background: #4CAF50; padding: 12px 25px; font-weight: bold; font-size: 14px;">💾 Lưu Bảng Giá & Cài Đặt Lên Sảnh</button>
     </section>
 
     <!-- SỔ LƯU TRỮ HÓA ĐƠN -->
@@ -174,32 +227,95 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 1. Tải cài đặt trang hiện tại
+    // 1. Tải giá chi tiết hiện tại vào các ô input
+    var danhSachKeyGia = [
+      "uber_15nen", "uber_15nen_quest", "uber_xamnen", "uber_xamnen_quest", "uber_nhatcanh", "uber_eden",
+      "host_tamsu", "host_dan", "host_nguoiyeu", "host_treomay",
+      "log_15nen", "log_xamnen", "log_tuan", "log_thang"
+    ];
+
+    db.ref('bangGiaChiTiet').once('value').then(function(snap) {
+      var bg = snap.val() || {};
+      danhSachKeyGia.forEach(function(k) {
+        var inputEl = document.getElementById("adm_" + k);
+        if (inputEl) {
+          inputEl.value = bg[k] || "Liên hệ";
+        }
+      });
+    });
+
     db.ref('caiDatPage').once('value').then(function(snap) {
       var set = snap.val();
       if (set) {
-        document.getElementById("adminGiaUber").value = set.giaUber || "15k VND hoặc 3 Tim";
-        document.getElementById("adminGiaHost").value = set.giaHost || "25k VND hoặc 5 Tim / Giờ";
-        document.getElementById("adminGiaLogAcc").value = set.giaLogAcc || "Theo ngày / Tuần";
         document.getElementById("adminLichPage").value = set.lichPage || "• Ca Sáng: 08:00 - 12:00\n• Ca Chiều: 13:30 - 17:30\n• Ca Tối: 18:00 - 24:00";
         document.getElementById("adminDieuKhoan").value = set.dieuKhoan || "✔ Thanh toán: Chuyển khoản ngân hàng hoặc trả Tim.\n✔ Đúng hẹn: Trao đổi qua mini chat.\n✔ Bảo đảm: Hoàn tiền 100% nếu phát sinh lỗi từ Staff.";
       }
     });
 
-    // 2. Lưu cài đặt trang lên Firebase
-    function luuCaiDatPage() {
+    db.ref('thongBaoLobby').once('value').then(function(snap) {
+      var tb = snap.val();
+      if (tb && tb.noiDung) {
+        document.getElementById("tbLobbyInput").value = tb.noiDung;
+      }
+    });
+
+    // 2. Lưu toàn bộ bảng giá và cài đặt
+    function luuToanBoGiaVaCaiDat() {
+      var duLieuGiaMoi = {};
+      danhSachKeyGia.forEach(function(k) {
+        var inputEl = document.getElementById("adm_" + k);
+        if (inputEl) {
+          duLieuGiaMoi[k] = inputEl.value;
+        }
+      });
+
+      db.ref('bangGiaChiTiet').set(duLieuGiaMoi);
+
       db.ref('caiDatPage').update({
-        giaUber: document.getElementById("adminGiaUber").value,
-        giaHost: document.getElementById("adminGiaHost").value,
-        giaLogAcc: document.getElementById("adminGiaLogAcc").value,
         lichPage: document.getElementById("adminLichPage").value,
         dieuKhoan: document.getElementById("adminDieuKhoan").value
       }).then(function() {
-        alert("Đã cập nhật Bảng Giá & Điều Khoản lên Sảnh Chờ thành công!");
+        alert("Đã cập nhật toàn bộ Bảng Giá Chi Tiết lên Sảnh Chờ thành công!");
       });
     }
 
-    // 3. Lắng nghe đơn hàng
+    // 3. Điều khiển thông báo Sảnh (Lobby)
+    function guiThongBaoLobby() {
+      var text = document.getElementById("tbLobbyInput").value.trim();
+      if (text) {
+        db.ref('thongBaoLobby').set({ noiDung: text, capNhat: Date.now() }).then(function() {
+          alert("Đã phát thông báo lên đầu Sảnh Chờ của Khách!");
+        });
+      }
+    }
+
+    function xoaThongBaoLobby() {
+      if (confirm("Admin muốn tắt thông báo ở Sảnh Chờ?")) {
+        db.ref('thongBaoLobby').remove().then(function() {
+          document.getElementById("tbLobbyInput").value = "";
+          alert("Đã tắt thông báo Sảnh Chờ!");
+        });
+      }
+    }
+
+    // 4. Điều khiển thông báo Staff
+    function guiThongBaoAdmin() {
+      var text = document.getElementById("noiDungThongBao").value.trim();
+      if (text) {
+        var dt = new Date();
+        var timeStr = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')}`;
+        db.ref('thongBaoAdmin').push({
+          noiDung: text,
+          gio: timeStr,
+          thoiGian: Date.now()
+        }).then(function() {
+          document.getElementById("noiDungThongBao").value = "";
+          alert("Đã gửi thông báo đến Side Panel của Staff!");
+        });
+      }
+    }
+
+    // 5. Lắng nghe đơn hàng
     db.ref('donHangSky').on('value', function(snapshot) {
       var data = snapshot.val();
       var tbodyHoaDon = document.getElementById("bangHoaDon");
@@ -263,7 +379,7 @@
       document.getElementById("statTimSky").innerText = countTim + " ca";
     });
 
-    // 4. Lắng nghe Feedback & Xóa
+    // 6. Lắng nghe Feedback & Xóa
     db.ref('feedbacks').on('value', function(snapshot) {
       var fbData = snapshot.val();
       var box = document.getElementById("bangAdminFeedback");
@@ -306,23 +422,6 @@
     function xoaDon(idDon) {
       if (confirm("Admin có chắc muốn hủy đơn này không?")) {
         db.ref('donHangSky/' + idDon).remove();
-      }
-    }
-
-    // 5. Gửi thông báo từ Admin xuống Staff
-    function guiThongBaoAdmin() {
-      var text = document.getElementById("noiDungThongBao").value.trim();
-      if (text) {
-        var dt = new Date();
-        var timeStr = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')}`;
-        db.ref('thongBaoAdmin').push({
-          noiDung: text,
-          gio: timeStr,
-          thoiGian: Date.now()
-        }).then(function() {
-          document.getElementById("noiDungThongBao").value = "";
-          alert("Đã gửi thông báo đến toàn bộ Staff thành công!");
-        });
       }
     }
   </script>
