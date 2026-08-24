@@ -1025,3 +1025,93 @@ body.admin-layout {
   align-items: center;
   gap: 4px;
 }
+
+/* ================================================= */
+/* TỐI ƯU GIAO DIỆN MINI CHAT KHÁCH & STAFF          */
+/* ================================================= */
+.chat-container {
+  width: 320px !important;
+  max-width: 90vw;
+  height: 480px !important;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  border: 1px solid #e2e8f0;
+  display: none;
+  flex-direction: column;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background: white;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.chat-header {
+  background: #0284c7;
+  color: white;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.chat-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Nút báo cáo icon nhỏ gọn */
+.btn-report-mini {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fee2e2;
+  border: 1px solid rgba(254, 202, 202, 0.4);
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+}
+.btn-report-mini:hover { background: rgba(239, 68, 68, 0.4); }
+
+.chat-pinned {
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 11px;
+  padding: 6px 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.chat-body {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #f8fafc;
+}
+
+/* Tin nhắn hệ thống */
+.msg.system {
+  align-self: center;
+  background: #e2e8f0;
+  color: #334155;
+  font-size: 11px;
+  max-width: 90%;
+  border-radius: 8px;
+  padding: 6px 10px;
+  text-align: center;
+  border: 1px dashed #cbd5e1;
+}
+
+.chatheads-container {
+  position: fixed;
+  right: 20px;
+  bottom: 85px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+  z-index: 10000;
+}
