@@ -576,6 +576,57 @@
       alert("Cảm ơn bồ đã đánh giá nha! ✨");
       location.reload();
     }
+
+// 1. TÍCH HỢP YOUTUBE PLAYER CHO WIDGET NHẠC
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var ytPlayer;
+    var isPlayingMusic = false;
+
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('youtubePlayerHidden', {
+        height: '100',
+        width: '100',
+        videoId: 'U83drBPaExc', // Video: Sky: Children of the Light – Starry Gallery pt.3
+        playerVars: {
+          'autoplay': 0,
+          'loop': 1,
+          'playlist': 'U83drBPaExc',
+          'controls': 0
+        },
+        events: {
+          'onReady': function(event) {
+            console.log("YouTube Player đã sẵn sàng!");
+          }
+        }
+      });
+    }
+
+    function toggleSkyMusic() {
+      var disc = document.getElementById("musicDiscIcon");
+      var txt = document.getElementById("musicTitleText");
+
+      if (!ytPlayer || !ytPlayer.playVideo) {
+        alert("Đang tải dữ liệu âm thanh, bồ đợi xíu nha!");
+        return;
+      }
+
+      if (isPlayingMusic) {
+        ytPlayer.pauseVideo();
+        disc.classList.remove("rotating");
+        txt.innerText = "🎵 Bật Nhạc Sky Healing";
+        isPlayingMusic = false;
+      } else {
+        ytPlayer.playVideo();
+        disc.classList.add("rotating");
+        txt.innerText = "🎶 Đang phát: Starry Gallery";
+        isPlayingMusic = true;
+      }
+    }
+    
   </script>
 </body>
 </html>
