@@ -72,6 +72,37 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
+    // HÀM TỰ ĐỘNG THAY ĐỔI Ô "CỤ THỂ" THEO MẢNG ĐÃ CHỌN
+    function doiTuyChon() {
+      var mang = document.getElementById("mangDichVu").value;
+      var oCuThe = document.getElementById("cuThe");
+      oCuThe.innerHTML = "";
+
+      if (mang === "uber") {
+        oCuThe.innerHTML += '<option value="none">-- Chọn dịch vụ Uber --</option>';
+        oCuThe.innerHTML += '<option value="15nen">Nhặt 15 nến</option>';
+        oCuThe.innerHTML += '<option value="15nen_quest">Nhặt 15 nến + Quest</option>';
+        oCuThe.innerHTML += '<option value="xamnen">Xám nến (Full vạch)</option>';
+        oCuThe.innerHTML += '<option value="xamnen_quest">Xám nến + Quest</option>';
+        oCuThe.innerHTML += '<option value="nhatcanh">Full nhặt cánh (Wing)</option>';
+        oCuThe.innerHTML += '<option value="eden">Dẫn đi Eden full ca</option>';
+      } else if (mang === "host") {
+        oCuThe.innerHTML += '<option value="none">-- Chọn dịch vụ Host --</option>';
+        oCuThe.innerHTML += '<option value="tamsu">Tâm sự / Trò chuyện (1h)</option>';
+        oCuThe.innerHTML += '<option value="dan">Đàn hát theo yêu cầu (1h)</option>';
+        oCuThe.innerHTML += '<option value="nguoiyeu">Fakelove / Ghép đôi (1h)</option>';
+        oCuThe.innerHTML += '<option value="treomay">Treo máy ngủ cùng (Đêm)</option>';
+      } else if (mang === "logacc") {
+        oCuThe.innerHTML += '<option value="none">-- Chọn dịch vụ Log Acc --</option>';
+        oCuThe.innerHTML += '<option value="log_15nen">Chạy 15 nến / Ngày</option>';
+        oCuThe.innerHTML += '<option value="log_xamnen">Chạy xám nến + Quest / Ngày</option>';
+        oCuThe.innerHTML += '<option value="log_tuan">Gói tuần (7 ngày)</option>';
+        oCuThe.innerHTML += '<option value="log_thang">Gói tháng (30 ngày)</option>';
+      } else {
+        oCuThe.innerHTML += '<option value="none">-- Vui lòng chọn mảng ở trên trước --</option>';
+      }
+    }
+
     function checkOrder() {
       var tenKhach = document.getElementById("playerName").value.trim();
       var mang = document.getElementById("mangDichVu").value;
@@ -80,13 +111,13 @@
       var pttt = document.getElementById("phuongThucTT").value;
       var yc = document.getElementById("yeuCau").value.trim();
 
-      if (tenKhach == "") {
+      if (tenKhach === "") {
         alert("Bạn ơi, chưa nhập tên kìa!");
-      } else if (mang == "chua_chon") {
+      } else if (mang === "chua_chon") {
         alert("Bạn ơi, nhớ chọn mảng dịch vụ nha!");
-      } else if (cuThe == "none") {
+      } else if (cuThe === "none") {
         alert("Bạn ơi, chọn dịch vụ cụ thể ở ô bên dưới nha!");
-      } else if (thoiGian == "") {
+      } else if (thoiGian === "") {
         alert("Bạn ơi, nhớ chọn ngày và giờ hẹn dịch vụ nha!");
       } else {
         var dt = new Date(thoiGian);
@@ -105,14 +136,12 @@
           thoiGianTao: Date.now()
         };
 
-        // Gửi đơn lên Firebase Cloud
         var newOrderRef = db.ref('donHangSky').push();
         newOrderRef.set(donHangMoi).then(function() {
-          // Lưu thêm mã đơn mới vào danh sách các đơn của khách
           var myOrders = JSON.parse(localStorage.getItem("myOrderIdsList") || "[]");
           myOrders.push(newOrderRef.key);
           localStorage.setItem("myOrderIdsList", JSON.stringify(myOrders));
-          
+
           document.getElementById("formKhach").style.display = "none";
           document.getElementById("manHinhCho").style.display = "block";
           
@@ -122,28 +151,6 @@
         }).catch(function(error) {
           alert("Lỗi kết nối: " + error.message);
         });
-
-    function doiTuyChon() {
-      var mang = document.getElementById("mangDichVu").value;
-      var oCuThe = document.getElementById("cuThe");
-      oCuThe.innerHTML = "";
-
-      if (mang == "uber" || mang == "logacc") {
-        oCuThe.innerHTML += '<option value="none">-- Chọn dịch vụ cụ thể --</option>';
-        oCuThe.innerHTML += '<option value="15nen">Nhặt 15 nến</option>';
-        oCuThe.innerHTML += '<option value="15nen_quest">Nhặt 15 nến + Quest</option>';
-        oCuThe.innerHTML += '<option value="xamnen">Xám nến</option>';
-        oCuThe.innerHTML += '<option value="xamnen_quest">Xám nến + Quest</option>';
-        oCuThe.innerHTML += '<option value="nhatcanh">Nhặt cánh</option>';
-        oCuThe.innerHTML += '<option value="eden">Đi Eden</option>';
-      } else if (mang == "host") {
-        oCuThe.innerHTML += '<option value="none">-- Chọn dịch vụ cụ thể --</option>';
-        oCuThe.innerHTML += '<option value="tamsu">Tâm sự</option>';
-        oCuThe.innerHTML += '<option value="dan">Đàn</option>';
-        oCuThe.innerHTML += '<option value="nguoiyeu">Fakelove</option>';
-        oCuThe.innerHTML += '<option value="treomay">Treo máy</option>';
-      } else {
-        oCuThe.innerHTML += '<option value="none">-- Vui lòng chọn mảng ở trên trước --</option>';
       }
     }
   </script>
