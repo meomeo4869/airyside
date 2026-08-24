@@ -13,44 +13,77 @@
   <div class="admin-header">
     <div class="admin-brand">
       <h2>👑 Quản Trị Viên Sky (Admin)</h2>
-      <p>Bảng điều khiển trung tâm & Cài đặt cấu hình Page</p>
+      <p>Bảng điều khiển trung tâm & Quản lý nhân sự</p>
     </div>
     <button class="btn-logout" onclick="window.location.href='index.html'">Đăng Xuất</button>
   </div>
 
   <div class="admin-container">
 
-    <!-- KHU VỰC PHÁT THÔNG BÁO (CHIA 2 KÊNH: SẢNH KHÁCH & STAFF) -->
+    <!-- PHÁT THÔNG BÁO -->
     <div class="announcement-control-grid">
-      
-      <!-- 1. Kênh Sảnh Chờ (Khách xem) -->
       <section class="admin-section" style="border-left: 4px solid #ff7f50;">
         <div class="section-title-box">
-          <h3>📢 Thông Báo Tại Sảnh Chờ (Khách Xem)</h3>
+          <h3>📢 Thông Báo Sảnh Chờ (Khách)</h3>
         </div>
-        <p style="font-size: 12px; color: #666; margin-top: -10px; margin-bottom: 10px;">
-          (Dùng cho: Ưu đãi, Page tạm nghỉ, Full slot nhận đơn trong ngày...)
-        </p>
         <textarea id="tbLobbyInput" rows="2" placeholder="Nhập thông báo hiển thị tại đầu Sảnh..." style="width: 100%; margin-bottom: 8px; font-family: inherit;"></textarea>
         <div style="display: flex; gap: 8px;">
           <button onclick="guiThongBaoLobby()" style="background: #ff7f50;">Đăng Lên Sảnh ✨</button>
-          <button onclick="xoaThongBaoLobby()" style="background: #ccc; color: #333;">Tắt / Xóa Thông Báo</button>
+          <button onclick="xoaThongBaoLobby()" style="background: #ccc; color: #333;">Tắt Thông Báo</button>
         </div>
       </section>
 
-      <!-- 2. Kênh Nội Bộ Staff (Side Panel) -->
       <section class="admin-section" style="border-left: 4px solid #0068ff;">
         <div class="section-title-box">
-          <h3>🔔 Gửi Thông Báo Cho Staff (Side Panel)</h3>
+          <h3>🔔 Gửi Thông Báo Staff (Side Panel)</h3>
         </div>
-        <p style="font-size: 12px; color: #666; margin-top: -10px; margin-bottom: 10px;">
-          (Dùng cho: Nhắc check lịch ca, bàn giao đơn, thông báo nội bộ...)
-        </p>
         <textarea id="noiDungThongBao" rows="2" placeholder="Nhập lời nhắn gửi sidebar staff..." style="width: 100%; margin-bottom: 8px; font-family: inherit;"></textarea>
         <button onclick="guiThongBaoAdmin()" style="background: #0068ff;">Gửi Tới Staff 🚀</button>
       </section>
-
     </div>
+
+    <!-- KHU VỰC MỚI: QUẢN LÝ NHÂN SỰ & PHÂN QUYỀN KỸ NĂNG -->
+    <section class="admin-section" style="border-left: 4px solid #8b5cf6;">
+      <div class="section-title-box">
+        <h3>👥 Quản Lý Nhân Sự & Phân Quyền Nhận Đơn</h3>
+      </div>
+      
+      <!-- Form Thêm Staff Mới -->
+      <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #e2e8f0;">
+        <h4 style="margin-top: 0; margin-bottom: 10px; color: #475569;">➕ Thêm Tài Khoản Nhân Sự Mới</h4>
+        <div style="display: grid; grid-template-columns: 2fr 1fr 2fr 3fr auto; gap: 10px; align-items: center;">
+          <input type="text" id="newStaffTen" placeholder="Tên Staff (vd: Michii)">
+          <input type="text" id="newStaffIcon" placeholder="Icon (vd: 🌸)">
+          <input type="password" id="newStaffPass" placeholder="Mật khẩu riêng">
+          
+          <div style="display: flex; gap: 10px; font-size: 13px;">
+            <label><input type="checkbox" id="skill_uber" value="uber" checked> 🚗 Uber</label>
+            <label><input type="checkbox" id="skill_host" value="host" checked> ✨ Host</label>
+            <label><input type="checkbox" id="skill_logacc" value="logacc"> 🔑 Log Acc</label>
+          </div>
+
+          <button onclick="themStaffMoi()" style="background: #8b5cf6; padding: 8px 16px;">Tạo Staff</button>
+        </div>
+      </div>
+
+      <!-- Bảng Danh Sách Staff -->
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Icon</th>
+              <th>Tên Nhân Sự</th>
+              <th>Mật Khẩu</th>
+              <th>Kỹ Năng Đảm Nhận</th>
+              <th>Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody id="bangDanhSachStaff">
+            <tr><td colspan="5" style="text-align:center;">Đang tải danh sách staff...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
     <!-- THỐNG KÊ DOANH THU -->
     <div class="stats-grid">
@@ -84,85 +117,38 @@
       </div>
     </div>
 
-    <!-- KHU VỰC CHỈNH SỬA GIÁ TỪNG DỊCH VỤ CỤ THỂ (3 CỘT DỌC) -->
+    <!-- CHỈNH SỬA BẢNG GIÁ -->
     <section class="admin-section" style="border-left: 4px solid #4CAF50;">
       <div class="section-title-box">
         <h3>⚙️ Chỉnh Sửa Bảng Giá Từng Dịch Vụ Cụ Thể (Cập nhật Sảnh)</h3>
       </div>
       
       <div class="admin-price-columns">
-        
-        <!-- Cột Uber -->
         <div class="admin-price-box">
           <h4 style="color: #3b82f6;">🚗 Giá Uber Dẫn Tour</h4>
-          <div class="admin-input-row">
-            <label>Nhặt 15 Nến:</label>
-            <input type="text" id="adm_uber_15nen">
-          </div>
-          <div class="admin-input-row">
-            <label>15 Nến + Quest:</label>
-            <input type="text" id="adm_uber_15nen_quest">
-          </div>
-          <div class="admin-input-row">
-            <label>Xám Nến (Full vạch):</label>
-            <input type="text" id="adm_uber_xamnen">
-          </div>
-          <div class="admin-input-row">
-            <label>Xám Nến + Quest:</label>
-            <input type="text" id="adm_uber_xamnen_quest">
-          </div>
-          <div class="admin-input-row">
-            <label>Nhặt Cánh (Wing):</label>
-            <input type="text" id="adm_uber_nhatcanh">
-          </div>
-          <div class="admin-input-row">
-            <label>Dẫn Đi Eden:</label>
-            <input type="text" id="adm_uber_eden">
-          </div>
+          <div class="admin-input-row"><label>Nhặt 15 Nến:</label><input type="text" id="adm_uber_15nen"></div>
+          <div class="admin-input-row"><label>15 Nến + Quest:</label><input type="text" id="adm_uber_15nen_quest"></div>
+          <div class="admin-input-row"><label>Xám Nến:</label><input type="text" id="adm_uber_xamnen"></div>
+          <div class="admin-input-row"><label>Xám Nến + Quest:</label><input type="text" id="adm_uber_xamnen_quest"></div>
+          <div class="admin-input-row"><label>Nhặt Cánh (Wing):</label><input type="text" id="adm_uber_nhatcanh"></div>
+          <div class="admin-input-row"><label>Dẫn Đi Eden:</label><input type="text" id="adm_uber_eden"></div>
         </div>
 
-        <!-- Cột Host -->
         <div class="admin-price-box">
           <h4 style="color: #ff7f50;">✨ Giá Host Đồng Hành</h4>
-          <div class="admin-input-row">
-            <label>Tâm Sự (1h):</label>
-            <input type="text" id="adm_host_tamsu">
-          </div>
-          <div class="admin-input-row">
-            <label>Đàn Hát Theo Yêu Cầu (1h):</label>
-            <input type="text" id="adm_host_dan">
-          </div>
-          <div class="admin-input-row">
-            <label>Fakelove / Ghép Đôi (1h):</label>
-            <input type="text" id="adm_host_nguoiyeu">
-          </div>
-          <div class="admin-input-row">
-            <label>Treo Máy Ngủ Cùng (Đêm):</label>
-            <input type="text" id="adm_host_treomay">
-          </div>
+          <div class="admin-input-row"><label>Tâm Sự (1h):</label><input type="text" id="adm_host_tamsu"></div>
+          <div class="admin-input-row"><label>Đàn Hát (1h):</label><input type="text" id="adm_host_dan"></div>
+          <div class="admin-input-row"><label>Fakelove (1h):</label><input type="text" id="adm_host_nguoiyeu"></div>
+          <div class="admin-input-row"><label>Treo Máy Ngủ (Đêm):</label><input type="text" id="adm_host_treomay"></div>
         </div>
 
-        <!-- Cột Log Acc -->
         <div class="admin-price-box">
           <h4 style="color: #10b981;">🔑 Giá Log Acc Trọn Gói</h4>
-          <div class="admin-input-row">
-            <label>15 Nến / Ngày:</label>
-            <input type="text" id="adm_log_15nen">
-          </div>
-          <div class="admin-input-row">
-            <label>Xám Nến + Quest / Ngày:</label>
-            <input type="text" id="adm_log_xamnen">
-          </div>
-          <div class="admin-input-row">
-            <label>Gói Tuần (7 Ngày):</label>
-            <input type="text" id="adm_log_tuan">
-          </div>
-          <div class="admin-input-row">
-            <label>Gói Tháng (30 Ngày Full):</label>
-            <input type="text" id="adm_log_thang">
-          </div>
+          <div class="admin-input-row"><label>15 Nến / Ngày:</label><input type="text" id="adm_log_15nen"></div>
+          <div class="admin-input-row"><label>Xám Nến + Quest / Ngày:</label><input type="text" id="adm_log_xamnen"></div>
+          <div class="admin-input-row"><label>Gói Tuần (7 Ngày):</label><input type="text" id="adm_log_tuan"></div>
+          <div class="admin-input-row"><label>Gói Tháng (30 Ngày Full):</label><input type="text" id="adm_log_thang"></div>
         </div>
-
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
@@ -176,21 +162,7 @@
         </div>
       </div>
 
-      <button onclick="luuToanBoGiaVaCaiDat()" style="background: #4CAF50; padding: 12px 25px; font-weight: bold; font-size: 14px;">💾 Lưu Bảng Giá & Cài Đặt Lên Sảnh</button>
-    </section>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-        <div>
-          <label><strong>Lịch Hoạt Động Page:</strong></label>
-          <textarea id="adminLichPage" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit;"></textarea>
-        </div>
-        <div>
-          <label><strong>Điều Khoản & Quyền Lợi:</strong></label>
-          <textarea id="adminDieuKhoan" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit;"></textarea>
-        </div>
-      </div>
-
-      <button onclick="luuToanBoGiaVaCaiDat()" style="background: #4CAF50; padding: 12px 25px; font-weight: bold; font-size: 14px;">💾 Lưu Bảng Giá & Cài Đặt Lên Sảnh</button>
+      <button onclick="luuToanBoGiaVaCaiDat()" style="background: #4CAF50; padding: 12px 25px; font-weight: bold;">💾 Lưu Bảng Giá & Cài Đặt</button>
     </section>
 
     <!-- SỔ LƯU TRỮ HÓA ĐƠN -->
@@ -269,7 +241,75 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 1. Tải giá chi tiết hiện tại vào các ô input
+    // 1. QUẢN LÝ NHÂN SỰ REALTIME
+    db.ref('danhSachStaff').on('value', function(snap) {
+      var staffList = snap.val();
+      var tbody = document.getElementById("bangDanhSachStaff");
+      tbody.innerHTML = "";
+
+      if (!staffList) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#888;">Chưa có nhân sự nào. Hãy thêm ở trên!</td></tr>`;
+        return;
+      }
+
+      Object.keys(staffList).forEach(function(key) {
+        var st = staffList[key];
+        var knBadge = (st.kyNang || []).map(function(k) {
+          return `<span class="badge-payment" style="margin-right: 4px;">${k.toUpperCase()}</span>`;
+        }).join("");
+
+        tbody.innerHTML += `
+          <tr>
+            <td style="font-size: 18px;">${st.icon || "🌸"}</td>
+            <td><strong>${st.ten}</strong></td>
+            <td><code>${st.pass}</code></td>
+            <td>${knBadge || "Chưa gán kỹ năng"}</td>
+            <td><button class="btn-xoa" onclick="xoaStaff('${key}')">Xóa 🗑️</button></td>
+          </tr>
+        `;
+      });
+    });
+
+    function themStaffMoi() {
+      var ten = document.getElementById("newStaffTen").value.trim();
+      var icon = document.getElementById("newStaffIcon").value.trim() || "🌸";
+      var pass = document.getElementById("newStaffPass").value.trim();
+
+      var kyNang = [];
+      if (document.getElementById("skill_uber").checked) kyNang.push("uber");
+      if (document.getElementById("skill_host").checked) kyNang.push("host");
+      if (document.getElementById("skill_logacc").checked) kyNang.push("logacc");
+
+      if (!ten || !pass) {
+        alert("Bồ nhập đủ Tên và Mật khẩu cho Staff nhé!");
+        return;
+      }
+
+      if (kyNang.length === 0) {
+        alert("Bồ chọn ít nhất 1 kỹ năng mảng nhận đơn cho Staff nhé!");
+        return;
+      }
+
+      db.ref('danhSachStaff').push({
+        ten: ten,
+        icon: icon,
+        pass: pass,
+        kyNang: kyNang,
+        ngayTao: Date.now()
+      }).then(function() {
+        document.getElementById("newStaffTen").value = "";
+        document.getElementById("newStaffPass").value = "";
+        alert("Đã thêm Staff mới thành công!");
+      });
+    }
+
+    function xoaStaff(staffId) {
+      if (confirm("Admin có chắc muốn xóa nhân sự này khỏi hệ thống?")) {
+        db.ref('danhSachStaff/' + staffId).remove();
+      }
+    }
+
+    // 2. BẢNG GIÁ CHI TIẾT & CÀI ĐẶT
     var danhSachKeyGia = [
       "uber_15nen", "uber_15nen_quest", "uber_xamnen", "uber_xamnen_quest", "uber_nhatcanh", "uber_eden",
       "host_tamsu", "host_dan", "host_nguoiyeu", "host_treomay",
@@ -279,10 +319,8 @@
     db.ref('bangGiaChiTiet').once('value').then(function(snap) {
       var bg = snap.val() || {};
       danhSachKeyGia.forEach(function(k) {
-        var inputEl = document.getElementById("adm_" + k);
-        if (inputEl) {
-          inputEl.value = bg[k] || "Liên hệ";
-        }
+        var el = document.getElementById("adm_" + k);
+        if (el) el.value = bg[k] || "Liên hệ";
       });
     });
 
@@ -296,32 +334,25 @@
 
     db.ref('thongBaoLobby').once('value').then(function(snap) {
       var tb = snap.val();
-      if (tb && tb.noiDung) {
-        document.getElementById("tbLobbyInput").value = tb.noiDung;
-      }
+      if (tb && tb.noiDung) document.getElementById("tbLobbyInput").value = tb.noiDung;
     });
 
-    // 2. Lưu toàn bộ bảng giá và cài đặt
     function luuToanBoGiaVaCaiDat() {
       var duLieuGiaMoi = {};
       danhSachKeyGia.forEach(function(k) {
-        var inputEl = document.getElementById("adm_" + k);
-        if (inputEl) {
-          duLieuGiaMoi[k] = inputEl.value;
-        }
+        var el = document.getElementById("adm_" + k);
+        if (el) duLieuGiaMoi[k] = el.value;
       });
 
       db.ref('bangGiaChiTiet').set(duLieuGiaMoi);
-
       db.ref('caiDatPage').update({
         lichPage: document.getElementById("adminLichPage").value,
         dieuKhoan: document.getElementById("adminDieuKhoan").value
       }).then(function() {
-        alert("Đã cập nhật toàn bộ Bảng Giá Chi Tiết lên Sảnh Chờ thành công!");
+        alert("Đã cập nhật Bảng Giá & Cài Đặt thành công!");
       });
     }
 
-    // 3. Điều khiển thông báo Sảnh (Lobby)
     function guiThongBaoLobby() {
       var text = document.getElementById("tbLobbyInput").value.trim();
       if (text) {
@@ -340,7 +371,6 @@
       }
     }
 
-    // 4. Điều khiển thông báo Staff
     function guiThongBaoAdmin() {
       var text = document.getElementById("noiDungThongBao").value.trim();
       if (text) {
@@ -357,7 +387,7 @@
       }
     }
 
-    // 5. Lắng nghe đơn hàng
+    // 3. LẮNG NGHE ĐƠN HÀNG
     db.ref('donHangSky').on('value', function(snapshot) {
       var data = snapshot.val();
       var tbodyHoaDon = document.getElementById("bangHoaDon");
@@ -421,7 +451,7 @@
       document.getElementById("statTimSky").innerText = countTim + " ca";
     });
 
-    // 6. Lắng nghe Feedback & Xóa
+    // 4. LẮNG NGHE FEEDBACK
     db.ref('feedbacks').on('value', function(snapshot) {
       var fbData = snapshot.val();
       var box = document.getElementById("bangAdminFeedback");
@@ -455,9 +485,7 @@
 
     function xoaFeedback(fbId) {
       if (confirm("Admin có chắc muốn xóa đánh giá này không?")) {
-        db.ref('feedbacks/' + fbId).remove().then(function() {
-          alert("Đã xóa feedback thành công!");
-        });
+        db.ref('feedbacks/' + fbId).remove();
       }
     }
 
