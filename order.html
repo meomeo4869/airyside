@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đặt Dịch Vụ Sky</title>
+  <title>Đặt Dịch Vụ</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
@@ -11,19 +11,19 @@
 <body>
 
   <div class="card">
-    <h2>Form Đặt Dịch Vụ Sky</h2>
+    <h2>Form Đặt Dịch Vụ</h2>
 
     <div id="formKhach">
-      <label>Tên của bạn (Tên ingame):</label> <br>
+      <label>Tên của bạn:</label> <br>
       <input type="text" id="playerName" placeholder="Nhập tên vào đây nha...">
       <br><br>
 
       <label>Bạn muốn đặt dịch vụ nào?</label> <br>
       <select id="mangDichVu">
         <option value="chua_chon">-- Chọn mảng dịch vụ --</option>
-        <option value="uber">Uber Dẫn Tour</option>
-        <option value="host">Host Đồng Hành</option>
-        <option value="logacc">Log Acc Trọn Gói</option>
+        <option value="uber">Uber</option>
+        <option value="host">Host</option>
+        <option value="logacc">Log Acc</option>
       </select>
       <br><br>
 
@@ -39,8 +39,8 @@
 
       <label>Hình thức thanh toán:</label> <br>
       <select id="phuongThucTT">
-        <option value="Tien_VND">💵 Tiền mặt (Chuyển khoản / Momo)</option>
-        <option value="Tim_Sky">💖 Tim Sky (Vật phẩm game)</option>
+        <option value="Tien_VND">Tiền(Ngân hàng / Momo)</option>
+        <option value="Tim_Sky">Tim</option>
       </select>
       <br><br>
 
@@ -48,7 +48,7 @@
       <input type="text" id="yeuCau" placeholder="Ghi chú chi tiết...">
       <br><br>
 
-      <button onclick="kiemTraVaHienHoaDon()">Xem Hóa Đơn & Đặt Đơn</button>
+      <button onclick="kiemTraVaHienHoaDon()">Kiểm tra Hóa Đơn</button>
     </div>
   </div>
 
@@ -63,26 +63,26 @@
       <!-- 4 Dòng thông tin giá -->
       <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; font-size: 13px;">
         <div style="display: flex; justify-content: space-between;">
-          <span style="color: #64748b;">1. Tên dịch vụ:</span>
+          <span style="color: #64748b;">Tên dịch vụ:</span>
           <strong id="invTenDichVu" style="color: #1e293b; text-align: right;">-</strong>
         </div>
         <div style="display: flex; justify-content: space-between;">
-          <span style="color: #64748b;">2. Phí dịch vụ:</span>
+          <span style="color: #64748b;">Phí dịch vụ:</span>
           <strong id="invPhiDichVu" style="color: #1e293b; text-align: right;">-</strong>
         </div>
         <div style="display: flex; justify-content: space-between;">
-          <span style="color: #64748b;">3. Giảm giá (Event):</span>
+          <span style="color: #64748b;">Giảm giá:</span>
           <strong id="invGiamGia" style="color: #ea580c; text-align: right;">0đ</strong>
         </div>
         <div style="display: flex; justify-content: space-between; border-top: 1px dashed #cbd5e1; padding-top: 8px; font-size: 15px;">
-          <span style="font-weight: bold; color: #1e293b;">4. Tổng tiền:</span>
+          <span style="font-weight: bold; color: #1e293b;">Tổng tiền:</span>
           <strong id="invTongTien" style="color: #16a34a; font-size: 16px; text-align: right;">-</strong>
         </div>
       </div>
 
       <!-- 5. Một số luật do Admin cài đặt -->
       <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 12px; color: #475569; line-height: 1.5; margin-bottom: 16px;">
-        <strong style="color: #1e293b;">5. Một số luật & lưu ý:</strong>
+        <strong style="color: #1e293b;">Một số luật lưu ý:</strong>
         <div id="invNoiDungLuat" style="white-space: pre-line; margin-top: 4px;">
           • Khách hàng và Staff trao đổi lịch sự, tôn trọng lẫn nhau.
           • Nếu có điều gì không hài lòng vui lòng bấm Report để Admin can thiệp.
@@ -90,8 +90,8 @@
       </div>
 
       <div style="display: flex; gap: 8px;">
-        <button onclick="xacNhanLuuDon()" style="flex: 2; background: #0284c7; font-weight: bold; padding: 10px;">Xác Nhận & Vào Sảnh ✨</button>
-        <button onclick="dongModalHoaDon()" style="flex: 1; background: #e2e8f0; color: #333; padding: 10px;">Sửa Lại</button>
+        <button onclick="xacNhanLuuDon()" style="flex: 2; background: #0284c7; font-weight: bold; padding: 10px;">Xác Nhận & Vào Sảnh </button>
+        <button onclick="dongModalHoaDon()" style="flex: 1; background: #e2e8f0; color: #333; padding: 10px;">Quay Lại</button>
       </div>
 
     </div>
@@ -116,7 +116,7 @@
 
     db.ref('bangGiaChiTiet').on('value', function(snap) { bangGiaData = snap.val() || {}; });
     db.ref('caiDatPage/luatHoaDon').on('value', function(snap) {
-      luatHoaDonText = snap.val() || "• Khách hàng trao đổi thân thiện, lịch sự.\n• Nếu có bất kỳ sự cố gì vui lòng bấm nút Báo Cáo để Admin bồi thường.";
+      luatHoaDonText = snap.val() || "• Khách hàng trao đổi thân thiện, lịch sự.\n• Nếu có bất kỳ sự cố gì vui lòng bấm nút Báo Cáo để Admin xử lý.";
     });
 
     document.getElementById("mangDichVu").addEventListener("change", function() {
@@ -127,28 +127,28 @@
       if (mang === "uber") {
         oCuThe.innerHTML = `
           <option value="none">-- Chọn dịch vụ Uber --</option>
-          <option value="15nen">Nhặt 15 nến</option>
-          <option value="15nen_quest">Nhặt 15 nến + Quest</option>
-          <option value="xamnen">Xám nến (Full vạch)</option>
+          <option value="15nen">15 nến</option>
+          <option value="15nen_quest">15 nến + Quest</option>
+          <option value="xamnen">Xám nến</option>
           <option value="xamnen_quest">Xám nến + Quest</option>
-          <option value="nhatcanh">Full nhặt cánh (Wing)</option>
-          <option value="eden">Dẫn đi Eden full ca</option>
+          <option value="nhatcanh">Nhặt winglight</option>
+          <option value="eden">Đi Eden</option>
         `;
       } else if (mang === "host") {
         oCuThe.innerHTML = `
           <option value="none">-- Chọn dịch vụ Host --</option>
-          <option value="tamsu">Tâm sự / Trò chuyện (1h)</option>
-          <option value="dan">Đàn hát theo yêu cầu (1h)</option>
-          <option value="nguoiyeu">Fakelove / Ghép đôi (1h)</option>
-          <option value="treomay">Treo máy ngủ cùng (Đêm)</option>
+          <option value="tamsu">Tâm sự (1h / 30p)</option>
+          <option value="dan">Đàn (1h / 30p)</option>
+          <option value="nguoiyeu">Fakelove (1h 30p)</option>
+          <option value="treomay">Treo máy (1h / 30p)</option>
         `;
       } else if (mang === "logacc") {
         oCuThe.innerHTML = `
           <option value="none">-- Chọn dịch vụ Log Acc --</option>
-          <option value="15nen">Chạy 15 nến / Ngày</option>
-          <option value="xamnen">Chạy xám nến + Quest / Ngày</option>
-          <option value="tuan">Gói tuần (7 ngày)</option>
-          <option value="thang">Gói tháng (30 ngày)</option>
+          <option value="15nen">15 nến (Ngày/Tuần/Tháng)</option>
+          <option value="xamnen">Xám nến + Quest (Ngày/Tuần/Tháng)</option>
+          <option value="tuan">Gói tuần (xám nến + quest + nhặt vé sự kiện)</option>
+          <option value="thang">Gói tháng (xám nến + quest + nhặt vé sự kiện)</option>
         `;
       } else {
         oCuThe.innerHTML = '<option value="none">-- Vui lòng chọn mảng ở trên trước --</option>';
@@ -165,7 +165,7 @@
       var pttt = document.getElementById("phuongThucTT").value;
       var yc = document.getElementById("yeuCau").value.trim();
 
-      if (tenKhach === "") { alert("Bạn ơi, chưa nhập tên kìa!"); return; }
+      if (tenKhach === "") { alert("Bạn ơi, nhập tên đã nhé!"); return; }
 
       db.ref('blackListKhach/' + tenKhach.toLowerCase()).once('value').then(function(snap) {
         if (snap.exists()) {
@@ -174,7 +174,7 @@
         }
 
         if (mang === "chua_chon" || cuThe === "none" || thoiGian === "") {
-          alert("Bồ vui lòng điền đầy đủ mảng dịch vụ và giờ hẹn nha!");
+          alert("Bạn vui lòng điền đầy đủ mảng dịch vụ và giờ hẹn nha!");
           return;
         }
 
@@ -225,8 +225,8 @@
           phiGoc: phiDichVuHienThi,
           giamGia: giamGiaHienThi,
           giaNiemYet: tongTienHienThi,
-          daThanhToanFull: (pttt === "Tim_Sky"),
-          yeuCau: yc || "Không có yêu cầu đặc biệt",
+          daThanhToanFull: (pttt === "Tim"),
+          yeuCau: yc || "Không có yêu cầu",
           daNhan: false,
           trangThai: "dang_cho",
           thoiGianTao: Date.now()
