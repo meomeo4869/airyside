@@ -1116,44 +1116,52 @@ body.admin-layout {
   z-index: 10000;
 }
 
+
 /* ================================================= */
-/* WIDGET NHẠC SKY CHILL MINI                       */
+/* WIDGET NHẠC SKY YOUTUBE CHILL                     */
 /* ================================================= */
 .sky-music-widget {
   position: fixed;
   left: 20px;
   bottom: 20px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(8px);
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid #fed7aa;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+  padding: 8px 16px;
   border-radius: 30px;
   display: flex;
   align-items: center;
   gap: 10px;
-  z-index: 999;
+  z-index: 10000;
   cursor: pointer;
+  user-select: none;
   transition: all 0.3s ease;
 }
+
 .sky-music-widget:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 22px rgba(234, 88, 12, 0.25);
 }
+
 .music-disc {
-  font-size: 18px;
+  font-size: 20px;
   display: inline-block;
+  transition: transform 0.3s ease;
 }
+
 .music-disc.rotating {
   animation: spinDisc 3s linear infinite;
 }
+
 @keyframes spinDisc {
   100% { transform: rotate(360deg); }
 }
+
 .music-title {
   font-size: 12px;
   font-weight: bold;
-  color: #334155;
+  color: #c2410c;
 }
 
 /* ẢNH TRONG THẺ FEEDBACK */
