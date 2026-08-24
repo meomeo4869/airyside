@@ -19,7 +19,7 @@
       <br><br>
 
       <label>Bạn muốn đặt dịch vụ nào?</label> <br>
-      <select id="mangDichVu" onchange="doiTuyChon()">
+      <select id="mangDichVu">
         <option value="chua_chon">-- Chọn mảng dịch vụ --</option>
         <option value="uber">Uber Dẫn Tour</option>
         <option value="host">Host Đồng Hành</option>
@@ -72,36 +72,42 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // HÀM TỰ ĐỘNG THAY ĐỔI Ô "CỤ THỂ" THEO MẢNG ĐÃ CHỌN
-    function doiTuyChon() {
-      var mang = document.getElementById("mangDichVu").value;
+    // Lắng nghe sự kiện thay đổi mảng dịch vụ trực tiếp
+    document.getElementById("mangDichVu").addEventListener("change", function() {
+      var mang = this.value;
       var oCuThe = document.getElementById("cuThe");
       oCuThe.innerHTML = "";
 
       if (mang === "uber") {
-        oCuThe.innerHTML += '<option value="none">-- Chọn dịch vụ Uber --</option>';
-        oCuThe.innerHTML += '<option value="15nen">Nhặt 15 nến</option>';
-        oCuThe.innerHTML += '<option value="15nen_quest">Nhặt 15 nến + Quest</option>';
-        oCuThe.innerHTML += '<option value="xamnen">Xám nến (Full vạch)</option>';
-        oCuThe.innerHTML += '<option value="xamnen_quest">Xám nến + Quest</option>';
-        oCuThe.innerHTML += '<option value="nhatcanh">Full nhặt cánh (Wing)</option>';
-        oCuThe.innerHTML += '<option value="eden">Dẫn đi Eden full ca</option>';
+        oCuThe.innerHTML = `
+          <option value="none">-- Chọn dịch vụ Uber --</option>
+          <option value="15nen">Nhặt 15 nến</option>
+          <option value="15nen_quest">Nhặt 15 nến + Quest</option>
+          <option value="xamnen">Xám nến (Full vạch)</option>
+          <option value="xamnen_quest">Xám nến + Quest</option>
+          <option value="nhatcanh">Full nhặt cánh (Wing)</option>
+          <option value="eden">Dẫn đi Eden full ca</option>
+        `;
       } else if (mang === "host") {
-        oCuThe.innerHTML += '<option value="none">-- Chọn dịch vụ Host --</option>';
-        oCuThe.innerHTML += '<option value="tamsu">Tâm sự / Trò chuyện (1h)</option>';
-        oCuThe.innerHTML += '<option value="dan">Đàn hát theo yêu cầu (1h)</option>';
-        oCuThe.innerHTML += '<option value="nguoiyeu">Fakelove / Ghép đôi (1h)</option>';
-        oCuThe.innerHTML += '<option value="treomay">Treo máy ngủ cùng (Đêm)</option>';
+        oCuThe.innerHTML = `
+          <option value="none">-- Chọn dịch vụ Host --</option>
+          <option value="tamsu">Tâm sự / Trò chuyện (1h)</option>
+          <option value="dan">Đàn hát theo yêu cầu (1h)</option>
+          <option value="nguoiyeu">Fakelove / Ghép đôi (1h)</option>
+          <option value="treomay">Treo máy ngủ cùng (Đêm)</option>
+        `;
       } else if (mang === "logacc") {
-        oCuThe.innerHTML += '<option value="none">-- Chọn dịch vụ Log Acc --</option>';
-        oCuThe.innerHTML += '<option value="log_15nen">Chạy 15 nến / Ngày</option>';
-        oCuThe.innerHTML += '<option value="log_xamnen">Chạy xám nến + Quest / Ngày</option>';
-        oCuThe.innerHTML += '<option value="log_tuan">Gói tuần (7 ngày)</option>';
-        oCuThe.innerHTML += '<option value="log_thang">Gói tháng (30 ngày)</option>';
+        oCuThe.innerHTML = `
+          <option value="none">-- Chọn dịch vụ Log Acc --</option>
+          <option value="log_15nen">Chạy 15 nến / Ngày</option>
+          <option value="log_xamnen">Chạy xám nến + Quest / Ngày</option>
+          <option value="log_tuan">Gói tuần (7 ngày)</option>
+          <option value="log_thang">Gói tháng (30 ngày)</option>
+        `;
       } else {
-        oCuThe.innerHTML += '<option value="none">-- Vui lòng chọn mảng ở trên trước --</option>';
+        oCuThe.innerHTML = '<option value="none">-- Vui lòng chọn mảng ở trên trước --</option>';
       }
-    }
+    });
 
     function checkOrder() {
       var tenKhach = document.getElementById("playerName").value.trim();
