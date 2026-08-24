@@ -48,19 +48,26 @@
         <h3>👥 Quản Lý Nhân Sự & Phân Quyền Nhận Đơn</h3>
       </div>
       
-      <!-- Form Thêm Staff Mới -->
-      <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #e2e8f0;">
-        <h4 style="margin-top: 0; margin-bottom: 10px; color: #475569;">➕ Thêm Tài Khoản Nhân Sự Mới</h4>
-        <div style="display: grid; grid-template-columns: 2fr 1fr 2fr 3fr auto; gap: 10px; align-items: center;">
+      <!-- Form Thêm Staff Mới (Bố cục 2 dòng chuẩn) -->
+      <div class="admin-add-staff-card">
+        <h4 style="margin-top: 0; margin-bottom: 12px; color: #1e293b;">➕ Thêm Tài Khoản Nhân Sự Mới</h4>
+        
+        <div class="staff-form-row">
           <input type="text" id="newStaffTen" placeholder="Tên Staff (vd: Michii)">
-          <input type="text" id="newStaffIcon" placeholder="Icon (vd: 🌸)">
+          <input type="text" id="newStaffIcon" placeholder="Icon (vd: 🌸)" style="max-width: 100px;">
           <input type="password" id="newStaffPass" placeholder="Mật khẩu riêng">
-          
-          <div style="display: flex; gap: 10px; font-size: 13px;">
+        </div>
+
+        <div class="staff-form-row" style="margin-top: 10px; align-items: center;">
+          <div class="skills-checkbox-group">
+            <span style="font-size: 13px; font-weight: bold; color: #475569;">Kỹ năng:</span>
             <label><input type="checkbox" id="skill_uber" value="uber" checked> 🚗 Uber</label>
             <label><input type="checkbox" id="skill_host" value="host" checked> ✨ Host</label>
             <label><input type="checkbox" id="skill_logacc" value="logacc"> 🔑 Log Acc</label>
           </div>
+          <button onclick="themStaffMoi()" style="background: #8b5cf6; padding: 8px 20px; font-weight: bold; margin-left: auto;">Tạo Tài Khoản</button>
+        </div>
+      </div>
 
           <button onclick="themStaffMoi()" style="background: #8b5cf6; padding: 8px 16px;">Tạo Staff</button>
         </div>
