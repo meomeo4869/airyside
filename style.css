@@ -1115,3 +1115,56 @@ body.admin-layout {
   gap: 10px;
   z-index: 10000;
 }
+
+/* ================================================= */
+/* WIDGET NHẠC SKY CHILL MINI                       */
+/* ================================================= */
+.sky-music-widget {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 8px 14px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 999;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.sky-music-widget:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+.music-disc {
+  font-size: 18px;
+  display: inline-block;
+}
+.music-disc.rotating {
+  animation: spinDisc 3s linear infinite;
+}
+@keyframes spinDisc {
+  100% { transform: rotate(360deg); }
+}
+.music-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #334155;
+}
+
+/* ẢNH TRONG THẺ FEEDBACK */
+.feedback-img-box {
+  margin-top: 8px;
+}
+.feedback-img-box img {
+  width: 100%;
+  max-height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+}
