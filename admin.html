@@ -340,6 +340,30 @@
         box.innerHTML += `<div class="feedback-admin-card"><div style="display:flex; justify-content:space-between;"><strong>${item.tenKhach}</strong><span style="color: #ffb703;">★ ${item.sao}</span></div><p style="margin:4px 0;">"${item.nhanXet}"</p><button class="btn-xoa" onclick="db.ref('feedbacks/${k}').remove()" style="font-size:10px;">Xóa</button></div>`;
       });
     });
+
+    // Load luật hóa đơn
+    db.ref('caiDatPage/luatHoaDon').once('value').then(function(snap) {
+      document.getElementById("adminLuatHoaDon").value = snap.val() || "• Khách hàng trao đổi thân thiện, lịch sự.\n• Nếu có bất kỳ sự cố gì vui lòng bấm nút Báo Cáo để Admin bồi thường.";
+    });
+
+    // Lưu luật hóa đơn vào hàm luuToanBoGiaVaCaiDat()
+    function luuToanBoGiaVaCaiDat() {
+      var duLieuGiaMoi = {};
+      danhSachKeyGia.forEach(function(k) {
+        var el = document.getElementById("adm_" + k);
+        if (el) duLieuGiaMoi[k] = el.value;
+      });
+
+      db.ref('bangGiaChiTiet').set(duLieuGiaMoi);
+      db.ref('caiDatPage').update({
+        lichPage: document.getElementById("adminLichPage").value,
+        dieuKhoan: document.getElementById("adminDieuKhoan").value,
+        luatHoaDon: document.getElementById("adminLuatHoaDon").value
+      }).then(function() {
+        alert("Đã cập nhật Bảng Giá & Luật Hóa Đơn thành công!");
+      });
+    }
+    
   </script>
 </body>
 </html>
