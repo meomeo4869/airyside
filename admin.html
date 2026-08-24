@@ -12,7 +12,7 @@
 
   <div class="admin-header">
     <div class="admin-brand">
-      <h2>👑 Quản Trị Viên Sky (Admin)</h2>
+      <h2>Admin</h2>
       <p>Bảng điều khiển trung tâm & Cài đặt hệ thống</p>
     </div>
     <button class="btn-logout" onclick="window.location.href='index.html'">Đăng Xuất</button>
@@ -23,7 +23,7 @@
     <!-- 1. CÀI ĐẶT PHƯƠNG THỨC THANH TOÁN (QR / STK) -->
     <section class="admin-section" style="border-left: 4px solid #10b981;">
       <div class="section-title-box">
-        <h3>💳 Cấu Hình Phương Thức Thanh Toán (QR / STK)</h3>
+        <h3>Phương Thức Thanh Toán (QR / STK)</h3>
       </div>
       <div style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: flex-end;">
         <div>
@@ -45,7 +45,7 @@
     <!-- 2. KHU VỰC CHỈNH SỬA BẢNG GIÁ CHI TIẾT & LUẬT HÓA ĐƠN -->
     <section class="admin-section" style="border-left: 4px solid #4CAF50;">
       <div class="section-title-box">
-        <h3>⚙️ Chỉnh Sửa Bảng Giá Từng Dịch Vụ Cụ Thể (Cập nhật Sảnh & Hóa Đơn)</h3>
+        <h3>⚙️ Chỉnh Sửa Bảng Giá Từng Dịch Vụ Cụ Thể</h3>
       </div>
       
       <div class="admin-price-columns">
@@ -54,45 +54,45 @@
           <h4 style="color: #3b82f6;">🚗 Giá Uber Dẫn Tour</h4>
           <div class="admin-input-row"><label>Nhặt 15 Nến:</label><input type="text" id="adm_uber_15nen"></div>
           <div class="admin-input-row"><label>15 Nến + Quest:</label><input type="text" id="adm_uber_15nen_quest"></div>
-          <div class="admin-input-row"><label>Xám Nến (Full vạch):</label><input type="text" id="adm_uber_xamnen"></div>
+          <div class="admin-input-row"><label>Xám Nến:</label><input type="text" id="adm_uber_xamnen"></div>
           <div class="admin-input-row"><label>Xám Nến + Quest:</label><input type="text" id="adm_uber_xamnen_quest"></div>
-          <div class="admin-input-row"><label>Nhặt Cánh (Wing):</label><input type="text" id="adm_uber_nhatcanh"></div>
-          <div class="admin-input-row"><label>Dẫn Đi Eden:</label><input type="text" id="adm_uber_eden"></div>
+          <div class="admin-input-row"><label>Nhặt winglights:</label><input type="text" id="adm_uber_nhatcanh"></div>
+          <div class="admin-input-row"><label>Đi Eden:</label><input type="text" id="adm_uber_eden"></div>
         </div>
 
         <!-- Cột Host -->
         <div class="admin-price-box">
           <h4 style="color: #ff7f50;">✨ Giá Host Đồng Hành</h4>
-          <div class="admin-input-row"><label>Tâm Sự (1h):</label><input type="text" id="adm_host_tamsu"></div>
-          <div class="admin-input-row"><label>Đàn Hát Theo Yêu Cầu (1h):</label><input type="text" id="adm_host_dan"></div>
-          <div class="admin-input-row"><label>Fakelove / Ghép Đôi (1h):</label><input type="text" id="adm_host_nguoiyeu"></div>
-          <div class="admin-input-row"><label>Treo Máy Ngủ Cùng (Đêm):</label><input type="text" id="adm_host_treomay"></div>
+          <div class="admin-input-row"><label>Tâm Sự (1h/30p):</label><input type="text" id="adm_host_tamsu"></div>
+          <div class="admin-input-row"><label>Đàn (1h/30p):</label><input type="text" id="adm_host_dan"></div>
+          <div class="admin-input-row"><label>Fakelove (1h/30p):</label><input type="text" id="adm_host_nguoiyeu"></div>
+          <div class="admin-input-row"><label>Treo Máy (1h/30p):</label><input type="text" id="adm_host_treomay"></div>
         </div>
 
         <!-- Cột Log Acc -->
         <div class="admin-price-box">
           <h4 style="color: #10b981;">🔑 Giá Log Acc Trọn Gói</h4>
-          <div class="admin-input-row"><label>15 Nến / Ngày:</label><input type="text" id="adm_log_15nen"></div>
-          <div class="admin-input-row"><label>Xám Nến + Quest / Ngày:</label><input type="text" id="adm_log_xamnen"></div>
-          <div class="admin-input-row"><label>Gói Tuần (7 Ngày):</label><input type="text" id="adm_log_tuan"></div>
-          <div class="admin-input-row"><label>Gói Tháng (30 Ngày Full):</label><input type="text" id="adm_log_thang"></div>
+          <div class="admin-input-row"><label>15 Nến (Ngày/Tuần/Tháng):</label><input type="text" id="adm_log_15nen"></div>
+          <div class="admin-input-row"><label>Xám Nến + Quest (Ngày/Tuần/Tháng):</label><input type="text" id="adm_log_xamnen"></div>
+          <div class="admin-input-row"><label>Gói Tuần (xám nến + quest + nhặt vé sự kiện):</label><input type="text" id="adm_log_tuan"></div>
+          <div class="admin-input-row"><label>Gói Tháng (xám nến + quest + nhặt vé sự kiện):</label><input type="text" id="adm_log_thang"></div>
         </div>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
         <div>
-          <label><strong>⏰ Lịch Hoạt Động Của Page:</strong></label>
+          <label><strong>Lịch Hoạt Động Của Page:</strong></label>
           <textarea id="adminLichPage" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit; box-sizing: border-box;"></textarea>
         </div>
         <div>
-          <label><strong>📜 Điều Khoản & Quy Định Chung (Sảnh):</strong></label>
+          <label><strong>Điều Khoản & Quy Định Chung:</strong></label>
           <textarea id="adminDieuKhoan" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit; box-sizing: border-box;"></textarea>
         </div>
       </div>
 
       <!-- Ô CHỈNH SỬA LUẬT TRÊN HÓA ĐƠN ĐẶT ĐƠN -->
       <div style="margin-top: 15px;">
-        <label><strong>📜 Điều Khoản / Luật Trên Hóa Đơn Đặt Đơn (Mục 5 Popup Khách):</strong></label>
+        <label><strong>Điều Khoản Trên Hóa Đơn:</strong></label>
         <textarea id="adminLuatHoaDon" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit; box-sizing: border-box;"></textarea>
       </div>
 
@@ -102,7 +102,7 @@
     <!-- 3. THEO DÕI ĐƠN ĐANG CHẠY & DUYỆT TIỀN MẶT -->
     <section class="admin-section" style="border-left: 4px solid #f59e0b;">
       <div class="section-title-box">
-        <h3>⏳ Đơn Hàng Đang Tiến Hành (Duyệt Tiền Mặt Để Mở Chat)</h3>
+        <h3>⏳ Đơn Hàng Đang Tiến Hành (check thanh toán)</h3>
       </div>
       <div class="table-responsive">
         <table class="admin-table">
@@ -127,7 +127,7 @@
     <!-- 4. HỘP THƯ BÁO CÁO / KHIẾU NẠI -->
     <section class="admin-section" style="border-left: 4px solid #dc2626;">
       <div class="section-title-box">
-        <h3 style="color:#dc2626;">🚩 Hộp Thư Báo Cáo & Khiếu Nại (Kèm Ảnh Bằng Chứng)</h3>
+        <h3 style="color:#dc2626;">🚩 Hộp Thư Báo Cáo & Khiếu Nại</h3>
       </div>
       <div id="bangDanhSachBaoCao">
         <p style="color:#888;">Chưa có báo cáo vi phạm nào.</p>
@@ -137,7 +137,7 @@
     <!-- 5. PHÁT THÔNG BÁO -->
     <div class="announcement-control-grid">
       <section class="admin-section" style="border-left: 4px solid #ff7f50;">
-        <div class="section-title-box"><h3>📢 Thông Báo Sảnh Chờ (Khách)</h3></div>
+        <div class="section-title-box"><h3>Thông Báo Sảnh Chờ</h3></div>
         <textarea id="tbLobbyInput" rows="2" placeholder="Thông báo Sảnh..." style="width: 100%; margin-bottom: 10px; box-sizing: border-box;"></textarea>
         <div style="display: flex; gap: 8px;">
           <button onclick="guiThongBaoLobby()" style="background: #ff7f50; color:white; border:none; padding:8px 14px; border-radius:6px; font-weight:bold; cursor:pointer;">Đăng Lên Sảnh ✨</button>
@@ -157,7 +157,7 @@
       <div class="section-title-box"><h3>⛔ Danh Sách Đen (Blacklist)</h3></div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
         <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
-          <h4 style="margin-top:0; color:#dc2626;">Khách Hàng Bị Cấm Đặt Đơn</h4>
+          <h4 style="margin-top:0; color:#dc2626;">Khách Hàng Bị Cấm</h4>
           <div style="display:flex; gap:6px; margin-bottom:10px;">
             <input type="text" id="inputCamKhach" placeholder="Tên khách cần cấm..." style="flex:1;">
             <button onclick="themBlacklistKhach()" style="background:#dc2626; color:white; border:none; padding:6px 12px; border-radius:4px; font-weight:bold; cursor:pointer;">Thêm Cấm</button>
@@ -166,7 +166,7 @@
         </div>
 
         <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
-          <h4 style="margin-top:0; color:#475569;">Nhân Sự Bị Đưa Vào Sổ Đen</h4>
+          <h4 style="margin-top:0; color:#475569;">Nhân Sự Bị Cấm</h4>
           <ul id="listBlacklistStaff" style="padding-left:18px; font-size:13px; margin:0;">
             <li style="color:#888;">Chưa có staff nào vi phạm</li>
           </ul>
@@ -182,14 +182,14 @@
         <div style="display: flex; gap: 10px; margin-bottom: 10px;">
           <input type="text" id="newStaffTen" placeholder="Tên Staff (vd: Michii)" style="flex: 2; padding: 8px;">
           <input type="text" id="newStaffIcon" placeholder="Icon (vd: 🌸)" style="flex: 1; max-width: 100px; padding: 8px;">
-          <input type="password" id="newStaffPass" placeholder="Mật khẩu riêng" style="flex: 2; padding: 8px;">
+          <input type="password" id="newStaffPass" placeholder="Mật khẩu" style="flex: 2; padding: 8px;">
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 14px; border-radius: 6px; border: 1px solid #e2e8f0;">
           <div style="display: flex; align-items: center; gap: 18px;">
-            <span style="font-size: 13px; font-weight: bold;">Kỹ năng:</span>
-            <label><input type="checkbox" id="skill_uber" value="uber" checked> 🚗 Uber</label>
-            <label><input type="checkbox" id="skill_host" value="host" checked> ✨ Host</label>
-            <label><input type="checkbox" id="skill_logacc" value="logacc"> 🔑 Log Acc</label>
+            <span style="font-size: 13px; font-weight: bold;">Mảng:</span>
+            <label><input type="checkbox" id="skill_uber" value="uber" checked>Uber</label>
+            <label><input type="checkbox" id="skill_host" value="host" checked>Host</label>
+            <label><input type="checkbox" id="skill_logacc" value="logacc">Log Acc</label>
           </div>
           <button onclick="themStaffMoi()" style="background: #8b5cf6; color:white; border:none; padding:8px 18px; border-radius:6px; font-weight:bold; cursor:pointer;">Tạo Tài Khoản ✨</button>
         </div>
@@ -197,7 +197,7 @@
       <div class="table-responsive">
         <table class="admin-table">
           <thead>
-            <tr><th>Icon</th><th>Tên</th><th>Mật Khẩu</th><th>Kỹ Năng</th><th>Thao Tác</th></tr>
+            <tr><th>Icon</th><th>Tên</th><th>Mật Khẩu</th><th>Mảng</th><th>Thao Tác</th></tr>
           </thead>
           <tbody id="bangDanhSachStaff"></tbody>
         </table>
@@ -206,7 +206,7 @@
 
     <!-- 8. SỔ LƯU TRỮ HÓA ĐƠN -->
     <section class="admin-section">
-      <div class="section-title-box"><h3>📑 Sổ Lưu Trữ Hóa Đơn Đã Hoàn Thành</h3><span class="badge-count" id="countHoaDon">0 hóa đơn</span></div>
+      <div class="section-title-box"><h3>Hóa Đơn Đã Hoàn Thành</h3><span class="badge-count" id="countHoaDon">0 hóa đơn</span></div>
       <div class="table-responsive">
         <table class="admin-table">
           <thead>
@@ -219,7 +219,7 @@
 
     <!-- 9. FEEDBACK -->
     <section class="admin-section">
-      <div class="section-title-box"><h3>⭐ Feedback Khách Hàng (Admin có quyền xóa)</h3></div>
+      <div class="section-title-box"><h3>Feedback Khách Hàng</h3></div>
       <div class="feedback-admin-grid" id="bangAdminFeedback"></div>
     </section>
 
@@ -282,7 +282,7 @@
     db.ref('caiDatPage').once('value').then(function(snap) {
       var set = snap.val() || {};
       document.getElementById("adminLichPage").value = set.lichPage || "• Ca Sáng: 08:00 - 12:00\n• Ca Chiều: 13:30 - 17:30\n• Ca Tối: 18:00 - 24:00";
-      document.getElementById("adminDieuKhoan").value = set.dieuKhoan || "✔ Tiền mặt: Chuyển khoản 100% để Admin duyệt.\n✔ Tim Sky: Trả tim mỗi ngày sau ca.";
+      document.getElementById("adminDieuKhoan").value = set.dieuKhoan || "✔ Tiền mặt: Chuyển khoản 100%.\n✔ Tim Sky: Trả tim mỗi ngày sau ca.";
       document.getElementById("adminLuatHoaDon").value = set.luatHoaDon || "• Khách hàng và Staff trao đổi lịch sự, tôn trọng lẫn nhau.\n• Nếu có điều gì không hài lòng vui lòng bấm nút Report để Admin bồi thường.";
     });
 
@@ -299,7 +299,7 @@
         dieuKhoan: document.getElementById("adminDieuKhoan").value,
         luatHoaDon: document.getElementById("adminLuatHoaDon").value
       }).then(function() {
-        alert("Đã cập nhật Bảng Giá & Luật Hóa Đơn thành công!");
+        alert("Đã cập nhật thành công!");
       });
     }
 
@@ -315,7 +315,7 @@
       var countXong = 0;
       Object.keys(data).reverse().forEach(function(key) {
         var dh = data[key];
-        var ttText = dh.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền Mặt";
+        var ttText = dh.thanhToan === "Tim_Sky" ? "Tim" : "Tiền";
 
         if (dh.trangThai === "hoan_thanh") {
           countXong++;
@@ -353,7 +353,7 @@
         db.ref('donHangSky/' + orderId).update({ daThanhToanFull: true });
         db.ref('phongChat/' + orderId + '/tinNhan').push({
           nguoiGui: "Hệ thống",
-          noiDung: "👑 Admin đã xác nhận nhận đủ tiền thanh toán. Ô gửi mã kết bạn đã mở!"
+          noiDung: "Admin đã xác nhận thanh toán. Gửi mã kết bạn đã mở!"
         });
       }
     }
