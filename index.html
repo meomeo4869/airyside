@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng Đăng Nhập - Dịch Vụ Sky</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -9,84 +14,112 @@
     <h2>Cổng Đăng Nhập</h2>
     
     <label>Bạn là ai dạ?</label><br>
-    <select id="roleSelect" onchange="hienThiMatKhau()">
+    <select id="roleSelect" onchange="hienThiTheoVaiTro()">
       <option value="khach">Khách Hàng</option>
-      <option value="staff">Nhân Sự</option>
-      <option value="admin">Chủ Page</option>
+      <option value="staff">Nhân Sự (Staff)</option>
+      <option value="admin">Chủ Page (Admin)</option>
     </select>
     <br><br>
 
-    <!-- KHU VỰC 1: Dành cho Khách -->
+    <!-- 1. KHÁCH HÀNG -->
     <div id="khuVucKhach">
-      <button onclick="window.location.href='lobby.html'">Vào Sảnh Tham Quan</button>
+      <button onclick="window.location.href='lobby.html'">Vào Sảnh Tham Quan ✨</button>
     </div>
 
-    <!-- KHU VỰC 2: Nhập Pass (Cho Staff/Admin) -->
-    <div id="khuVucPass" style="display: none;">
-      <label>Mật mã bí mật:</label><br>
-      <input type="password" id="matKhau" placeholder="Nhập pass vào đây nha...">
+    <!-- 2. ADMIN NHẬP PASS -->
+    <div id="khuVucAdmin" style="display: none;">
+      <label>Mật mã Chủ Page:</label><br>
+      <input type="password" id="passAdmin" placeholder="Nhập pass admin..." onkeypress="if(event.key==='Enter') dangNhapAdmin()">
       <br><br>
-      <button onclick="kiemTraPass()">Xác Nhận Mật Khẩu</button>
+      <button onclick="dangNhapAdmin()">Vào Trang Quản Trị 👑</button>
     </div>
 
-    <!-- KHU VỰC 3: Chọn Tên (Chỉ hiện khi Staff nhập đúng pass) -->
-    <div id="khuVucChonStaff" style="display: none;">
-      <label>Bồ là ai dạ?</label><br>
-      <select id="chonStaff">
-        <option value="🌸">Michii 🌸</option>
-        <option value="🍓">Bé Dâu 🍓</option>
-        <option value="⚡">SkyBoy ⚡</option>
+    <!-- 3. STAFF ĐĂNG NHẬP THEO TÀI KHOẢN CLOUD -->
+    <div id="khuVucStaff" style="display: none;">
+      <label>Chọn tên nhân sự của bạn:</label><br>
+      <select id="selectStaffCloud">
+        <option value="none">-- Đang tải danh sách Staff --</option>
       </select>
       <br><br>
-      <button onclick="vaoTrangStaff()">Vào Ca Làm Việc</button>
+      <label>Mật khẩu riêng của bạn:</label><br>
+      <input type="password" id="passStaff" placeholder="Nhập pass riêng..." onkeypress="if(event.key==='Enter') dangNhapStaff()">
+      <br><br>
+      <button onclick="dangNhapStaff()">Vào Ca Làm Việc 🚀</button>
     </div>
   </div>
 
   <script>
-    // Phép thuật 1: Phân luồng hiển thị rành mạch
-    function hienThiMatKhau() {
-      var vaiTro = document.getElementById("roleSelect").value;
-      var khach = document.getElementById("khuVucKhach");
-      var pass = document.getElementById("khuVucPass");
-      var staff = document.getElementById("khuVucChonStaff");
-      
-      // Giấu hết đi trước cho an toàn
-      khach.style.display = "none";
-      pass.style.display = "none";
-      staff.style.display = "none";
-      
-      if (vaiTro == "khach") {
-        khach.style.display = "block"; // Chỉ hiện nút khách
+    const firebaseConfig = {
+      apiKey: "AIzaSyCEuMuKn4ZrzQNQCYnxt9XeNpPUsfQk54c",
+      authDomain: "ordersky.firebaseapp.com",
+      databaseURL: "https://ordersky-default-rtdb.firebaseio.com",
+      projectId: "ordersky",
+      storageBucket: "ordersky.firebasestorage.app",
+      messagingSenderId: "332284986658",
+      appId: "1:332284986658:web:02c42c4181900fc2e0917b",
+      measurementId: "G-35XQCYMK8V"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    var danhSachStaffData = {};
+
+    // Tải danh sách Staff từ Firebase
+    db.ref('danhSachStaff').on('value', function(snapshot) {
+      danhSachStaffData = snapshot.val() || {};
+      var select = document.getElementById("selectStaffCloud");
+      select.innerHTML = "";
+
+      var keys = Object.keys(danhSachStaffData);
+      if (keys.length === 0) {
+        select.innerHTML = `<option value="none">Chưa có Staff nào (Liên hệ Admin)</option>`;
       } else {
-        pass.style.display = "block"; // Chỉ hiện ô pass
+        keys.forEach(function(k) {
+          var st = danhSachStaffData[k];
+          select.innerHTML += `<option value="${k}">${st.icon || "🌸"} ${st.ten}</option>`;
+        });
       }
+    });
+
+    function hienThiTheoVaiTro() {
+      var vaiTro = document.getElementById("roleSelect").value;
+      document.getElementById("khuVucKhach").style.display = vaiTro === "khach" ? "block" : "none";
+      document.getElementById("khuVucAdmin").style.display = vaiTro === "admin" ? "block" : "none";
+      document.getElementById("khuVucStaff").style.display = vaiTro === "staff" ? "block" : "none";
     }
 
-    // Phép thuật 2: Kiểm tra ổ khóa
-    function kiemTraPass() {
-      var vaiTro = document.getElementById("roleSelect").value;
-      var pass = document.getElementById("matKhau").value;
-
-      if (vaiTro == "staff" && pass == "staff123") {
-        document.getElementById("khuVucPass").style.display = "none";
-        document.getElementById("khuVucChonStaff").style.display = "block";
-      } else if (vaiTro == "admin" && pass == "boss123") {
-        // Chuyển thẳng vào Dashboard Quản Trị
+    function dangNhapAdmin() {
+      var pass = document.getElementById("passAdmin").value.trim();
+      if (pass === "boss123") {
         window.location.href = "admin.html";
       } else {
-        alert("Sai mật khẩu rồi bồ ơi!");
+        alert("Sai mật khẩu Admin rồi bồ ơi! (Mặc định: boss123)");
       }
     }
 
-    // Phép thuật 3: Bỏ túi Icon
-    function vaoTrangStaff() {
-      var iconStaff = document.getElementById("chonStaff").value;
-      localStorage.setItem("myIcon", iconStaff);
-      window.location.href = "staff.html";
+    function dangNhapStaff() {
+      var staffId = document.getElementById("selectStaffCloud").value;
+      var pass = document.getElementById("passStaff").value.trim();
+
+      if (staffId === "none" || !danhSachStaffData[staffId]) {
+        alert("Chưa có thông tin nhân sự!");
+        return;
+      }
+
+      var st = danhSachStaffData[staffId];
+      if (st.pass === pass) {
+        // Lưu thông tin nhân sự và mảng kỹ năng vào máy
+        localStorage.setItem("myIcon", st.icon || "🌸");
+        localStorage.setItem("myStaffName", st.ten);
+        localStorage.setItem("myStaffSkills", JSON.stringify(st.kyNang || ["uber", "host", "logacc"]));
+        
+        window.location.href = "staff.html";
+      } else {
+        alert("Sai mật khẩu riêng của bồ rồi nha!");
+      }
     }
 
-    // Đánh thức phép thuật lúc vừa vào trang
-    hienThiMatKhau();
+    hienThiTheoVaiTro();
   </script>
 
 </body>
