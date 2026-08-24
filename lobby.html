@@ -10,6 +10,10 @@
 </head>
 <body class="lobby-layout">
 
+  <!-- CỤM BONG BÓNG MINI CHAT RIÊNG CỦA KHÁCH -->
+  <div id="customerChatheadsList" class="chatheads-container"></div>
+
+  <!-- BANNER CÁC ĐƠN ĐANG CHỜ CỦA KHÁCH -->
   <div id="liveOrdersContainer" style="position: sticky; top: 0; z-index: 1000; display: flex; flex-direction: column; gap: 4px;"></div>
 
   <div class="floating-order-btn" onclick="window.location.href='order.html'">
@@ -78,10 +82,10 @@
           </div>
         </div>
         <div class="terms-box">
-          <h3>📜 Điều Khoản Thanh Toán & Cọc</h3>
+          <h3>📜 Điều Khoản & Quy Định Cọc</h3>
           <div id="noiDungDieuKhoan" style="white-space: pre-line; line-height: 1.6;">
-            ✔ Tiền mặt: Cọc 50% khi nhận đơn, 50% còn lại thanh toán sau khi hoàn tất.
-            ✔ Tim Sky: Thanh toán trả tim mỗi ngày sau khi kết bạn ingame.
+            ✔ Tiền mặt: Cọc 50% trong phòng chat trước khi gửi mã kết bạn.
+            ✔ Tim Sky: Thanh toán trả tim mỗi ngày sau khi xong ca.
           </div>
         </div>
       </div>
@@ -95,7 +99,7 @@
     </section>
   </div>
 
-  <!-- KHUNG CHAT MINI TẠI SẢNH -->
+  <!-- KHUNG MINI CHAT TẠI SẢNH -->
   <div id="chatBoxKhach" class="chat-container">
     <div class="chat-header">
       <span id="chatTitleKhach">Chat Với Staff</span>
@@ -103,14 +107,16 @@
       <button class="close-chat" onclick="dongChatKhach()">✕</button>
     </div>
 
-    <!-- HÓA ĐƠN CHI TIẾT THEO 2 HÀNG -->
-    <div id="invoiceKhach" class="invoice-card">
-      <div class="invoice-header">
-        <span>📑 HÓA ĐƠN ĐƠN HÀNG</span>
-        <span id="statusCocBadge" class="badge-deposit">Chưa Cọc</span>
+    <!-- BƯỚC 1: FOCUS VÀO HÓA ĐƠN & QR CHUYỂN KHOẢN CỌC 50% -->
+    <div id="boxFocusChuyenCoc" class="invoice-card" style="display: none; text-align: center;">
+      <h4 style="margin: 0 0 6px 0; color: #ea580c;">💸 BƯỚC 1: THANH TOÁN CỌC (50%)</h4>
+      <p id="txtFocusTongGia" style="margin: 4px 0; font-size: 13px;"><strong>Tổng đơn:</strong> Đang tải...</p>
+      <div class="qr-box">
+        <p style="color:#c2410c; margin:0 0 4px 0; font-weight:bold;">Momo / Ngân Hàng: 0987.654.321</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">Nội dung CK: <span id="txtFocusMaDon"></span></p>
       </div>
-      <div class="invoice-body" id="invoiceDetailsKhach"></div>
-      <button id="btnKhachBaoDaCoc" onclick="khachBaoDaCoc()" style="width: 100%; margin-top: 6px; background: #ea580c; font-size: 11px; padding: 5px;">Tôi Đã Chuyển Tiền Cọc 💸</button>
+      <button onclick="khachBaoDaCoc()" style="width: 100%; margin-top: 8px; background: #ea580c; padding: 6px; font-weight: bold;">Tôi Đã Chuyển Tiền Cọc 50% ✔️</button>
+      <p style="font-size: 11px; color: #888; margin: 4px 0 0 0;">(Sau khi Staff xác nhận nhận cọc, ô mã kết bạn sẽ tự mở)</p>
     </div>
 
     <div class="chat-pinned">
@@ -121,8 +127,9 @@
       ⚠️ Staff đã xác nhận hoàn thành đơn. Hãy bấm ✔ để hoàn tất!
     </div>
 
+    <!-- BƯỚC 2: KHUNG GỬI MÃ KẾT BẠN & TIN NHẮN CHAT -->
     <div class="chat-body" id="chatBodyKhach">
-      <div id="manHinhKetBanKhach" style="text-align: center; margin-top: 20px;">
+      <div id="manHinhKetBanKhach" style="text-align: center; margin-top: 20px; display: none;">
         <p style="font-size: 13px;">Gửi mã kết bạn Sky để mở chat:</p>
         <input type="text" id="maKetBanKhach" placeholder="Dán mã kết bạn..." style="width: 80%; margin-bottom: 8px;">
         <button onclick="xacNhanMaKhach()" style="padding: 6px 12px; font-size: 12px;">Gửi Mã</button>
@@ -137,20 +144,16 @@
     </div>
   </div>
 
-  <!-- POPUP BÁO CÁO CÓ NÚT TẢI ẢNH TỪ ĐIỆN THOẠI -->
+  <!-- POPUP BÁO CÁO CÓ NÚT TẢI ẢNH -->
   <div id="modalReport" class="modal-overlay">
     <div class="modal-content">
       <button class="btn-dong-modal" onclick="dongPopupReport()">✕</button>
       <h3 style="margin-top:0; color:#dc2626;">🚩 Báo Cáo / Khiếu Nại Sự Cố</h3>
-      <p style="font-size:12px; color:#666;">Báo cáo kèm bằng chứng sẽ chuyển trực tiếp tới Admin xử lý.</p>
-      
       <label style="font-size: 13px; font-weight: bold;">Lý do khiếu nại:</label>
       <textarea id="reportLyDo" rows="3" placeholder="Mô tả sự cố..." style="width:100%; margin:6px 0 10px 0; font-family:inherit; box-sizing:border-box;"></textarea>
-      
-      <label style="font-size: 13px; font-weight: bold;">Tải ảnh bằng chứng từ máy:</label>
+      <label style="font-size: 13px; font-weight: bold;">Tải ảnh bằng chứng từ thư viện:</label>
       <input type="file" id="reportFileAnh" accept="image/*" style="margin: 6px 0 15px 0; font-size: 12px;">
-      
-      <button onclick="guiBaoCao()" style="width:100%; background:#dc2626; padding:10px; font-weight:bold;">Gửi Báo Cáo</button>
+      <button onclick="guiBaoCao()" style="width:100%; background:#dc2626; padding:10px; font-weight:bold;">Gửi Báo Cáo Lên Admin</button>
     </div>
   </div>
 
@@ -218,12 +221,18 @@
     var activeChatOrderId = null;
     var currentTenKhach = "Khách Hàng";
     var currentStaffCuaDon = "";
+    var danhSachDonDangChayKhach = {};
     var selectedStar = 5;
 
     function theoDoiCacDonCuaKhach() {
       var container = document.getElementById("liveOrdersContainer");
       container.innerHTML = "";
-      if (myOrderIds.length === 0) return;
+      danhSachDonDangChayKhach = {};
+
+      if (myOrderIds.length === 0) {
+        capNhatBongBongChatKhach();
+        return;
+      }
 
       myOrderIds.forEach(function(orderId) {
         db.ref('donHangSky/' + orderId).on('value', function(snapshot) {
@@ -233,8 +242,15 @@
 
           if (!don || don.trangThai === "hoan_thanh") {
             if (existingBanner) existingBanner.remove();
+            delete danhSachDonDangChayKhach[orderId];
+            capNhatBongBongChatKhach();
             return;
           }
+
+          if (don.daNhan) {
+            danhSachDonDangChayKhach[orderId] = don;
+          }
+          capNhatBongBongChatKhach();
 
           var ttText = don.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền mặt";
           var statusHTML = don.daNhan 
@@ -266,8 +282,26 @@
     }
     theoDoiCacDonCuaKhach();
 
+    // 3. TẠO BONG BÓNG MINI CHAT RIÊNG BIỆT CHO KHÁCH
+    function capNhatBongBongChatKhach() {
+      var box = document.getElementById("customerChatheadsList");
+      box.innerHTML = "";
+
+      Object.keys(danhSachDonDangChayKhach).forEach(function(idDon) {
+        var dh = danhSachDonDangChayKhach[idDon];
+        var isAct = activeChatOrderId === idDon ? "active" : "";
+        box.innerHTML += `
+          <div class="chathead-bubble ${isAct}" onclick="moChatChoDon('${idDon}')" title="Đơn: ${dh.mangDichVu} (Staff ${dh.staffNhan})">
+            <span>${dh.staffNhan || "🌸"}</span>
+          </div>
+        `;
+      });
+    }
+
+    // 2. MỞ CHAT & FOCUS VÀO CỌC 50%
     function moChatChoDon(orderId) {
       activeChatOrderId = orderId;
+      capNhatBongBongChatKhach();
       document.getElementById("chatBoxKhach").style.display = "flex";
 
       db.ref('donHangSky/' + orderId).on('value', function(snap) {
@@ -277,36 +311,20 @@
         currentTenKhach = don.tenKhach;
         currentStaffCuaDon = don.staffNhan || "Staff";
         document.getElementById("chatTitleKhach").innerText = `Chat: ${don.mangDichVu.toUpperCase()} (Staff ${don.staffNhan || "🌸"})`;
-        
-        var boxInv = document.getElementById("invoiceDetailsKhach");
-        if (don.thanhToan === "Tim_Sky") {
-          document.getElementById("statusCocBadge").style.display = "none";
-          document.getElementById("btnKhachBaoDaCoc").style.display = "none";
-          boxInv.innerHTML = `
-            <p><strong>Dịch vụ:</strong> ${don.mangDichVu.toUpperCase()} (${don.cuThe})</p>
-            <p><strong>Hình thức:</strong> 💖 Trả Tim Sky (Gửi tim mỗi ngày sau khi kết bạn ingame)</p>
-          `;
+        document.getElementById("txtFocusMaDon").innerText = orderId.substring(1, 7);
+        document.getElementById("txtFocusTongGia").innerHTML = `<strong>Tổng đơn:</strong> ${don.giaNiemYet || "Theo bảng giá"}`;
+
+        var boxFocusCoc = document.getElementById("boxFocusChuyenCoc");
+        var manHinhKB = document.getElementById("manHinhKetBanKhach");
+
+        if (don.thanhToan === "Tien_VND" && !don.daCoc) {
+          // Chưa cọc tiền mặt -> Hiện bảng QR cọc, ẩn ô mã kết bạn
+          boxFocusCoc.style.display = "block";
+          manHinhKB.style.display = "none";
         } else {
-          document.getElementById("statusCocBadge").style.display = "inline-block";
-          boxInv.innerHTML = `
-            <p><strong>1. Tổng giá trị đơn:</strong> Theo bảng giá niêm yết</p>
-            <p><strong>2. Tiền cọc cần chuyển (50%):</strong> Vui lòng chuyển trước ca</p>
-            <p><strong>3. Còn lại thanh toán sau ca (50%):</strong> Trả sau khi bấm hoàn thành</p>
-            <div class="qr-box">
-              <p style="color:#c2410c; margin:0; font-weight:bold;">Momo/Bank: 0987.654.321 (Nội dung: ${orderId.substring(1,7)})</p>
-            </div>
-          `;
-          if (don.daCoc) {
-            document.getElementById("statusCocBadge").innerText = "Đã Xác Nhận Cọc ✔️";
-            document.getElementById("statusCocBadge").style.background = "#bbf7d0";
-            document.getElementById("statusCocBadge").style.color = "#15803d";
-            document.getElementById("btnKhachBaoDaCoc").style.display = "none";
-          } else {
-            document.getElementById("statusCocBadge").innerText = "Chưa Cọc 50%";
-            document.getElementById("statusCocBadge").style.background = "#fef08a";
-            document.getElementById("statusCocBadge").style.color = "#854d0e";
-            document.getElementById("btnKhachBaoDaCoc").style.display = "block";
-          }
+          // Đã cọc hoặc đơn Tim -> Ẩn bảng cọc, mở ô mã kết bạn
+          boxFocusCoc.style.display = "none";
+          manHinhKB.style.display = "block";
         }
 
         if (don.staffHoanThanh) {
@@ -324,9 +342,9 @@
     function khachBaoDaCoc() {
       db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({
         nguoiGui: "Khách",
-        noiDung: "💸 Tôi đã hoàn tất chuyển cọc 50%, Staff kiểm tra và xác nhận giúp mình nhé!"
+        noiDung: "💸 Tôi đã hoàn tất chuyển cọc 50%, Staff kiểm tra và bấm xác nhận giúp mình nhé!"
       });
-      alert("Đã báo chuyển cọc thành công!");
+      alert("Đã gửi thông báo chuyển cọc đến Staff!");
     }
 
     function langNghePhongChat(idDon) {
@@ -378,10 +396,14 @@
       }
     }
 
-    function dongChatKhach() { document.getElementById("chatBoxKhach").style.display = "none"; }
+    function dongChatKhach() { 
+      document.getElementById("chatBoxKhach").style.display = "none"; 
+      activeChatOrderId = null;
+      capNhatBongBongChatKhach();
+    }
 
     function xacNhanXongKhach() {
-      if (confirm("Xác nhận chuyến đi này đã hoàn tất cùng Staff?")) {
+      if (confirm("Xác nhận ca làm việc này đã hoàn tất cùng Staff?")) {
         db.ref('donHangSky/' + activeChatOrderId).update({ khachHoanThanh: true });
         db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({
           nguoiGui: "Hệ thống",
@@ -400,18 +422,14 @@
       }
     }
 
-    // TẢI ẢNH BẰNG CHỨNG TRỰC TIẾP TỪ ĐIỆN THOẠI
+    // BÁO CÁO CÓ ẢNH TỪ MÁY
     function moPopupReport() { document.getElementById("modalReport").style.display = "flex"; }
     function dongPopupReport() { document.getElementById("modalReport").style.display = "none"; }
 
     function guiBaoCao() {
       var lyDo = document.getElementById("reportLyDo").value.trim();
       var fileInput = document.getElementById("reportFileAnh");
-
-      if (!lyDo) {
-        alert("Bồ nhập lý do báo cáo nha!");
-        return;
-      }
+      if (!lyDo) { alert("Bồ nhập lý do báo cáo nha!"); return; }
 
       if (fileInput.files && fileInput.files[0]) {
         var reader = new FileReader();
