@@ -10,7 +10,6 @@
 </head>
 <body class="lobby-layout">
 
-  <!-- CỤM BANNER TIẾN TRÌNH CÁC ĐƠN CỦA KHÁCH -->
   <div id="liveOrdersContainer" style="position: sticky; top: 0; z-index: 1000; display: flex; flex-direction: column; gap: 4px;"></div>
 
   <div class="floating-order-btn" onclick="window.location.href='order.html'">
@@ -18,8 +17,6 @@
   </div>
 
   <div class="lobby-container">
-    
-    <!-- KHUNG THÔNG BÁO TỪ PAGE -->
     <div id="boxThongBaoPage" class="lobby-announcement" style="display: none;">
       <span class="announcement-icon">📢</span>
       <div class="announcement-text">
@@ -33,34 +30,23 @@
       <p>Nơi thư giãn, xem bảng giá chi tiết và kết nối cùng đội ngũ đồng hành</p>
     </header>
 
-    <!-- BẢNG GIÁ CHI TIẾT 3 MẢNG -->
     <section class="lobby-section">
       <h2>💎 Bảng Giá Dịch Vụ Chi Tiết</h2>
-      
       <div class="detailed-pricing-grid">
-        
-        <!-- CỘT 1: UBER -->
         <div class="price-category-card">
-          <div class="category-header uber-header">
-            <h3>🚗 UBER DẪN TOUR</h3>
-            <p>Hộ tống an toàn, hoàn thành nhanh gọn</p>
-          </div>
+          <div class="category-header uber-header"><h3>🚗 UBER DẪN TOUR</h3><p>Hộ tống an toàn</p></div>
           <div class="category-body">
             <div class="service-item"><span>Nhặt 15 Nến</span><strong id="p_uber_15nen">Liên hệ</strong></div>
             <div class="service-item"><span>Nhặt 15 Nến + Quest</span><strong id="p_uber_15nen_quest">Liên hệ</strong></div>
             <div class="service-item"><span>Xám Nến (Full vạch)</span><strong id="p_uber_xamnen">Liên hệ</strong></div>
             <div class="service-item"><span>Xám Nến + Quest</span><strong id="p_uber_xamnen_quest">Liên hệ</strong></div>
-            <div class="service-item"><span>Full Nhặt Cánh (Wing)</span><strong id="p_uber_nhatcanh">Liên hệ</strong></div>
+            <div class="service-item"><span>Full Nhặt Cánh</span><strong id="p_uber_nhatcanh">Liên hệ</strong></div>
             <div class="service-item"><span>Dẫn Đi Eden Full Ca</span><strong id="p_uber_eden">Liên hệ</strong></div>
           </div>
         </div>
 
-        <!-- CỘT 2: HOST -->
         <div class="price-category-card popular-card">
-          <div class="category-header host-header">
-            <h3>✨ HOST ĐỒNG HÀNH</h3>
-            <p>Trò chuyện, đàn hát & chữa lành</p>
-          </div>
+          <div class="category-header host-header"><h3>✨ HOST ĐỒNG HÀNH</h3><p>Trò chuyện & đàn hát</p></div>
           <div class="category-body">
             <div class="service-item"><span>Tâm Sự / Trò Chuyện (1h)</span><strong id="p_host_tamsu">Liên hệ</strong></div>
             <div class="service-item"><span>Đàn Hát Theo Yêu Cầu (1h)</span><strong id="p_host_dan">Liên hệ</strong></div>
@@ -69,24 +55,18 @@
           </div>
         </div>
 
-        <!-- CỘT 3: LOG ACC -->
         <div class="price-category-card">
-          <div class="category-header log-header">
-            <h3>🔑 LOG ACC TRỌN GÓI</h3>
-            <p>Bảo mật tuyệt đối, bàn giao chuẩn giờ</p>
-          </div>
+          <div class="category-header log-header"><h3>🔑 LOG ACC TRỌN GÓI</h3><p>Bảo mật & đúng hẹn</p></div>
           <div class="category-body">
             <div class="service-item"><span>Chạy 15 Nến / Ngày</span><strong id="p_log_15nen">Liên hệ</strong></div>
-            <div class="service-item"><span>Chạy Xám Nến + Quest / Ngày</span><strong id="p_log_xamnen">Liên hệ</strong></div>
+            <div class="service-item"><span>Chạy Xám Nến + Quest</span><strong id="p_log_xamnen">Liên hệ</strong></div>
             <div class="service-item"><span>Gói Tuần (7 Ngày)</span><strong id="p_log_tuan">Liên hệ</strong></div>
-            <div class="service-item"><span>Gói Tháng (30 Ngày Full)</span><strong id="p_log_thang">Liên hệ</strong></div>
+            <div class="service-item"><span>Gói Tháng (30 Ngày)</span><strong id="p_log_thang">Liên hệ</strong></div>
           </div>
         </div>
-
       </div>
     </section>
 
-    <!-- LỊCH HOẠT ĐỘNG & ĐIỀU KHOẢN -->
     <section class="lobby-section">
       <div class="terms-container">
         <div class="terms-box">
@@ -94,21 +74,19 @@
           <div id="noiDungLichPage" style="white-space: pre-line; line-height: 1.6;">
             • Ca Sáng: 08:00 - 12:00
             • Ca Chiều: 13:30 - 17:30
-            • Ca Tối: 18:00 - 24:00
+            • Ca Tối (Cao điểm): 18:00 - 24:00
           </div>
         </div>
         <div class="terms-box">
-          <h3>📜 Điều Khoản & Quyền Lợi</h3>
+          <h3>📜 Điều Khoản Thanh Toán & Cọc</h3>
           <div id="noiDungDieuKhoan" style="white-space: pre-line; line-height: 1.6;">
-            ✔ Thanh toán: Chuyển khoản ngân hàng hoặc trả Tim trực tiếp.
-            ✔ Đúng hẹn: Trao đổi chi tiết lịch trình với Staff trong khung chat.
-            ✔ Bảo đảm: Hoàn tiền / Tim 100% nếu phát sinh lỗi từ phía Staff.
+            ✔ Tiền mặt: Cọc 50% khi nhận đơn, 50% còn lại thanh toán sau khi hoàn tất.
+            ✔ Tim Sky: Thanh toán trả tim mỗi ngày sau khi kết bạn ingame.
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TƯỜNG FEEDBACK -->
     <section class="lobby-section">
       <h2>⭐ Feedback Từ Khách Hàng</h2>
       <div class="feedback-grid" id="feedbackWall">
@@ -121,14 +99,28 @@
   <div id="chatBoxKhach" class="chat-container">
     <div class="chat-header">
       <span id="chatTitleKhach">Chat Với Staff</span>
+      <button class="btn-report" onclick="moPopupReport()">🚩 Báo Cáo</button>
       <button class="close-chat" onclick="dongChatKhach()">✕</button>
     </div>
+
+    <!-- HÓA ĐƠN CHI TIẾT THEO 2 HÀNG -->
+    <div id="invoiceKhach" class="invoice-card">
+      <div class="invoice-header">
+        <span>📑 HÓA ĐƠN ĐƠN HÀNG</span>
+        <span id="statusCocBadge" class="badge-deposit">Chưa Cọc</span>
+      </div>
+      <div class="invoice-body" id="invoiceDetailsKhach"></div>
+      <button id="btnKhachBaoDaCoc" onclick="khachBaoDaCoc()" style="width: 100%; margin-top: 6px; background: #ea580c; font-size: 11px; padding: 5px;">Tôi Đã Chuyển Tiền Cọc 💸</button>
+    </div>
+
     <div class="chat-pinned">
       📌 <strong id="chatGhimKhach">Mã kết bạn & Trao đổi</strong>
     </div>
+
     <div id="bannerDongBangKhach" class="chat-frozen-banner" style="display: none;">
       ⚠️ Staff đã xác nhận hoàn thành đơn. Hãy bấm ✔ để hoàn tất!
     </div>
+
     <div class="chat-body" id="chatBodyKhach">
       <div id="manHinhKetBanKhach" style="text-align: center; margin-top: 20px;">
         <p style="font-size: 13px;">Gửi mã kết bạn Sky để mở chat:</p>
@@ -137,10 +129,28 @@
       </div>
       <div id="tinNhanKhach" style="display: none;"></div>
     </div>
+
     <div class="chat-footer">
       <input type="text" id="nhapTinKhach" placeholder="Nhập tin nhắn..." disabled onkeypress="if(event.key==='Enter') guiTinKhach()">
       <button id="btnGuiTinKhach" class="btn-icon" disabled onclick="guiTinKhach()">➤</button>
       <button id="btnXacNhanHoanThanhKhach" class="btn-done" disabled onclick="xacNhanXongKhach()" title="Xác nhận hoàn tất">✔</button>
+    </div>
+  </div>
+
+  <!-- POPUP BÁO CÁO CÓ NÚT TẢI ẢNH TỪ ĐIỆN THOẠI -->
+  <div id="modalReport" class="modal-overlay">
+    <div class="modal-content">
+      <button class="btn-dong-modal" onclick="dongPopupReport()">✕</button>
+      <h3 style="margin-top:0; color:#dc2626;">🚩 Báo Cáo / Khiếu Nại Sự Cố</h3>
+      <p style="font-size:12px; color:#666;">Báo cáo kèm bằng chứng sẽ chuyển trực tiếp tới Admin xử lý.</p>
+      
+      <label style="font-size: 13px; font-weight: bold;">Lý do khiếu nại:</label>
+      <textarea id="reportLyDo" rows="3" placeholder="Mô tả sự cố..." style="width:100%; margin:6px 0 10px 0; font-family:inherit; box-sizing:border-box;"></textarea>
+      
+      <label style="font-size: 13px; font-weight: bold;">Tải ảnh bằng chứng từ máy:</label>
+      <input type="file" id="reportFileAnh" accept="image/*" style="margin: 6px 0 15px 0; font-size: 12px;">
+      
+      <button onclick="guiBaoCao()" style="width:100%; background:#dc2626; padding:10px; font-weight:bold;">Gửi Báo Cáo</button>
     </div>
   </div>
 
@@ -175,7 +185,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 1. Tải bảng giá & Thông báo
     db.ref('bangGiaChiTiet').on('value', function(snap) {
       var bg = snap.val();
       if (bg) {
@@ -205,16 +214,15 @@
       }
     });
 
-    // 2. LẮNG NGHE TOÀN BỘ DANH SÁCH ĐƠN CỦA KHÁCH NÀY
     var myOrderIds = JSON.parse(localStorage.getItem("myOrderIdsList") || "[]");
     var activeChatOrderId = null;
     var currentTenKhach = "Khách Hàng";
+    var currentStaffCuaDon = "";
     var selectedStar = 5;
 
     function theoDoiCacDonCuaKhach() {
       var container = document.getElementById("liveOrdersContainer");
       container.innerHTML = "";
-
       if (myOrderIds.length === 0) return;
 
       myOrderIds.forEach(function(orderId) {
@@ -245,9 +253,8 @@
             </div>
           `;
 
-          if (existingBanner) {
-            existingBanner.innerHTML = bannerHTML;
-          } else {
+          if (existingBanner) existingBanner.innerHTML = bannerHTML;
+          else {
             var div = document.createElement("div");
             div.className = "status-banner";
             div.id = bannerId;
@@ -259,16 +266,49 @@
     }
     theoDoiCacDonCuaKhach();
 
-    // 3. CHUYỂN PHÒNG CHAT CHO TỪNG ĐƠN CỦA KHÁCH
     function moChatChoDon(orderId) {
       activeChatOrderId = orderId;
       document.getElementById("chatBoxKhach").style.display = "flex";
 
-      db.ref('donHangSky/' + orderId).once('value').then(function(snap) {
+      db.ref('donHangSky/' + orderId).on('value', function(snap) {
         var don = snap.val();
+        if (!don) return;
+
         currentTenKhach = don.tenKhach;
+        currentStaffCuaDon = don.staffNhan || "Staff";
         document.getElementById("chatTitleKhach").innerText = `Chat: ${don.mangDichVu.toUpperCase()} (Staff ${don.staffNhan || "🌸"})`;
         
+        var boxInv = document.getElementById("invoiceDetailsKhach");
+        if (don.thanhToan === "Tim_Sky") {
+          document.getElementById("statusCocBadge").style.display = "none";
+          document.getElementById("btnKhachBaoDaCoc").style.display = "none";
+          boxInv.innerHTML = `
+            <p><strong>Dịch vụ:</strong> ${don.mangDichVu.toUpperCase()} (${don.cuThe})</p>
+            <p><strong>Hình thức:</strong> 💖 Trả Tim Sky (Gửi tim mỗi ngày sau khi kết bạn ingame)</p>
+          `;
+        } else {
+          document.getElementById("statusCocBadge").style.display = "inline-block";
+          boxInv.innerHTML = `
+            <p><strong>1. Tổng giá trị đơn:</strong> Theo bảng giá niêm yết</p>
+            <p><strong>2. Tiền cọc cần chuyển (50%):</strong> Vui lòng chuyển trước ca</p>
+            <p><strong>3. Còn lại thanh toán sau ca (50%):</strong> Trả sau khi bấm hoàn thành</p>
+            <div class="qr-box">
+              <p style="color:#c2410c; margin:0; font-weight:bold;">Momo/Bank: 0987.654.321 (Nội dung: ${orderId.substring(1,7)})</p>
+            </div>
+          `;
+          if (don.daCoc) {
+            document.getElementById("statusCocBadge").innerText = "Đã Xác Nhận Cọc ✔️";
+            document.getElementById("statusCocBadge").style.background = "#bbf7d0";
+            document.getElementById("statusCocBadge").style.color = "#15803d";
+            document.getElementById("btnKhachBaoDaCoc").style.display = "none";
+          } else {
+            document.getElementById("statusCocBadge").innerText = "Chưa Cọc 50%";
+            document.getElementById("statusCocBadge").style.background = "#fef08a";
+            document.getElementById("statusCocBadge").style.color = "#854d0e";
+            document.getElementById("btnKhachBaoDaCoc").style.display = "block";
+          }
+        }
+
         if (don.staffHoanThanh) {
           document.getElementById("bannerDongBangKhach").style.display = "block";
           document.getElementById("nhapTinKhach").disabled = true;
@@ -279,6 +319,14 @@
 
         langNghePhongChat(orderId);
       });
+    }
+
+    function khachBaoDaCoc() {
+      db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({
+        nguoiGui: "Khách",
+        noiDung: "💸 Tôi đã hoàn tất chuyển cọc 50%, Staff kiểm tra và xác nhận giúp mình nhé!"
+      });
+      alert("Đã báo chuyển cọc thành công!");
     }
 
     function langNghePhongChat(idDon) {
@@ -352,6 +400,46 @@
       }
     }
 
+    // TẢI ẢNH BẰNG CHỨNG TRỰC TIẾP TỪ ĐIỆN THOẠI
+    function moPopupReport() { document.getElementById("modalReport").style.display = "flex"; }
+    function dongPopupReport() { document.getElementById("modalReport").style.display = "none"; }
+
+    function guiBaoCao() {
+      var lyDo = document.getElementById("reportLyDo").value.trim();
+      var fileInput = document.getElementById("reportFileAnh");
+
+      if (!lyDo) {
+        alert("Bồ nhập lý do báo cáo nha!");
+        return;
+      }
+
+      if (fileInput.files && fileInput.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          luuBaoCaoLenFirebase(lyDo, e.target.result);
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        luuBaoCaoLenFirebase(lyDo, "Không có ảnh");
+      }
+    }
+
+    function luuBaoCaoLenFirebase(lyDo, base64Anh) {
+      db.ref('danhSachBaoCao').push({
+        donId: activeChatOrderId,
+        nguoiBaoCao: "Khách: " + currentTenKhach,
+        doiTuongBiBaoCao: "Staff: " + currentStaffCuaDon,
+        tenDoiTuong: currentStaffCuaDon,
+        loaiDoiTuong: "staff",
+        lyDo: lyDo,
+        anhBangChung: base64Anh,
+        thoiGian: Date.now()
+      }).then(function() {
+        dongPopupReport();
+        alert("Đã gửi báo cáo kèm ảnh bằng chứng lên Admin thành công!");
+      });
+    }
+
     // Feedback
     db.ref('feedbacks').on('value', function(snapshot) {
       var data = snapshot.val();
@@ -394,11 +482,8 @@
         nhanXet: txt || "Dịch vụ rất tốt và uy tín!",
         thoiGian: Date.now()
       });
-      
-      // Xóa đơn này khỏi danh sách đơn đang theo dõi của khách
       myOrderIds = myOrderIds.filter(function(id) { return id !== activeChatOrderId; });
       localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
-
       document.getElementById("modalFeedback").style.display = "none";
       alert("Cảm ơn bồ đã đánh giá nha! ✨");
       location.reload();
