@@ -10,66 +10,71 @@
 </head>
 <body class="admin-layout">
 
+  <!-- THANH HEADER ADMIN -->
   <div class="admin-header">
     <div class="admin-brand">
       <h2>👑 Quản Trị Viên Sky (Admin)</h2>
-      <p>Bảng điều khiển trung tâm & Quản lý nhân sự</p>
+      <p>Bảng điều khiển trung tâm & Quản lý hệ thống</p>
     </div>
     <button class="btn-logout" onclick="window.location.href='index.html'">Đăng Xuất</button>
   </div>
 
   <div class="admin-container">
 
-    <!-- PHÁT THÔNG BÁO -->
+    <!-- 1. KHU VỰC PHÁT THÔNG BÁO (2 CỘT CÂN ĐỐI) -->
     <div class="announcement-control-grid">
       <section class="admin-section" style="border-left: 4px solid #ff7f50;">
         <div class="section-title-box">
-          <h3>📢 Thông Báo Sảnh Chờ (Khách)</h3>
+          <h3>📢 Thông Báo Sảnh Chờ (Khách Xem)</h3>
         </div>
-        <textarea id="tbLobbyInput" rows="2" placeholder="Nhập thông báo hiển thị tại đầu Sảnh..." style="width: 100%; margin-bottom: 8px; font-family: inherit;"></textarea>
+        <textarea id="tbLobbyInput" rows="2" placeholder="Nhập thông báo hiển thị tại đầu Sảnh..." style="width: 100%; margin-bottom: 10px; font-family: inherit; box-sizing: border-box;"></textarea>
         <div style="display: flex; gap: 8px;">
-          <button onclick="guiThongBaoLobby()" style="background: #ff7f50;">Đăng Lên Sảnh ✨</button>
-          <button onclick="xoaThongBaoLobby()" style="background: #ccc; color: #333;">Tắt Thông Báo</button>
+          <button onclick="guiThongBaoLobby()" style="background: #ff7f50; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer;">Đăng Lên Sảnh ✨</button>
+          <button onclick="xoaThongBaoLobby()" style="background: #e2e8f0; color: #334155; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer;">Tắt Thông Báo</button>
         </div>
       </section>
 
-      <!-- KHU VỰC QUẢN LÝ NHÂN SỰ & PHÂN QUYỀN KỸ NĂNG -->
+      <section class="admin-section" style="border-left: 4px solid #0068ff;">
+        <div class="section-title-box">
+          <h3>🔔 Gửi Thông Báo Staff (Side Panel)</h3>
+        </div>
+        <textarea id="noiDungThongBao" rows="2" placeholder="Nhập lời nhắn gửi sidebar staff..." style="width: 100%; margin-bottom: 10px; font-family: inherit; box-sizing: border-box;"></textarea>
+        <button onclick="guiThongBaoAdmin()" style="background: #0068ff; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer;">Gửi Tới Staff 🚀</button>
+      </section>
+    </div>
+
+    <!-- 2. QUẢN LÝ NHÂN SỰ (FULL CHIỀU NGANG) -->
     <section class="admin-section" style="border-left: 4px solid #8b5cf6;">
       <div class="section-title-box">
         <h3>👥 Quản Lý Nhân Sự & Phân Quyền Nhận Đơn</h3>
       </div>
       
-      <!-- Form Thêm Staff Mới (Bố cục 1 khung chuẩn gọn gàng) -->
-      <div style="background: #f8fafc; padding: 18px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
-        <h4 style="margin-top: 0; margin-bottom: 12px; color: #1e293b;">➕ Thêm Tài Khoản Nhân Sự Mới</h4>
+      <div style="background: #f8fafc; padding: 16px; border-radius: 8px; margin-bottom: 18px; border: 1px solid #e2e8f0;">
+        <h4 style="margin-top: 0; margin-bottom: 10px; color: #1e293b;">➕ Thêm Tài Khoản Nhân Sự Mới</h4>
         
-        <!-- Hàng 1: Nhập Tên, Icon, Pass -->
-        <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
           <input type="text" id="newStaffTen" placeholder="Tên Staff (vd: Michii)" style="flex: 2; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
-          <input type="text" id="newStaffIcon" placeholder="Icon (vd: 🌸)" style="flex: 1; max-width: 110px; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
+          <input type="text" id="newStaffIcon" placeholder="Icon (vd: 🌸)" style="flex: 1; max-width: 100px; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
           <input type="password" id="newStaffPass" placeholder="Mật khẩu riêng" style="flex: 2; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
         </div>
 
-        <!-- Hàng 2: Chọn Kỹ Năng & Nút Bấm -->
-        <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
-          <div style="display: flex; align-items: center; gap: 20px;">
-            <span style="font-size: 13px; font-weight: bold; color: #475569;">Kỹ năng đảm nhận:</span>
-            <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; white-space: nowrap;">
+        <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 14px; border-radius: 6px; border: 1px solid #e2e8f0;">
+          <div style="display: flex; align-items: center; gap: 18px;">
+            <span style="font-size: 13px; font-weight: bold; color: #475569;">Kỹ năng:</span>
+            <label style="display: inline-flex; align-items: center; gap: 5px; font-size: 13px; cursor: pointer;">
               <input type="checkbox" id="skill_uber" value="uber" checked> 🚗 Uber
             </label>
-            <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; white-space: nowrap;">
+            <label style="display: inline-flex; align-items: center; gap: 5px; font-size: 13px; cursor: pointer;">
               <input type="checkbox" id="skill_host" value="host" checked> ✨ Host
             </label>
-            <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; white-space: nowrap;">
+            <label style="display: inline-flex; align-items: center; gap: 5px; font-size: 13px; cursor: pointer;">
               <input type="checkbox" id="skill_logacc" value="logacc"> 🔑 Log Acc
             </label>
           </div>
-
-          <button onclick="themStaffMoi()" style="background: #8b5cf6; color: white; border: none; padding: 9px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;">Tạo Tài Khoản ✨</button>
+          <button onclick="themStaffMoi()" style="background: #8b5cf6; color: white; border: none; padding: 8px 18px; border-radius: 6px; font-weight: bold; cursor: pointer;">Tạo Tài Khoản ✨</button>
         </div>
       </div>
 
-      <!-- Bảng Danh Sách Staff -->
       <div class="table-responsive">
         <table class="admin-table">
           <thead>
@@ -88,57 +93,7 @@
       </div>
     </section>
 
-    <!-- KHU VỰC MỚI: QUẢN LÝ NHÂN SỰ & PHÂN QUYỀN KỸ NĂNG -->
-    <section class="admin-section" style="border-left: 4px solid #8b5cf6;">
-      <div class="section-title-box">
-        <h3>👥 Quản Lý Nhân Sự & Phân Quyền Nhận Đơn</h3>
-      </div>
-      
-      <!-- Form Thêm Staff Mới (Bố cục 2 dòng chuẩn) -->
-      <div class="admin-add-staff-card">
-        <h4 style="margin-top: 0; margin-bottom: 12px; color: #1e293b;">➕ Thêm Tài Khoản Nhân Sự Mới</h4>
-        
-        <div class="staff-form-row">
-          <input type="text" id="newStaffTen" placeholder="Tên Staff (vd: Michii)">
-          <input type="text" id="newStaffIcon" placeholder="Icon (vd: 🌸)" style="max-width: 100px;">
-          <input type="password" id="newStaffPass" placeholder="Mật khẩu riêng">
-        </div>
-
-        <div class="staff-form-row" style="margin-top: 10px; align-items: center;">
-          <div class="skills-checkbox-group">
-            <span style="font-size: 13px; font-weight: bold; color: #475569;">Kỹ năng:</span>
-            <label><input type="checkbox" id="skill_uber" value="uber" checked> 🚗 Uber</label>
-            <label><input type="checkbox" id="skill_host" value="host" checked> ✨ Host</label>
-            <label><input type="checkbox" id="skill_logacc" value="logacc"> 🔑 Log Acc</label>
-          </div>
-          <button onclick="themStaffMoi()" style="background: #8b5cf6; padding: 8px 20px; font-weight: bold; margin-left: auto;">Tạo Tài Khoản</button>
-        </div>
-      </div>
-
-          <button onclick="themStaffMoi()" style="background: #8b5cf6; padding: 8px 16px;">Tạo Staff</button>
-        </div>
-      </div>
-
-      <!-- Bảng Danh Sách Staff -->
-      <div class="table-responsive">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>Icon</th>
-              <th>Tên Nhân Sự</th>
-              <th>Mật Khẩu</th>
-              <th>Kỹ Năng Đảm Nhận</th>
-              <th>Thao Tác</th>
-            </tr>
-          </thead>
-          <tbody id="bangDanhSachStaff">
-            <tr><td colspan="5" style="text-align:center;">Đang tải danh sách staff...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- THỐNG KÊ DOANH THU -->
+    <!-- 3. THỐNG KÊ DOANH THU -->
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-icon">📦</div>
@@ -170,7 +125,7 @@
       </div>
     </div>
 
-    <!-- CHỈNH SỬA BẢNG GIÁ -->
+    <!-- 4. CHỈNH SỬA BẢNG GIÁ (3 CỘT) -->
     <section class="admin-section" style="border-left: 4px solid #4CAF50;">
       <div class="section-title-box">
         <h3>⚙️ Chỉnh Sửa Bảng Giá Từng Dịch Vụ Cụ Thể (Cập nhật Sảnh)</h3>
@@ -181,7 +136,7 @@
           <h4 style="color: #3b82f6;">🚗 Giá Uber Dẫn Tour</h4>
           <div class="admin-input-row"><label>Nhặt 15 Nến:</label><input type="text" id="adm_uber_15nen"></div>
           <div class="admin-input-row"><label>15 Nến + Quest:</label><input type="text" id="adm_uber_15nen_quest"></div>
-          <div class="admin-input-row"><label>Xám Nến:</label><input type="text" id="adm_uber_xamnen"></div>
+          <div class="admin-input-row"><label>Xám Nến (Full vạch):</label><input type="text" id="adm_uber_xamnen"></div>
           <div class="admin-input-row"><label>Xám Nến + Quest:</label><input type="text" id="adm_uber_xamnen_quest"></div>
           <div class="admin-input-row"><label>Nhặt Cánh (Wing):</label><input type="text" id="adm_uber_nhatcanh"></div>
           <div class="admin-input-row"><label>Dẫn Đi Eden:</label><input type="text" id="adm_uber_eden"></div>
@@ -190,9 +145,9 @@
         <div class="admin-price-box">
           <h4 style="color: #ff7f50;">✨ Giá Host Đồng Hành</h4>
           <div class="admin-input-row"><label>Tâm Sự (1h):</label><input type="text" id="adm_host_tamsu"></div>
-          <div class="admin-input-row"><label>Đàn Hát (1h):</label><input type="text" id="adm_host_dan"></div>
-          <div class="admin-input-row"><label>Fakelove (1h):</label><input type="text" id="adm_host_nguoiyeu"></div>
-          <div class="admin-input-row"><label>Treo Máy Ngủ (Đêm):</label><input type="text" id="adm_host_treomay"></div>
+          <div class="admin-input-row"><label>Đàn Hát Theo Yêu Cầu (1h):</label><input type="text" id="adm_host_dan"></div>
+          <div class="admin-input-row"><label>Fakelove / Ghép Đôi (1h):</label><input type="text" id="adm_host_nguoiyeu"></div>
+          <div class="admin-input-row"><label>Treo Máy Ngủ Cùng (Đêm):</label><input type="text" id="adm_host_treomay"></div>
         </div>
 
         <div class="admin-price-box">
@@ -207,18 +162,18 @@
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
         <div>
           <label><strong>Lịch Hoạt Động Page:</strong></label>
-          <textarea id="adminLichPage" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit;"></textarea>
+          <textarea id="adminLichPage" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit; box-sizing: border-box;"></textarea>
         </div>
         <div>
           <label><strong>Điều Khoản & Quyền Lợi:</strong></label>
-          <textarea id="adminDieuKhoan" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit;"></textarea>
+          <textarea id="adminDieuKhoan" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit; box-sizing: border-box;"></textarea>
         </div>
       </div>
 
-      <button onclick="luuToanBoGiaVaCaiDat()" style="background: #4CAF50; padding: 12px 25px; font-weight: bold;">💾 Lưu Bảng Giá & Cài Đặt</button>
+      <button onclick="luuToanBoGiaVaCaiDat()" style="background: #4CAF50; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;">💾 Lưu Bảng Giá & Cài Đặt</button>
     </section>
 
-    <!-- SỔ LƯU TRỮ HÓA ĐƠN -->
+    <!-- 5. SỔ LƯU TRỮ HÓA ĐƠN -->
     <section class="admin-section">
       <div class="section-title-box">
         <h3>📑 Sổ Lưu Trữ Hóa Đơn Đã Hoàn Thành</h3>
@@ -244,7 +199,7 @@
       </div>
     </section>
 
-    <!-- THEO DÕI ĐƠN ĐANG CHẠY -->
+    <!-- 6. THEO DÕI ĐƠN ĐANG CHẠY -->
     <section class="admin-section">
       <div class="section-title-box">
         <h3>⏳ Đơn Hàng Đang Tiến Hành / Chờ Nhận</h3>
@@ -268,7 +223,7 @@
       </div>
     </section>
 
-    <!-- QUẢN LÝ FEEDBACK & XÓA -->
+    <!-- 7. QUẢN LÝ FEEDBACK -->
     <section class="admin-section">
       <div class="section-title-box">
         <h3>⭐ Nhật Ký Feedback Của Khách (Admin có quyền xóa)</h3>
@@ -294,7 +249,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 1. QUẢN LÝ NHÂN SỰ REALTIME
+    // 1. Quản lý nhân sự
     db.ref('danhSachStaff').on('value', function(snap) {
       var staffList = snap.val();
       var tbody = document.getElementById("bangDanhSachStaff");
@@ -339,7 +294,7 @@
       }
 
       if (kyNang.length === 0) {
-        alert("Bồ chọn ít nhất 1 kỹ năng mảng nhận đơn cho Staff nhé!");
+        alert("Bồ chọn ít nhất 1 kỹ năng cho Staff nhé!");
         return;
       }
 
@@ -362,7 +317,7 @@
       }
     }
 
-    // 2. BẢNG GIÁ CHI TIẾT & CÀI ĐẶT
+    // 2. Bảng giá
     var danhSachKeyGia = [
       "uber_15nen", "uber_15nen_quest", "uber_xamnen", "uber_xamnen_quest", "uber_nhatcanh", "uber_eden",
       "host_tamsu", "host_dan", "host_nguoiyeu", "host_treomay",
@@ -440,7 +395,7 @@
       }
     }
 
-    // 3. LẮNG NGHE ĐƠN HÀNG
+    // 3. Đơn hàng
     db.ref('donHangSky').on('value', function(snapshot) {
       var data = snapshot.val();
       var tbodyHoaDon = document.getElementById("bangHoaDon");
@@ -504,7 +459,7 @@
       document.getElementById("statTimSky").innerText = countTim + " ca";
     });
 
-    // 4. LẮNG NGHE FEEDBACK
+    // 4. Feedback
     db.ref('feedbacks').on('value', function(snapshot) {
       var fbData = snapshot.val();
       var box = document.getElementById("bangAdminFeedback");
