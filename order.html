@@ -105,9 +105,14 @@
           thoiGianTao: Date.now()
         };
 
+        // Gửi đơn lên Firebase Cloud
         var newOrderRef = db.ref('donHangSky').push();
         newOrderRef.set(donHangMoi).then(function() {
-          localStorage.setItem("myCurrentOrderId", newOrderRef.key);
+          // Lưu thêm mã đơn mới vào danh sách các đơn của khách
+          var myOrders = JSON.parse(localStorage.getItem("myOrderIdsList") || "[]");
+          myOrders.push(newOrderRef.key);
+          localStorage.setItem("myOrderIdsList", JSON.stringify(myOrders));
+          
           document.getElementById("formKhach").style.display = "none";
           document.getElementById("manHinhCho").style.display = "block";
           
@@ -117,8 +122,6 @@
         }).catch(function(error) {
           alert("Lỗi kết nối: " + error.message);
         });
-      }
-    }
 
     function doiTuyChon() {
       var mang = document.getElementById("mangDichVu").value;
