@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sảnh Chờ Sky - Ngôi Nhà Chung</title>
+  <title>Sảnh Chờ</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
@@ -30,42 +30,42 @@
     </div>
 
     <header class="lobby-header">
-      <h1>🏰 Chào Mừng Đến Với Sảnh Sky</h1>
+      <h1>Chào mừng bạn đến với sky service</h1>
       <p>Nơi thư giãn, xem bảng giá chi tiết và kết nối cùng đội ngũ đồng hành</p>
     </header>
 
     <section class="lobby-section">
-      <h2>💎 Bảng Giá Dịch Vụ Chi Tiết</h2>
+      <h2>Bảng Giá Dịch Vụ Chi Tiết</h2>
       <div class="detailed-pricing-grid">
         <div class="price-category-card">
-          <div class="category-header uber-header"><h3>🚗 UBER DẪN TOUR</h3><p>Hộ tống an toàn</p></div>
+          <div class="category-header uber-header"><h3>UBER</h3><p>Nhanh, tiện lợi</p></div>
           <div class="category-body">
             <div class="service-item"><span>Nhặt 15 Nến</span><strong id="p_uber_15nen">Liên hệ</strong></div>
             <div class="service-item"><span>Nhặt 15 Nến + Quest</span><strong id="p_uber_15nen_quest">Liên hệ</strong></div>
-            <div class="service-item"><span>Xám Nến (Full vạch)</span><strong id="p_uber_xamnen">Liên hệ</strong></div>
+            <div class="service-item"><span>Xám Nến</span><strong id="p_uber_xamnen">Liên hệ</strong></div>
             <div class="service-item"><span>Xám Nến + Quest</span><strong id="p_uber_xamnen_quest">Liên hệ</strong></div>
-            <div class="service-item"><span>Full Nhặt Cánh</span><strong id="p_uber_nhatcanh">Liên hệ</strong></div>
-            <div class="service-item"><span>Dẫn Đi Eden Full Ca</span><strong id="p_uber_eden">Liên hệ</strong></div>
+            <div class="service-item"><span>Nhặt winglight</span><strong id="p_uber_nhatcanh">Liên hệ</strong></div>
+            <div class="service-item"><span>Đi Eden</span><strong id="p_uber_eden">Liên hệ</strong></div>
           </div>
         </div>
 
         <div class="price-category-card popular-card">
-          <div class="category-header host-header"><h3>✨ HOST ĐỒNG HÀNH</h3><p>Trò chuyện & đàn hát</p></div>
+          <div class="category-header host-header"><h3>HOST</h3><p>Người bạn luôn ở bên bạn</p></div>
           <div class="category-body">
-            <div class="service-item"><span>Tâm Sự / Trò Chuyện (1h)</span><strong id="p_host_tamsu">Liên hệ</strong></div>
-            <div class="service-item"><span>Đàn Hát Theo Yêu Cầu (1h)</span><strong id="p_host_dan">Liên hệ</strong></div>
-            <div class="service-item"><span>Fakelove / Ghép Đôi (1h)</span><strong id="p_host_nguoiyeu">Liên hệ</strong></div>
-            <div class="service-item"><span>Treo Máy Ngủ Cùng (Đêm)</span><strong id="p_host_treomay">Liên hệ</strong></div>
+            <div class="service-item"><span>Tâm Sự (1h / 30p)</span><strong id="p_host_tamsu">Liên hệ</strong></div>
+            <div class="service-item"><span>Đàn (1h / 30p)</span><strong id="p_host_dan">Liên hệ</strong></div>
+            <div class="service-item"><span>Fakelove (1h / 30p)</span><strong id="p_host_nguoiyeu">Liên hệ</strong></div>
+            <div class="service-item"><span>Treo (1h / 30p)</span><strong id="p_host_treomay">Liên hệ</strong></div>
           </div>
         </div>
 
         <div class="price-category-card">
-          <div class="category-header log-header"><h3>🔑 LOG ACC TRỌN GÓI</h3><p>Bảo mật & đúng hẹn</p></div>
+          <div class="category-header log-header"><h3>LOG ACC</h3><p>Bảo mật & Uy tín</p></div>
           <div class="category-body">
-            <div class="service-item"><span>Chạy 15 Nến / Ngày</span><strong id="p_log_15nen">Liên hệ</strong></div>
-            <div class="service-item"><span>Chạy Xám Nến + Quest</span><strong id="p_log_xamnen">Liên hệ</strong></div>
-            <div class="service-item"><span>Gói Tuần (7 Ngày)</span><strong id="p_log_tuan">Liên hệ</strong></div>
-            <div class="service-item"><span>Gói Tháng (30 Ngày)</span><strong id="p_log_thang">Liên hệ</strong></div>
+            <div class="service-item"><span>15 Nến (Ngày/Tuần/Tháng)</span><strong id="p_log_15nen">Liên hệ</strong></div>
+            <div class="service-item"><span>Xám Nến + Quest (Ngày/Tuần/Tháng)</span><strong id="p_log_xamnen">Liên hệ</strong></div>
+            <div class="service-item"><span>Gói Tuần (xám nến + quest + nhặt vé sự kiện)</span><strong id="p_log_tuan">Liên hệ</strong></div>
+            <div class="service-item"><span>Gói Tháng (xám nến + quest + nhặt vé sự kiện)</span><strong id="p_log_thang">Liên hệ</strong></div>
           </div>
         </div>
       </div>
@@ -74,7 +74,7 @@
     <section class="lobby-section">
       <div class="terms-container">
         <div class="terms-box">
-          <h3>⏰ Lịch Hoạt Động Của Page</h3>
+          <h3>Lịch Hoạt Động</h3>
           <div id="noiDungLichPage" style="white-space: pre-line; line-height: 1.6;">
             • Ca Sáng: 08:00 - 12:00
             • Ca Chiều: 13:30 - 17:30
@@ -82,10 +82,10 @@
           </div>
         </div>
         <div class="terms-box">
-          <h3>📜 Điều Khoản & Quy Định</h3>
+          <h3>Điều Khoản & Quy Định</h3>
           <div id="noiDungDieuKhoan" style="white-space: pre-line; line-height: 1.6;">
-            ✔ Tiền mặt: Chuyển khoản 100% sau khi Staff nhận đơn để Admin duyệt.
-            ✔ Tim Sky: Trả tim mỗi ngày sau khi hoàn thành ca.
+            ✔ Tiền mặt: Chuyển khoản 100% sau khi Staff nhận đơn.
+            ✔ Tim Sky: Trả tim mỗi ngày.
           </div>
         </div>
       </div>
@@ -111,7 +111,7 @@
     </div>
 
     <div class="chat-pinned">
-      📌 <strong id="chatGhimKhach">Mã kết bạn & Trao đổi</strong>
+      📌 <strong id="chatGhimKhach">Mã kết bạn</strong>
     </div>
 
     <div id="bannerDongBangKhach" class="chat-frozen-banner" style="display: none;">
@@ -121,9 +121,9 @@
     <div class="chat-body" id="chatBodyKhach">
       <!-- Màn hình chờ duyệt tiền -->
       <div id="manHinhThanhToanKhach" style="text-align: center; margin-top: 15px; padding: 10px; background: #fff7ed; border-radius: 8px; border: 1px solid #fed7aa; display: none;">
-        <p style="font-size: 12px; margin: 0 0 6px 0; color: #c2410c; font-weight: bold;">💳 THANH TOÁN ĐƠN HÀNG</p>
+        <p style="font-size: 12px; margin: 0 0 6px 0; color: #c2410c; font-weight: bold;">THANH TOÁN ĐƠN HÀNG</p>
         <div id="qrThanhToanBox" style="margin-bottom: 8px;"></div>
-        <p style="font-size: 11px; margin: 0; color: #666;">Admin đang kiểm tra giao dịch để mở kết bạn.</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">Admin đang kiểm tra giao dịch, bạn chờ chút nhé.</p>
       </div>
 
       <!-- Màn hình gửi mã kết bạn -->
@@ -151,9 +151,9 @@
       <h3 style="margin-top:0; color:#dc2626;">🚩 Báo Cáo / Khiếu Nại Sự Cố</h3>
       <label style="font-size: 13px; font-weight: bold;">Lý do khiếu nại:</label>
       <textarea id="reportLyDo" rows="3" placeholder="Mô tả sự cố..." style="width:100%; margin:6px 0 10px 0; font-family:inherit; box-sizing:border-box;"></textarea>
-      <label style="font-size: 13px; font-weight: bold;">Tải ảnh bằng chứng từ thư viện:</label>
+      <label style="font-size: 13px; font-weight: bold;">Tải ảnh:</label>
       <input type="file" id="reportFileAnh" accept="image/*" style="margin: 6px 0 15px 0; font-size: 12px;">
-      <button onclick="guiBaoCao()" style="width:100%; background:#dc2626; padding:10px; font-weight:bold;">Gửi Báo Cáo Lên Admin</button>
+      <button onclick="guiBaoCao()" style="width:100%; background:#dc2626; padding:10px; font-weight:bold;">Gửi Báo Cáo</button>
     </div>
   </div>
 
@@ -161,7 +161,7 @@
   <div id="modalFeedback" class="modal-overlay">
     <div class="modal-content" style="text-align: center;">
       <h3>Hoàn Tất Đơn Hàng 🎉</h3>
-      <p style="font-size: 13px; color: #64748b; margin-top: -5px;">Cảm ơn bồ đã đồng hành cùng <strong id="fbStaffNameTxt" style="color:#0284c7;">Staff</strong>!</p>
+      <p style="font-size: 13px; color: #64748b; margin-top: -5px;">Cảm ơn bạn đã đồng hành cùng <strong id="fbStaffNameTxt" style="color:#0284c7;">Staff</strong>!</p>
       
       <div class="star-rating" id="starContainer">
         <span class="star lit" data-val="1" onclick="setRating(1)" onmouseover="hoverRating(1)" onmouseout="resetHover()">★</span>
@@ -171,11 +171,11 @@
         <span class="star lit" data-val="5" onclick="setRating(5)" onmouseover="hoverRating(5)" onmouseout="resetHover()">★</span>
       </div>
 
-      <input type="text" id="loiNhanFeedback" placeholder="Để lại vài dòng cảm nhận..." style="width: 90%; margin-bottom: 10px;">
+      <input type="text" id="loiNhanFeedback" placeholder="Bạn yêu xin hãy để lại đôi lời cho staff nhé!" style="width: 90%; margin-bottom: 10px;">
       
       <!-- Ô Tải Ảnh Kỷ Niệm Tùy Chọn -->
       <div style="text-align: left; width: 90%; margin: 0 auto 15px auto;">
-        <label style="font-size: 12px; font-weight: bold; color: #475569;">📸 Đính kèm ảnh kỷ niệm (Tùy chọn):</label>
+        <label style="font-size: 12px; font-weight: bold; color: #475569;">Đính kèm ảnh (Tùy chọn):</label>
         <input type="file" id="fileFeedbackAnh" accept="image/*" style="font-size: 11px; margin-top: 4px; width: 100%;">
       </div>
 
@@ -197,28 +197,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 1. WIDGET NHẠC NỀN
-    var isMusicPlaying = false;
-    function toggleSkyMusic() {
-      var audio = document.getElementById("skyAudio");
-      var disc = document.getElementById("musicDiscIcon");
-      var txt = document.getElementById("musicTitleText");
-
-      if (isMusicPlaying) {
-        audio.pause();
-        disc.classList.remove("rotating");
-        txt.innerText = "Nhạc Sky Chill: Đang tắt";
-        isMusicPlaying = false;
-      } else {
-        audio.play().then(function() {
-          disc.classList.add("rotating");
-          txt.innerText = "🎵 Sky Theme (Playing)";
-          isMusicPlaying = true;
-        }).catch(function() {
-          alert("Bồ tương tác với màn hình để trình duyệt cho phép phát nhạc nhé!");
-        });
-      }
-    }
 
     // 2. Tải bảng giá & Thông báo
     db.ref('bangGiaChiTiet').on('value', function(snap) {
@@ -285,13 +263,13 @@
           }
           capNhatBongBongChatKhach();
 
-          var ttText = don.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền mặt";
+          var ttText = don.thanhToan === "Tim_Sky" ? "Tim" : "Tiền";
           var statusHTML = don.daNhan 
-            ? `Staff <strong>${don.staffNhan || "🌸"}</strong> đã nhận đơn ${don.mangDichVu.toUpperCase()}! 🎉` 
-            : `${don.mangDichVu.toUpperCase()} (${don.cuThe}) - Đang tìm Staff... ⏳`;
+            ? `Staff <strong>${don.staffNhan || "🌸"}</strong> đã nhận đơn ${don.mangDichVu.toUpperCase()}! Hãy trao đổi với staff ngay nhé` 
+            : `${don.mangDichVu.toUpperCase()} (${don.cuThe}) - Đang tìm staff... ⏳`;
 
           var btnChat = don.daNhan 
-            ? `<button class="btn-chat-lobby" onclick="moChatChoDon('${orderId}')">💬 Chat Staff ${don.staffNhan || ""}</button>` 
+            ? `<button class="btn-chat-lobby" onclick="moChatChoDon('${orderId}')">Chat cùng Staff ${don.staffNhan || ""}</button>` 
             : "";
 
           var bannerHTML = `
@@ -432,11 +410,11 @@
     }
 
     function xacNhanXongKhach() {
-      if (confirm("Xác nhận ca làm việc này đã hoàn tất cùng Staff?")) {
+      if (confirm("Xác nhận đơn hàng của bạn đã hoàn tất?")) {
         db.ref('donHangSky/' + activeChatOrderId).update({ khachHoanThanh: true });
         db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({
           nguoiGui: "Hệ thống",
-          noiDung: "Khách hàng đã bấm xác nhận hoàn tất ca!"
+          noiDung: "Khách hàng đã bấm xác nhận hoàn tất đơn!"
         });
         db.ref('donHangSky/' + activeChatOrderId).once('value').then(function(snap) {
           var dh = snap.val();
@@ -446,7 +424,7 @@
             document.getElementById("fbStaffNameTxt").innerText = "Staff " + (dh.staffNhan || "🌸");
             document.getElementById("modalFeedback").style.display = "flex";
           } else {
-            alert("Đã xác nhận hoàn thành! Đang đợi Staff cùng bấm xác nhận.");
+            alert("Đã xác nhận hoàn thành! Đang đợi Staff cùng xác nhận.");
           }
         });
       }
@@ -459,7 +437,7 @@
     function guiBaoCao() {
       var lyDo = document.getElementById("reportLyDo").value.trim();
       var fileInput = document.getElementById("reportFileAnh");
-      if (!lyDo) { alert("Bồ nhập lý do báo cáo nha!"); return; }
+      if (!lyDo) { alert("Lý do bạn muốn báo cáo."); return; }
 
       if (fileInput.files && fileInput.files[0]) {
         var reader = new FileReader();
@@ -482,7 +460,7 @@
         thoiGian: Date.now()
       }).then(function() {
         dongPopupReport();
-        alert("Đã gửi báo cáo kèm ảnh bằng chứng lên Admin thành công!");
+        alert("Đã gửi báo cáo kèm ảnh bằng chứng thành công!");
       });
     }
 
@@ -564,58 +542,8 @@
       myOrderIds = myOrderIds.filter(function(id) { return id !== activeChatOrderId; });
       localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
       document.getElementById("modalFeedback").style.display = "none";
-      alert("Cảm ơn bồ đã đánh giá nha! ✨");
+      alert("Cảm ơn bạn đã đánh giá nha! Hẹn gặp lại bạn lần sau");
       location.reload();
-    }
-
-// 1. TÍCH HỢP YOUTUBE PLAYER CHO WIDGET NHẠC
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    var ytPlayer;
-    var isPlayingMusic = false;
-
-    function onYouTubeIframeAPIReady() {
-      ytPlayer = new YT.Player('youtubePlayerHidden', {
-        height: '100',
-        width: '100',
-        videoId: 'U83drBPaExc', // Video: Sky: Children of the Light – Starry Gallery pt.3
-        playerVars: {
-          'autoplay': 0,
-          'loop': 1,
-          'playlist': 'U83drBPaExc',
-          'controls': 0
-        },
-        events: {
-          'onReady': function(event) {
-            console.log("YouTube Player đã sẵn sàng!");
-          }
-        }
-      });
-    }
-
-    function toggleSkyMusic() {
-      var disc = document.getElementById("musicDiscIcon");
-      var txt = document.getElementById("musicTitleText");
-
-      if (!ytPlayer || !ytPlayer.playVideo) {
-        alert("Đang tải dữ liệu âm thanh, bồ đợi xíu nha!");
-        return;
-      }
-
-      if (isPlayingMusic) {
-        ytPlayer.pauseVideo();
-        disc.classList.remove("rotating");
-        txt.innerText = "🎵 Bật Nhạc Sky Healing";
-        isPlayingMusic = false;
-      } else {
-        ytPlayer.playVideo();
-        disc.classList.add("rotating");
-        txt.innerText = "🎶 Đang phát: Starry Gallery";
-        isPlayingMusic = true;
-      }
     }
     
   </script>
