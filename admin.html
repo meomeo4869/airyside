@@ -13,14 +13,36 @@
   <div class="admin-header">
     <div class="admin-brand">
       <h2>👑 Quản Trị Viên Sky (Admin)</h2>
-      <p>Bảng điều khiển trung tâm & Xử lý khiếu nại</p>
+      <p>Bảng điều khiển trung tâm & Quản lý thanh toán</p>
     </div>
     <button class="btn-logout" onclick="window.location.href='index.html'">Đăng Xuất</button>
   </div>
 
   <div class="admin-container">
 
-    <!-- HỘP THƯ BÁO CÁO / KHIẾU NẠI KÈM ẢNH BẰNG CHỨNG -->
+    <!-- CÀI ĐẶT THÔNG TIN THANH TOÁN (ẢNH QR & STK) -->
+    <section class="admin-section" style="border-left: 4px solid #10b981;">
+      <div class="section-title-box">
+        <h3>💳 Cấu Hình Phương Thức Thanh Toán (QR / STK)</h3>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: flex-end;">
+        <div>
+          <label style="font-size: 12px; font-weight: bold;">Số Tài Khoản / Ví:</label>
+          <input type="text" id="cfgSTK" placeholder="vd: 0987.654.321" style="width:100%; margin-top:4px;">
+        </div>
+        <div>
+          <label style="font-size: 12px; font-weight: bold;">Ngân Hàng / Ví:</label>
+          <input type="text" id="cfgNganHang" placeholder="vd: MB Bank / Momo" style="width:100%; margin-top:4px;">
+        </div>
+        <div>
+          <label style="font-size: 12px; font-weight: bold;">Tải Ảnh Mã QR Mới:</label>
+          <input type="file" id="cfgFileQR" accept="image/*" style="font-size:12px; margin-top:4px;">
+        </div>
+        <button onclick="luuCaiDatThanhToan()" style="background:#10b981; color:white; border:none; padding:9px 18px; border-radius:6px; font-weight:bold;">Lưu QR ✨</button>
+      </div>
+    </section>
+
+    <!-- HỘP THƯ BÁO CÁO / KHIẾU NẠI -->
     <section class="admin-section" style="border-left: 4px solid #dc2626;">
       <div class="section-title-box">
         <h3 style="color:#dc2626;">🚩 Hộp Thư Báo Cáo & Khiếu Nại (Kèm Ảnh Bằng Chứng)</h3>
@@ -30,11 +52,34 @@
       </div>
     </section>
 
-    <!-- QUẢN LÝ BLACKLIST (KHÁCH & STAFF) -->
-    <section class="admin-section" style="border-left: 4px solid #111827;">
+    <!-- THEO DÕI ĐƠN ĐANG CHẠY & DUYỆT THANH TOÁN TIỀN MẶT -->
+    <section class="admin-section" style="border-left: 4px solid #f59e0b;">
       <div class="section-title-box">
-        <h3>⛔ Danh Sách Đen (Blacklist)</h3>
+        <h3>⏳ Đơn Hàng Đang Tiến Hành (Duyệt Tiền Mặt Mở Chat)</h3>
       </div>
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Khách Hàng</th>
+              <th>Dịch Vụ</th>
+              <th>Thời Gian Hẹn</th>
+              <th>Thanh Toán</th>
+              <th>Staff Phụ Trách</th>
+              <th>Duyệt Tiền Mặt</th>
+              <th>Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody id="bangDonDangChay">
+            <tr><td colspan="7" style="text-align:center;">Chưa có đơn nào đang hoạt động.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- QUẢN LÝ BLACKLIST -->
+    <section class="admin-section" style="border-left: 4px solid #111827;">
+      <div class="section-title-box"><h3>⛔ Danh Sách Đen (Blacklist)</h3></div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
         <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
           <h4 style="margin-top:0; color:#dc2626;">Khách Hàng Bị Cấm Đặt Đơn</h4>
@@ -54,24 +99,6 @@
       </div>
     </section>
 
-    <!-- PHÁT THÔNG BÁO -->
-    <div class="announcement-control-grid">
-      <section class="admin-section" style="border-left: 4px solid #ff7f50;">
-        <div class="section-title-box"><h3>📢 Thông Báo Sảnh Chờ (Khách)</h3></div>
-        <textarea id="tbLobbyInput" rows="2" placeholder="Thông báo..." style="width: 100%; margin-bottom: 10px; box-sizing: border-box;"></textarea>
-        <div style="display: flex; gap: 8px;">
-          <button onclick="guiThongBaoLobby()" style="background: #ff7f50;">Đăng Lên Sảnh ✨</button>
-          <button onclick="xoaThongBaoLobby()" style="background: #e2e8f0; color: #334155;">Tắt Thông Báo</button>
-        </div>
-      </section>
-
-      <section class="admin-section" style="border-left: 4px solid #0068ff;">
-        <div class="section-title-box"><h3>🔔 Gửi Thông Báo Staff</h3></div>
-        <textarea id="noiDungThongBao" rows="2" placeholder="Thông báo staff..." style="width: 100%; margin-bottom: 10px; box-sizing: border-box;"></textarea>
-        <button onclick="guiThongBaoAdmin()" style="background: #0068ff;">Gửi Tới Staff 🚀</button>
-      </section>
-    </div>
-
     <!-- QUẢN LÝ NHÂN SỰ -->
     <section class="admin-section" style="border-left: 4px solid #8b5cf6;">
       <div class="section-title-box"><h3>👥 Quản Lý Nhân Sự & Phân Quyền</h3></div>
@@ -89,7 +116,7 @@
             <label><input type="checkbox" id="skill_host" value="host" checked> ✨ Host</label>
             <label><input type="checkbox" id="skill_logacc" value="logacc"> 🔑 Log Acc</label>
           </div>
-          <button onclick="themStaffMoi()" style="background: #8b5cf6;">Tạo Tài Khoản ✨</button>
+          <button onclick="themStaffMoi()" style="background: #8b5cf6; color:white; border:none; padding:8px 18px; border-radius:6px; font-weight:bold;">Tạo Tài Khoản ✨</button>
         </div>
       </div>
       <div class="table-responsive">
@@ -102,14 +129,6 @@
       </div>
     </section>
 
-    <!-- THỐNG KÊ -->
-    <div class="stats-grid">
-      <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-info"><span class="stat-title">Đơn Đang Chạy</span><h3 id="statDonDangChay">0</h3></div></div>
-      <div class="stat-card"><div class="stat-icon">✔️</div><div class="stat-info"><span class="stat-title">Ca Hoàn Tất</span><h3 id="statDonXong">0</h3></div></div>
-      <div class="stat-card"><div class="stat-icon">💵</div><div class="stat-info"><span class="stat-title">Tổng Tiền Mặt</span><h3 id="statTienMat">0 ca</h3></div></div>
-      <div class="stat-card"><div class="stat-icon">💖</div><div class="stat-info"><span class="stat-title">Tổng Trả Tim</span><h3 id="statTimSky">0 ca</h3></div></div>
-    </div>
-
     <!-- SỔ LƯU TRỮ HÓA ĐƠN -->
     <section class="admin-section">
       <div class="section-title-box"><h3>📑 Sổ Lưu Trữ Hóa Đơn Đã Hoàn Thành</h3><span class="badge-count" id="countHoaDon">0 hóa đơn</span></div>
@@ -119,19 +138,6 @@
             <tr><th>Mã Đơn</th><th>Khách Hàng</th><th>Dịch Vụ</th><th>Thời Gian Hẹn</th><th>Hình Thức TT</th><th>Staff</th><th>Trạng Thái</th></tr>
           </thead>
           <tbody id="bangHoaDon"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ĐƠN ĐANG CHẠY -->
-    <section class="admin-section">
-      <div class="section-title-box"><h3>⏳ Đơn Hàng Đang Hoạt Động</h3></div>
-      <div class="table-responsive">
-        <table class="admin-table">
-          <thead>
-            <tr><th>Khách Hàng</th><th>Dịch Vụ</th><th>Thời Gian Hẹn</th><th>Thanh Toán</th><th>Staff</th><th>Thao Tác</th></tr>
-          </thead>
-          <tbody id="bangDonDangChay"></tbody>
         </table>
       </div>
     </section>
@@ -158,63 +164,132 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 1. LẮNG NGHE BÁO CÁO & XEM ẢNH TRỰC TIẾP
+    // 1. Cấu hình thanh toán
+    db.ref('caiDatThanhToan').once('value').then(function(snap) {
+      var d = snap.val() || {};
+      document.getElementById("cfgSTK").value = d.stk || "";
+      document.getElementById("cfgNganHang").value = d.nganHang || "";
+    });
+
+    function luuCaiDatThanhToan() {
+      var stk = document.getElementById("cfgSTK").value.trim();
+      var nganHang = document.getElementById("cfgNganHang").value.trim();
+      var file = document.getElementById("cfgFileQR").files[0];
+
+      if (file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          db.ref('caiDatThanhToan').update({ stk: stk, nganHang: nganHang, anhQR: e.target.result });
+          alert("Đã cập nhật STK và Mã QR thanh toán thành công!");
+        };
+        reader.readAsDataURL(file);
+      } else {
+        db.ref('caiDatThanhToan').update({ stk: stk, nganHang: nganHang });
+        alert("Đã cập nhật STK thành công!");
+      }
+    }
+
+    // 2. Lắng nghe đơn hàng & Admin duyệt tiền mặt
+    db.ref('donHangSky').on('value', function(snapshot) {
+      var data = snapshot.val();
+      var tbodyHoaDon = document.getElementById("bangHoaDon");
+      var tbodyDangChay = document.getElementById("bangDonDangChay");
+      tbodyHoaDon.innerHTML = "";
+      tbodyDangChay.innerHTML = "";
+      if (!data) return;
+
+      var countXong = 0;
+      Object.keys(data).reverse().forEach(function(key) {
+        var dh = data[key];
+        var ttText = dh.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền Mặt";
+
+        if (dh.trangThai === "hoan_thanh") {
+          countXong++;
+          tbodyHoaDon.innerHTML += `<tr><td><code>${key.substring(1, 8)}</code></td><td><strong>${dh.tenKhach}</strong></td><td>${dh.mangDichVu.toUpperCase()} - ${dh.cuThe}</td><td>${dh.thoiGianHen || "N/A"}</td><td><span class="badge-payment">${ttText}</span></td><td><strong>${dh.staffNhan || "Không rõ"}</strong></td><td><span class="badge-done">Hoàn Tất ✔️</span></td></tr>`;
+        } else {
+          var staffStatus = dh.daNhan ? `<strong>${dh.staffNhan}</strong>` : `<span style="color:#f57c00;">Chưa nhận</span>`;
+          
+          var nutDuyetTien = "";
+          if (dh.thanhToan === "Tien_VND") {
+            nutDuyetTien = dh.daThanhToanFull 
+              ? `<span style="color:#16a34a; font-weight:bold; font-size:12px;">Đã Nhận Tiền ✔️</span>` 
+              : `<button onclick="adminDuyetTien('${key}')" style="background:#16a34a; color:white; font-size:11px; padding:4px 8px; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Xác Nhận Đã Nhận Tiền 💸</button>`;
+          } else {
+            nutDuyetTien = `<span style="color:#888; font-size:11px;">Đơn Trả Tim</span>`;
+          }
+
+          tbodyDangChay.innerHTML += `
+            <tr>
+              <td><strong>${dh.tenKhach}</strong></td>
+              <td>${dh.mangDichVu.toUpperCase()} - ${dh.cuThe}</td>
+              <td>${dh.thoiGianHen || "N/A"}</td>
+              <td>${ttText}</td>
+              <td>${staffStatus}</td>
+              <td>${nutDuyetTien}</td>
+              <td><button class="btn-xoa" onclick="db.ref('donHangSky/${key}').remove()">Hủy</button></td>
+            </tr>
+          `;
+        }
+      });
+      document.getElementById("countHoaDon").innerText = countXong + " hóa đơn";
+    });
+
+    function adminDuyetTien(orderId) {
+      if (confirm("Admin xác nhận đã nhận đủ tiền chuyển khoản cho đơn này?")) {
+        db.ref('donHangSky/' + orderId).update({ daThanhToanFull: true });
+        db.ref('phongChat/' + orderId + '/tinNhan').push({
+          nguoiGui: "Hệ thống",
+          noiDung: "👑 Admin đã xác nhận nhận đủ tiền thanh toán. Ô gửi mã kết bạn đã mở!"
+        });
+      }
+    }
+
+    // 3. Hộp thư báo cáo
     db.ref('danhSachBaoCao').on('value', function(snapshot) {
       var data = snapshot.val();
       var box = document.getElementById("bangDanhSachBaoCao");
       box.innerHTML = "";
-
       if (!data) {
         box.innerHTML = "<p style='color:#888;'>Chưa có báo cáo vi phạm nào.</p>";
         return;
       }
-
       Object.keys(data).reverse().forEach(function(key) {
         var bc = data[key];
         var anhHTML = (bc.anhBangChung && bc.anhBangChung !== "Không có ảnh")
-          ? `<div style="margin: 8px 0;"><img src="${bc.anhBangChung}" style="max-width: 180px; max-height: 180px; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="window.open('${bc.anhBangChung}')" title="Bấm để xem ảnh lớn"></div>`
+          ? `<div style="margin: 8px 0;"><img src="${bc.anhBangChung}" style="max-width: 150px; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="window.open('${bc.anhBangChung}')" title="Bấm xem ảnh lớn"></div>`
           : `<p style="font-size: 11px; color: #888;">(Không đính kèm ảnh)</p>`;
 
         box.innerHTML += `
           <div style="background: #fff5f5; border: 1px solid #fecaca; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <strong style="color: #dc2626;">Từ: ${bc.nguoiBaoCao} ➔ Tố cáo: ${bc.doiTuongBiBaoCao}</strong>
-              <button onclick="xoaBaoCao('${key}')" style="background:#ccc; color:#333; font-size:11px; padding:2px 6px;">Đã Xử Lý / Xóa</button>
+              <button onclick="db.ref('danhSachBaoCao/${key}').remove()" style="background:#ccc; color:#333; font-size:11px; padding:2px 6px;">Đã Xử Lý / Xóa</button>
             </div>
             <p style="margin: 6px 0; font-size: 13px;"><strong>Lý do:</strong> ${bc.lyDo}</p>
             ${anhHTML}
-            <div style="margin-top: 8px;">
-              <button onclick="camDoiTuong('${bc.tenDoiTuong}', '${bc.loaiDoiTuong}')" style="background:#111827; color:white; font-size:11px; padding:4px 10px; border-radius:4px;">➕ Đưa ${bc.tenDoiTuong} Vào Blacklist</button>
-            </div>
+            <button onclick="camKhachTuBaoCao('${bc.tenDoiTuong}', '${bc.loaiDoiTuong}')" style="background:#111827; color:white; font-size:11px; padding:4px 10px; border-radius:4px;">➕ Đưa ${bc.tenDoiTuong} Vào Blacklist</button>
           </div>
         `;
       });
     });
 
-    function xoaBaoCao(idBc) {
-      db.ref('danhSachBaoCao/' + idBc).remove();
-    }
-
-    function camDoiTuong(ten, loai) {
+    function camKhachTuBaoCao(ten, loai) {
       if (loai === "khach") {
         db.ref('blackListKhach/' + ten.toLowerCase()).set({ ten: ten, thoiGian: Date.now() });
-        alert("Đã đưa khách " + ten + " vào Blacklist!");
+        alert("Đã đưa khách vào Blacklist!");
       } else {
-        alert("Vui lòng vào mục Quản Lý Nhân Sự để xóa quyền Staff " + ten);
+        alert("Vui lòng vào Quản Lý Nhân Sự để xóa quyền Staff!");
       }
     }
 
-    // 2. BLACKLIST KHÁCH
+    // Blacklist Khách
     db.ref('blackListKhach').on('value', function(snap) {
       var data = snap.val();
       var ul = document.getElementById("listBlacklistKhach");
       ul.innerHTML = "";
-      if (!data) {
-        ul.innerHTML = "<li style='color:#888;'>Chưa có khách nào bị cấm.</li>";
-        return;
-      }
+      if (!data) { ul.innerHTML = "<li style='color:#888;'>Chưa có khách nào bị cấm.</li>"; return; }
       Object.keys(data).forEach(function(k) {
-        ul.innerHTML += `<li>${data[k].ten || k} <button onclick="goBlacklistKhach('${k}')" style="font-size:10px; padding:1px 4px; margin-left:6px; background:#e2e8f0; border:none; cursor:pointer;">Gỡ ✕</button></li>`;
+        ul.innerHTML += `<li>${data[k].ten || k} <button onclick="db.ref('blackListKhach/${k}').remove()" style="font-size:10px; padding:1px 4px; margin-left:6px; background:#e2e8f0; border:none; cursor:pointer;">Gỡ ✕</button></li>`;
       });
     });
 
@@ -226,32 +301,16 @@
       }
     }
 
-    function goBlacklistKhach(key) {
-      db.ref('blackListKhach/' + key).remove();
-    }
-
-    // 3. QUẢN LÝ NHÂN SỰ
+    // Quản lý Staff
     db.ref('danhSachStaff').on('value', function(snap) {
       var staffList = snap.val();
       var tbody = document.getElementById("bangDanhSachStaff");
       tbody.innerHTML = "";
       if (!staffList) return;
-
       Object.keys(staffList).forEach(function(key) {
         var st = staffList[key];
-        var knBadge = (st.kyNang || []).map(function(k) {
-          return `<span class="badge-payment" style="margin-right: 4px;">${k.toUpperCase()}</span>`;
-        }).join("");
-
-        tbody.innerHTML += `
-          <tr>
-            <td style="font-size: 18px;">${st.icon || "🌸"}</td>
-            <td><strong>${st.ten}</strong></td>
-            <td><code>${st.pass}</code></td>
-            <td>${knBadge}</td>
-            <td><button class="btn-xoa" onclick="xoaStaff('${key}')">Xóa 🗑️</button></td>
-          </tr>
-        `;
+        var knBadge = (st.kyNang || []).map(function(k) { return `<span class="badge-payment" style="margin-right: 4px;">${k.toUpperCase()}</span>`; }).join("");
+        tbody.innerHTML += `<tr><td style="font-size: 18px;">${st.icon || "🌸"}</td><td><strong>${st.ten}</strong></td><td><code>${st.pass}</code></td><td>${knBadge}</td><td><button class="btn-xoa" onclick="db.ref('danhSachStaff/${key}').remove()">Xóa 🗑️</button></td></tr>`;
       });
     });
 
@@ -263,58 +322,14 @@
       if (document.getElementById("skill_uber").checked) kyNang.push("uber");
       if (document.getElementById("skill_host").checked) kyNang.push("host");
       if (document.getElementById("skill_logacc").checked) kyNang.push("logacc");
-
       if (!ten || !pass) { alert("Nhập đủ Tên và Pass!"); return; }
       db.ref('danhSachStaff').push({ ten: ten, icon: icon, pass: pass, kyNang: kyNang, ngayTao: Date.now() }).then(function() {
         document.getElementById("newStaffTen").value = "";
         document.getElementById("newStaffPass").value = "";
       });
     }
-    function xoaStaff(id) { if (confirm("Xóa staff này?")) db.ref('danhSachStaff/' + id).remove(); }
 
-    function guiThongBaoLobby() {
-      var text = document.getElementById("tbLobbyInput").value.trim();
-      if (text) db.ref('thongBaoLobby').set({ noiDung: text, capNhat: Date.now() });
-    }
-    function xoaThongBaoLobby() { db.ref('thongBaoLobby').remove(); document.getElementById("tbLobbyInput").value = ""; }
-    function guiThongBaoAdmin() {
-      var text = document.getElementById("noiDungThongBao").value.trim();
-      var dt = new Date();
-      if (text) db.ref('thongBaoAdmin').push({ noiDung: text, gio: `${dt.getHours()}:${dt.getMinutes()}`, thoiGian: Date.now() });
-      document.getElementById("noiDungThongBao").value = "";
-    }
-
-    // 4. LẮNG NGHE ĐƠN HÀNG
-    db.ref('donHangSky').on('value', function(snapshot) {
-      var data = snapshot.val();
-      var tbodyHoaDon = document.getElementById("bangHoaDon");
-      var tbodyDangChay = document.getElementById("bangDonDangChay");
-      tbodyHoaDon.innerHTML = "";
-      tbodyDangChay.innerHTML = "";
-      if (!data) return;
-
-      var countXong = 0, countChay = 0, countTien = 0, countTim = 0;
-      Object.keys(data).reverse().forEach(function(key) {
-        var dh = data[key];
-        var ttText = dh.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền Mặt";
-        if (dh.trangThai === "hoan_thanh") {
-          countXong++;
-          if (dh.thanhToan === "Tim_Sky") countTim++; else countTien++;
-          tbodyHoaDon.innerHTML += `<tr><td><code>${key.substring(1, 8)}</code></td><td><strong>${dh.tenKhach}</strong></td><td>${dh.mangDichVu.toUpperCase()} - ${dh.cuThe}</td><td>${dh.thoiGianHen || "N/A"}</td><td><span class="badge-payment">${ttText}</span></td><td><strong>${dh.staffNhan || "Không rõ"}</strong></td><td><span class="badge-done">Hoàn Tất ✔️</span></td></tr>`;
-        } else {
-          countChay++;
-          var staffStatus = dh.daNhan ? `<strong>${dh.staffNhan}</strong>` : `<span style="color:#f57c00;">Chưa nhận</span>`;
-          tbodyDangChay.innerHTML += `<tr><td><strong>${dh.tenKhach}</strong></td><td>${dh.mangDichVu.toUpperCase()} - ${dh.cuThe}</td><td>${dh.thoiGianHen || "N/A"}</td><td>${ttText}</td><td>${staffStatus}</td><td><button class="btn-xoa" onclick="db.ref('donHangSky/${key}').remove()">Hủy</button></td></tr>`;
-        }
-      });
-      document.getElementById("statDonDangChay").innerText = countChay;
-      document.getElementById("statDonXong").innerText = countXong;
-      document.getElementById("countHoaDon").innerText = countXong + " hóa đơn";
-      document.getElementById("statTienMat").innerText = countTien + " ca";
-      document.getElementById("statTimSky").innerText = countTim + " ca";
-    });
-
-    // 5. FEEDBACK
+    // Feedback
     db.ref('feedbacks').on('value', function(snapshot) {
       var fbData = snapshot.val();
       var box = document.getElementById("bangAdminFeedback");
