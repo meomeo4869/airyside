@@ -27,21 +27,21 @@
     </div>
   </div>
 
+  <!-- 1. BẢNG LỊCH ĐĂNG KÝ TỰ ĐỘNG THEO DANH SÁCH STAFF TỪ ADMIN -->
   <div class="schedule-section">
     <h2>Lịch Đăng Ký Ca Làm Việc</h2>
     <table class="schedule-table" id="bangLich">
-      <tr>
-        <th>Staff / Ca</th>
-        <th>18:00 - 20:00</th>
-        <th>20:00 - 22:00</th>
-        <th>22:00 - 24:00</th>
-      </tr>
-      <tr>
-        <td><strong>Michii 🌸</strong></td>
-        <td class="ca-lam" onclick="doiTrangThai(this)">Trống</td>
-        <td class="ca-lam" onclick="doiTrangThai(this)">Trống</td>
-        <td class="ca-lam" onclick="doiTrangThai(this)">Trống</td>
-      </tr>
+      <thead>
+        <tr>
+          <th>Staff / Ca</th>
+          <th>18:00 - 20:00</th>
+          <th>20:00 - 22:00</th>
+          <th>22:00 - 24:00</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyLichStaff">
+        <tr><td colspan="4" style="text-align:center;">Đang tải danh sách nhân sự...</td></tr>
+      </tbody>
     </table>
   </div>
 
@@ -62,7 +62,7 @@
     </div>
   </div>
 
-  <!-- KHUNG CHAT MINI CỦA STAFF -->
+  <!-- KHUNG CHAT MINI STAFF -->
   <div id="chatBox" class="chat-container">
     <div class="chat-header">
       <span id="chatTenStaff">Staff đang kết nối...</span>
@@ -70,14 +70,13 @@
       <button class="close-chat" onclick="dongChat()">✕</button>
     </div>
 
-    <!-- KHU VỰC HÓA ĐƠN CỌC / SHEET ĐẾM TIM PHÍA STAFF -->
+    <!-- KHU VỰC XÁC NHẬN CỌC / SHEET ĐẾM TIM PHÍA STAFF -->
     <div class="invoice-card" id="invoiceStaffBox">
       <div id="boxXacNhanCocStaff" style="display: flex; justify-content: space-between; align-items: center;">
         <span id="txtTrangThaiCocStaff"><strong>Trạng thái cọc 50%:</strong> Chưa nhận</span>
         <button onclick="staffXacNhanCoc()" id="btnStaffXacNhanCoc" style="background:#4CAF50; font-size:11px; padding:4px 8px;">Xác Nhận Đã Nhận Cọc ✔️</button>
       </div>
 
-      <!-- MINI SHEET ĐẾM TIM THEO NGÀY (CHỈ HIỆN KHI LÀ ĐƠN TRẢ TIM) -->
       <div id="sheetDemTimBox" style="display: none; margin-top: 6px; border-top: 1px dashed #fdba74; padding-top: 6px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <span>💖 <strong>Đã nhận:</strong> <span id="soTimDaNhanTxt">0</span> Tim</span>
@@ -110,18 +109,15 @@
     </div>
   </div>
 
-  <!-- POPUP BÁO CÁO KHÁCH CÓ TẢI ẢNH BẰNG CHỨNG -->
+  <!-- POPUP BÁO CÁO KHÁCH CÓ TẢI ẢNH -->
   <div id="modalReportStaff" class="modal-overlay">
     <div class="modal-content">
       <button class="btn-dong-modal" onclick="dongPopupReportStaff()">✕</button>
       <h3 style="margin-top:0; color:#dc2626;">🚩 Báo Cáo Khách Hàng Vi Phạm</h3>
-      
       <label style="font-size: 13px; font-weight: bold;">Lý do báo cáo:</label>
-      <textarea id="reportStaffLyDo" rows="3" placeholder="vd: Khách quỵt cọc, quỵt tim, xúc phạm..." style="width:100%; margin:6px 0 10px 0; font-family:inherit; box-sizing:border-box;"></textarea>
-      
-      <label style="font-size: 13px; font-weight: bold;">Tải ảnh bằng chứng từ điện thoại/máy tính:</label>
+      <textarea id="reportStaffLyDo" rows="3" placeholder="vd: Khách quỵt cọc, quỵt tim..." style="width:100%; margin:6px 0 10px 0; font-family:inherit; box-sizing:border-box;"></textarea>
+      <label style="font-size: 13px; font-weight: bold;">Tải ảnh bằng chứng từ máy:</label>
       <input type="file" id="reportStaffFileAnh" accept="image/*" style="margin: 6px 0 15px 0; font-size: 12px;">
-      
       <button onclick="guiBaoCaoStaff()" style="width:100%; background:#dc2626; padding:10px; font-weight:bold;">Gửi Tố Cáo Lên Admin</button>
     </div>
   </div>
@@ -134,6 +130,7 @@
       <p><strong>Khách hàng:</strong> <span id="modalKhach"></span></p>
       <p><strong>Lịch hẹn:</strong> <span id="modalGio" style="color: #e65100; font-weight: bold;"></span></p>
       <p><strong>Thanh toán:</strong> <span id="modalTT" style="color: #2e7d32; font-weight: bold;"></span></p>
+      <p><strong>Giá niêm yết:</strong> <span id="modalGia" style="color: #c2410c; font-weight: bold;"></span></p>
       <p><strong>Yêu cầu chi tiết:</strong></p>
       <div id="modalYeuCau" style="background: #f0f2f5; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px;"></div>
       <button class="btn-nhan-don" id="modalBtnNhan" style="width: 100%; padding: 12px;">Nhận Đơn Này</button>
@@ -155,12 +152,48 @@
     const db = firebase.database();
 
     var iconCuaToi = localStorage.getItem("myIcon") || "🌸";
+    var myStaffName = localStorage.getItem("myStaffName") || "Staff";
     var mySkills = JSON.parse(localStorage.getItem("myStaffSkills") || '["uber", "host", "logacc"]');
     var dangXuLyDonId = null;
     var currentTenKhachDangChat = "";
     var danhSachDonDangLam = {};
 
     function moThongBao() { document.getElementById("sidePanel").classList.toggle("panel-open"); }
+
+    // 1. TỰ ĐỘNG LOAD BẢNG LỊCH LÀM VIỆC TỪ DANH SÁCH STAFF THỰC TẾ
+    db.ref('danhSachStaff').on('value', function(snapshot) {
+      var staffList = snapshot.val();
+      var tbody = document.getElementById("tbodyLichStaff");
+      tbody.innerHTML = "";
+
+      if (!staffList) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#888;">Chưa có staff nào được Admin tạo.</td></tr>`;
+        return;
+      }
+
+      Object.keys(staffList).forEach(function(key) {
+        var st = staffList[key];
+        var isMe = st.ten === myStaffName;
+        var clickAttr = isMe ? 'onclick="doiTrangThai(this)" style="cursor:pointer;"' : 'style="opacity:0.6; cursor:not-allowed;" title="Chỉ ' + st.ten + ' mới có quyền đổi"';
+
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${st.ten} ${st.icon || "🌸"}</strong></td>
+            <td class="ca-lam" ${clickAttr}>Trống</td>
+            <td class="ca-lam" ${clickAttr}>Trống</td>
+            <td class="ca-lam" ${clickAttr}>Trống</td>
+          </tr>
+        `;
+      });
+    });
+
+    function doiTrangThai(o) {
+      if (o.classList.contains("available")) {
+        o.className = "ca-lam busy"; o.innerHTML = "Bận";
+      } else {
+        o.className = "ca-lam available"; o.innerHTML = "Rảnh";
+      }
+    }
 
     function taoLich() {
       var lich = document.getElementById("achievementCalendar");
@@ -219,14 +252,6 @@
         `;
       });
     });
-
-    function doiTrangThai(o) {
-      if (o.classList.contains("available")) {
-        o.className = "ca-lam busy"; o.innerHTML = "Bận";
-      } else {
-        o.className = "ca-lam available"; o.innerHTML = "Rảnh";
-      }
-    }
 
     // Lắng nghe đơn hàng
     db.ref('donHangSky').on('value', function(snapshot) {
@@ -354,7 +379,7 @@
       db.ref('donHangSky/' + dangXuLyDonId).update({ daCoc: true });
       db.ref('phongChat/' + dangXuLyDonId + '/tinNhan').push({
         nguoiGui: "Hệ thống",
-        noiDung: "Staff " + iconCuaToi + " đã xác nhận nhận tiền cọc 50% thành công!"
+        noiDung: "Staff " + iconCuaToi + " đã bấm xác nhận nhận cọc 50% thành công! Ô gửi mã kết bạn đã mở."
       });
       alert("Đã xác nhận nhận cọc!");
     }
@@ -441,7 +466,6 @@
       }
     }
 
-    // BÁO CÁO KHÁCH CÓ FILE ẢNH
     function moPopupReportStaff() { document.getElementById("modalReportStaff").style.display = "flex"; }
     function dongPopupReportStaff() { document.getElementById("modalReportStaff").style.display = "none"; }
 
@@ -449,10 +473,7 @@
       var lyDo = document.getElementById("reportStaffLyDo").value.trim();
       var fileInput = document.getElementById("reportStaffFileAnh");
 
-      if (!lyDo) {
-        alert("Bồ nhập lý do báo cáo khách nha!");
-        return;
-      }
+      if (!lyDo) { alert("Bồ nhập lý do báo cáo khách nha!"); return; }
 
       if (fileInput.files && fileInput.files[0]) {
         var reader = new FileReader();
@@ -486,6 +507,7 @@
       document.getElementById("modalKhach").innerText = dh.tenKhach;
       document.getElementById("modalGio").innerText = dh.thoiGianHen || "Chưa có";
       document.getElementById("modalTT").innerText = dh.thanhToan === "Tim_Sky" ? "💖 Trả bằng Tim Sky" : "💵 Trả bằng Tiền mặt (VND)";
+      document.getElementById("modalGia").innerText = dh.giaNiemYet || "Theo thỏa thuận";
       document.getElementById("modalYeuCau").innerText = dh.yeuCau || "Không có yêu cầu đặc biệt.";
       
       var nutModal = document.getElementById("modalBtnNhan");
@@ -503,7 +525,11 @@
     }
 
     function dongModal() { document.getElementById("modalChiTiet").style.display = "none"; }
-    function dongChat() { document.getElementById("chatBox").style.display = "none"; }
+    function dongChat() { 
+      document.getElementById("chatBox").style.display = "none"; 
+      dangXuLyDonId = null;
+      capNhatBongBongChat();
+    }
   </script>
 </body>
 </html>
