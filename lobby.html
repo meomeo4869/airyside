@@ -10,18 +10,8 @@
 </head>
 <body class="lobby-layout">
 
-  <!-- BANNER TIẾN TRÌNH ĐƠN CỦA KHÁCH -->
-  <div id="liveOrderBanner" class="status-banner" style="display: none;">
-    <div class="banner-content">
-      <span class="pulse-dot"></span>
-      <div id="statusText">
-        <strong>Đơn của bạn:</strong> Đang tìm Staff phù hợp... ⏳
-      </div>
-      <div style="margin-left: auto;">
-        <button id="btnOpenChat" class="btn-chat-lobby" onclick="moChatLobby()" style="display: none;">💬 Nhắn Staff</button>
-      </div>
-    </div>
-  </div>
+  <!-- CỤM BANNER TIẾN TRÌNH CÁC ĐƠN CỦA KHÁCH -->
+  <div id="liveOrdersContainer" style="position: sticky; top: 0; z-index: 1000; display: flex; flex-direction: column; gap: 4px;"></div>
 
   <div class="floating-order-btn" onclick="window.location.href='order.html'">
     ✨ Đặt Đơn Ngay
@@ -29,7 +19,7 @@
 
   <div class="lobby-container">
     
-    <!-- KHUNG THÔNG BÁO TỪ ADMIN / PAGE TỚI KHÁCH HÀNG -->
+    <!-- KHUNG THÔNG BÁO TỪ PAGE -->
     <div id="boxThongBaoPage" class="lobby-announcement" style="display: none;">
       <span class="announcement-icon">📢</span>
       <div class="announcement-text">
@@ -43,96 +33,53 @@
       <p>Nơi thư giãn, xem bảng giá chi tiết và kết nối cùng đội ngũ đồng hành</p>
     </header>
 
-    <!-- BẢNG GIÁ CHI TIẾT 3 MẢNG (UBER - HOST - LOG ACC) -->
+    <!-- BẢNG GIÁ CHI TIẾT 3 MẢNG -->
     <section class="lobby-section">
       <h2>💎 Bảng Giá Dịch Vụ Chi Tiết</h2>
       
       <div class="detailed-pricing-grid">
         
-        <!-- CỘT 1: UBER DẪN TOUR -->
+        <!-- CỘT 1: UBER -->
         <div class="price-category-card">
           <div class="category-header uber-header">
             <h3>🚗 UBER DẪN TOUR</h3>
             <p>Hộ tống an toàn, hoàn thành nhanh gọn</p>
           </div>
           <div class="category-body">
-            <div class="service-item">
-              <span>Nhặt 15 Nến</span>
-              <strong id="p_uber_15nen">3.000đ / 1 Tim</strong>
-            </div>
-            <div class="service-item">
-              <span>Nhặt 15 Nến + Quest</span>
-              <strong id="p_uber_15nen_quest">5.000đ / 1 Tim</strong>
-            </div>
-            <div class="service-item">
-              <span>Xám Nến (Full vạch)</span>
-              <strong id="p_uber_xamnen">8.000đ / 2 Tim</strong>
-            </div>
-            <div class="service-item">
-              <span>Xám Nến + Quest</span>
-              <strong id="p_uber_xamnen_quest">12.000đ / 3 Tim</strong>
-            </div>
-            <div class="service-item">
-              <span>Full Nhặt Cánh (Wing)</span>
-              <strong id="p_uber_nhatcanh">10.000đ / 2 Tim</strong>
-            </div>
-            <div class="service-item">
-              <span>Dẫn Đi Eden Full Ca</span>
-              <strong id="p_uber_eden">8.000đ / 2 Tim</strong>
-            </div>
+            <div class="service-item"><span>Nhặt 15 Nến</span><strong id="p_uber_15nen">Liên hệ</strong></div>
+            <div class="service-item"><span>Nhặt 15 Nến + Quest</span><strong id="p_uber_15nen_quest">Liên hệ</strong></div>
+            <div class="service-item"><span>Xám Nến (Full vạch)</span><strong id="p_uber_xamnen">Liên hệ</strong></div>
+            <div class="service-item"><span>Xám Nến + Quest</span><strong id="p_uber_xamnen_quest">Liên hệ</strong></div>
+            <div class="service-item"><span>Full Nhặt Cánh (Wing)</span><strong id="p_uber_nhatcanh">Liên hệ</strong></div>
+            <div class="service-item"><span>Dẫn Đi Eden Full Ca</span><strong id="p_uber_eden">Liên hệ</strong></div>
           </div>
         </div>
 
-        <!-- CỘT 2: HOST ĐỒNG HÀNH -->
+        <!-- CỘT 2: HOST -->
         <div class="price-category-card popular-card">
           <div class="category-header host-header">
-            <div class="badge">Yêu Thích</div>
             <h3>✨ HOST ĐỒNG HÀNH</h3>
             <p>Trò chuyện, đàn hát & chữa lành</p>
           </div>
           <div class="category-body">
-            <div class="service-item">
-              <span>Tâm Sự / Trò Chuyện (1h)</span>
-              <strong id="p_host_tamsu">20.000đ / 4 Tim</strong>
-            </div>
-            <div class="service-item">
-              <span>Đàn Hát Theo Yêu Cầu (1h)</span>
-              <strong id="p_host_dan">25.000đ / 5 Tim</strong>
-            </div>
-            <div class="service-item">
-              <span>Fakelove / Ghép Đôi (1h)</span>
-              <strong id="p_host_nguoiyeu">30.000đ / 6 Tim</strong>
-            </div>
-            <div class="service-item">
-              <span>Treo Máy Ngủ Cùng (Đêm)</span>
-              <strong id="p_host_treomay">15.000đ / 3 Tim</strong>
-            </div>
+            <div class="service-item"><span>Tâm Sự / Trò Chuyện (1h)</span><strong id="p_host_tamsu">Liên hệ</strong></div>
+            <div class="service-item"><span>Đàn Hát Theo Yêu Cầu (1h)</span><strong id="p_host_dan">Liên hệ</strong></div>
+            <div class="service-item"><span>Fakelove / Ghép Đôi (1h)</span><strong id="p_host_nguoiyeu">Liên hệ</strong></div>
+            <div class="service-item"><span>Treo Máy Ngủ Cùng (Đêm)</span><strong id="p_host_treomay">Liên hệ</strong></div>
           </div>
         </div>
 
-        <!-- CỘT 3: LOG ACC TRỌN GÓI -->
+        <!-- CỘT 3: LOG ACC -->
         <div class="price-category-card">
           <div class="category-header log-header">
             <h3>🔑 LOG ACC TRỌN GÓI</h3>
             <p>Bảo mật tuyệt đối, bàn giao chuẩn giờ</p>
           </div>
           <div class="category-body">
-            <div class="service-item">
-              <span>Chạy 15 Nến / Ngày</span>
-              <strong id="p_log_15nen">5.000đ / 1 Tim</strong>
-            </div>
-            <div class="service-item">
-              <span>Chạy Xám Nến + Quest / Ngày</span>
-              <strong id="p_log_xamnen">15.000đ / 3 Tim</strong>
-            </div>
-            <div class="service-item">
-              <span>Gói Tuần (7 Ngày Xám Nến)</span>
-              <strong id="p_log_tuan">90.000đ / 18 Tim</strong>
-            </div>
-            <div class="service-item">
-              <span>Gói Tháng (30 Ngày Full)</span>
-              <strong id="p_log_thang">350.000đ / 70 Tim</strong>
-            </div>
+            <div class="service-item"><span>Chạy 15 Nến / Ngày</span><strong id="p_log_15nen">Liên hệ</strong></div>
+            <div class="service-item"><span>Chạy Xám Nến + Quest / Ngày</span><strong id="p_log_xamnen">Liên hệ</strong></div>
+            <div class="service-item"><span>Gói Tuần (7 Ngày)</span><strong id="p_log_tuan">Liên hệ</strong></div>
+            <div class="service-item"><span>Gói Tháng (30 Ngày Full)</span><strong id="p_log_thang">Liên hệ</strong></div>
           </div>
         </div>
 
@@ -147,7 +94,7 @@
           <div id="noiDungLichPage" style="white-space: pre-line; line-height: 1.6;">
             • Ca Sáng: 08:00 - 12:00
             • Ca Chiều: 13:30 - 17:30
-            • Ca Tối (Cao điểm): 18:00 - 24:00
+            • Ca Tối: 18:00 - 24:00
           </div>
         </div>
         <div class="terms-box">
@@ -163,7 +110,7 @@
 
     <!-- TƯỜNG FEEDBACK -->
     <section class="lobby-section">
-      <h2>⭐ Feedback Từ Khách Hàng (Mới Nhất)</h2>
+      <h2>⭐ Feedback Từ Khách Hàng</h2>
       <div class="feedback-grid" id="feedbackWall">
         <p style="grid-column: 1/-1; color: #888;">Đang tải feedback...</p>
       </div>
@@ -228,7 +175,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 1. Tải bảng giá chi tiết & cài đặt từ Firebase
+    // 1. Tải bảng giá & Thông báo
     db.ref('bangGiaChiTiet').on('value', function(snap) {
       var bg = snap.val();
       if (bg) {
@@ -247,7 +194,6 @@
       }
     });
 
-    // 2. Tải thông báo Sảnh của Admin
     db.ref('thongBaoLobby').on('value', function(snap) {
       var tb = snap.val();
       var box = document.getElementById("boxThongBaoPage");
@@ -259,65 +205,81 @@
       }
     });
 
-    var currentOrderId = localStorage.getItem("myCurrentOrderId");
+    // 2. LẮNG NGHE TOÀN BỘ DANH SÁCH ĐƠN CỦA KHÁCH NÀY
+    var myOrderIds = JSON.parse(localStorage.getItem("myOrderIdsList") || "[]");
+    var activeChatOrderId = null;
     var currentTenKhach = "Khách Hàng";
     var selectedStar = 5;
 
-    if (currentOrderId) {
-      db.ref('donHangSky/' + currentOrderId).on('value', function(snapshot) {
-        var don = snapshot.val();
-        if (don) {
-          currentTenKhach = don.tenKhach;
-          document.getElementById("liveOrderBanner").style.display = "block";
+    function theoDoiCacDonCuaKhach() {
+      var container = document.getElementById("liveOrdersContainer");
+      container.innerHTML = "";
 
-          if (don.trangThai === "hoan_thanh") {
-            document.getElementById("liveOrderBanner").style.display = "none";
-            document.getElementById("chatBoxKhach").style.display = "none";
-            document.getElementById("modalFeedback").style.display = "flex";
+      if (myOrderIds.length === 0) return;
+
+      myOrderIds.forEach(function(orderId) {
+        db.ref('donHangSky/' + orderId).on('value', function(snapshot) {
+          var don = snapshot.val();
+          var bannerId = "banner_order_" + orderId;
+          var existingBanner = document.getElementById(bannerId);
+
+          if (!don || don.trangThai === "hoan_thanh") {
+            if (existingBanner) existingBanner.remove();
             return;
           }
 
-          var thanhToanText = don.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền mặt";
+          var ttText = don.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền mặt";
+          var statusHTML = don.daNhan 
+            ? `Staff <strong>${don.staffNhan || "🌸"}</strong> đã nhận đơn ${don.mangDichVu.toUpperCase()}! 🎉` 
+            : `${don.mangDichVu.toUpperCase()} (${don.cuThe}) - Đang tìm Staff... ⏳`;
 
-          if (don.staffHoanThanh) {
-            document.getElementById("bannerDongBangKhach").style.display = "block";
-            document.getElementById("nhapTinKhach").disabled = true;
-            document.getElementById("btnGuiTinKhach").disabled = true;
-          }
+          var btnChat = don.daNhan 
+            ? `<button class="btn-chat-lobby" onclick="moChatChoDon('${orderId}')">💬 Nhắn Staff ${don.staffNhan || ""}</button>` 
+            : "";
 
-          if (don.daNhan) {
-            document.getElementById("statusText").innerHTML = `<strong>Đơn:</strong> Staff <strong>${don.staffNhan || "🌸"}</strong> đã nhận! (${don.thoiGianHen}) | TT: ${thanhToanText}`;
-            document.getElementById("btnOpenChat").style.display = "inline-block";
-            document.getElementById("chatTitleKhach").innerText = "Chat với Staff " + (don.staffNhan || "🌸");
-            langNghePhongChat(currentOrderId);
+          var bannerHTML = `
+            <div class="banner-content">
+              <span class="pulse-dot"></span>
+              <div><strong>Đơn [${orderId.substring(1, 6)}]:</strong> ${statusHTML} (${ttText})</div>
+              <div style="margin-left: auto;">${btnChat}</div>
+            </div>
+          `;
+
+          if (existingBanner) {
+            existingBanner.innerHTML = bannerHTML;
           } else {
-            document.getElementById("statusText").innerHTML = `<strong>Đơn:</strong> ${don.mangDichVu.toUpperCase()} - Hẹn: <strong>${don.thoiGianHen}</strong> (${thanhToanText}) ⏳`;
-            document.getElementById("btnOpenChat").style.display = "none";
+            var div = document.createElement("div");
+            div.className = "status-banner";
+            div.id = bannerId;
+            div.innerHTML = bannerHTML;
+            container.appendChild(div);
           }
-        }
+        });
       });
     }
+    theoDoiCacDonCuaKhach();
 
-    // Feedback
-    db.ref('feedbacks').on('value', function(snapshot) {
-      var data = snapshot.val();
-      var wall = document.getElementById("feedbackWall");
-      wall.innerHTML = "";
-      if (!data) {
-        wall.innerHTML = "<p style='grid-column: 1/-1; color: #888;'>Chưa có đánh giá nào.</p>";
-        return;
-      }
-      Object.values(data).reverse().forEach(function(fb) {
-        var starStr = "★".repeat(fb.sao || 5);
-        wall.innerHTML += `
-          <div class="feedback-card">
-            <div class="feedback-stars" style="color: #ffb703; font-size: 16px;">${starStr}</div>
-            <p>"${fb.nhanXet}"</p>
-            <span class="feedback-author">- ${fb.tenKhach || "Khách hàng"}</span>
-          </div>
-        `;
+    // 3. CHUYỂN PHÒNG CHAT CHO TỪNG ĐƠN CỦA KHÁCH
+    function moChatChoDon(orderId) {
+      activeChatOrderId = orderId;
+      document.getElementById("chatBoxKhach").style.display = "flex";
+
+      db.ref('donHangSky/' + orderId).once('value').then(function(snap) {
+        var don = snap.val();
+        currentTenKhach = don.tenKhach;
+        document.getElementById("chatTitleKhach").innerText = `Chat: ${don.mangDichVu.toUpperCase()} (Staff ${don.staffNhan || "🌸"})`;
+        
+        if (don.staffHoanThanh) {
+          document.getElementById("bannerDongBangKhach").style.display = "block";
+          document.getElementById("nhapTinKhach").disabled = true;
+          document.getElementById("btnGuiTinKhach").disabled = true;
+        } else {
+          document.getElementById("bannerDongBangKhach").style.display = "none";
+        }
+
+        langNghePhongChat(orderId);
       });
-    });
+    }
 
     function langNghePhongChat(idDon) {
       db.ref('phongChat/' + idDon).on('value', function(snap) {
@@ -348,9 +310,9 @@
 
     function xacNhanMaKhach() {
       var ma = document.getElementById("maKetBanKhach").value.trim();
-      if (ma) {
-        db.ref('phongChat/' + currentOrderId).update({ maKetBan: ma });
-        db.ref('phongChat/' + currentOrderId + '/tinNhan').push({
+      if (ma && activeChatOrderId) {
+        db.ref('phongChat/' + activeChatOrderId).update({ maKetBan: ma });
+        db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({
           nguoiGui: "Hệ thống",
           noiDung: "Mã kết bạn Sky: " + ma
         });
@@ -359,8 +321,8 @@
 
     function guiTinKhach() {
       var txt = document.getElementById("nhapTinKhach").value.trim();
-      if (txt) {
-        db.ref('phongChat/' + currentOrderId + '/tinNhan').push({
+      if (txt && activeChatOrderId) {
+        db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({
           nguoiGui: "Khách",
           noiDung: txt
         });
@@ -368,26 +330,48 @@
       }
     }
 
-    function moChatLobby() { document.getElementById("chatBoxKhach").style.display = "flex"; }
     function dongChatKhach() { document.getElementById("chatBoxKhach").style.display = "none"; }
 
     function xacNhanXongKhach() {
-      if (confirm("Xác nhận chuyến đi đã hoàn tất cùng Staff?")) {
-        db.ref('donHangSky/' + currentOrderId).update({ khachHoanThanh: true });
-        db.ref('phongChat/' + currentOrderId + '/tinNhan').push({
+      if (confirm("Xác nhận chuyến đi này đã hoàn tất cùng Staff?")) {
+        db.ref('donHangSky/' + activeChatOrderId).update({ khachHoanThanh: true });
+        db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({
           nguoiGui: "Hệ thống",
           noiDung: "Khách hàng đã bấm xác nhận hoàn tất ca!"
         });
-        db.ref('donHangSky/' + currentOrderId).once('value').then(function(snap) {
+        db.ref('donHangSky/' + activeChatOrderId).once('value').then(function(snap) {
           var dh = snap.val();
           if (dh.staffHoanThanh) {
-            db.ref('donHangSky/' + currentOrderId).update({ trangThai: "hoan_thanh" });
+            db.ref('donHangSky/' + activeChatOrderId).update({ trangThai: "hoan_thanh" });
+            dongChatKhach();
+            document.getElementById("modalFeedback").style.display = "flex";
           } else {
             alert("Đã xác nhận hoàn thành! Đang đợi Staff cùng bấm xác nhận.");
           }
         });
       }
     }
+
+    // Feedback
+    db.ref('feedbacks').on('value', function(snapshot) {
+      var data = snapshot.val();
+      var wall = document.getElementById("feedbackWall");
+      wall.innerHTML = "";
+      if (!data) {
+        wall.innerHTML = "<p style='grid-column: 1/-1; color: #888;'>Chưa có đánh giá nào.</p>";
+        return;
+      }
+      Object.values(data).reverse().forEach(function(fb) {
+        var starStr = "★".repeat(fb.sao || 5);
+        wall.innerHTML += `
+          <div class="feedback-card">
+            <div class="feedback-stars" style="color: #ffb703; font-size: 16px;">${starStr}</div>
+            <p>"${fb.nhanXet}"</p>
+            <span class="feedback-author">- ${fb.tenKhach || "Khách hàng"}</span>
+          </div>
+        `;
+      });
+    });
 
     function renderStars(count) {
       var stars = document.querySelectorAll('.star');
@@ -404,13 +388,17 @@
     function guiFeedback() {
       var txt = document.getElementById("loiNhanFeedback").value.trim();
       db.ref('feedbacks').push({
-        donId: currentOrderId,
+        donId: activeChatOrderId,
         tenKhach: currentTenKhach,
         sao: selectedStar,
         nhanXet: txt || "Dịch vụ rất tốt và uy tín!",
         thoiGian: Date.now()
       });
-      localStorage.removeItem("myCurrentOrderId");
+      
+      // Xóa đơn này khỏi danh sách đơn đang theo dõi của khách
+      myOrderIds = myOrderIds.filter(function(id) { return id !== activeChatOrderId; });
+      localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
+
       document.getElementById("modalFeedback").style.display = "none";
       alert("Cảm ơn bồ đã đánh giá nha! ✨");
       location.reload();
