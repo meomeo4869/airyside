@@ -184,6 +184,37 @@
         var keyGia = mang + "_" + cuThe;
         var giaNiemYet = bangGiaData[keyGia] || "Theo thỏa thuận";
 
+        // TÍNH TOÁN: TỔNG TIỀN = PHÍ DỊCH VỤ - GIẢM GIÁ
+        var phiDichVuHienThi = giaNiemYet;
+        var giamGiaHienThi = "0đ";
+        var tongTienHienThi = giaNiemYet;
+
+        if (pttt === "Tien_VND") {
+          // Bóc tách chữ số từ chuỗi giá (ví dụ: '15k' -> 15000, '25.000đ' -> 25000)
+          var chuoiSo = giaNiemYet.toLowerCase().replace(/[^0-9k]/g, '');
+          var phiSo = 0;
+
+          if (chuoiSo.includes('k')) {
+            phiSo = parseFloat(chuoiSo.replace('k', '')) * 1000;
+          } else {
+            phiSo = parseFloat(chuoiSo) || 0;
+          }
+
+          var giamGiaSo = 0; // Số tiền giảm giá (VND) - có thể gắn mã coupon sau này
+
+          if (phiSo > 0) {
+            var tongSo = Math.max(0, phiSo - giamGiaSo);
+            phiDichVuHienThi = phiSo.toLocaleString('vi-VN') + "đ";
+            giamGiaHienThi = giamGiaSo.toLocaleString('vi-VN') + "đ";
+            tongTienHienThi = tongSo.toLocaleString('vi-VN') + "đ";
+          }
+        } else {
+          // Đơn Tim Sky
+          phiDichVuHienThi = giaNiemYet;
+          giamGiaHienThi = "0 Tim";
+          tongTienHienThi = giaNiemYet;
+        }
+
         donHangTamThoi = {
           tenKhach: tenKhach,
           mangDichVu: mang,
@@ -191,19 +222,21 @@
           thoiGianHen: tgDinhDang,
           rawTime: thoiGian,
           thanhToan: pttt,
-          giaNiemYet: giaNiemYet,
-          daThanhToanFull: (pttt === "Tim_Sky"), // Đơn tim không cần admin duyệt tiền trước
+          phiGoc: phiDichVuHienThi,
+          giamGia: giamGiaHienThi,
+          giaNiemYet: tongTienHienThi,
+          daThanhToanFull: (pttt === "Tim_Sky"),
           yeuCau: yc || "Không có yêu cầu đặc biệt",
           daNhan: false,
           trangThai: "dang_cho",
           thoiGianTao: Date.now()
         };
 
-        // Điền dữ liệu vào Popup
+        // Điền vào Popup hóa đơn
         document.getElementById("invTenDichVu").innerText = `${mang.toUpperCase()} (${cuThe})`;
-        document.getElementById("invPhiDichVu").innerText = giaNiemYet;
-        document.getElementById("invGiamGia").innerText = "0đ";
-        document.getElementById("invTongTien").innerText = giaNiemYet;
+        document.getElementById("invPhiDichVu").innerText = phiDichVuHienThi;
+        document.getElementById("invGiamGia").innerText = giamGiaHienThi;
+        document.getElementById("invTongTien").innerText = tongTienHienThi;
         document.getElementById("invNoiDungLuat").innerText = luatHoaDonText;
 
         document.getElementById("modalHoaDonOrder").style.display = "flex";
