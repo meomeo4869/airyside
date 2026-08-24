@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <!-- 1. BẢNG LỊCH ĐĂNG KÝ TỰ ĐỘNG THEO DANH SÁCH STAFF TỪ ADMIN -->
+  <!-- BẢNG LỊCH LÀM VIỆC TỰ ĐỘNG THEO ADMIN -->
   <div class="schedule-section">
     <h2>Lịch Đăng Ký Ca Làm Việc</h2>
     <table class="schedule-table" id="bangLich">
@@ -62,26 +62,21 @@
     </div>
   </div>
 
-  <!-- KHUNG CHAT MINI STAFF -->
+  <!-- KHUNG CHAT MINI NHỎ GỌN CỦA STAFF -->
   <div id="chatBox" class="chat-container">
     <div class="chat-header">
-      <span id="chatTenStaff">Staff đang kết nối...</span>
-      <button class="btn-report" onclick="moPopupReportStaff()">🚩 Báo Cáo Khách</button>
-      <button class="close-chat" onclick="dongChat()">✕</button>
+      <span id="chatTenStaff" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;">Staff</span>
+      <div class="chat-header-actions">
+        <button class="btn-report-mini" onclick="moPopupReportStaff()" title="Báo cáo khách">🚩 Báo cáo</button>
+        <button class="close-chat" onclick="dongChat()">✕</button>
+      </div>
     </div>
 
-    <!-- KHU VỰC XÁC NHẬN CỌC / SHEET ĐẾM TIM PHÍA STAFF -->
-    <div class="invoice-card" id="invoiceStaffBox">
-      <div id="boxXacNhanCocStaff" style="display: flex; justify-content: space-between; align-items: center;">
-        <span id="txtTrangThaiCocStaff"><strong>Trạng thái cọc 50%:</strong> Chưa nhận</span>
-        <button onclick="staffXacNhanCoc()" id="btnStaffXacNhanCoc" style="background:#4CAF50; font-size:11px; padding:4px 8px;">Xác Nhận Đã Nhận Cọc ✔️</button>
-      </div>
-
-      <div id="sheetDemTimBox" style="display: none; margin-top: 6px; border-top: 1px dashed #fdba74; padding-top: 6px;">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span>💖 <strong>Đã nhận:</strong> <span id="soTimDaNhanTxt">0</span> Tim</span>
-          <button onclick="staffThem1Tim()" style="background:#ea580c; font-size:11px; padding:3px 8px;">+ Đã Nhận 1 Tim Hôm Nay</button>
-        </div>
+    <!-- SHEET ĐẾM TIM (CHỈ HIỆN KHI ĐƠN LÀ TIM SKY) -->
+    <div id="sheetDemTimBox" style="display: none; background: #fff7ed; padding: 6px 10px; font-size: 11px; border-bottom: 1px solid #fed7aa;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span>💖 <strong>Đã nhận:</strong> <span id="soTimDaNhanTxt">0</span> Tim</span>
+        <button onclick="staffThem1Tim()" style="background:#ea580c; color:white; border:none; border-radius:4px; font-size:10px; padding:3px 6px; cursor:pointer;">+ Nhận 1 Tim</button>
       </div>
     </div>
 
@@ -94,10 +89,11 @@
     </div>
 
     <div class="chat-body" id="chatBody">
-      <div id="manHinhKetBanStaff" style="text-align: center; margin-top: 20px;">
-        <p style="font-size: 13px;">Nhập mã kết bạn Sky:</p>
-        <input type="text" id="maKetBanStaff" placeholder="Mã kết bạn..." style="width: 80%; margin-bottom: 8px;">
-        <button onclick="xacNhanMaStaff()" style="padding: 6px 12px; font-size: 12px;">Gửi Mã</button>
+      <div id="manHinhKetBanStaff" style="text-align: center; margin-top: 15px;">
+        <p style="font-size: 12px; color: #475569;">Nhập link/mã kết bạn Sky:</p>
+        <input type="text" id="maKetBanStaff" placeholder="Mã kết bạn..." style="width: 80%; padding: 6px 10px; font-size: 12px; margin-bottom: 6px;">
+        <br>
+        <button onclick="xacNhanMaStaff()" style="padding: 5px 12px; font-size: 12px; background: #0284c7;">Gửi Mã</button>
       </div>
       <div id="tinNhanStaff" style="display: none;"></div>
     </div>
@@ -115,8 +111,8 @@
       <button class="btn-dong-modal" onclick="dongPopupReportStaff()">✕</button>
       <h3 style="margin-top:0; color:#dc2626;">🚩 Báo Cáo Khách Hàng Vi Phạm</h3>
       <label style="font-size: 13px; font-weight: bold;">Lý do báo cáo:</label>
-      <textarea id="reportStaffLyDo" rows="3" placeholder="vd: Khách quỵt cọc, quỵt tim..." style="width:100%; margin:6px 0 10px 0; font-family:inherit; box-sizing:border-box;"></textarea>
-      <label style="font-size: 13px; font-weight: bold;">Tải ảnh bằng chứng từ máy:</label>
+      <textarea id="reportStaffLyDo" rows="3" placeholder="vd: Khách quỵt tim, xúc phạm..." style="width:100%; margin:6px 0 10px 0; font-family:inherit; box-sizing:border-box;"></textarea>
+      <label style="font-size: 13px; font-weight: bold;">Tải ảnh bằng chứng từ thư viện:</label>
       <input type="file" id="reportStaffFileAnh" accept="image/*" style="margin: 6px 0 15px 0; font-size: 12px;">
       <button onclick="guiBaoCaoStaff()" style="width:100%; background:#dc2626; padding:10px; font-weight:bold;">Gửi Tố Cáo Lên Admin</button>
     </div>
@@ -160,16 +156,12 @@
 
     function moThongBao() { document.getElementById("sidePanel").classList.toggle("panel-open"); }
 
-    // 1. TỰ ĐỘNG LOAD BẢNG LỊCH LÀM VIỆC TỪ DANH SÁCH STAFF THỰC TẾ
+    // Đồng bộ lịch từ danh sách staff thực tế
     db.ref('danhSachStaff').on('value', function(snapshot) {
       var staffList = snapshot.val();
       var tbody = document.getElementById("tbodyLichStaff");
       tbody.innerHTML = "";
-
-      if (!staffList) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#888;">Chưa có staff nào được Admin tạo.</td></tr>`;
-        return;
-      }
+      if (!staffList) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#888;">Chưa có staff nào được Admin tạo.</td></tr>`; return; }
 
       Object.keys(staffList).forEach(function(key) {
         var st = staffList[key];
@@ -188,19 +180,14 @@
     });
 
     function doiTrangThai(o) {
-      if (o.classList.contains("available")) {
-        o.className = "ca-lam busy"; o.innerHTML = "Bận";
-      } else {
-        o.className = "ca-lam available"; o.innerHTML = "Rảnh";
-      }
+      if (o.classList.contains("available")) { o.className = "ca-lam busy"; o.innerHTML = "Bận"; }
+      else { o.className = "ca-lam available"; o.innerHTML = "Rảnh"; }
     }
 
     function taoLich() {
       var lich = document.getElementById("achievementCalendar");
       lich.innerHTML = "";
-      for (var i = 1; i <= 31; i++) {
-        lich.innerHTML += '<div class="day-box" id="ngay-' + i + '">' + i + '</div>';
-      }
+      for (var i = 1; i <= 31; i++) { lich.innerHTML += '<div class="day-box" id="ngay-' + i + '">' + i + '</div>'; }
     }
     taoLich();
 
@@ -209,10 +196,7 @@
       if (chamCongData) {
         Object.keys(chamCongData).forEach(function(dayNum) {
           var oNgay = document.getElementById("ngay-" + dayNum);
-          if (oNgay) {
-            oNgay.classList.add("has-order");
-            oNgay.innerHTML = iconCuaToi;
-          }
+          if (oNgay) { oNgay.classList.add("has-order"); oNgay.innerHTML = iconCuaToi; }
         });
       }
     });
@@ -223,12 +207,7 @@
       if (notis) {
         box.innerHTML = "";
         Object.values(notis).reverse().forEach(function(n) {
-          box.innerHTML += `
-            <div class="noti-card">
-              <strong>Admin:</strong> <span class="time">${n.gio || "Vừa xong"}</span>
-              <p>${n.noiDung}</p>
-            </div>
-          `;
+          box.innerHTML += `<div class="noti-card"><strong>Admin:</strong> <span class="time">${n.gio || "Vừa xong"}</span><p>${n.noiDung}</p></div>`;
         });
       }
     });
@@ -237,19 +216,10 @@
       var data = snap.val();
       var box = document.getElementById("staffFeedbackGrid");
       box.innerHTML = "";
-      if (!data) {
-        box.innerHTML = "<p style='grid-column:1/-1; color:#888;'>Chưa có feedback nào.</p>";
-        return;
-      }
+      if (!data) { box.innerHTML = "<p style='grid-column:1/-1; color:#888;'>Chưa có feedback nào.</p>"; return; }
       Object.values(data).reverse().forEach(function(fb) {
         var starStr = "★".repeat(fb.sao || 5);
-        box.innerHTML += `
-          <div class="feedback-card">
-            <div class="feedback-stars" style="color: #ffb703;">${starStr}</div>
-            <p>"${fb.nhanXet}"</p>
-            <span class="feedback-author">- ${fb.tenKhach}</span>
-          </div>
-        `;
+        box.innerHTML += `<div class="feedback-card"><div class="feedback-stars" style="color: #ffb703;">${starStr}</div><p>"${fb.nhanXet}"</p><span class="feedback-author">- ${fb.tenKhach}</span></div>`;
       });
     });
 
@@ -300,18 +270,13 @@
         baoTu.innerHTML += HTMLCard;
       });
 
-      if (!coDonPhuHop) {
-        baoTu.innerHTML = `<p style='grid-column: 1/-1; color: #888;'>Hiện không có đơn nào thuộc mảng kỹ năng của bạn.</p>`;
-      }
+      if (!coDonPhuHop) baoTu.innerHTML = `<p style='grid-column: 1/-1; color: #888;'>Hiện không có đơn nào thuộc mảng kỹ năng của bạn.</p>`;
       capNhatBongBongChat();
     });
 
     function chotDon(maDon) {
       dangXuLyDonId = maDon;
-      db.ref('donHangSky/' + maDon).update({
-        daNhan: true,
-        staffNhan: iconCuaToi
-      }).then(function() {
+      db.ref('donHangSky/' + maDon).update({ daNhan: true, staffNhan: iconCuaToi }).then(function() {
         dongModal();
         var homNay = new Date().getDate();
         db.ref('chamCong/' + iconCuaToi + '/' + homNay).set(true);
@@ -345,22 +310,13 @@
         currentTenKhachDangChat = dh.tenKhach;
         document.getElementById("chatGhimOrder").innerHTML = `Đơn: ${dh.mangDichVu} (${dh.thoiGianHen})`;
         document.getElementById("chatBox").style.display = "flex";
-        document.getElementById("chatTenStaff").innerHTML = "Chat: " + dh.tenKhach + " ⇋ Staff " + iconCuaToi;
+        document.getElementById("chatTenStaff").innerHTML = "Chat: " + dh.tenKhach;
 
         if (dh.thanhToan === "Tim_Sky") {
-          document.getElementById("boxXacNhanCocStaff").style.display = "none";
           document.getElementById("sheetDemTimBox").style.display = "block";
           document.getElementById("soTimDaNhanTxt").innerText = dh.soTimDaNhan || 0;
         } else {
-          document.getElementById("boxXacNhanCocStaff").style.display = "flex";
           document.getElementById("sheetDemTimBox").style.display = "none";
-          if (dh.daCoc) {
-            document.getElementById("txtTrangThaiCocStaff").innerHTML = `<strong>Trạng thái cọc:</strong> <span style="color:#15803d;">Đã nhận cọc 50% ✔️</span>`;
-            document.getElementById("btnStaffXacNhanCoc").style.display = "none";
-          } else {
-            document.getElementById("txtTrangThaiCocStaff").innerHTML = `<strong>Trạng thái cọc:</strong> <span style="color:#ea580c;">Chưa nhận cọc</span>`;
-            document.getElementById("btnStaffXacNhanCoc").style.display = "block";
-          }
         }
 
         if (dh.khachHoanThanh) {
@@ -373,15 +329,6 @@
 
         langNghePhongChatStaff(idDon);
       });
-    }
-
-    function staffXacNhanCoc() {
-      db.ref('donHangSky/' + dangXuLyDonId).update({ daCoc: true });
-      db.ref('phongChat/' + dangXuLyDonId + '/tinNhan').push({
-        nguoiGui: "Hệ thống",
-        noiDung: "Staff " + iconCuaToi + " đã bấm xác nhận nhận cọc 50% thành công! Ô gửi mã kết bạn đã mở."
-      });
-      alert("Đã xác nhận nhận cọc!");
     }
 
     function staffThem1Tim() {
@@ -414,7 +361,7 @@
             var body = document.getElementById("tinNhanStaff");
             body.innerHTML = "";
             Object.values(data.tinNhan).forEach(function(msg) {
-              var loai = msg.nguoiGui === "Staff" ? "msg right" : "msg left";
+              var loai = msg.nguoiGui === "Staff" ? "msg right" : (msg.nguoiGui === "Hệ thống" ? "msg system" : "msg left");
               body.innerHTML += `<div class="${loai}"><strong>${msg.nguoiGui}:</strong> ${msg.noiDung}</div>`;
             });
             body.scrollTop = body.scrollHeight;
@@ -472,14 +419,11 @@
     function guiBaoCaoStaff() {
       var lyDo = document.getElementById("reportStaffLyDo").value.trim();
       var fileInput = document.getElementById("reportStaffFileAnh");
-
       if (!lyDo) { alert("Bồ nhập lý do báo cáo khách nha!"); return; }
 
       if (fileInput.files && fileInput.files[0]) {
         var reader = new FileReader();
-        reader.onload = function(e) {
-          luuBaoCaoStaffLenFirebase(lyDo, e.target.result);
-        };
+        reader.onload = function(e) { luuBaoCaoStaffLenFirebase(lyDo, e.target.result); };
         reader.readAsDataURL(fileInput.files[0]);
       } else {
         luuBaoCaoStaffLenFirebase(lyDo, "Không có ảnh");
