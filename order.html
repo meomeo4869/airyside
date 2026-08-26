@@ -18,6 +18,12 @@
       <input type="text" id="playerName" placeholder="Nhập tên vào đây nha...">
       <br><br>
 
+      <!-- Ô NHẬP GMAIL TÍCH ĐIỂM -->
+      <label>📧 Gmail tích điểm (Tùy chọn):</label> <br>
+      <input type="email" id="playerEmail" placeholder="vd: skylove@gmail.com" onblur="kiemTraUuDaiEmail()">
+      <div id="msgEmailStatus" style="font-size: 12px; margin-top: 4px; display: none;"></div>
+      <br>
+
       <label>Bạn muốn đặt dịch vụ nào?</label> <br>
       <select id="mangDichVu">
         <option value="chua_chon">-- Chọn mảng dịch vụ --</option>
@@ -39,7 +45,7 @@
 
       <label>Hình thức thanh toán:</label> <br>
       <select id="phuongThucTT">
-        <option value="Tien_VND">Tiền(Ngân hàng / Momo)</option>
+        <option value="Tien_VND">Tiền (Ngân hàng / Momo)</option>
         <option value="Tim_Sky">Tim</option>
       </select>
       <br><br>
@@ -52,7 +58,7 @@
     </div>
   </div>
 
-  <!-- POPUP HÓA ĐƠN ĐÚNG 5 DÒNG CHUẨN -->
+  <!-- POPUP HÓA ĐƠN ĐÚNG 5 DÒNG CHUẨN CỦA BỒ -->
   <div id="modalHoaDonOrder" class="modal-overlay">
     <div class="modal-content" style="max-width: 380px; padding: 22px; border-radius: 12px; background: white;">
       
@@ -90,7 +96,7 @@
       </div>
 
       <div style="display: flex; gap: 8px;">
-        <button onclick="xacNhanLuuDon()" style="flex: 2; background: #0284c7; font-weight: bold; padding: 10px;">Xác Nhận & Vào Sảnh </button>
+        <button onclick="xacNhanLuuDon()" style="flex: 2; background: #0284c7; font-weight: bold; padding: 10px;">Xác Nhận & Vào Sảnh</button>
         <button onclick="dongModalHoaDon()" style="flex: 1; background: #e2e8f0; color: #333; padding: 10px;">Quay Lại</button>
       </div>
 
@@ -113,6 +119,8 @@
 
     var bangGiaData = {};
     var luatHoaDonText = "";
+    var giamGiaTuEmail = 0;
+    var emailKeyHienTai = "";
 
     db.ref('bangGiaChiTiet').on('value', function(snap) { bangGiaData = snap.val() || {}; });
     db.ref('caiDatPage/luatHoaDon').on('value', function(snap) {
@@ -155,10 +163,44 @@
       }
     });
 
+    // 1. KIỂM TRA ƯU ĐÃI GMAIL
+    function kiemTraUuDaiEmail() {
+      var rawEmail = document.getElementById("playerEmail").value.trim().toLowerCase();
+      var msgBox = document.getElementById("msgEmailStatus");
+      
+      if (!rawEmail) {
+        msgBox.style.display = "none";
+        giamGiaTuEmail = 0;
+        emailKeyHienTai = "";
+        return;
+      }
+
+      emailKeyHienTai = rawEmail.replace(/\./g, '_');
+      db.ref('thanhVienSky/' + emailKeyHienTai).once('value').then(function(snap) {
+        var member = snap.val();
+        msgBox.style.display = "block";
+        if (member) {
+          var count = member.soDonDaDat || 0;
+          if (member.uuDaiRieng && !member.uuDaiRieng.daDung) {
+            giamGiaTuEmail = member.uuDaiRieng.giaTri || 0;
+            msgBox.innerHTML = `<span style="color:#16a34a; font-weight:bold;">✨ Chào hội viên! Bồ có mã tri ân giảm ${giamGiaTuEmail.toLocaleString('vi-VN')}đ!</span>`;
+          } else {
+            giamGiaTuEmail = 0;
+            msgBox.innerHTML = `<span style="color:#2563eb;">⭐ Hội viên thân thiết (Đã hoàn tất ${count} đơn cùng page).</span>`;
+          }
+        } else {
+          giamGiaTuEmail = 0;
+          msgBox.innerHTML = `<span style="color:#64748b;">🌱 Email mới: Sẽ tự động tích lũy số đơn sau khi hoàn tất!</span>`;
+        }
+      });
+    }
+
     var donHangTamThoi = null;
 
+    // 2. TÍNH TOÁN & HIỆN HÓA ĐƠN
     function kiemTraVaHienHoaDon() {
       var tenKhach = document.getElementById("playerName").value.trim();
+      var rawEmail = document.getElementById("playerEmail").value.trim().toLowerCase();
       var mang = document.getElementById("mangDichVu").value;
       var cuThe = document.getElementById("cuThe").value;
       var thoiGian = document.getElementById("thoiGianBatDau").value;
@@ -184,13 +226,11 @@
         var keyGia = mang + "_" + cuThe;
         var giaNiemYet = bangGiaData[keyGia] || "Theo thỏa thuận";
 
-        // TÍNH TOÁN: TỔNG TIỀN = PHÍ DỊCH VỤ - GIẢM GIÁ
         var phiDichVuHienThi = giaNiemYet;
-        var giamGiaHienThi = "0đ";
+        var giamGiaHienThi = giamGiaTuEmail > 0 ? giamGiaTuEmail.toLocaleString('vi-VN') + "đ" : "0đ";
         var tongTienHienThi = giaNiemYet;
 
         if (pttt === "Tien_VND") {
-          // Bóc tách chữ số từ chuỗi giá (ví dụ: '15k' -> 15000, '25.000đ' -> 25000)
           var chuoiSo = giaNiemYet.toLowerCase().replace(/[^0-9k]/g, '');
           var phiSo = 0;
 
@@ -200,16 +240,12 @@
             phiSo = parseFloat(chuoiSo) || 0;
           }
 
-          var giamGiaSo = 0; // Số tiền giảm giá (VND) - có thể gắn mã coupon sau này
-
           if (phiSo > 0) {
-            var tongSo = Math.max(0, phiSo - giamGiaSo);
+            var tongSo = Math.max(0, phiSo - giamGiaTuEmail);
             phiDichVuHienThi = phiSo.toLocaleString('vi-VN') + "đ";
-            giamGiaHienThi = giamGiaSo.toLocaleString('vi-VN') + "đ";
             tongTienHienThi = tongSo.toLocaleString('vi-VN') + "đ";
           }
         } else {
-          // Đơn Tim Sky
           phiDichVuHienThi = giaNiemYet;
           giamGiaHienThi = "0 Tim";
           tongTienHienThi = giaNiemYet;
@@ -217,6 +253,8 @@
 
         donHangTamThoi = {
           tenKhach: tenKhach,
+          emailKhach: rawEmail || "Không có",
+          emailKey: rawEmail ? rawEmail.replace(/\./g, '_') : null,
           mangDichVu: mang,
           cuThe: cuThe,
           thoiGianHen: tgDinhDang,
@@ -225,7 +263,7 @@
           phiGoc: phiDichVuHienThi,
           giamGia: giamGiaHienThi,
           giaNiemYet: tongTienHienThi,
-          daThanhToanFull: (pttt === "Tim"),
+          daThanhToanFull: (pttt === "Tim_Sky"),
           yeuCau: yc || "Không có yêu cầu",
           daNhan: false,
           trangThai: "dang_cho",
@@ -245,10 +283,19 @@
 
     function dongModalHoaDon() { document.getElementById("modalHoaDonOrder").style.display = "none"; }
 
+    // 3. XÁC NHẬN GỬI ĐƠN & VÔ HIỆU HÓA MÃ ĐÃ DÙNG
     function xacNhanLuuDon() {
       if (!donHangTamThoi) return;
       var newOrderRef = db.ref('donHangSky').push();
       newOrderRef.set(donHangTamThoi).then(function() {
+        
+        // Khóa ưu đãi nếu đã áp dụng
+        if (donHangTamThoi.emailKey && giamGiaTuEmail > 0) {
+          db.ref('thanhVienSky/' + donHangTamThoi.emailKey + '/uuDaiRieng').update({
+            daDung: true
+          });
+        }
+
         var myOrders = JSON.parse(localStorage.getItem("myOrderIdsList") || "[]");
         myOrders.push(newOrderRef.key);
         localStorage.setItem("myOrderIdsList", JSON.stringify(myOrders));
