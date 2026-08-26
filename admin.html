@@ -127,16 +127,16 @@
     <!-- 3.5. QUẢN LÝ HỘI VIÊN GMAIL & TẶNG VOUCHER -->
     <section class="admin-section" style="border-left: 4px solid #0284c7;">
       <div class="section-title-box">
-        <h3>Danh Sách Hội Viên & Tặng Ưu Đãi</h3>
+        <h3>📧 Danh Sách Hội Viên Gmail & Quản Lý Ưu Đãi</h3>
       </div>
       <div class="table-responsive">
         <table class="admin-table">
           <thead>
             <tr>
               <th>Gmail Hội Viên</th>
-              <th>Số Đơn Hoàn Tất</th>
+              <th>Số Đơn Đã Đặt</th>
               <th>Ưu Đãi Đang Có</th>
-              <th>Thao Tác Tặng Voucher</th>
+              <th>Thao Tác Tặng & Quản Lý</th>
             </tr>
           </thead>
           <tbody id="bangHoiVienAdmin">
@@ -380,7 +380,7 @@
       }
     }
 
-    // 3.5. QUẢN LÝ HỘI VIÊN GMAIL & TẶNG VOUCHER
+    // 3.5. LẮNG NGHE & QUẢN LÝ HỘI VIÊN GMAIL
     db.ref('thanhVienSky').on('value', function(snap) {
       var data = snap.val();
       var tbody = document.getElementById("bangHoiVienAdmin");
@@ -394,10 +394,11 @@
       Object.keys(data).forEach(function(emailKey) {
         var mem = data[emailKey];
         var displayEmail = emailKey.replace(/_/g, '.');
-        var uuDaiText = "<span style='color:#888;'>Không có</span>";
+        var uuDaiText = "<span style='color:#888;'>Chưa có</span>";
 
-        if (mem.uuDaiRieng && !mem.uuDaiRieng.daDung) {
-          uuDaiText = `<strong style='color:#16a34a;'>Giảm ${(mem.uuDaiRieng.giaTri || 0).toLocaleString('vi-VN')}đ</strong>`;
+        if (mem.uuDaiRieng && !mem.uuDaiRieng.daDung && mem.uuDaiRieng.giaTri > 0) {
+          uuDaiText = `<strong style='color:#16a34a;'>Giảm ${(mem.uuDaiRieng.giaTri).toLocaleString('vi-VN')}đ</strong> 
+                       <button onclick="huyVoucher('${emailKey}')" style="font-size:10px; border:none; background:#fee2e2; color:#dc2626; border-radius:3px; padding:1px 5px; cursor:pointer;" title="Hủy mã này">✕ Hủy</button>`;
         }
 
         tbody.innerHTML += `
@@ -406,22 +407,58 @@
             <td>${mem.soDonDaDat || 0} đơn</td>
             <td>${uuDaiText}</td>
             <td>
-              <button onclick="tangVoucher('${emailKey}', 5000)" style="background:#38bdf8; color:#0f172a; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:11px; font-weight:bold;">+ Tặng 5k</button>
-              <button onclick="tangVoucher('${emailKey}', 10000)" style="background:#4ade80; color:#0f172a; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:11px; font-weight:bold; margin-left:4px;">+ Tặng 10k</button>
+              <button onclick="tangVoucherTuyChon('${emailKey}')" style="background:#0284c7; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-size:11px; font-weight:bold;">🎁 Tặng Voucher Tùy Ý</button>
+              <button onclick="xoaHoiVien('${emailKey}')" class="btn-xoa" style="font-size:11px; padding:4px 8px; margin-left:6px;">Xóa 🗑️</button>
             </td>
           </tr>
         `;
       });
     });
 
-    function tangVoucher(emailKey, soTien) {
+    // Hàm nhập số tiền tùy ý
+    function tangVoucherTuyChon(emailKey) {
+      var displayEmail = emailKey.replace(/_/g, '.');
+      var nhapTien = prompt(`Nhập số tiền muốn giảm giá cho [${displayEmail}]:\n(vd: nhập 20000 hoặc 20k)`, "10000");
+      
+      if (!nhapTien) return;
+
+      var chuoiSo = nhapTien.toLowerCase().replace(/[^0-9k]/g, '');
+      var soTien = 0;
+      if (chuoiSo.includes('k')) {
+        soTien = parseFloat(chuoiSo.replace('k', '')) * 1000;
+      } else {
+        soTien = parseFloat(chuoiSo) || 0;
+      }
+
+      if (soTien <= 0) {
+        alert("Số tiền không hợp lệ!");
+        return;
+      }
+
       db.ref('thanhVienSky/' + emailKey + '/uuDaiRieng').set({
         giaTri: soTien,
         daDung: false,
         thoiGianTang: Date.now()
       }).then(function() {
-        alert("Đã tặng voucher " + soTien.toLocaleString('vi-VN') + "đ cho " + emailKey.replace(/_/g, '.'));
+        alert(`Đã tặng voucher giảm ${soTien.toLocaleString('vi-VN')}đ cho hội viên ${displayEmail}! ✨`);
       });
+    }
+
+    // Hàm hủy voucher đang cấp
+    function huyVoucher(emailKey) {
+      if (confirm("Admin có chắc muốn hủy ưu đãi của hội viên này?")) {
+        db.ref('thanhVienSky/' + emailKey + '/uuDaiRieng').remove();
+      }
+    }
+
+    // Hàm xóa hội viên khỏi hệ thống
+    function xoaHoiVien(emailKey) {
+      var displayEmail = emailKey.replace(/_/g, '.');
+      if (confirm(`Admin có chắc chắn muốn xóa hội viên [${displayEmail}] khỏi danh sách không?`)) {
+        db.ref('thanhVienSky/' + emailKey).remove().then(function() {
+          alert(`Đã xóa hội viên ${displayEmail} thành công!`);
+        });
+      }
     }
 
     // 4. Hộp thư báo cáo
