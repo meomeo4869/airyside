@@ -124,6 +124,28 @@
       </div>
     </section>
 
+    <!-- 3.5. QUẢN LÝ HỘI VIÊN GMAIL & TẶNG VOUCHER -->
+    <section class="admin-section" style="border-left: 4px solid #0284c7;">
+      <div class="section-title-box">
+        <h3>📧 Danh Sách Hội Viên Gmail & Tặng Ưu Đãi</h3>
+      </div>
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Gmail Hội Viên</th>
+              <th>Số Đơn Hoàn Tất</th>
+              <th>Ưu Đãi Đang Có</th>
+              <th>Thao Tác Tặng Voucher</th>
+            </tr>
+          </thead>
+          <tbody id="bangHoiVienAdmin">
+            <tr><td colspan="4" style="text-align:center;">Đang tải danh sách hội viên...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- 4. HỘP THƯ BÁO CÁO / KHIẾU NẠI -->
     <section class="admin-section" style="border-left: 4px solid #dc2626;">
       <div class="section-title-box">
@@ -356,6 +378,50 @@
           noiDung: "Admin đã xác nhận thanh toán. Gửi mã kết bạn đã mở!"
         });
       }
+    }
+
+    // 3.5. QUẢN LÝ HỘI VIÊN GMAIL & TẶNG VOUCHER
+    db.ref('thanhVienSky').on('value', function(snap) {
+      var data = snap.val();
+      var tbody = document.getElementById("bangHoiVienAdmin");
+      tbody.innerHTML = "";
+
+      if (!data) {
+        tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; color:#888;'>Chưa có hội viên nào.</td></tr>";
+        return;
+      }
+
+      Object.keys(data).forEach(function(emailKey) {
+        var mem = data[emailKey];
+        var displayEmail = emailKey.replace(/_/g, '.');
+        var uuDaiText = "<span style='color:#888;'>Không có</span>";
+
+        if (mem.uuDaiRieng && !mem.uuDaiRieng.daDung) {
+          uuDaiText = `<strong style='color:#16a34a;'>Giảm ${(mem.uuDaiRieng.giaTri || 0).toLocaleString('vi-VN')}đ</strong>`;
+        }
+
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${displayEmail}</strong></td>
+            <td>${mem.soDonDaDat || 0} đơn</td>
+            <td>${uuDaiText}</td>
+            <td>
+              <button onclick="tangVoucher('${emailKey}', 5000)" style="background:#38bdf8; color:#0f172a; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:11px; font-weight:bold;">+ Tặng 5k</button>
+              <button onclick="tangVoucher('${emailKey}', 10000)" style="background:#4ade80; color:#0f172a; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:11px; font-weight:bold; margin-left:4px;">+ Tặng 10k</button>
+            </td>
+          </tr>
+        `;
+      });
+    });
+
+    function tangVoucher(emailKey, soTien) {
+      db.ref('thanhVienSky/' + emailKey + '/uuDaiRieng').set({
+        giaTri: soTien,
+        daDung: false,
+        thoiGianTang: Date.now()
+      }).then(function() {
+        alert("Đã tặng voucher " + soTien.toLocaleString('vi-VN') + "đ cho " + emailKey.replace(/_/g, '.'));
+      });
     }
 
     // 4. Hộp thư báo cáo
