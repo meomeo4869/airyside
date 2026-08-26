@@ -283,44 +283,53 @@
 
     function dongModalHoaDon() { document.getElementById("modalHoaDonOrder").style.display = "none"; }
 
-    // 3. XÁC NHẬN GỬI ĐƠN & TỰ ĐỘNG GHI NHẬN HỘI VIÊN GMAIL
+    // 3. XÁC NHẬN GỬI ĐƠN & ĐỢI LƯU HỘI VIÊN XONG MỚI CHUYỂN TRANG
     function xacNhanLuuDon() {
       if (!donHangTamThoi) return;
+
       var newOrderRef = db.ref('donHangSky').push();
       
       newOrderRef.set(donHangTamThoi).then(function() {
-        
-        // 👉 TỰ ĐỘNG LƯU / TÍCH ĐIỂM HỘI VIÊN VÀO FIREBASE
+        // Nếu khách có nhập Gmail
         if (donHangTamThoi.emailKey) {
           var memRef = db.ref('thanhVienSky/' + donHangTamThoi.emailKey);
           
-          memRef.transaction(function(currentData) {
-            if (currentData === null) {
-              return {
-                email: donHangTamThoi.emailKhach,
-                soDonDaDat: 1,
-                ngayThamGia: Date.now()
-              };
-            } else {
-              currentData.soDonDaDat = (currentData.soDonDaDat || 0) + 1;
-              return currentData;
+          memRef.once('value').then(function(snap) {
+            var mem = snap.val();
+            var soDonMoi = mem ? ((mem.soDonDaDat || 0) + 1) : 1;
+            
+            var capNhat = {
+              email: donHangTamThoi.emailKhach,
+              soDonDaDat: soDonMoi,
+              lanCuoiDat: Date.now()
+            };
+
+            if (giamGiaTuEmail > 0) {
+              capNhat["uuDaiRieng/daDung"] = true;
             }
+
+            return memRef.update(capNhat);
+          }).then(function() {
+            hoanTatVaChuyenTrang(newOrderRef.key);
+          }).catch(function(err) {
+            console.error(err);
+            hoanTatVaChuyenTrang(newOrderRef.key);
           });
 
-          // Nếu có dùng voucher thì đánh dấu đã dùng
-          if (giamGiaTuEmail > 0) {
-            memRef.child('uuDaiRieng').update({ daDung: true });
-          }
+        } else {
+          // Không nhập mail thì chuyển trang luôn
+          hoanTatVaChuyenTrang(newOrderRef.key);
         }
-
-        var myOrders = JSON.parse(localStorage.getItem("myOrderIdsList") || "[]");
-        myOrders.push(newOrderRef.key);
-        localStorage.setItem("myOrderIdsList", JSON.stringify(myOrders));
-        
-        window.location.href = "lobby.html";
       }).catch(function(error) {
         alert("Lỗi kết nối: " + error.message);
       });
+    }
+
+    function hoanTatVaChuyenTrang(orderKey) {
+      var myOrders = JSON.parse(localStorage.getItem("myOrderIdsList") || "[]");
+      myOrders.push(orderKey);
+      localStorage.setItem("myOrderIdsList", JSON.stringify(myOrders));
+      window.location.href = "lobby.html";
     }
   </script>
 </body>
