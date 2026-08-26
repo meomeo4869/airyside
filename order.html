@@ -283,22 +283,40 @@
 
     function dongModalHoaDon() { document.getElementById("modalHoaDonOrder").style.display = "none"; }
 
-    // 3. XÁC NHẬN GỬI ĐƠN & VÔ HIỆU HÓA MÃ ĐÃ DÙNG
+    // 3. XÁC NHẬN GỬI ĐƠN & TỰ ĐỘNG GHI NHẬN HỘI VIÊN GMAIL
     function xacNhanLuuDon() {
       if (!donHangTamThoi) return;
       var newOrderRef = db.ref('donHangSky').push();
+      
       newOrderRef.set(donHangTamThoi).then(function() {
         
-        // Khóa ưu đãi nếu đã áp dụng
-        if (donHangTamThoi.emailKey && giamGiaTuEmail > 0) {
-          db.ref('thanhVienSky/' + donHangTamThoi.emailKey + '/uuDaiRieng').update({
-            daDung: true
+        // 👉 TỰ ĐỘNG LƯU / TÍCH ĐIỂM HỘI VIÊN VÀO FIREBASE
+        if (donHangTamThoi.emailKey) {
+          var memRef = db.ref('thanhVienSky/' + donHangTamThoi.emailKey);
+          
+          memRef.transaction(function(currentData) {
+            if (currentData === null) {
+              return {
+                email: donHangTamThoi.emailKhach,
+                soDonDaDat: 1,
+                ngayThamGia: Date.now()
+              };
+            } else {
+              currentData.soDonDaDat = (currentData.soDonDaDat || 0) + 1;
+              return currentData;
+            }
           });
+
+          // Nếu có dùng voucher thì đánh dấu đã dùng
+          if (giamGiaTuEmail > 0) {
+            memRef.child('uuDaiRieng').update({ daDung: true });
+          }
         }
 
         var myOrders = JSON.parse(localStorage.getItem("myOrderIdsList") || "[]");
         myOrders.push(newOrderRef.key);
         localStorage.setItem("myOrderIdsList", JSON.stringify(myOrders));
+        
         window.location.href = "lobby.html";
       }).catch(function(error) {
         alert("Lỗi kết nối: " + error.message);
