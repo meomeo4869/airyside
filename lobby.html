@@ -300,7 +300,7 @@
       });
     }
 
-    // 3. Mở khung chat độc lập & ngắt kết nối đơn cũ
+    // 3. Mở khung chat độc lập & kiểm tra trạng thái thanh toán
     function moChatChoDon(orderId) {
       if (activeChatOrderId && activeChatOrderId !== orderId) {
         db.ref('donHangSky/' + activeChatOrderId).off();
@@ -321,6 +321,37 @@
         currentStaffCuaDon = don.staffNhan || "Staff";
         document.getElementById("chatTitleKhach").innerText = `Chat: ${don.mangDichVu.toUpperCase()} (Staff ${don.staffNhan || "🌸"})`;
         
+        var boxThanhToan = document.getElementById("manHinhThanhToanKhach");
+        var manHinhKB = document.getElementById("manHinhKetBanKhach");
+
+        // 👉 KIỂM TRA ĐIỀU KIỆN THANH TOÁN TIỀN MẶT
+        if (don.thanhToan === "Tien_VND" && !don.daThanhToanFull) {
+          // Chưa duyệt tiền mặt -> Hiện thông tin thanh toán, ẩn ô gửi mã
+          boxThanhToan.style.display = "block";
+          manHinhKB.style.display = "none";
+
+          db.ref('caiDatThanhToan').once('value').then(function(s) {
+            var tt = s.val() || {};
+            var qrBox = document.getElementById("qrThanhToanBox");
+            if (tt.anhQR) {
+              qrBox.innerHTML = `
+                <img src="${tt.anhQR}" style="max-width:140px; border-radius:6px; border:1px solid #fed7aa;">
+                <p style="font-size:11px; margin:4px 0 0 0; font-weight:bold; color:#ea580c;">STK: ${tt.stk || "Chưa có"} (${tt.nganHang || "Bank"})</p>
+              `;
+            } else {
+              qrBox.innerHTML = `
+                <p style="font-size:12px; color:#ea580c; font-weight:bold; margin: 4px 0;">
+                  STK: ${tt.stk || "0987.654.321"} - ${tt.nganHang || "Momo/Bank"}<br>
+                  (Vui lòng chuyển khoản đúng số tiền để Admin duyệt mở chat)
+                </p>
+              `;
+            }
+          });
+        } else {
+          // Đã duyệt tiền mặt hoặc là đơn Tim Sky -> Ẩn bảng chờ thanh toán
+          boxThanhToan.style.display = "none";
+        }
+
         if (don.staffHoanThanh) {
           document.getElementById("bannerDongBangKhach").style.display = "block";
           document.getElementById("nhapTinKhach").disabled = true;
@@ -342,6 +373,14 @@
 
         var manHinhKB = document.getElementById("manHinhKetBanKhach");
         var tinNhanBox = document.getElementById("tinNhanKhach");
+        var boxThanhToan = document.getElementById("manHinhThanhToanKhach");
+
+        // Nếu bảng chờ thanh toán đang hiện thì không hiện ô mã kết bạn
+        if (boxThanhToan.style.display === "block") {
+          manHinhKB.style.display = "none";
+          tinNhanBox.style.display = "none";
+          return;
+        }
 
         if (data && data.maKetBan) {
           manHinhKB.style.display = "none";
@@ -357,12 +396,13 @@
           if (data.tinNhan) {
             tinNhanBox.innerHTML = "";
             Object.values(data.tinNhan).forEach(function(msg) {
-              var loai = msg.nguoiGui === "Khách" ? "msg right" : (msg.nguoiGui === "Hệ thống" ? "msg center-sys" : "msg left");
+              var loai = msg.nguoiGui === "Khách" ? "msg right" : (msg.nguoiGui === "Hệ thống" ? "msg system" : "msg left");
               tinNhanBox.innerHTML += `<div class="${loai}"><strong>${msg.nguoiGui}:</strong> ${msg.noiDung}</div>`;
             });
             tinNhanBox.scrollTop = tinNhanBox.scrollHeight;
           }
         } else {
+          // Chưa có mã kết bạn
           manHinhKB.style.display = "block";
           tinNhanBox.style.display = "none";
         }
