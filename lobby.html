@@ -308,37 +308,40 @@
       });
     }
 
+    // 2. MỞ CHAT THEO ĐƠN & NGẮT KẾT NỐI ĐƠN CŨ ĐỂ TRÁNH LẪN TIN NHẮN
     function moChatChoDon(orderId) {
+      // 1. Nếu đang nghe 1 đơn khác, ngắt kết nối Firebase của đơn đó ngay
+      if (activeChatOrderId && activeChatOrderId !== orderId) {
+        db.ref('donHangSky/' + activeChatOrderId).off();
+        db.ref('phongChat/' + activeChatOrderId).off();
+      }
+
       activeChatOrderId = orderId;
-      capNhatBongBongChatKhach();
+      capNhatBongBongChatKhach(); // Cập nhật viền active cho bong bóng
+      
+      // 2. Dọn sạch tin nhắn của đơn trước đó trong khung
+      document.getElementById("tinNhanKhach").innerHTML = "";
       document.getElementById("chatBoxKhach").style.display = "flex";
 
+      // 3. Lắng nghe trạng thái đơn mới
       db.ref('donHangSky/' + orderId).on('value', function(snap) {
         var don = snap.val();
         if (!don) return;
 
         currentTenKhach = don.tenKhach;
         currentStaffCuaDon = don.staffNhan || "Staff";
-        document.getElementById("chatTitleKhach").innerText = `Chat Staff ${don.staffNhan || "🌸"}`;
-        
-        var boxThanhToan = document.getElementById("manHinhThanhToanKhach");
+        document.getElementById("chatTitleKhach").innerText = `Chat: ${don.mangDichVu.toUpperCase()} (Staff ${don.staffNhan || "🌸"})`;
+        document.getElementById("txtFocusMaDon").innerText = orderId.substring(1, 7);
+        document.getElementById("txtFocusTongGia").innerHTML = `<strong>Tổng đơn:</strong> ${don.giaNiemYet || "Theo bảng giá"}`;
+
+        var boxFocusCoc = document.getElementById("boxFocusChuyenCoc");
         var manHinhKB = document.getElementById("manHinhKetBanKhach");
 
-        if (don.thanhToan === "Tien_VND" && !don.daThanhToanFull) {
-          boxThanhToan.style.display = "block";
+        if (don.thanhToan === "Tien_VND" && !don.daThanhToanFull && !don.daCoc) {
+          boxFocusCoc.style.display = "block";
           manHinhKB.style.display = "none";
-
-          db.ref('caiDatThanhToan').once('value').then(function(s) {
-            var tt = s.val() || {};
-            var qrBox = document.getElementById("qrThanhToanBox");
-            if (tt.anhQR) {
-              qrBox.innerHTML = `<img src="${tt.anhQR}" style="max-width:140px; border-radius:6px; border:1px solid #fed7aa;"><p style="font-size:11px; margin:4px 0 0 0; font-weight:bold; color:#ea580c;">STK: ${tt.stk || "Chưa có"} (${tt.nganHang || "Bank"})</p>`;
-            } else {
-              qrBox.innerHTML = `<p style="font-size:12px; color:#ea580c; font-weight:bold;">STK: ${tt.stk || "0987.654.321"} - ${tt.nganHang || "Momo/Bank"}</p>`;
-            }
-          });
         } else {
-          boxThanhToan.style.display = "none";
+          boxFocusCoc.style.display = "none";
           manHinhKB.style.display = "block";
         }
 
@@ -355,8 +358,14 @@
     }
 
     function langNghePhongChat(idDon) {
+      // Đảm bảo ngắt các listener cũ của phòng chat này trước khi gán mới
+      db.ref('phongChat/' + idDon).off();
+
       db.ref('phongChat/' + idDon).on('value', function(snap) {
         var data = snap.val();
+        // Chỉ vẽ tin nhắn nếu người dùng ĐANG MỞ đúng đơn này
+        if (activeChatOrderId !== idDon) return;
+
         if (data) {
           if (data.maKetBan) {
             document.getElementById("manHinhKetBanKhach").style.display = "none";
@@ -366,19 +375,37 @@
               document.getElementById("btnGuiTinKhach").disabled = false;
             }
             document.getElementById("btnXacNhanHoanThanhKhach").disabled = false;
+          } else {
+            // Nếu chưa có mã kết bạn và đã qua bước cọc
+            var don = danhSachDonDangChayKhach[idDon];
+            if (don && (don.daCoc || don.daThanhToanFull || don.thanhToan === "Tim_Sky")) {
+              document.getElementById("manHinhKetBanKhach").style.display = "block";
+              document.getElementById("tinNhanKhach").style.display = "none";
+            }
           }
 
           if (data.tinNhan) {
             var body = document.getElementById("tinNhanKhach");
             body.innerHTML = "";
             Object.values(data.tinNhan).forEach(function(msg) {
-              var loai = msg.nguoiGui === "Khách" ? "msg right" : (msg.nguoiGui === "Hệ thống" ? "msg system" : "msg left");
+              var loai = msg.nguoiGui === "Khách" ? "msg right" : "msg left";
               body.innerHTML += `<div class="${loai}"><strong>${msg.nguoiGui}:</strong> ${msg.noiDung}</div>`;
             });
             body.scrollTop = body.scrollHeight;
           }
         }
       });
+    }
+
+    // Khi đóng khung chat cũng ngắt luôn listener
+    function dongChatKhach() { 
+      if (activeChatOrderId) {
+        db.ref('donHangSky/' + activeChatOrderId).off();
+        db.ref('phongChat/' + activeChatOrderId).off();
+      }
+      document.getElementById("chatBoxKhach").style.display = "none"; 
+      activeChatOrderId = null;
+      capNhatBongBongChatKhach();
     }
 
     function xacNhanMaKhach() {
