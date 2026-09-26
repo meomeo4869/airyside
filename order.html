@@ -3,101 +3,111 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đặt Dịch Vụ</title>
+  <title>Đặt Dịch Vụ - Sky Services</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
-  <div class="card">
-    <h2>Form Đặt Dịch Vụ</h2>
+  <!-- THẺ FORM ĐẶT ĐƠN DẠNG LIQUID GLASS -->
+  <div class="card" style="width: 440px; max-width: 92vw; text-align: left;">
+    <div style="text-align: center; margin-bottom: 12px;">
+      <div style="font-size: 30px; margin-bottom: 4px;">✨</div>
+      <h2 style="margin-bottom: 4px;">Phiếu Đặt Dịch Vụ</h2>
+      <p style="font-size: 13px; color: var(--text-muted); margin: 0;">Trải nghiệm dịch vụ đồng hành cùng đội ngũ Sky</p>
+    </div>
 
-    <div id="formKhach">
-      <label>Tên của bạn:</label> <br>
-      <input type="text" id="playerName" placeholder="Nhập tên vào đây nha...">
-      <br><br>
+    <form id="formKhach" onsubmit="event.preventDefault(); kiemTraVaHienHoaDon();">
+      <label for="playerName">Tên của bạn:</label>
+      <input type="text" id="playerName" placeholder="Nhập tên của bạn vào đây..." required>
 
       <!-- Ô NHẬP GMAIL TÍCH ĐIỂM -->
-      <label>Nhập mail tích điểm (Tùy chọn):</label> <br>
+      <label for="playerEmail">Gmail tích điểm & nhận ưu đãi (Tùy chọn):</label>
       <input type="email" id="playerEmail" placeholder="vd: skylove@gmail.com" onblur="kiemTraUuDaiEmail()">
-      <div id="msgEmailStatus" style="font-size: 12px; margin-top: 4px; display: none;"></div>
-      <br>
+      <div id="msgEmailStatus" style="font-size: 12px; margin-top: -8px; margin-bottom: 12px; display: none;"></div>
 
-      <label>Bạn muốn đặt dịch vụ nào?</label> <br>
-      <select id="mangDichVu">
+      <label for="mangDichVu">Bạn muốn đặt dịch vụ nào?</label>
+      <select id="mangDichVu" required>
         <option value="chua_chon">-- Chọn mảng dịch vụ --</option>
         <option value="uber">Uber</option>
         <option value="host">Host</option>
         <option value="logacc">Log Acc</option>
       </select>
-      <br><br>
 
-      <label>Cụ thể:</label> <br>
-      <select id="cuThe">
+      <label for="cuThe">Cụ thể gói dịch vụ:</label>
+      <select id="cuThe" required>
         <option value="none">-- Vui lòng chọn mảng ở trên trước --</option>
       </select>
-      <br><br>
 
-      <label>Lịch hẹn (Ngày & Giờ bắt đầu):</label> <br>
-      <input type="datetime-local" id="thoiGianBatDau">
-      <br><br>
+      <label for="thoiGianBatDau">Lịch hẹn (Ngày & Giờ bắt đầu):</label>
+      <input type="datetime-local" id="thoiGianBatDau" required>
 
-      <label>Hình thức thanh toán:</label> <br>
+      <label for="phuongThucTT">Hình thức thanh toán:</label>
       <select id="phuongThucTT">
-        <option value="Tien_VND">Tiền (Ngân hàng / Momo)</option>
-        <option value="Tim_Sky">Tim</option>
+        <option value="Tien_VND">Tiền mặt (Ngân hàng / Momo)</option>
+        <option value="Tim_Sky">Tim Sky</option>
       </select>
-      <br><br>
 
-      <label>Yêu cầu hoặc ghi chú thêm:</label> <br>
-      <input type="text" id="yeuCau" placeholder="Ghi chú chi tiết...">
-      <br><br>
+      <label for="yeuCau">Yêu cầu hoặc ghi chú thêm:</label>
+      <input type="text" id="yeuCau" placeholder="Ghi chú thêm cho Staff phụ trách...">
 
-      <button onclick="kiemTraVaHienHoaDon()">Kiểm tra Hóa Đơn</button>
-    </div>
+      <div style="display: flex; gap: 10px; margin-top: 10px;">
+        <button type="button" onclick="kiemTraVaHienHoaDon()" style="flex: 2; background: #0284c7; color: white;">
+          Kiểm Tra Hóa Đơn 📑
+        </button>
+        <button type="button" onclick="window.location.href='lobby.html'" style="flex: 1; background: rgba(241, 245, 249, 0.85); color: var(--text-primary); border: 1px solid #cbd5e1;">
+          Về Sảnh
+        </button>
+      </div>
+    </form>
   </div>
 
-  <!-- POPUP HÓA ĐƠN ĐÚNG 5 DÒNG CHUẨN CỦA BỒ -->
+  <!-- POPUP HÓA ĐƠN LIQUID GLASS CHUẨN XÁC (ẨN MẶC ĐỊNH) -->
   <div id="modalHoaDonOrder" class="modal-overlay">
-    <div class="modal-content" style="max-width: 380px; padding: 22px; border-radius: 12px; background: white;">
+    <div class="modal-content" style="max-width: 400px; width: 92%; padding: 26px;">
       
-      <div style="border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 15px; text-align: center;">
-        <h3 style="margin: 0; color: #0284c7; text-transform: uppercase;">📑 HÓA ĐƠN ĐẶT ĐƠN</h3>
+      <div style="border-bottom: 1px solid rgba(226, 232, 240, 0.8); padding-bottom: 12px; margin-bottom: 16px; text-align: center;">
+        <h3 style="margin: 0; color: #0284c7; letter-spacing: -0.02em;">📑 HÓA ĐƠN ĐẶT ĐƠN</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin: 3px 0 0 0;">Vui lòng kiểm tra lại thông tin chi phí</p>
       </div>
 
-      <!-- 4 Dòng thông tin giá -->
-      <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; font-size: 13px;">
+      <!-- Dòng thông tin giá -->
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; font-size: 13.5px;">
         <div style="display: flex; justify-content: space-between;">
-          <span style="color: #64748b;">Tên dịch vụ:</span>
-          <strong id="invTenDichVu" style="color: #1e293b; text-align: right;">-</strong>
+          <span style="color: var(--text-muted);">Tên dịch vụ:</span>
+          <strong id="invTenDichVu" style="color: var(--text-primary); text-align: right;">-</strong>
         </div>
         <div style="display: flex; justify-content: space-between;">
-          <span style="color: #64748b;">Phí dịch vụ:</span>
-          <strong id="invPhiDichVu" style="color: #1e293b; text-align: right;">-</strong>
+          <span style="color: var(--text-muted);">Phí dịch vụ:</span>
+          <strong id="invPhiDichVu" style="color: var(--text-primary); text-align: right;">-</strong>
         </div>
         <div style="display: flex; justify-content: space-between;">
-          <span style="color: #64748b;">Giảm giá:</span>
+          <span style="color: var(--text-muted);">Ưu đãi giảm giá:</span>
           <strong id="invGiamGia" style="color: #ea580c; text-align: right;">0đ</strong>
         </div>
-        <div style="display: flex; justify-content: space-between; border-top: 1px dashed #cbd5e1; padding-top: 8px; font-size: 15px;">
-          <span style="font-weight: bold; color: #1e293b;">Tổng tiền:</span>
-          <strong id="invTongTien" style="color: #16a34a; font-size: 16px; text-align: right;">-</strong>
+        <div style="display: flex; justify-content: space-between; border-top: 1px dashed #cbd5e1; padding-top: 10px; font-size: 15px;">
+          <span style="font-weight: 700; color: var(--text-primary);">Tổng thanh toán:</span>
+          <strong id="invTongTien" style="color: #16a34a; font-size: 16.5px; text-align: right;">-</strong>
         </div>
       </div>
 
-      <!-- 5. Một số luật do Admin cài đặt -->
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 12px; color: #475569; line-height: 1.5; margin-bottom: 16px;">
-        <strong style="color: #1e293b;">Một số luật lưu ý:</strong>
-        <div id="invNoiDungLuat" style="white-space: pre-line; margin-top: 4px;">
+      <!-- Luật lưu ý do Admin cài đặt -->
+      <div style="background: rgba(248, 250, 252, 0.8); border: 1px solid rgba(226, 232, 240, 0.9); border-radius: var(--radius-inner); padding: 12px; font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 18px;">
+        <strong style="color: var(--text-primary); display: block; margin-bottom: 4px;">Một số quy định lưu ý:</strong>
+        <div id="invNoiDungLuat" style="white-space: pre-line;">
           • Khách hàng và Staff trao đổi lịch sự, tôn trọng lẫn nhau.
-          • Nếu có điều gì không hài lòng vui lòng bấm Report để Admin can thiệp.
+          • Nếu có điều gì không hài lòng vui lòng bấm nút Báo Cáo để Admin can thiệp.
         </div>
       </div>
 
-      <div style="display: flex; gap: 8px;">
-        <button onclick="xacNhanLuuDon()" style="flex: 2; background: #0284c7; font-weight: bold; padding: 10px;">Xác Nhận & Vào Sảnh</button>
-        <button onclick="dongModalHoaDon()" style="flex: 1; background: #e2e8f0; color: #333; padding: 10px;">Quay Lại</button>
+      <div style="display: flex; gap: 10px;">
+        <button type="button" id="btnXacNhanOrder" onclick="xacNhanLuuDon()" style="flex: 2; background: #0f172a; color: white;">
+          Xác Nhận & Vào Sảnh ✨
+        </button>
+        <button type="button" onclick="dongModalHoaDon()" style="flex: 1; background: rgba(241, 245, 249, 0.85); color: var(--text-primary); border: 1px solid #cbd5e1;">
+          Quay Lại
+        </button>
       </div>
 
     </div>
@@ -121,12 +131,18 @@
     var luatHoaDonText = "";
     var giamGiaTuEmail = 0;
     var emailKeyHienTai = "";
+    var donHangTamThoi = null;
 
-    db.ref('bangGiaChiTiet').on('value', function(snap) { bangGiaData = snap.val() || {}; });
+    // 1. Tải bảng giá và luật hóa đơn từ Firebase
+    db.ref('bangGiaChiTiet').on('value', function(snap) { 
+      bangGiaData = snap.val() || {}; 
+    });
+
     db.ref('caiDatPage/luatHoaDon').on('value', function(snap) {
       luatHoaDonText = snap.val() || "• Khách hàng trao đổi thân thiện, lịch sự.\n• Nếu có bất kỳ sự cố gì vui lòng bấm nút Báo Cáo để Admin xử lý.";
     });
 
+    // 2. Chuyển đổi gói cụ thể theo mảng dịch vụ
     document.getElementById("mangDichVu").addEventListener("change", function() {
       var mang = this.value;
       var oCuThe = document.getElementById("cuThe");
@@ -135,7 +151,7 @@
       if (mang === "uber") {
         oCuThe.innerHTML = `
           <option value="none">-- Chọn dịch vụ Uber --</option>
-          <option value="15nen">15 nến</option>
+          <option value="15nen">Nhặt 15 nến</option>
           <option value="15nen_quest">15 nến + Quest</option>
           <option value="xamnen">Xám nến</option>
           <option value="xamnen_quest">Xám nến + Quest</option>
@@ -147,23 +163,23 @@
           <option value="none">-- Chọn dịch vụ Host --</option>
           <option value="tamsu">Tâm sự (1h / 30p)</option>
           <option value="dan">Đàn (1h / 30p)</option>
-          <option value="nguoiyeu">Fakelove (1h 30p)</option>
+          <option value="nguoiyeu">Fakelove (1h / 30p)</option>
           <option value="treomay">Treo máy (1h / 30p)</option>
         `;
       } else if (mang === "logacc") {
         oCuThe.innerHTML = `
           <option value="none">-- Chọn dịch vụ Log Acc --</option>
           <option value="15nen">15 nến (Ngày/Tuần/Tháng)</option>
-          <option value="xamnen">Xám nến + Quest (Ngày/Tuần/Tháng)</option>
-          <option value="tuan">Gói tuần (xám nến + quest + nhặt vé sự kiện)</option>
-          <option value="thang">Gói tháng (xám nến + quest + nhặt vé sự kiện)</option>
+          <option value="xamnen">Xám nến + Quest</option>
+          <option value="tuan">Gói tuần (Xám + Quest + Vé)</option>
+          <option value="thang">Gói tháng (Xám + Quest + Vé)</option>
         `;
       } else {
         oCuThe.innerHTML = '<option value="none">-- Vui lòng chọn mảng ở trên trước --</option>';
       }
     });
 
-    // 1. KIỂM TRA ƯU ĐÃI GMAIL
+    // 3. Kiểm tra ưu đãi hội viên Gmail
     function kiemTraUuDaiEmail() {
       var rawEmail = document.getElementById("playerEmail").value.trim().toLowerCase();
       var msgBox = document.getElementById("msgEmailStatus");
@@ -181,12 +197,12 @@
         msgBox.style.display = "block";
         if (member) {
           var count = member.soDonDaDat || 0;
-          if (member.uuDaiRieng && !member.uuDaiRieng.daDung) {
-            giamGiaTuEmail = member.uuDaiRieng.giaTri || 0;
-            msgBox.innerHTML = `<span style="color:#16a34a; font-weight:bold;">✨ Chào hội viên! Bồ có mã tri ân giảm ${giamGiaTuEmail.toLocaleString('vi-VN')}đ!</span>`;
+          if (member.uuDaiRieng && !member.uuDaiRieng.daDung && member.uuDaiRieng.giaTri > 0) {
+            giamGiaTuEmail = member.uuDaiRieng.giaTri;
+            msgBox.innerHTML = `<span style="color:#16a34a; font-weight:bold;">✨ Chào hội viên! Bạn có mã tri ân giảm ${giamGiaTuEmail.toLocaleString('vi-VN')}đ!</span>`;
           } else {
             giamGiaTuEmail = 0;
-            msgBox.innerHTML = `<span style="color:#2563eb;">⭐ Hội viên thân thiết (Đã hoàn tất ${count} đơn cùng page).</span>`;
+            msgBox.innerHTML = `<span style="color:#0284c7;">⭐ Hội viên thân thiết (Đã hoàn tất ${count} đơn cùng Page).</span>`;
           }
         } else {
           giamGiaTuEmail = 0;
@@ -195,9 +211,7 @@
       });
     }
 
-    var donHangTamThoi = null;
-
-    // 2. TÍNH TOÁN & HIỆN HÓA ĐƠN
+    // 4. Tính toán chi phí và hiển thị popup hóa đơn
     function kiemTraVaHienHoaDon() {
       var tenKhach = document.getElementById("playerName").value.trim();
       var rawEmail = document.getElementById("playerEmail").value.trim().toLowerCase();
@@ -207,27 +221,31 @@
       var pttt = document.getElementById("phuongThucTT").value;
       var yc = document.getElementById("yeuCau").value.trim();
 
-      if (tenKhach === "") { alert("Bạn ơi, nhập tên đã nhé!"); return; }
+      if (!tenKhach) { 
+        alert("Bạn ơi, vui lòng nhập tên của bạn nhé!"); 
+        return; 
+      }
 
+      // Kiểm tra danh sách cấm (Blacklist) trước
       db.ref('blackListKhach/' + tenKhach.toLowerCase()).once('value').then(function(snap) {
         if (snap.exists()) {
-          alert("⛔ Tên của bạn đang nằm trong danh sách cấm của Page. Vui lòng liên hệ Admin!");
+          alert("⛔ Tên của bạn đang nằm trong danh sách hạn chế của Page. Vui lòng liên hệ Admin!");
           return;
         }
 
-        if (mang === "chua_chon" || cuThe === "none" || thoiGian === "") {
-          alert("Bạn vui lòng điền đầy đủ mảng dịch vụ và giờ hẹn nha!");
+        if (mang === "chua_chon" || cuThe === "none" || !thoiGian) {
+          alert("Bạn vui lòng chọn đầy đủ mảng dịch vụ, gói cụ thể và giờ hẹn nha!");
           return;
         }
 
         var dt = new Date(thoiGian);
-        var tgDinhDang = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')} ngày ${dt.getDate()}/${dt.getMonth()+1}/${dt.getFullYear()}`;
+        var tgDinhDang = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')} ngày ${dt.getDate().toString().padStart(2, '0')}/${(dt.getMonth()+1).toString().padStart(2, '0')}/${dt.getFullYear()}`;
 
         var keyGia = mang + "_" + cuThe;
         var giaNiemYet = bangGiaData[keyGia] || "Theo thỏa thuận";
 
         var phiDichVuHienThi = giaNiemYet;
-        var giamGiaHienThi = giamGiaTuEmail > 0 ? giamGiaTuEmail.toLocaleString('vi-VN') + "đ" : "0đ";
+        var giamGiaHienThi = giamGiaTuEmail > 0 ? (giamGiaTuEmail.toLocaleString('vi-VN') + "đ") : "0đ";
         var tongTienHienThi = giaNiemYet;
 
         if (pttt === "Tien_VND") {
@@ -263,8 +281,8 @@
           phiGoc: phiDichVuHienThi,
           giamGia: giamGiaHienThi,
           giaNiemYet: tongTienHienThi,
-          daThanhToanFull: (pttt === "Tim_Sky"),
-          yeuCau: yc || "Không có yêu cầu",
+          daThanhToanFull: (pttt === "Tim_Sky"), // Đơn Tim được mở chat luôn, đơn Tiền cần Admin duyệt
+          yeuCau: yc || "Không có yêu cầu đặc biệt",
           daNhan: false,
           trangThai: "dang_cho",
           thoiGianTao: Date.now()
@@ -281,16 +299,22 @@
       });
     }
 
-    function dongModalHoaDon() { document.getElementById("modalHoaDonOrder").style.display = "none"; }
+    function dongModalHoaDon() { 
+      document.getElementById("modalHoaDonOrder").style.display = "none"; 
+    }
 
-    // 3. XÁC NHẬN GỬI ĐƠN & ĐỢI LƯU HỘI VIÊN XONG MỚI CHUYỂN TRANG
+    // 5. Xác nhận lưu đơn và đồng bộ dữ liệu hội viên
     function xacNhanLuuDon() {
       if (!donHangTamThoi) return;
+
+      var btn = document.getElementById("btnXacNhanOrder");
+      btn.disabled = true;
+      btn.innerText = "Đang kết nối Sảnh... ⏳";
 
       var newOrderRef = db.ref('donHangSky').push();
       
       newOrderRef.set(donHangTamThoi).then(function() {
-        // Nếu khách có nhập Gmail
+        // Nếu có nhập Gmail thì cập nhật hồ sơ hội viên
         if (donHangTamThoi.emailKey) {
           var memRef = db.ref('thanhVienSky/' + donHangTamThoi.emailKey);
           
@@ -304,6 +328,7 @@
               lanCuoiDat: Date.now()
             };
 
+            // Đánh dấu mã đã sử dụng nếu có giảm giá
             if (giamGiaTuEmail > 0) {
               capNhat["uuDaiRieng/daDung"] = true;
             }
@@ -317,11 +342,12 @@
           });
 
         } else {
-          // Không nhập mail thì chuyển trang luôn
           hoanTatVaChuyenTrang(newOrderRef.key);
         }
       }).catch(function(error) {
-        alert("Lỗi kết nối: " + error.message);
+        alert("Lỗi kết nối Firebase: " + error.message);
+        btn.disabled = false;
+        btn.innerText = "Xác Nhận & Vào Sảnh ✨";
       });
     }
 
