@@ -10,40 +10,41 @@
 </head>
 <body class="admin-layout">
 
+  <!-- 1. HEADER QUẢN TRỊ VIÊN -->
   <div class="admin-header">
     <div class="admin-brand">
-      <h2>Admin</h2>
-      <p>Bảng điều khiển trung tâm & Cài đặt hệ thống</p>
+      <h2>Admin Dashboard</h2>
+      <p>Bảng điều khiển trung tâm & Cài đặt hệ thống Sky</p>
     </div>
-    <button class="btn-logout" onclick="window.location.href='index.html'">Đăng Xuất</button>
+    <button class="btn-logout" onclick="dangXuatAdmin()">Đăng Xuất</button>
   </div>
 
   <div class="admin-container">
 
-    <!-- 1. CÀI ĐẶT PHƯƠNG THỨC THANH TOÁN (QR / STK) -->
+    <!-- 2. CÀI ĐẶT PHƯƠNG THỨC THANH TOÁN (QR / STK) -->
     <section class="admin-section" style="border-left: 4px solid #10b981;">
       <div class="section-title-box">
         <h3>Phương Thức Thanh Toán (QR / STK)</h3>
       </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: flex-end;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 14px; align-items: flex-end;">
         <div>
-          <label style="font-size: 12px; font-weight: bold;">Số Tài Khoản / Ví:</label>
-          <input type="text" id="cfgSTK" placeholder="vd: 0987.654.321" style="width:100%; margin-top:4px;">
+          <label>Số Tài Khoản / Ví:</label>
+          <input type="text" id="cfgSTK" placeholder="vd: 0987.654.321">
         </div>
         <div>
-          <label style="font-size: 12px; font-weight: bold;">Ngân Hàng / Ví:</label>
-          <input type="text" id="cfgNganHang" placeholder="vd: MB Bank / Momo" style="width:100%; margin-top:4px;">
+          <label>Ngân Hàng / Ví:</label>
+          <input type="text" id="cfgNganHang" placeholder="vd: MB Bank / Momo">
         </div>
         <div>
-          <label style="font-size: 12px; font-weight: bold;">Tải Ảnh Mã QR Mới:</label>
-          <input type="file" id="cfgFileQR" accept="image/*" style="font-size:12px; margin-top:4px;">
+          <label>Tải Ảnh Mã QR Mới:</label>
+          <input type="file" id="cfgFileQR" accept="image/*" style="font-size: 12px; margin-bottom: 0;">
         </div>
-        <button onclick="luuCaiDatThanhToan()" style="background:#10b981; color:white; border:none; padding:9px 18px; border-radius:6px; font-weight:bold; cursor:pointer;">Lưu QR ✨</button>
+        <button type="button" onclick="luuCaiDatThanhToan()" style="background:#10b981; color:white; margin-bottom: 14px;">Lưu QR ✨</button>
       </div>
     </section>
 
-    <!-- 2. KHU VỰC CHỈNH SỬA BẢNG GIÁ CHI TIẾT & LUẬT HÓA ĐƠN -->
-    <section class="admin-section" style="border-left: 4px solid #4CAF50;">
+    <!-- 3. KHU VỰC CHỈNH SỬA BẢNG GIÁ CHI TIẾT & LUẬT HÓA ĐƠN -->
+    <section class="admin-section" style="border-left: 4px solid #0284c7;">
       <div class="section-title-box">
         <h3>⚙️ Chỉnh Sửa Bảng Giá Từng Dịch Vụ Cụ Thể</h3>
       </div>
@@ -51,7 +52,7 @@
       <div class="admin-price-columns">
         <!-- Cột Uber -->
         <div class="admin-price-box">
-          <h4 style="color: #3b82f6;">Uber</h4>
+          <h4 style="color: #0284c7;">Uber</h4>
           <div class="admin-input-row"><label>Nhặt 15 Nến:</label><input type="text" id="adm_uber_15nen"></div>
           <div class="admin-input-row"><label>15 Nến + Quest:</label><input type="text" id="adm_uber_15nen_quest"></div>
           <div class="admin-input-row"><label>Xám Nến:</label><input type="text" id="adm_uber_xamnen"></div>
@@ -62,7 +63,7 @@
 
         <!-- Cột Host -->
         <div class="admin-price-box">
-          <h4 style="color: #ff7f50;">Host</h4>
+          <h4 style="color: #d97706;">Host</h4>
           <div class="admin-input-row"><label>Tâm Sự (1h / 30p):</label><input type="text" id="adm_host_tamsu"></div>
           <div class="admin-input-row"><label>Đàn (1h / 30p):</label><input type="text" id="adm_host_dan"></div>
           <div class="admin-input-row"><label>Fakelove (1h / 30p):</label><input type="text" id="adm_host_nguoiyeu"></div>
@@ -71,35 +72,35 @@
 
         <!-- Cột Log Acc -->
         <div class="admin-price-box">
-          <h4 style="color: #10b981;">Log Acc</h4>
+          <h4 style="color: #059669;">Log Acc</h4>
           <div class="admin-input-row"><label>15 Nến (Ngày/Tuần/Tháng):</label><input type="text" id="adm_log_15nen"></div>
           <div class="admin-input-row"><label>Xám Nến + Quest (Ngày/Tuần/Tháng):</label><input type="text" id="adm_log_xamnen"></div>
-          <div class="admin-input-row"><label>Gói Tuần (xám nến + quest + nhặt vé sự kiện):</label><input type="text" id="adm_log_tuan"></div>
-          <div class="admin-input-row"><label>Gói Tháng (xám nến + quest + nhặt vé sự kiện):</label><input type="text" id="adm_log_thang"></div>
+          <div class="admin-input-row"><label>Gói Tuần (xám + quest + vé):</label><input type="text" id="adm_log_tuan"></div>
+          <div class="admin-input-row"><label>Gói Tháng (xám + quest + vé):</label><input type="text" id="adm_log_thang"></div>
         </div>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
         <div>
-          <label><strong>Lịch Hoạt Động Của Page:</strong></label>
-          <textarea id="adminLichPage" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit; box-sizing: border-box;"></textarea>
+          <label>Lịch Hoạt Động Của Page:</label>
+          <textarea id="adminLichPage" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
         </div>
         <div>
-          <label><strong>Điều Khoản & Quy Định Chung:</strong></label>
-          <textarea id="adminDieuKhoan" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit; box-sizing: border-box;"></textarea>
+          <label>Điều Khoản & Quy Định Chung:</label>
+          <textarea id="adminDieuKhoan" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
         </div>
       </div>
 
-      <!-- Ô CHỈNH SỬA LUẬT TRÊN HÓA ĐƠN ĐẶT ĐƠN -->
+      <!-- Điều khoản trên hóa đơn -->
       <div style="margin-top: 15px;">
-        <label><strong>Điều Khoản Trên Hóa Đơn:</strong></label>
-        <textarea id="adminLuatHoaDon" rows="3" style="width: 100%; margin-top: 5px; font-family: inherit; box-sizing: border-box;"></textarea>
+        <label>Điều Khoản Trên Hóa Đơn Khách:</label>
+        <textarea id="adminLuatHoaDon" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
       </div>
 
-      <button onclick="luuToanBoGiaVaCaiDat()" style="background: #4CAF50; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px;">💾 Lưu Toàn Bộ Bảng Giá & Cài Đặt</button>
+      <button type="button" onclick="luuToanBoGiaVaCaiDat()" style="background: #0f172a; color: white; margin-top: 15px;">💾 Lưu Toàn Bộ Bảng Giá & Cài Đặt</button>
     </section>
 
-    <!-- 3. THEO DÕI ĐƠN ĐANG CHẠY & DUYỆT TIỀN MẶT -->
+    <!-- 4. THEO DÕI ĐƠN ĐANG CHẠY & DUYỆT TIỀN MẶT -->
     <section class="admin-section" style="border-left: 4px solid #f59e0b;">
       <div class="section-title-box">
         <h3>⏳ Đơn Hàng Đang Tiến Hành</h3>
@@ -124,7 +125,7 @@
       </div>
     </section>
 
-    <!-- 3.5. QUẢN LÝ HỘI VIÊN GMAIL & TẶNG VOUCHER -->
+    <!-- 5. QUẢN LÝ HỘI VIÊN GMAIL & TẶNG VOUCHER -->
     <section class="admin-section" style="border-left: 4px solid #0284c7;">
       <div class="section-title-box">
         <h3>📧 Danh Sách Hội Viên Gmail & Quản Lý Ưu Đãi</h3>
@@ -146,7 +147,7 @@
       </div>
     </section>
 
-    <!-- 4. HỘP THƯ BÁO CÁO / KHIẾU NẠI -->
+    <!-- 6. HỘP THƯ BÁO CÁO / KHIẾU NẠI -->
     <section class="admin-section" style="border-left: 4px solid #dc2626;">
       <div class="section-title-box">
         <h3 style="color:#dc2626;">🚩 Hộp Thư Báo Cáo & Khiếu Nại</h3>
@@ -156,38 +157,38 @@
       </div>
     </section>
 
-    <!-- 5. PHÁT THÔNG BÁO -->
+    <!-- 7. PHÁT THÔNG BÁO -->
     <div class="announcement-control-grid">
-      <section class="admin-section" style="border-left: 4px solid #ff7f50;">
-        <div class="section-title-box"><h3>Thông Báo Sảnh Chờ</h3></div>
-        <textarea id="tbLobbyInput" rows="2" placeholder="Thông báo Sảnh..." style="width: 100%; margin-bottom: 10px; box-sizing: border-box;"></textarea>
+      <section class="admin-section" style="border-left: 4px solid #ea580c;">
+        <div class="section-title-box"><h3>📢 Thông Báo Sảnh Chờ</h3></div>
+        <textarea id="tbLobbyInput" rows="2" placeholder="Nội dung thông báo Sảnh..."></textarea>
         <div style="display: flex; gap: 8px;">
-          <button onclick="guiThongBaoLobby()" style="background: #ff7f50; color:white; border:none; padding:8px 14px; border-radius:6px; font-weight:bold; cursor:pointer;">Đăng Lên Sảnh ✨</button>
-          <button onclick="xoaThongBaoLobby()" style="background: #e2e8f0; color: #334155; border:none; padding:8px 14px; border-radius:6px; font-weight:bold; cursor:pointer;">Tắt Thông Báo</button>
+          <button type="button" onclick="guiThongBaoLobby()" style="background: #ea580c; color:white;">Đăng Lên Sảnh ✨</button>
+          <button type="button" onclick="xoaThongBaoLobby()" style="background: #e2e8f0; color: #334155;">Tắt Thông Báo</button>
         </div>
       </section>
 
-      <section class="admin-section" style="border-left: 4px solid #0068ff;">
+      <section class="admin-section" style="border-left: 4px solid #0284c7;">
         <div class="section-title-box"><h3>🔔 Gửi Thông Báo Staff (Side Panel)</h3></div>
-        <textarea id="noiDungThongBao" rows="2" placeholder="Thông báo staff..." style="width: 100%; margin-bottom: 10px; box-sizing: border-box;"></textarea>
-        <button onclick="guiThongBaoAdmin()" style="background: #0068ff; color:white; border:none; padding:8px 14px; border-radius:6px; font-weight:bold; cursor:pointer;">Gửi Tới Staff 🚀</button>
+        <textarea id="noiDungThongBao" rows="2" placeholder="Nội dung gửi cho Staff..."></textarea>
+        <button type="button" onclick="guiThongBaoAdmin()" style="background: #0284c7; color:white;">Gửi Tới Staff 🚀</button>
       </section>
     </div>
 
-    <!-- 6. QUẢN LÝ BLACKLIST -->
+    <!-- 8. QUẢN LÝ BLACKLIST -->
     <section class="admin-section" style="border-left: 4px solid #111827;">
       <div class="section-title-box"><h3>⛔ Danh Sách Đen (Blacklist)</h3></div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <div style="background: rgba(248, 250, 252, 0.7); padding: 16px; border-radius: var(--radius-inner); border: 1px solid #e2e8f0;">
           <h4 style="margin-top:0; color:#dc2626;">Khách Hàng Bị Cấm</h4>
-          <div style="display:flex; gap:6px; margin-bottom:10px;">
-            <input type="text" id="inputCamKhach" placeholder="Tên khách cần cấm..." style="flex:1;">
-            <button onclick="themBlacklistKhach()" style="background:#dc2626; color:white; border:none; padding:6px 12px; border-radius:4px; font-weight:bold; cursor:pointer;">Thêm Cấm</button>
+          <div style="display:flex; gap:8px; margin-bottom:10px;">
+            <input type="text" id="inputCamKhach" placeholder="Tên khách cần cấm..." style="flex:1; margin-bottom:0;">
+            <button type="button" onclick="themBlacklistKhach()" style="background:#dc2626; color:white;">Thêm Cấm</button>
           </div>
           <ul id="listBlacklistKhach" style="padding-left:18px; font-size:13px; margin:0;"></ul>
         </div>
 
-        <div style="background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <div style="background: rgba(248, 250, 252, 0.7); padding: 16px; border-radius: var(--radius-inner); border: 1px solid #e2e8f0;">
           <h4 style="margin-top:0; color:#475569;">Nhân Sự Bị Cấm</h4>
           <ul id="listBlacklistStaff" style="padding-left:18px; font-size:13px; margin:0;">
             <li style="color:#888;">Chưa có staff nào vi phạm</li>
@@ -196,24 +197,24 @@
       </div>
     </section>
 
-    <!-- 7. QUẢN LÝ NHÂN SỰ -->
+    <!-- 9. QUẢN LÝ NHÂN SỰ -->
     <section class="admin-section" style="border-left: 4px solid #8b5cf6;">
       <div class="section-title-box"><h3>👥 Quản Lý Nhân Sự & Phân Quyền</h3></div>
-      <div style="background: #f8fafc; padding: 16px; border-radius: 8px; margin-bottom: 18px; border: 1px solid #e2e8f0;">
+      <div style="background: rgba(248, 250, 252, 0.7); padding: 16px; border-radius: var(--radius-inner); margin-bottom: 18px; border: 1px solid #e2e8f0;">
         <h4 style="margin-top: 0; margin-bottom: 10px;">➕ Thêm Tài Khoản Nhân Sự Mới</h4>
         <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-          <input type="text" id="newStaffTen" placeholder="Tên Staff (vd: Michii)" style="flex: 2; padding: 8px;">
-          <input type="text" id="newStaffIcon" placeholder="Icon (vd: 🌸)" style="flex: 1; max-width: 100px; padding: 8px;">
-          <input type="password" id="newStaffPass" placeholder="Mật khẩu" style="flex: 2; padding: 8px;">
+          <input type="text" id="newStaffTen" placeholder="Tên Staff (vd: Michii)" style="flex: 2; margin-bottom:0;">
+          <input type="text" id="newStaffIcon" placeholder="Icon (vd: 🌸)" style="flex: 1; max-width: 100px; margin-bottom:0;">
+          <input type="password" id="newStaffPass" placeholder="Mật khẩu" style="flex: 2; margin-bottom:0;">
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 14px; border-radius: 6px; border: 1px solid #e2e8f0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
           <div style="display: flex; align-items: center; gap: 18px;">
-            <span style="font-size: 13px; font-weight: bold;">Mảng:</span>
-            <label><input type="checkbox" id="skill_uber" value="uber" checked>Uber</label>
-            <label><input type="checkbox" id="skill_host" value="host" checked>Host</label>
-            <label><input type="checkbox" id="skill_logacc" value="logacc">Log Acc</label>
+            <span style="font-size: 13px; font-weight: bold; color: var(--text-muted);">Mảng:</span>
+            <label style="width: auto; margin-bottom: 0; display: inline-flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="skill_uber" value="uber" checked style="width: auto; margin: 0;">Uber</label>
+            <label style="width: auto; margin-bottom: 0; display: inline-flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="skill_host" value="host" checked style="width: auto; margin: 0;">Host</label>
+            <label style="width: auto; margin-bottom: 0; display: inline-flex; align-items: center; gap: 4px; cursor: pointer;"><input type="checkbox" id="skill_logacc" value="logacc" style="width: auto; margin: 0;">Log Acc</label>
           </div>
-          <button onclick="themStaffMoi()" style="background: #8b5cf6; color:white; border:none; padding:8px 18px; border-radius:6px; font-weight:bold; cursor:pointer;">Tạo Tài Khoản ✨</button>
+          <button type="button" onclick="themStaffMoi()" style="background: #8b5cf6; color:white;">Tạo Tài Khoản ✨</button>
         </div>
       </div>
       <div class="table-responsive">
@@ -226,9 +227,12 @@
       </div>
     </section>
 
-    <!-- 8. SỔ LƯU TRỮ HÓA ĐƠN -->
+    <!-- 10. SỔ LƯU TRỮ HÓA ĐƠN -->
     <section class="admin-section">
-      <div class="section-title-box"><h3>Hóa Đơn Đã Hoàn Thành</h3><span class="badge-count" id="countHoaDon">0 hóa đơn</span></div>
+      <div class="section-title-box">
+        <h3>Hóa Đơn Đã Hoàn Thành</h3>
+        <span class="badge-count" id="countHoaDon">0 hóa đơn</span>
+      </div>
       <div class="table-responsive">
         <table class="admin-table">
           <thead>
@@ -239,15 +243,27 @@
       </div>
     </section>
 
-    <!-- 9. FEEDBACK -->
+    <!-- 11. FEEDBACK KHÁCH HÀNG -->
     <section class="admin-section">
       <div class="section-title-box"><h3>Feedback Khách Hàng</h3></div>
-      <div class="feedback-admin-grid" id="bangAdminFeedback"></div>
+      <div class="feedback-grid" id="bangAdminFeedback"></div>
     </section>
 
   </div>
 
   <script>
+    // 🛡️ BẢO MẬT: Kiểm tra quyền Admin trước khi tải dữ liệu
+    var isAuthAdmin = sessionStorage.getItem("sky_admin_logged");
+    if (isAuthAdmin !== "true") {
+      alert("⛔ Khu vực quản trị tối mật! Vui lòng đăng nhập quyền Admin.");
+      window.location.href = "index.html";
+    }
+
+    function dangXuatAdmin() {
+      sessionStorage.removeItem("sky_admin_logged");
+      window.location.href = "index.html";
+    }
+
     const firebaseConfig = {
       apiKey: "AIzaSyCEuMuKn4ZrzQNQCYnxt9XeNpPUsfQk54c",
       authDomain: "ordersky.firebaseapp.com",
@@ -286,7 +302,7 @@
       }
     }
 
-    // 2. Bảng giá chi tiết & Luật hóa đơn
+    // 2. Bảng giá chi tiết & Cài đặt văn bản
     var danhSachKeyGia = [
       "uber_15nen", "uber_15nen_quest", "uber_xamnen", "uber_xamnen_quest", "uber_nhatcanh", "uber_eden",
       "host_tamsu", "host_dan", "host_nguoiyeu", "host_treomay",
@@ -304,8 +320,8 @@
     db.ref('caiDatPage').once('value').then(function(snap) {
       var set = snap.val() || {};
       document.getElementById("adminLichPage").value = set.lichPage || "• Ca Sáng: 08:00 - 12:00\n• Ca Chiều: 13:30 - 17:30\n• Ca Tối: 18:00 - 24:00";
-      document.getElementById("adminDieuKhoan").value = set.dieuKhoan || "✔ Tiền mặt: Chuyển khoản 100%.\n✔ Tim Sky: Trả tim mỗi ngày sau ca.";
-      document.getElementById("adminLuatHoaDon").value = set.luatHoaDon || "• Khách hàng và Staff trao đổi lịch sự, tôn trọng lẫn nhau.\n• Nếu có điều gì không hài lòng vui lòng bấm nút Report để Admin bồi thường.";
+      document.getElementById("adminDieuKhoan").value = set.dieuKhoan || "✔ Tiền mặt: Chuyển khoản 100% sau khi Staff nhận đơn.\n✔ Tim Sky: Trả tim mỗi ngày sau ca.";
+      document.getElementById("adminLuatHoaDon").value = set.luatHoaDon || "• Khách hàng và Staff trao đổi lịch sự, tôn trọng lẫn nhau.\n• Nếu có điều gì không hài lòng vui lòng bấm nút Báo Cáo để Admin can thiệp.";
     });
 
     function luuToanBoGiaVaCaiDat() {
@@ -321,11 +337,11 @@
         dieuKhoan: document.getElementById("adminDieuKhoan").value,
         luatHoaDon: document.getElementById("adminLuatHoaDon").value
       }).then(function() {
-        alert("Đã cập nhật thành công!");
+        alert("Đã cập nhật bảng giá và cài đặt thành công!");
       });
     }
 
-    // 3. Đơn hàng & Duyệt tiền mặt
+    // 3. Quản lý đơn hàng & Duyệt tiền mặt
     db.ref('donHangSky').on('value', function(snapshot) {
       var data = snapshot.val();
       var tbodyHoaDon = document.getElementById("bangHoaDon");
@@ -341,17 +357,29 @@
 
         if (dh.trangThai === "hoan_thanh") {
           countXong++;
-          tbodyHoaDon.innerHTML += `<tr><td><code>${key.substring(1, 8)}</code></td><td><strong>${dh.tenKhach}</strong></td><td>${dh.mangDichVu.toUpperCase()} - ${dh.cuThe}</td><td>${dh.thoiGianHen || "N/A"}</td><td><span class="badge-payment">${ttText}</span></td><td><strong>${dh.staffNhan || "Không rõ"}</strong></td><td><span class="badge-done">Hoàn Tất ✔️</span></td></tr>`;
+          tbodyHoaDon.innerHTML += `
+            <tr>
+              <td><code>${key.substring(1, 8)}</code></td>
+              <td><strong>${dh.tenKhach}</strong></td>
+              <td>${dh.mangDichVu.toUpperCase()} - ${dh.cuThe}</td>
+              <td>${dh.thoiGianHen || "N/A"}</td>
+              <td><span class="badge-payment">${ttText}</span></td>
+              <td><strong>${dh.staffNhan || "Không rõ"}</strong></td>
+              <td><span class="badge-done">Hoàn Tất ✔️</span></td>
+            </tr>
+          `;
         } else {
-          var staffStatus = dh.daNhan ? `<strong>${dh.staffNhan}</strong>` : `<span style="color:#f57c00;">Chưa nhận</span>`;
+          var staffStatus = dh.daNhan 
+            ? `<strong>${dh.staffNhan}</strong>` 
+            : `<span style="color:#d97706;">Chưa nhận</span>`;
           
           var nutDuyetTien = "";
           if (dh.thanhToan === "Tien_VND") {
             nutDuyetTien = dh.daThanhToanFull 
               ? `<span style="color:#16a34a; font-weight:bold; font-size:12px;">Đã Nhận Tiền ✔️</span>` 
-              : `<button onclick="adminDuyetTien('${key}')" style="background:#16a34a; color:white; font-size:11px; padding:4px 8px; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Xác Nhận Đã Nhận Tiền 💸</button>`;
+              : `<button type="button" onclick="adminDuyetTien('${key}')" style="background:#16a34a; color:white; font-size:11px; padding:4px 8px;">Xác Nhận Nhận Tiền 💸</button>`;
           } else {
-            nutDuyetTien = `<span style="color:#888; font-size:11px;">Đơn Trả Tim</span>`;
+            nutDuyetTien = `<span style="color:#94a3b8; font-size:11px;">Đơn Trả Tim</span>`;
           }
 
           tbodyDangChay.innerHTML += `
@@ -359,10 +387,10 @@
               <td><strong>${dh.tenKhach}</strong></td>
               <td>${dh.mangDichVu.toUpperCase()} - ${dh.cuThe}</td>
               <td>${dh.thoiGianHen || "N/A"}</td>
-              <td>${ttText}</td>
+              <td><span class="badge-payment">${ttText}</span></td>
               <td>${staffStatus}</td>
               <td>${nutDuyetTien}</td>
-              <td><button class="btn-xoa" onclick="db.ref('donHangSky/${key}').remove()">Hủy</button></td>
+              <td><button type="button" class="btn-xoa" onclick="db.ref('donHangSky/${key}').remove()">Hủy</button></td>
             </tr>
           `;
         }
@@ -380,7 +408,7 @@
       }
     }
 
-    // 3.5. LẮNG NGHE & QUẢN LÝ HỘI VIÊN GMAIL
+    // 4. Quản lý hội viên Gmail & Voucher tùy ý
     db.ref('thanhVienSky').on('value', function(snap) {
       var data = snap.val();
       var tbody = document.getElementById("bangHoiVienAdmin");
@@ -394,11 +422,13 @@
       Object.keys(data).forEach(function(emailKey) {
         var mem = data[emailKey];
         var displayEmail = emailKey.replace(/_/g, '.');
-        var uuDaiText = "<span style='color:#888;'>Chưa có</span>";
+        var uuDaiText = "<span style='color:#94a3b8;'>Chưa có</span>";
 
         if (mem.uuDaiRieng && !mem.uuDaiRieng.daDung && mem.uuDaiRieng.giaTri > 0) {
-          uuDaiText = `<strong style='color:#16a34a;'>Giảm ${(mem.uuDaiRieng.giaTri).toLocaleString('vi-VN')}đ</strong> 
-                       <button onclick="huyVoucher('${emailKey}')" style="font-size:10px; border:none; background:#fee2e2; color:#dc2626; border-radius:3px; padding:1px 5px; cursor:pointer;" title="Hủy mã này">✕ Hủy</button>`;
+          uuDaiText = `
+            <strong style='color:#16a34a;'>Giảm ${(mem.uuDaiRieng.giaTri).toLocaleString('vi-VN')}đ</strong> 
+            <button type="button" onclick="huyVoucher('${emailKey}')" style="font-size:10px; border:none; background:#fee2e2; color:#dc2626; border-radius:4px; padding:2px 6px; cursor:pointer;" title="Hủy mã này">✕ Hủy</button>
+          `;
         }
 
         tbody.innerHTML += `
@@ -407,19 +437,17 @@
             <td>${mem.soDonDaDat || 0} đơn</td>
             <td>${uuDaiText}</td>
             <td>
-              <button onclick="tangVoucherTuyChon('${emailKey}')" style="background:#0284c7; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-size:11px; font-weight:bold;">🎁 Tặng Voucher Tùy Ý</button>
-              <button onclick="xoaHoiVien('${emailKey}')" class="btn-xoa" style="font-size:11px; padding:4px 8px; margin-left:6px;">Xóa 🗑️</button>
+              <button type="button" onclick="tangVoucherTuyChon('${emailKey}')" style="background:#0284c7; color:white; font-size:11px; padding:5px 10px;">🎁 Tặng Voucher Tùy Ý</button>
+              <button type="button" onclick="xoaHoiVien('${emailKey}')" class="btn-xoa" style="font-size:11px; padding:4px 8px; margin-left:6px;">Xóa 🗑️</button>
             </td>
           </tr>
         `;
       });
     });
 
-    // Hàm nhập số tiền tùy ý
     function tangVoucherTuyChon(emailKey) {
       var displayEmail = emailKey.replace(/_/g, '.');
       var nhapTien = prompt(`Nhập số tiền muốn giảm giá cho [${displayEmail}]:\n(vd: nhập 20000 hoặc 20k)`, "10000");
-      
       if (!nhapTien) return;
 
       var chuoiSo = nhapTien.toLowerCase().replace(/[^0-9k]/g, '');
@@ -444,14 +472,12 @@
       });
     }
 
-    // Hàm hủy voucher đang cấp
     function huyVoucher(emailKey) {
       if (confirm("Admin có chắc muốn hủy ưu đãi của hội viên này?")) {
         db.ref('thanhVienSky/' + emailKey + '/uuDaiRieng').remove();
       }
     }
 
-    // Hàm xóa hội viên khỏi hệ thống
     function xoaHoiVien(emailKey) {
       var displayEmail = emailKey.replace(/_/g, '.');
       if (confirm(`Admin có chắc chắn muốn xóa hội viên [${displayEmail}] khỏi danh sách không?`)) {
@@ -461,7 +487,7 @@
       }
     }
 
-    // 4. Hộp thư báo cáo
+    // 5. Hộp thư báo cáo & Khiếu nại
     db.ref('danhSachBaoCao').on('value', function(snapshot) {
       var data = snapshot.val();
       var box = document.getElementById("bangDanhSachBaoCao");
@@ -473,18 +499,18 @@
       Object.keys(data).reverse().forEach(function(key) {
         var bc = data[key];
         var anhHTML = (bc.anhBangChung && bc.anhBangChung !== "Không có ảnh")
-          ? `<div style="margin: 8px 0;"><img src="${bc.anhBangChung}" style="max-width: 150px; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="window.open('${bc.anhBangChung}')" title="Bấm xem ảnh lớn"></div>`
+          ? `<div style="margin: 8px 0;"><img src="${bc.anhBangChung}" style="max-width: 150px; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="window.open('${bc.anhBangChung}')" title="Bấm xem ảnh lớn"></div>`
           : `<p style="font-size: 11px; color: #888;">(Không đính kèm ảnh)</p>`;
 
         box.innerHTML += `
-          <div style="background: #fff5f5; border: 1px solid #fecaca; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+          <div style="background: rgba(254, 242, 242, 0.7); border: 1px solid #fecaca; border-radius: var(--radius-inner); padding: 14px; margin-bottom: 12px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <strong style="color: #dc2626;">Từ: ${bc.nguoiBaoCao} ➔ Tố cáo: ${bc.doiTuongBiBaoCao}</strong>
-              <button onclick="db.ref('danhSachBaoCao/${key}').remove()" style="background:#ccc; color:#333; font-size:11px; padding:2px 6px;">Đã Xử Lý / Xóa</button>
+              <button type="button" onclick="db.ref('danhSachBaoCao/${key}').remove()" style="background:#e2e8f0; color:#334155; font-size:11px; padding:3px 8px;">Đã Xử Lý / Xóa</button>
             </div>
             <p style="margin: 6px 0; font-size: 13px;"><strong>Lý do:</strong> ${bc.lyDo}</p>
             ${anhHTML}
-            <button onclick="camKhachTuBaoCao('${bc.tenDoiTuong}', '${bc.loaiDoiTuong}')" style="background:#111827; color:white; font-size:11px; padding:4px 10px; border-radius:4px;">➕ Đưa ${bc.tenDoiTuong} Vào Blacklist</button>
+            <button type="button" onclick="camKhachTuBaoCao('${bc.tenDoiTuong}', '${bc.loaiDoiTuong}')" style="background:#111827; color:white; font-size:11px; padding:5px 12px;">➕ Đưa ${bc.tenDoiTuong} Vào Blacklist</button>
           </div>
         `;
       });
@@ -495,11 +521,11 @@
         db.ref('blackListKhach/' + ten.toLowerCase()).set({ ten: ten, thoiGian: Date.now() });
         alert("Đã đưa khách vào Blacklist!");
       } else {
-        alert("Vui lòng vào Quản Lý Nhân Sự để xóa quyền Staff!");
+        alert("Vui lòng vào Quản Lý Nhân Sự để xóa tài khoản Staff vi phạm!");
       }
     }
 
-    // 5. Thông báo Sảnh & Staff
+    // 6. Phát thông báo
     db.ref('thongBaoLobby').once('value').then(function(snap) {
       var tb = snap.val();
       if (tb && tb.noiDung) document.getElementById("tbLobbyInput").value = tb.noiDung;
@@ -507,25 +533,40 @@
 
     function guiThongBaoLobby() {
       var text = document.getElementById("tbLobbyInput").value.trim();
-      if (text) db.ref('thongBaoLobby').set({ noiDung: text, capNhat: Date.now() });
+      if (text) {
+        db.ref('thongBaoLobby').set({ noiDung: text, capNhat: Date.now() }).then(function() {
+          alert("Đã cập nhật thông báo Sảnh thành công!");
+        });
+      }
     }
-    function xoaThongBaoLobby() { db.ref('thongBaoLobby').remove(); document.getElementById("tbLobbyInput").value = ""; }
+    function xoaThongBaoLobby() { 
+      db.ref('thongBaoLobby').remove(); 
+      document.getElementById("tbLobbyInput").value = ""; 
+    }
     
     function guiThongBaoAdmin() {
       var text = document.getElementById("noiDungThongBao").value.trim();
       var dt = new Date();
-      if (text) db.ref('thongBaoAdmin').push({ noiDung: text, gio: `${dt.getHours()}:${dt.getMinutes()}`, thoiGian: Date.now() });
-      document.getElementById("noiDungThongBao").value = "";
+      if (text) {
+        db.ref('thongBaoAdmin').push({ 
+          noiDung: text, 
+          gio: `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')}`, 
+          thoiGian: Date.now() 
+        }).then(function() {
+          alert("Đã gửi thông báo tới Staff!");
+        });
+        document.getElementById("noiDungThongBao").value = "";
+      }
     }
 
-    // 6. Blacklist
+    // 7. Blacklist
     db.ref('blackListKhach').on('value', function(snap) {
       var data = snap.val();
       var ul = document.getElementById("listBlacklistKhach");
       ul.innerHTML = "";
       if (!data) { ul.innerHTML = "<li style='color:#888;'>Chưa có khách nào bị cấm.</li>"; return; }
       Object.keys(data).forEach(function(k) {
-        ul.innerHTML += `<li>${data[k].ten || k} <button onclick="db.ref('blackListKhach/${k}').remove()" style="font-size:10px; padding:1px 4px; margin-left:6px; background:#e2e8f0; border:none; cursor:pointer;">Gỡ ✕</button></li>`;
+        ul.innerHTML += `<li>${data[k].ten || k} <button type="button" onclick="db.ref('blackListKhach/${k}').remove()" style="font-size:10px; padding:1px 5px; margin-left:6px; background:#e2e8f0; border:none; cursor:pointer; border-radius:3px;">Gỡ ✕</button></li>`;
       });
     });
 
@@ -537,7 +578,7 @@
       }
     }
 
-    // 7. Quản lý Staff
+    // 8. Quản lý nhân sự
     db.ref('danhSachStaff').on('value', function(snap) {
       var staffList = snap.val();
       var tbody = document.getElementById("bangDanhSachStaff");
@@ -545,8 +586,18 @@
       if (!staffList) return;
       Object.keys(staffList).forEach(function(key) {
         var st = staffList[key];
-        var knBadge = (st.kyNang || []).map(function(k) { return `<span class="badge-payment" style="margin-right: 4px;">${k.toUpperCase()}</span>`; }).join("");
-        tbody.innerHTML += `<tr><td style="font-size: 18px;">${st.icon || "🌸"}</td><td><strong>${st.ten}</strong></td><td><code>${st.pass}</code></td><td>${knBadge}</td><td><button class="btn-xoa" onclick="db.ref('danhSachStaff/${key}').remove()">Xóa 🗑️</button></td></tr>`;
+        var knBadge = (st.kyNang || []).map(function(k) { 
+          return `<span class="badge-payment" style="margin-right: 4px;">${k.toUpperCase()}</span>`; 
+        }).join("");
+        tbody.innerHTML += `
+          <tr>
+            <td style="font-size: 18px;">${st.icon || "🌸"}</td>
+            <td><strong>${st.ten}</strong></td>
+            <td><code>${st.pass}</code></td>
+            <td>${knBadge}</td>
+            <td><button type="button" class="btn-xoa" onclick="db.ref('danhSachStaff/${key}').remove()">Xóa 🗑️</button></td>
+          </tr>
+        `;
       });
     });
 
@@ -558,22 +609,54 @@
       if (document.getElementById("skill_uber").checked) kyNang.push("uber");
       if (document.getElementById("skill_host").checked) kyNang.push("host");
       if (document.getElementById("skill_logacc").checked) kyNang.push("logacc");
-      if (!ten || !pass) { alert("Nhập đủ Tên và Pass!"); return; }
-      db.ref('danhSachStaff').push({ ten: ten, icon: icon, pass: pass, kyNang: kyNang, ngayTao: Date.now() }).then(function() {
+      
+      if (!ten || !pass) { 
+        alert("Vui lòng nhập đủ Tên và Mật khẩu Staff!"); 
+        return; 
+      }
+
+      db.ref('danhSachStaff').push({ 
+        ten: ten, 
+        icon: icon, 
+        pass: pass, 
+        kyNang: kyNang, 
+        ngayTao: Date.now() 
+      }).then(function() {
         document.getElementById("newStaffTen").value = "";
         document.getElementById("newStaffPass").value = "";
+        alert(`Đã tạo tài khoản cho Staff ${ten} thành công!`);
       });
     }
 
-    // 8. Feedback
+    // 9. Feedback khách hàng
     db.ref('feedbacks').on('value', function(snapshot) {
       var fbData = snapshot.val();
       var box = document.getElementById("bangAdminFeedback");
       box.innerHTML = "";
-      if (!fbData) return;
+      if (!fbData) {
+        box.innerHTML = "<p style='grid-column: 1/-1; color:#888;'>Chưa có đánh giá nào.</p>";
+        return;
+      }
       Object.keys(fbData).reverse().forEach(function(k) {
         var item = fbData[k];
-        box.innerHTML += `<div class="feedback-admin-card"><div style="display:flex; justify-content:space-between;"><strong>${item.tenKhach}</strong><span style="color: #ffb703;">★ ${item.sao}</span></div><p style="margin:4px 0;">"${item.nhanXet}"</p><button class="btn-xoa" onclick="db.ref('feedbacks/${k}').remove()" style="font-size:10px;">Xóa</button></div>`;
+        var anhHTML = (item.anhFeedback && item.anhFeedback !== "none") 
+          ? `<div class="feedback-img-box"><img src="${item.anhFeedback}" onclick="window.open('${item.anhFeedback}')" title="Bấm xem ảnh"></div>` 
+          : "";
+
+        box.innerHTML += `
+          <div class="feedback-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong>${item.tenKhach}</strong>
+              <span style="color: #f59e0b; font-weight:bold;">★ ${item.sao}</span>
+            </div>
+            <p style="margin:6px 0;">"${item.nhanXet}"</p>
+            ${anhHTML}
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+              <span style="font-size:11px; color:#64748b;">Staff: ${item.staffPhuTrach || "Chung"}</span>
+              <button type="button" class="btn-xoa" onclick="db.ref('feedbacks/${k}').remove()" style="font-size:10px; padding:2px 8px;">Xóa</button>
+            </div>
+          </div>
+        `;
       });
     });
   </script>
