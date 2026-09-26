@@ -3,24 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sảnh Chờ</title>
+  <title>Sảnh Chờ - Sky Services</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body class="lobby-layout">
 
-  <!-- CỤM BONG BÓNG MINI CHAT RIÊNG BIỆT CỦA KHÁCH -->
+  <!-- 1. CỤM BONG BÓNG MINI CHAT RIÊNG BIỆT CỦA KHÁCH -->
   <div id="customerChatheadsList" class="chatheads-container"></div>
 
-  <!-- BANNER CÁC ĐƠN ĐANG CHẠY -->
+  <!-- 2. BANNER CÁC ĐƠN ĐANG CHẠY TRÊN CÙNG -->
   <div id="liveOrdersContainer" style="position: sticky; top: 0; z-index: 1000; display: flex; flex-direction: column; gap: 4px;"></div>
 
+  <!-- 3. NÚT ĐẶT ĐƠN NỔI (CAPSULE ACTION BUTTON) -->
   <div class="floating-order-btn" onclick="window.location.href='order.html'">
     ✨ Đặt Đơn Ngay
   </div>
 
   <div class="lobby-container">
+    
+    <!-- HỘP THÔNG BÁO TỪ PAGE -->
     <div id="boxThongBaoPage" class="lobby-announcement" style="display: none;">
       <span class="announcement-icon">📢</span>
       <div class="announcement-text">
@@ -29,89 +32,107 @@
       </div>
     </div>
 
+    <!-- TIÊU ĐỀ SẢNH -->
     <header class="lobby-header">
-      <h1>Chào mừng bạn đến với sky service</h1>
+      <h1>Chào mừng bạn đến với Sky Service</h1>
       <p>Nơi thư giãn, xem bảng giá chi tiết và kết nối cùng đội ngũ đồng hành</p>
     </header>
 
+    <!-- BẢNG GIÁ DỊCH VỤ CHI TIẾT 3 MẢNG -->
     <section class="lobby-section">
       <h2>Bảng Giá Dịch Vụ Chi Tiết</h2>
       <div class="detailed-pricing-grid">
+        
+        <!-- Mảng Uber -->
         <div class="price-category-card">
-          <div class="category-header uber-header"><h3>UBER</h3><p>Nhanh, tiện lợi</p></div>
+          <div class="category-header uber-header">
+            <h3>UBER</h3>
+            <p>Nhanh, tiện lợi & an toàn</p>
+          </div>
           <div class="category-body">
             <div class="service-item"><span>Nhặt 15 Nến</span><strong id="p_uber_15nen">Liên hệ</strong></div>
             <div class="service-item"><span>Nhặt 15 Nến + Quest</span><strong id="p_uber_15nen_quest">Liên hệ</strong></div>
             <div class="service-item"><span>Xám Nến</span><strong id="p_uber_xamnen">Liên hệ</strong></div>
             <div class="service-item"><span>Xám Nến + Quest</span><strong id="p_uber_xamnen_quest">Liên hệ</strong></div>
-            <div class="service-item"><span>Nhặt winglight</span><strong id="p_uber_nhatcanh">Liên hệ</strong></div>
+            <div class="service-item"><span>Nhặt Winglight</span><strong id="p_uber_nhatcanh">Liên hệ</strong></div>
             <div class="service-item"><span>Đi Eden</span><strong id="p_uber_eden">Liên hệ</strong></div>
           </div>
         </div>
 
+        <!-- Mảng Host -->
         <div class="price-category-card popular-card">
-          <div class="category-header host-header"><h3>HOST</h3><p>Người bạn luôn ở bên bạn</p></div>
+          <div class="category-header host-header">
+            <h3>HOST</h3>
+            <p>Người bạn luôn ở bên bạn</p>
+          </div>
           <div class="category-body">
             <div class="service-item"><span>Tâm Sự (1h / 30p)</span><strong id="p_host_tamsu">Liên hệ</strong></div>
             <div class="service-item"><span>Đàn (1h / 30p)</span><strong id="p_host_dan">Liên hệ</strong></div>
             <div class="service-item"><span>Fakelove (1h / 30p)</span><strong id="p_host_nguoiyeu">Liên hệ</strong></div>
-            <div class="service-item"><span>Treo (1h / 30p)</span><strong id="p_host_treomay">Liên hệ</strong></div>
+            <div class="service-item"><span>Treo Máy (1h / 30p)</span><strong id="p_host_treomay">Liên hệ</strong></div>
           </div>
         </div>
 
+        <!-- Mảng Log Acc -->
         <div class="price-category-card">
-          <div class="category-header log-header"><h3>LOG ACC</h3><p>Bảo mật & Uy tín</p></div>
+          <div class="category-header log-header">
+            <h3>LOG ACC</h3>
+            <p>Bảo mật & Uy tín tuyệt đối</p>
+          </div>
           <div class="category-body">
             <div class="service-item"><span>15 Nến (Ngày/Tuần/Tháng)</span><strong id="p_log_15nen">Liên hệ</strong></div>
-            <div class="service-item"><span>Xám Nến + Quest (Ngày/Tuần/Tháng)</span><strong id="p_log_xamnen">Liên hệ</strong></div>
-            <div class="service-item"><span>Gói Tuần (xám nến + quest + nhặt vé sự kiện)</span><strong id="p_log_tuan">Liên hệ</strong></div>
-            <div class="service-item"><span>Gói Tháng (xám nến + quest + nhặt vé sự kiện)</span><strong id="p_log_thang">Liên hệ</strong></div>
+            <div class="service-item"><span>Xám Nến + Quest</span><strong id="p_log_xamnen">Liên hệ</strong></div>
+            <div class="service-item"><span>Gói Tuần (Xám + Quest + Vé)</span><strong id="p_log_tuan">Liên hệ</strong></div>
+            <div class="service-item"><span>Gói Tháng (Xám + Quest + Vé)</span><strong id="p_log_thang">Liên hệ</strong></div>
           </div>
         </div>
+
       </div>
     </section>
 
+    <!-- LỊCH HOẠT ĐỘNG & ĐIỀU KHOẢN -->
     <section class="lobby-section">
       <div class="terms-container">
         <div class="terms-box">
-          <h3>Lịch Hoạt Động</h3>
-          <div id="noiDungLichPage" style="white-space: pre-line; line-height: 1.6;">
+          <h3>🕒 Lịch Hoạt Động Của Page</h3>
+          <div id="noiDungLichPage" style="white-space: pre-line;">
             • Ca Sáng: 08:00 - 12:00
             • Ca Chiều: 13:30 - 17:30
             • Ca Tối (Cao điểm): 18:00 - 24:00
           </div>
         </div>
         <div class="terms-box">
-          <h3>Điều Khoản & Quy Định</h3>
-          <div id="noiDungDieuKhoan" style="white-space: pre-line; line-height: 1.6;">
+          <h3>📜 Điều Khoản & Quy Định</h3>
+          <div id="noiDungDieuKhoan" style="white-space: pre-line;">
             ✔ Tiền mặt: Chuyển khoản 100% sau khi Staff nhận đơn.
-            ✔ Tim Sky: Trả tim mỗi ngày.
+            ✔ Tim Sky: Trả tim mỗi ngày sau ca hoàn thành.
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TƯỜNG FEEDBACK ĐÍNH KÈM ẢNH & STAFF PHỤ TRÁCH -->
+    <!-- TƯỜNG FEEDBACK TỪ KHÁCH HÀNG -->
     <section class="lobby-section">
       <h2>⭐ Feedback Từ Khách Hàng</h2>
       <div class="feedback-grid" id="feedbackWall">
-        <p style="grid-column: 1/-1; color: #888;">Đang tải feedback...</p>
+        <p style="grid-column: 1/-1; color: var(--text-muted);">Đang tải feedback...</p>
       </div>
     </section>
+
   </div>
 
-  <!-- KHUNG CHAT MINI NHỎ GỌN -->
+  <!-- 4. KHUNG CHAT MINI LIQUID GLASS -->
   <div id="chatBoxKhach" class="chat-container">
     <div class="chat-header">
       <span id="chatTitleKhach" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;">Chat Với Staff</span>
       <div class="chat-header-actions">
-        <button class="btn-report-mini" onclick="moPopupReport()" title="Báo cáo sự cố">🚩 Báo cáo</button>
-        <button class="close-chat" onclick="dongChatKhach()">✕</button>
+        <button type="button" class="btn-report-mini" onclick="moPopupReport()" title="Báo cáo sự cố">🚩 Báo cáo</button>
+        <button type="button" class="close-chat" onclick="dongChatKhach()">✕</button>
       </div>
     </div>
 
     <div class="chat-pinned">
-      📌 <strong id="chatGhimKhach">Mã kết bạn</strong>
+      📌 <strong id="chatGhimKhach">Mã kết bạn Sky</strong>
     </div>
 
     <div id="bannerDongBangKhach" class="chat-frozen-banner" style="display: none;">
@@ -119,19 +140,19 @@
     </div>
 
     <div class="chat-body" id="chatBodyKhach">
-      <!-- Màn hình chờ duyệt tiền -->
-      <div id="manHinhThanhToanKhach" style="text-align: center; margin-top: 15px; padding: 10px; background: #fff7ed; border-radius: 8px; border: 1px solid #fed7aa; display: none;">
+      <!-- Màn hình chờ duyệt tiền mặt -->
+      <div id="manHinhThanhToanKhach" style="text-align: center; margin-top: 15px; padding: 14px; background: rgba(255, 247, 237, 0.85); border-radius: var(--radius-inner); border: 1px solid #fed7aa; display: none;">
         <p style="font-size: 12px; margin: 0 0 6px 0; color: #c2410c; font-weight: bold;">THANH TOÁN ĐƠN HÀNG</p>
         <div id="qrThanhToanBox" style="margin-bottom: 8px;"></div>
-        <p style="font-size: 11px; margin: 0; color: #666;">Admin đang kiểm tra giao dịch, bạn chờ chút nhé.</p>
+        <p style="font-size: 11px; margin: 0; color: #78350f;">Admin đang kiểm tra giao dịch, bạn chờ chút nhé.</p>
       </div>
 
       <!-- Màn hình gửi mã kết bạn -->
       <div id="manHinhKetBanKhach" style="text-align: center; margin-top: 15px; display: none;">
-        <p style="font-size: 12px; color: #475569;">Gửi mã kết bạn Sky để bắt đầu:</p>
-        <input type="text" id="maKetBanKhach" placeholder="Dán link/mã kết bạn..." style="width: 80%; padding: 6px 10px; font-size: 12px; margin-bottom: 6px;">
+        <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 8px;">Gửi mã kết bạn Sky để bắt đầu:</p>
+        <input type="text" id="maKetBanKhach" placeholder="Dán link/mã kết bạn Sky..." style="width: 85%; margin-bottom: 8px;">
         <br>
-        <button onclick="xacNhanMaKhach()" style="padding: 5px 12px; font-size: 12px; background: #0284c7;">Gửi Mã</button>
+        <button type="button" onclick="xacNhanMaKhach()" style="padding: 6px 16px; font-size: 12px; background: #0284c7; color:white;">Gửi Mã</button>
       </div>
 
       <div id="tinNhanKhach" style="display: none;"></div>
@@ -139,29 +160,29 @@
 
     <div class="chat-footer">
       <input type="text" id="nhapTinKhach" placeholder="Nhập tin nhắn..." disabled onkeypress="if(event.key==='Enter') guiTinKhach()">
-      <button id="btnGuiTinKhach" class="btn-icon" disabled onclick="guiTinKhach()">➤</button>
-      <button id="btnXacNhanHoanThanhKhach" class="btn-done" disabled onclick="xacNhanXongKhach()" title="Xác nhận hoàn tất">✔</button>
+      <button type="button" id="btnGuiTinKhach" class="btn-icon" disabled onclick="guiTinKhach()">➤</button>
+      <button type="button" id="btnXacNhanHoanThanhKhach" class="btn-done" disabled onclick="xacNhanXongKhach()" title="Xác nhận hoàn tất">✔</button>
     </div>
   </div>
 
-  <!-- POPUP BÁO CÁO CÓ ẢNH -->
+  <!-- 5. POPUP BÁO CÁO CÓ ĐÍNH KÈM ẢNH -->
   <div id="modalReport" class="modal-overlay">
-    <div class="modal-content">
-      <button class="btn-dong-modal" onclick="dongPopupReport()">✕</button>
+    <div class="modal-content" style="max-width: 400px; width: 90%;">
+      <button type="button" class="btn-dong-modal" onclick="dongPopupReport()">✕</button>
       <h3 style="margin-top:0; color:#dc2626;">🚩 Báo Cáo / Khiếu Nại Sự Cố</h3>
-      <label style="font-size: 13px; font-weight: bold;">Lý do khiếu nại:</label>
-      <textarea id="reportLyDo" rows="3" placeholder="Mô tả sự cố..." style="width:100%; margin:6px 0 10px 0; font-family:inherit; box-sizing:border-box;"></textarea>
-      <label style="font-size: 13px; font-weight: bold;">Tải ảnh:</label>
-      <input type="file" id="reportFileAnh" accept="image/*" style="margin: 6px 0 15px 0; font-size: 12px;">
-      <button onclick="guiBaoCao()" style="width:100%; background:#dc2626; padding:10px; font-weight:bold;">Gửi Báo Cáo</button>
+      <label>Lý do khiếu nại:</label>
+      <textarea id="reportLyDo" rows="3" placeholder="Mô tả sự cố bạn gặp phải..."></textarea>
+      <label>Tải ảnh bằng chứng (Tùy chọn):</label>
+      <input type="file" id="reportFileAnh" accept="image/*" style="font-size: 12px; margin-bottom: 16px;">
+      <button type="button" onclick="guiBaoCao()" style="width:100%; background:#dc2626; color:white;">Gửi Báo Cáo</button>
     </div>
   </div>
 
-  <!-- POPUP ĐÁNH GIÁ CÓ TÙY CHỌN TẢI ẢNH FEEDBACK -->
+  <!-- 6. POPUP ĐÁNH GIÁ FEEDBACK KÈM ẢNH KỶ NIỆM -->
   <div id="modalFeedback" class="modal-overlay">
-    <div class="modal-content" style="text-align: center;">
-      <h3>Hoàn Tất Đơn Hàng 🎉</h3>
-      <p style="font-size: 13px; color: #64748b; margin-top: -5px;">Cảm ơn bạn đã đồng hành cùng <strong id="fbStaffNameTxt" style="color:#0284c7;">Staff</strong>!</p>
+    <div class="modal-content" style="max-width: 400px; width: 90%; text-align: center;">
+      <h3 style="margin-top:0;">Hoàn Tất Đơn Hàng 🎉</h3>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: -6px;">Cảm ơn bạn đã đồng hành cùng <strong id="fbStaffNameTxt" style="color:#0284c7;">Staff</strong>!</p>
       
       <div class="star-rating" id="starContainer">
         <span class="star lit" data-val="1" onclick="setRating(1)" onmouseover="hoverRating(1)" onmouseout="resetHover()">★</span>
@@ -171,15 +192,14 @@
         <span class="star lit" data-val="5" onclick="setRating(5)" onmouseover="hoverRating(5)" onmouseout="resetHover()">★</span>
       </div>
 
-      <input type="text" id="loiNhanFeedback" placeholder="Bạn yêu xin hãy để lại đôi lời cho staff nhé!" style="width: 90%; margin-bottom: 10px;">
+      <input type="text" id="loiNhanFeedback" placeholder="Bạn yêu xin hãy để lại đôi lời cho Staff nhé!" style="width: 100%;">
       
-      <!-- Ô Tải Ảnh Kỷ Niệm Tùy Chọn -->
-      <div style="text-align: left; width: 90%; margin: 0 auto 15px auto;">
-        <label style="font-size: 12px; font-weight: bold; color: #475569;">Đính kèm ảnh (Tùy chọn):</label>
-        <input type="file" id="fileFeedbackAnh" accept="image/*" style="font-size: 11px; margin-top: 4px; width: 100%;">
+      <div style="text-align: left; margin: 4px 0 16px 0;">
+        <label>Đính kèm ảnh kỷ niệm (Tùy chọn):</label>
+        <input type="file" id="fileFeedbackAnh" accept="image/*" style="font-size: 11px; margin-bottom:0;">
       </div>
 
-      <button onclick="guiFeedback()" style="width: 100%; background: #4CAF50;">Gửi Đánh Giá ✨</button>
+      <button type="button" onclick="guiFeedback()" style="width: 100%; background: #10b981; color:white;">Gửi Đánh Giá ✨</button>
     </div>
   </div>
 
@@ -197,8 +217,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-
-    // 2. Tải bảng giá & Thông báo
+    // 1. Tải bảng giá & Cài đặt hệ thống
     db.ref('bangGiaChiTiet').on('value', function(snap) {
       var bg = snap.val();
       if (bg) {
@@ -228,6 +247,7 @@
       }
     });
 
+    // 2. Quản lý phiên đơn hàng & Listener độc lập
     var myOrderIds = JSON.parse(localStorage.getItem("myOrderIdsList") || "[]");
     var activeChatOrderId = null;
     var currentTenKhach = "Khách Hàng";
@@ -235,8 +255,6 @@
     var danhSachDonDangChayKhach = {};
     var selectedStar = 5;
 
-    // Listener riêng cho phiên chat đang mở.
-    // Đóng/chuyển chat chỉ hủy listener giao diện, dữ liệu tin nhắn vẫn nằm trên Firebase.
     var chatOrderListener = null;
     var chatRoomListener = null;
 
@@ -270,11 +288,11 @@
 
           var ttText = don.thanhToan === "Tim_Sky" ? "Tim" : "Tiền";
           var statusHTML = don.daNhan 
-            ? `Staff <strong>${don.staffNhan || "🌸"}</strong> đã nhận đơn ${don.mangDichVu.toUpperCase()}! Hãy trao đổi với staff ngay nhé` 
-            : `${don.mangDichVu.toUpperCase()} (${don.cuThe}) - Đang tìm staff... ⏳`;
+            ? `Staff <strong>${don.staffNhan || "🌸"}</strong> đã nhận đơn ${don.mangDichVu.toUpperCase()}! Hãy trao đổi với Staff ngay nhé` 
+            : `${don.mangDichVu.toUpperCase()} (${don.cuThe}) - Đang tìm Staff... ⏳`;
 
           var btnChat = don.daNhan 
-            ? `<button class="btn-chat-lobby" onclick="moChatChoDon('${orderId}')">Chat cùng Staff ${don.staffNhan || ""}</button>` 
+            ? `<button type="button" class="btn-chat-lobby" onclick="moChatChoDon('${orderId}')">Chat cùng Staff ${don.staffNhan || ""}</button>` 
             : "";
 
           var bannerHTML = `
@@ -315,40 +333,28 @@
 
     function huyListenerChatDangMo() {
       if (chatOrderListener) {
-        db.ref('donHangSky/' + chatOrderListener.orderId).off(
-          'value',
-          chatOrderListener.callback
-        );
+        db.ref('donHangSky/' + chatOrderListener.orderId).off('value', chatOrderListener.callback);
         chatOrderListener = null;
       }
-
       if (chatRoomListener) {
-        db.ref('phongChat/' + chatRoomListener.orderId).off(
-          'value',
-          chatRoomListener.callback
-        );
+        db.ref('phongChat/' + chatRoomListener.orderId).off('value', chatRoomListener.callback);
         chatRoomListener = null;
       }
     }
 
+    // 3. Mở khung chat & kiểm tra điều kiện duyệt tiền mặt
     function moChatChoDon(orderId) {
-      // Chỉ có MỘT khung chat trên giao diện.
-      // Khi chuyển đơn, hủy listener của khung cũ để nó không thể ghi đè chat mới.
       huyListenerChatDangMo();
 
       activeChatOrderId = orderId;
       capNhatBongBongChatKhach();
 
       document.getElementById("chatBoxKhach").style.display = "flex";
-
-      // Xóa nội dung đang hiển thị của đơn trước.
-      // Lịch sử thật vẫn được giữ nguyên trong Firebase.
       document.getElementById("tinNhanKhach").innerHTML = "";
 
       var orderRef = db.ref('donHangSky/' + orderId);
 
       var orderCallback = function(snap) {
-        // Listener cũ không được phép đụng vào giao diện.
         if (activeChatOrderId !== orderId) return;
 
         var don = snap.val();
@@ -356,40 +362,37 @@
 
         currentTenKhach = don.tenKhach || "Khách Hàng";
         currentStaffCuaDon = don.staffNhan || "Staff";
-
-        document.getElementById("chatTitleKhach").innerText =
-          `Chat Staff ${don.staffNhan || "🌸"}`;
+        document.getElementById("chatTitleKhach").innerText = `Chat: ${don.mangDichVu.toUpperCase()} (Staff ${don.staffNhan || "🌸"})`;
 
         var boxThanhToan = document.getElementById("manHinhThanhToanKhach");
         var manHinhKB = document.getElementById("manHinhKetBanKhach");
 
+        // Điều kiện: đơn tiền mặt chưa duyệt thì hiện mã QR, ẩn ô gửi mã kết bạn
         if (don.thanhToan === "Tien_VND" && !don.daThanhToanFull) {
           boxThanhToan.style.display = "block";
           manHinhKB.style.display = "none";
 
           db.ref('caiDatThanhToan').once('value').then(function(s) {
-            // Người dùng có thể đã chuyển sang đơn khác trong lúc tải QR.
             if (activeChatOrderId !== orderId) return;
-
             var tt = s.val() || {};
             var qrBox = document.getElementById("qrThanhToanBox");
 
             if (tt.anhQR) {
-              qrBox.innerHTML =
-                `<img src="${tt.anhQR}" style="max-width:140px; border-radius:6px; border:1px solid #fed7aa;">
-                <p style="font-size:11px; margin:4px 0 0 0; font-weight:bold; color:#ea580c;">
-                  STK: ${tt.stk || "Chưa có"} (${tt.nganHang || "Bank"})
-                </p>`;
+              qrBox.innerHTML = `
+                <img src="${tt.anhQR}" style="max-width:140px; border-radius:10px; border:1px solid #fed7aa; margin-bottom: 4px;">
+                <p style="font-size:11.5px; margin:0; font-weight:bold; color:#ea580c;">STK: ${tt.stk || "Chưa có"} (${tt.nganHang || "Bank"})</p>
+              `;
             } else {
-              qrBox.innerHTML =
-                `<p style="font-size:12px; color:#ea580c; font-weight:bold;">
-                  STK: ${tt.stk || "0987.654.321"} - ${tt.nganHang || "Momo/Bank"}
-                </p>`;
+              qrBox.innerHTML = `
+                <p style="font-size:12px; color:#ea580c; font-weight:bold; margin: 4px 0;">
+                  STK: ${tt.stk || "0987.654.321"} - ${tt.nganHang || "Momo/Bank"}<br>
+                  (Vui lòng chuyển khoản đúng số tiền để Admin duyệt mở chat)
+                </p>
+              `;
             }
           });
         } else {
           boxThanhToan.style.display = "none";
-          manHinhKB.style.display = "block";
         }
 
         if (don.staffHoanThanh) {
@@ -399,81 +402,66 @@
         } else {
           document.getElementById("bannerDongBangKhach").style.display = "none";
         }
+
+        langNghePhongChat(orderId);
       };
 
-      // Lưu callback + orderId để có thể off() chính xác listener này.
-      chatOrderListener = {
-        orderId: orderId,
-        callback: orderCallback
-      };
-
+      chatOrderListener = { orderId: orderId, callback: orderCallback };
       orderRef.on('value', orderCallback);
-
-      // Listener phòng chat chỉ được tạo MỘT LẦN cho lần mở chat này.
-      langNghePhongChat(orderId);
     }
 
     function langNghePhongChat(idDon) {
-      // Nếu cùng một phòng đã được gắn listener cho phiên hiện tại thì không gắn thêm.
       if (chatRoomListener && chatRoomListener.orderId === idDon) return;
 
       if (chatRoomListener) {
-        db.ref('phongChat/' + chatRoomListener.orderId).off(
-          'value',
-          chatRoomListener.callback
-        );
+        db.ref('phongChat/' + chatRoomListener.orderId).off('value', chatRoomListener.callback);
         chatRoomListener = null;
       }
 
       var chatRef = db.ref('phongChat/' + idDon);
 
       var chatCallback = function(snap) {
-        // Đây là chốt chống lẫn chat:
-        // chỉ phòng đang được mở mới được render vào tinNhanKhach.
         if (activeChatOrderId !== idDon) return;
 
         var data = snap.val();
-        var body = document.getElementById("tinNhanKhach");
+        var manHinhKB = document.getElementById("manHinhKetBanKhach");
+        var tinNhanBox = document.getElementById("tinNhanKhach");
+        var boxThanhToan = document.getElementById("manHinhThanhToanKhach");
+
+        if (boxThanhToan.style.display === "block") {
+          manHinhKB.style.display = "none";
+          tinNhanBox.style.display = "none";
+          return;
+        }
 
         if (data && data.maKetBan) {
-          document.getElementById("manHinhKetBanKhach").style.display = "none";
-          document.getElementById("tinNhanKhach").style.display = "block";
+          manHinhKB.style.display = "none";
+          tinNhanBox.style.display = "block";
 
-          if (
-            document.getElementById("bannerDongBangKhach").style.display === "none"
-          ) {
+          var isFrozen = document.getElementById("bannerDongBangKhach").style.display === "block";
+          if (!isFrozen) {
             document.getElementById("nhapTinKhach").disabled = false;
             document.getElementById("btnGuiTinKhach").disabled = false;
           }
-
           document.getElementById("btnXacNhanHoanThanhKhach").disabled = false;
-        }
 
-        // Render lịch sử của ĐÚNG orderId này.
-        body.innerHTML = "";
-
-        if (data && data.tinNhan) {
-          Object.values(data.tinNhan).forEach(function(msg) {
-            var loai =
-              msg.nguoiGui === "Khách"
-                ? "msg right"
+          tinNhanBox.innerHTML = "";
+          if (data.tinNhan) {
+            Object.values(data.tinNhan).forEach(function(msg) {
+              var loai = msg.nguoiGui === "Khách" 
+                ? "msg right" 
                 : (msg.nguoiGui === "Hệ thống" ? "msg system" : "msg left");
-
-            body.innerHTML +=
-              `<div class="${loai}">
-                <strong>${msg.nguoiGui}:</strong> ${msg.noiDung}
-              </div>`;
-          });
+              tinNhanBox.innerHTML += `<div class="${loai}"><strong>${msg.nguoiGui}:</strong> ${msg.noiDung}</div>`;
+            });
+          }
+          tinNhanBox.scrollTop = tinNhanBox.scrollHeight;
+        } else {
+          manHinhKB.style.display = "block";
+          tinNhanBox.style.display = "none";
         }
-
-        body.scrollTop = body.scrollHeight;
       };
 
-      chatRoomListener = {
-        orderId: idDon,
-        callback: chatCallback
-      };
-
+      chatRoomListener = { orderId: idDon, callback: chatCallback };
       chatRef.on('value', chatCallback);
     }
 
@@ -485,6 +473,7 @@
           nguoiGui: "Hệ thống",
           noiDung: "Mã kết bạn Sky: " + ma
         });
+        document.getElementById("maKetBanKhach").value = "";
       }
     }
 
@@ -500,19 +489,15 @@
     }
 
     function dongChatKhach() {
-      // Đóng cửa sổ chỉ ngừng render realtime vào UI.
-      // Tin nhắn đã gửi vẫn được lưu trong Firebase/phongChat/<orderId>.
       huyListenerChatDangMo();
-
       document.getElementById("chatBoxKhach").style.display = "none";
       activeChatOrderId = null;
-
       document.getElementById("tinNhanKhach").innerHTML = "";
-
       capNhatBongBongChatKhach();
     }
 
     function xacNhanXongKhach() {
+      if (!activeChatOrderId) return;
       if (confirm("Xác nhận đơn hàng của bạn đã hoàn tất?")) {
         db.ref('donHangSky/' + activeChatOrderId).update({ khachHoanThanh: true });
         db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({
@@ -523,24 +508,25 @@
           var dh = snap.val();
           if (dh.staffHoanThanh) {
             db.ref('donHangSky/' + activeChatOrderId).update({ trangThai: "hoan_thanh" });
+            var staffName = dh.staffNhan || "🌸";
             dongChatKhach();
-            document.getElementById("fbStaffNameTxt").innerText = "Staff " + (dh.staffNhan || "🌸");
+            document.getElementById("fbStaffNameTxt").innerText = "Staff " + staffName;
             document.getElementById("modalFeedback").style.display = "flex";
           } else {
-            alert("Đã xác nhận hoàn thành! Đang đợi Staff cùng xác nhận.");
+            alert("Đã xác nhận hoàn thành! Đang đợi Staff cùng bấm xác nhận kết thúc ca.");
           }
         });
       }
     }
 
-    // Báo cáo
+    // 4. Báo cáo khiếu nại
     function moPopupReport() { document.getElementById("modalReport").style.display = "flex"; }
     function dongPopupReport() { document.getElementById("modalReport").style.display = "none"; }
 
     function guiBaoCao() {
       var lyDo = document.getElementById("reportLyDo").value.trim();
       var fileInput = document.getElementById("reportFileAnh");
-      if (!lyDo) { alert("Lý do bạn muốn báo cáo."); return; }
+      if (!lyDo) { alert("Vui lòng nhập lý do bạn muốn báo cáo."); return; }
 
       if (fileInput.files && fileInput.files[0]) {
         var reader = new FileReader();
@@ -563,11 +549,13 @@
         thoiGian: Date.now()
       }).then(function() {
         dongPopupReport();
-        alert("Đã gửi báo cáo kèm ảnh bằng chứng thành công!");
+        document.getElementById("reportLyDo").value = "";
+        document.getElementById("reportFileAnh").value = "";
+        alert("Đã gửi báo cáo kèm ảnh bằng chứng thành công tới Admin!");
       });
     }
 
-    // 3. TƯỜNG FEEDBACK (ẨN TÊN KHÁCH + TÊN STAFF + ẢNH KỶ NIỆM)
+    // 5. Tường feedback
     function anDanhTen(ten) {
       if (!ten || ten.length <= 2) return "K***h";
       return ten.charAt(0) + "***" + ten.charAt(ten.length - 1);
@@ -578,22 +566,22 @@
       var wall = document.getElementById("feedbackWall");
       wall.innerHTML = "";
       if (!data) {
-        wall.innerHTML = "<p style='grid-column: 1/-1; color: #888;'>Chưa có đánh giá nào.</p>";
+        wall.innerHTML = "<p style='grid-column: 1/-1; color: var(--text-muted);'>Chưa có đánh giá nào.</p>";
         return;
       }
       Object.values(data).reverse().forEach(function(fb) {
         var starStr = "★".repeat(fb.sao || 5);
         var tenAnDanh = anDanhTen(fb.tenKhach);
-        var staffText = fb.staffPhuTrach ? `<span style="font-size: 11px; color: #0284c7; font-weight: bold;">(Phục vụ bởi: ${fb.staffPhuTrach})</span>` : "";
+        var staffText = fb.staffPhuTrach ? `<span style="font-size: 11px; color: #0284c7; font-weight: bold;">(Phục vụ: ${fb.staffPhuTrach})</span>` : "";
         
         var anhHTML = (fb.anhFeedback && fb.anhFeedback !== "none") 
-          ? `<div class="feedback-img-box"><img src="${fb.anhFeedback}" onclick="window.open('${fb.anhFeedback}')" title="Bấm xem ảnh"></div>` 
+          ? `<div class="feedback-img-box"><img src="${fb.anhFeedback}" onclick="window.open('${fb.anhFeedback}')" title="Bấm xem ảnh lớn"></div>` 
           : "";
 
         wall.innerHTML += `
           <div class="feedback-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-              <div class="feedback-stars" style="color: #ffb703; font-size: 15px;">${starStr}</div>
+              <div class="feedback-stars" style="color: #f59e0b;">${starStr}</div>
               ${staffText}
             </div>
             <p style="margin: 6px 0;">"${fb.nhanXet}"</p>
@@ -622,9 +610,7 @@
 
       if (fileInput.files && fileInput.files[0]) {
         var reader = new FileReader();
-        reader.onload = function(e) {
-          luuFeedbackLenCloud(txt, e.target.result);
-        };
+        reader.onload = function(e) { luuFeedbackLenCloud(txt, e.target.result); };
         reader.readAsDataURL(fileInput.files[0]);
       } else {
         luuFeedbackLenCloud(txt, "none");
@@ -637,7 +623,7 @@
         tenKhach: currentTenKhach,
         staffPhuTrach: currentStaffCuaDon,
         sao: selectedStar,
-        nhanXet: txt || "Dịch vụ tốt!",
+        nhanXet: txt || "Dịch vụ rất chu đáo và uy tín!",
         anhFeedback: base64Img,
         thoiGian: Date.now()
       });
@@ -645,10 +631,9 @@
       myOrderIds = myOrderIds.filter(function(id) { return id !== activeChatOrderId; });
       localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
       document.getElementById("modalFeedback").style.display = "none";
-      alert("Cảm ơn bạn đã đánh giá nha! Hẹn gặp lại bạn lần sau");
+      alert("Cảm ơn bạn đã đánh giá nha! Hẹn gặp lại bạn lần sau ✨");
       location.reload();
     }
-    
   </script>
 </body>
 </html>
