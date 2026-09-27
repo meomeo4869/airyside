@@ -11,7 +11,7 @@
 
   <body class="lobby-layout">
 
-  <!-- 1. THANH ĐIỀU HƯỚNG CAPSULE LƠ LỬNG (CHUẨN DRIBBBLE CONCEPT) -->
+  <!-- 1. THANH ĐIỀU HƯỚNG CAPSULE CHUYỂN TRANG JAVASCRIPT -->
   <nav class="navbar-capsule-container">
     <div class="navbar-capsule">
       <div class="nav-brand">
@@ -20,10 +20,10 @@
       </div>
       
       <div class="nav-links">
-        <a href="#section-hero" class="nav-item active">Trang Chủ</a>
-        <a href="#section-pricing" class="nav-item">Bảng Giá</a>
-        <a href="#section-terms" class="nav-item">Lịch & Luật</a>
-        <a href="#section-feedback" class="nav-item">Đánh Giá</a>
+        <button type="button" class="nav-item active" onclick="chuyenTrang('home', this)">Trang Chủ</button>
+        <button type="button" class="nav-item" onclick="chuyenTrang('pricing', this)">Bảng Giá</button>
+        <button type="button" class="nav-item" onclick="chuyenTrang('rules', this)">Lịch & Luật</button>
+        <button type="button" class="nav-item" onclick="chuyenTrang('feedback', this)">Đánh Giá</button>
       </div>
 
       <button type="button" class="btn-nav-order" onclick="window.location.href='order.html'">
@@ -32,107 +32,163 @@
     </div>
   </nav>
 
-  <!-- CỤM BONG BÓNG MINI CHAT RIÊNG BIỆT CỦA KHÁCH -->
-  <div id="customerChatheadsList" class="chatheads-container"></div>
-
   <!-- BANNER CÁC ĐƠN ĐANG CHẠY -->
   <div id="liveOrdersContainer" style="position: sticky; top: 76px; z-index: 999; display: flex; flex-direction: column; gap: 4px;"></div>
 
-  <div class="lobby-container" id="section-hero">
+  <!-- CONTAINER CHỨA 4 KHỐI TRANG ĐỘC LẬP -->
+  <div class="lobby-container">
     
-    <!-- HỘP THÔNG BÁO TỪ PAGE -->
-    <div id="boxThongBaoPage" class="lobby-announcement" style="display: none;">
-      <span class="announcement-icon">📢</span>
-      <div class="announcement-text">
-        <strong>THÔNG BÁO TỪ PAGE:</strong>
-        <p id="noiDungThongBaoPage">Chào mừng bạn đến với Dịch Vụ Sky!</p>
+    <!-- ==================== TRANG 1: TRANG CHỦ & THẺ TREO STAFF ==================== -->
+    <section id="tab-home" class="lobby-page active-page">
+      <div class="lobby-section">
+        <h2>✨ Giới Thiệu Về Sky Service</h2>
+        <p id="gioiThieuPageTxt" style="line-height: 1.7; color: var(--text-muted); font-size: 14px;">
+          Chào mừng bạn đến với mái nhà nhỏ của chúng mình. Nơi bạn tìm thấy những người bạn đồng hành ấm áp qua từng vòm mây, cùng nhau săn nến, lắng nghe tiếng đàn và lưu giữ kỷ niệm đẹp nhất tại vương quốc Sky.
+        </p>
+
+        <!-- Khung ảnh kỷ niệm Page -->
+        <h3 style="font-size: 14px; margin: 24px 0 12px 0;">📸 Góc Kỷ Niệm Của Page</h3>
+        <div class="page-gallery-grid" id="pageGalleryBox">
+          <div class="gallery-item">Góc ảnh 1</div>
+          <div class="gallery-item">Góc ảnh 2</div>
+          <div class="gallery-item">Góc ảnh 3</div>
+          <div class="gallery-item">Góc ảnh 4</div>
+        </div>
       </div>
-    </div>
 
-    <!-- TIÊU ĐỀ SẢNH -->
-    <header class="lobby-header">
-      <h1>Một góc nhỏ cho hành trình Sky của bạn</h1>
-      <p>Nơi thư giãn, xem bảng giá chi tiết và kết nối cùng đội ngũ đồng hành tận tâm</p>
-    </header>
-
-    <!-- BẢNG GIÁ DỊCH VỤ CHI TIẾT 3 MẢNG (ĐÃ BỎ VIỀN XANH CỦA HOST) -->
-    <section class="lobby-section" id="section-pricing">
-      <h2>Bảng Giá Dịch Vụ Chi Tiết</h2>
-      <div class="detailed-pricing-grid">
-        
-        <!-- Mảng Uber (Tone Xanh) -->
-        <div class="price-category-card card-uber">
-          <div class="category-header uber-header">
-            <h3>UBER</h3>
-            <p>Nhanh, tiện lợi & an toàn</p>
-          </div>
-          <div class="category-body">
-            <div class="service-item"><span>Nhặt 15 Nến</span><strong id="p_uber_15nen">Liên hệ</strong></div>
-            <div class="service-item"><span>Nhặt 15 Nến + Quest</span><strong id="p_uber_15nen_quest">Liên hệ</strong></div>
-            <div class="service-item"><span>Xám Nến</span><strong id="p_uber_xamnen">Liên hệ</strong></div>
-            <div class="service-item"><span>Xám Nến + Quest</span><strong id="p_uber_xamnen_quest">Liên hệ</strong></div>
-            <div class="service-item"><span>Nhặt Winglight</span><strong id="p_uber_nhatcanh">Liên hệ</strong></div>
-            <div class="service-item"><span>Đi Eden</span><strong id="p_uber_eden">Liên hệ</strong></div>
-          </div>
-        </div>
-
-        <!-- Mảng Host (Tone Cam Hoàng Hôn - Bỏ class popular-card gây viền xanh) -->
-        <div class="price-category-card card-host">
-          <div class="category-header host-header">
-            <h3>HOST</h3>
-            <p>Người bạn luôn ở bên bạn</p>
-          </div>
-          <div class="category-body">
-            <div class="service-item"><span>Tâm Sự (1h / 30p)</span><strong id="p_host_tamsu">Liên hệ</strong></div>
-            <div class="service-item"><span>Đàn (1h / 30p)</span><strong id="p_host_dan">Liên hệ</strong></div>
-            <div class="service-item"><span>Fakelove (1h / 30p)</span><strong id="p_host_nguoiyeu">Liên hệ</strong></div>
-            <div class="service-item"><span>Treo Máy (1h / 30p)</span><strong id="p_host_treomay">Liên hệ</strong></div>
-          </div>
-        </div>
-
-        <!-- Mảng Log Acc (Tone Xanh Lá Ngọc) -->
-        <div class="price-category-card card-log">
-          <div class="category-header log-header">
-            <h3>LOG ACC</h3>
-            <p>Bảo mật & Uy tín tuyệt đối</p>
-          </div>
-          <div class="category-body">
-            <div class="service-item"><span>15 Nến (Ngày/Tuần/Tháng)</span><strong id="p_log_15nen">Liên hệ</strong></div>
-            <div class="service-item"><span>Xám Nến + Quest</span><strong id="p_log_xamnen">Liên hệ</strong></div>
-            <div class="service-item"><span>Gói Tuần (Xám + Quest + Vé)</span><strong id="p_log_tuan">Liên hệ</strong></div>
-            <div class="service-item"><span>Gói Tháng (Xám + Quest + Vé)</span><strong id="p_log_thang">Liên hệ</strong></div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- LỊCH HOẠT ĐỘNG & ĐIỀU KHOẢN -->
-    <section class="lobby-section" id="section-terms">
-      <div class="terms-container">
-        <div class="terms-box">
-          <h3>🕒 Lịch Hoạt Động Của Page</h3>
-          <div id="noiDungLichPage" style="white-space: pre-line;">
-            • Ca Sáng: 08:00 - 12:00
-            • Ca Chiều: 13:30 - 17:30
-            • Ca Tối (Cao điểm): 18:00 - 24:00
-          </div>
-        </div>
-        <div class="terms-box">
-          <h3>📜 Điều Khoản & Quy Định</h3>
-          <div id="noiDungDieuKhoan" style="white-space: pre-line;">
-            ✔ Tiền mặt: Chuyển khoản 100% sau khi Staff nhận đơn.
-            ✔ Tim Sky: Trả tim mỗi ngày sau ca hoàn thành.
-          </div>
+      <!-- Thẻ Treo Staff & Admin -->
+      <div class="lobby-section">
+        <h2>👥 Đội Ngũ Nhân Sự Đồng Hành</h2>
+        <div class="staff-hanging-grid" id="danhSachTheTreoStaff">
+          <p style="grid-column: 1/-1; color: var(--text-muted);">Đang tải danh sách nhân sự...</p>
         </div>
       </div>
     </section>
 
-    <!-- TƯỜNG FEEDBACK TỪ KHÁCH HÀNG -->
-    <section class="lobby-section" id="section-feedback">
-      <h2>⭐ Feedback Từ Khách Hàng</h2>
-      <div class="feedback-grid" id="feedbackWall">
-        <p style="grid-column: 1/-1; color: var(--text-muted);">Đang tải feedback...</p>
+    <!-- ==================== TRANG 2: BẢNG GIÁ DẠNG NHÁNH CÂY ==================== -->
+    <section id="tab-pricing" class="lobby-page">
+      <div class="lobby-section">
+        <h2>🌳 Bảng Giá Dịch Vụ Phân Nhánh</h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Bấm vào từng mảng dịch vụ để mở các gói chi tiết:</p>
+
+        <div class="price-tree-container">
+          <!-- Nhánh 1: UBER -->
+          <div class="tree-branch-main" id="branch-uber">
+            <div class="tree-header" onclick="toggleNhanh('branch-uber')">
+              <h3 style="color: #0284c7;">⚡ Mảng Dịch Vụ UBER</h3>
+              <span class="tree-arrow">▶</span>
+            </div>
+            <div class="tree-sub-branches">
+              <div class="tree-node-mid">
+                <div class="tree-node-title">Gói Nhặt Nến Hàng Ngày:</div>
+                <div class="tree-leaf-group">
+                  <div class="tree-leaf-item">Nhặt 15 Nến: <strong id="p_uber_15nen">Liên hệ</strong></div>
+                  <div class="tree-leaf-item">Nhặt 15 Nến + Quest: <strong id="p_uber_15nen_quest">Liên hệ</strong></div>
+                  <div class="tree-leaf-item">Xám Nến: <strong id="p_uber_xamnen">Liên hệ</strong></div>
+                  <div class="tree-leaf-item">Xám Nến + Quest: <strong id="p_uber_xamnen_quest">Liên hệ</strong></div>
+                </div>
+              </div>
+              <div class="tree-node-mid">
+                <div class="tree-node-title">Gói Thử Thách & Cánh:</div>
+                <div class="tree-leaf-group">
+                  <div class="tree-leaf-item">Nhặt Winglight: <strong id="p_uber_nhatcanh">Liên hệ</strong></div>
+                  <div class="tree-leaf-item">Đi Eden: <strong id="p_uber_eden">Liên hệ</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nhánh 2: HOST -->
+          <div class="tree-branch-main" id="branch-host">
+            <div class="tree-header" onclick="toggleNhanh('branch-host')">
+              <h3 style="color: #d97706;">🌸 Mảng Dịch Vụ HOST</h3>
+              <span class="tree-arrow">▶</span>
+            </div>
+            <div class="tree-sub-branches">
+              <div class="tree-node-mid">
+                <div class="tree-node-title">Thời Lượng Sử Dụng:</div>
+                <div class="tree-leaf-group">
+                  <div class="tree-leaf-item">Tâm Sự (1h / 30p): <strong id="p_host_tamsu">Liên hệ</strong></div>
+                  <div class="tree-leaf-item">Đàn Nhạc (1h / 30p): <strong id="p_host_dan">Liên hệ</strong></div>
+                  <div class="tree-leaf-item">Fakelove (1h / 30p): <strong id="p_host_nguoiyeu">Liên hệ</strong></div>
+                  <div class="tree-leaf-item">Treo Máy Cùng Nhau: <strong id="p_host_treomay">Liên hệ</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nhánh 3: LOG ACC -->
+          <div class="tree-branch-main" id="branch-log">
+            <div class="tree-header" onclick="toggleNhanh('branch-log')">
+              <h3 style="color: #059669;">🔒 Mảng Dịch Vụ LOG ACC</h3>
+              <span class="tree-arrow">▶</span>
+            </div>
+            <div class="tree-sub-branches">
+              <div class="tree-node-mid">
+                <div class="tree-node-title">Theo Kỳ Hạn (Ngày / Tuần / Tháng):</div>
+                <div class="tree-leaf-group">
+                  <div class="tree-leaf-item">15 Nến Hàng Ngày: <strong id="p_log_15nen">Liên hệ</strong></div>
+                  <div class="tree-leaf-item">Xám Nến + Quest: <strong id="p_log_xamnen">Liên hệ</strong></div>
+                  <div class="tree-leaf-item">Gói Tuần Trọn Gói: <strong id="p_log_tuan">Liên hệ</strong></div>
+                  <div class="tree-leaf-item">Gói Tháng Tiết Kiệm: <strong id="p_log_thang">Liên hệ</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TRANG 3: LỊCH & LUẬT PHÂN TẦNG ==================== -->
+    <section id="tab-rules" class="lobby-page">
+      <!-- Khung chữ nhật ngang: Quy định chung -->
+      <div class="lobby-section">
+        <h2>📜 Quy Định Chung Khi Đặt Dịch Vụ</h2>
+        <div id="noiDungDieuKhoan" style="white-space: pre-line; line-height: 1.7; font-size: 14px; color: var(--text-primary);">
+          ✔ Tiền mặt: Chuyển khoản 100% sau khi Staff nhận đơn để kích hoạt mã kết bạn.
+          ✔ Trả Tim Sky: Khách chuyển tim cho Staff mỗi ngày theo đúng thỏa thuận lịch hẹn.
+          ✔ Tôn trọng quyền riêng tư và lịch sự trong giao tiếp giữa hai bên.
+        </div>
+      </div>
+
+      <!-- 3 cột luật riêng từng mảng -->
+      <div class="rules-columns-grid">
+        <div class="rule-col-card" style="border-top: 4px solid #38bdf8;">
+          <h4 style="color: #0284c7;">⚡ Luật Mảng UBER</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+            • Khách vui lòng online đúng giờ hẹn.<br>
+            • Không tự ý tách tay Staff trong lúc đang chạy map dẫn đi gom nến.<br>
+            • Khi đi Eden cần chuẩn bị đủ số lượng cánh tối thiểu.
+          </p>
+        </div>
+
+        <div class="rule-col-card" style="border-top: 4px solid #fbbf24;">
+          <h4 style="color: #d97706;">🌸 Luật Mảng HOST</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+            • Không gạ gẫm thông tin cá nhân ngoài đời thật nếu Staff không đồng ý.<br>
+            • Giữ không khí trò chuyện văn minh, tôn trọng lẫn nhau.<br>
+            • Hết giờ hẹn vui lòng xác nhận hoàn tất ca trực trên hệ thống.
+          </p>
+        </div>
+
+        <div class="rule-col-card" style="border-top: 4px solid #34d399;">
+          <h4 style="color: #059669;">🔒 Luật Mảng LOG ACC</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+            • Tuyệt đối không đăng nhập đè vào game trong khung giờ Staff đang cày.<br>
+            • Bảo mật mã đăng nhập: Staff chỉ dùng acc để làm nhiệm vụ theo đúng thỏa thuận.<br>
+            • Đổi pass hoặc hủy phiên sau khi gói dịch vụ kết thúc để an tâm.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TRANG 4: ĐÁNH GIÁ FEEDBACK ==================== -->
+    <section id="tab-feedback" class="lobby-page">
+      <div class="lobby-section">
+        <h2>⭐ Feedback Từ Khách Hàng</h2>
+        <div class="feedback-grid" id="feedbackWall">
+          <p style="grid-column: 1/-1; color: var(--text-muted);">Đang tải feedback...</p>
+        </div>
       </div>
     </section>
 
