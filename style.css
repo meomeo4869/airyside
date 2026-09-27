@@ -575,3 +575,97 @@ button:hover {
 .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
 .admin-table th { background: rgba(248, 250, 252, 0.8); color: var(--text-muted); padding: 13px 16px; border-bottom: 1px solid rgba(226, 232, 240, 0.9); }
 .admin-table td { padding: 14px 16px; border-bottom: 1px solid rgba(241, 245, 249, 0.8); }
+
+/* ================================================= */
+/* WIDGET ĐỒNG HỒ CA TRỰC 24H (SQUIRCLE GLASS DIAL)   */
+/* ================================================= */
+.work-clock-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 36px; /* Bo tròn chuẩn phong cách Futuristic */
+  padding: 24px;
+  box-shadow: 0 16px 36px -12px rgba(15, 23, 42, 0.08), var(--liquid-specular);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 26px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.clock-info-box {
+  max-width: 320px;
+  text-align: left;
+}
+
+.clock-info-box h3 {
+  margin: 0 0 6px 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.clock-info-box p {
+  margin: 0 0 14px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.shift-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.shift-resting {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.shift-active {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.clock-svg-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+#dialCanvas {
+  width: 200px;
+  height: 200px;
+}
+
+.clock-center-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.clock-center-time {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+  display: block;
+}
+
+.clock-center-sub {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
