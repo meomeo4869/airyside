@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --liquid-glass: rgba(255, 255, 255, 0.75);
-  --liquid-border: rgba(255, 255, 255, 0.9);
+  --liquid-glass: rgba(255, 255, 255, 0.8);
+  --liquid-border: rgba(255, 255, 255, 0.95);
   --liquid-specular: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.3);
   --liquid-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(255, 255, 255, 0.85);
   
@@ -19,7 +19,6 @@
 
 * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
-/* 1. NỀN SUNSET GRADIENT & CĂN GIỮA MÀN HÌNH */
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   background-color: #fdfaf7;
@@ -31,46 +30,62 @@ body {
   background-attachment: fixed;
   color: var(--text-primary);
   margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
-  width: 100vw;
-  overflow-x: hidden;
 }
 
-body.staff-layout, body.lobby-layout, body.admin-layout {
-  display: block;
+body.admin-layout, body.lobby-layout, body.staff-layout {
+  display: block !important;
   height: auto;
   min-height: 100vh;
   padding-bottom: 80px;
 }
 
-/* KHUNG CARD LIQUID GLASS ĐĂNG NHẬP / FORM */
-.card {
+/* ================================================= */
+/* 1. KHUNG BỐ CỤC CHUNG CONTAINER & CARD            */
+/* ================================================= */
+.admin-container, .lobby-container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 24px 20px 80px 20px;
+}
+
+.admin-section, .lobby-section {
   background: var(--liquid-glass);
   backdrop-filter: blur(28px) saturate(190%);
   -webkit-backdrop-filter: blur(28px) saturate(190%);
   border: 1.5px solid var(--liquid-border);
-  box-shadow: var(--liquid-shadow), var(--liquid-specular);
-  padding: 38px 32px;
   border-radius: var(--radius-card);
-  width: 420px;
-  max-width: 90vw;
-  margin: auto;
-  text-align: center;
+  padding: 26px 28px;
+  margin-bottom: 24px;
+  box-shadow: var(--liquid-shadow), var(--liquid-specular);
 }
 
-.card h2 {
+.section-title-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.section-title-box h3, .lobby-section h2 {
+  margin: 0;
+  font-size: 18px;
   font-weight: 700;
-  font-size: 22px;
-  margin: 0 0 16px 0;
+  color: var(--text-primary);
+}
+
+.badge-count {
+  font-size: 11.5px;
+  background: rgba(2, 132, 199, 0.1);
+  color: var(--accent-sky);
+  padding: 4px 12px;
+  border-radius: var(--radius-capsule);
+  font-weight: 700;
 }
 
 label {
   display: block;
-  text-align: left;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--text-muted);
   margin-bottom: 6px;
@@ -78,36 +93,35 @@ label {
 
 input, select, textarea {
   width: 100%;
-  padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(226, 232, 240, 0.9);
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(226, 232, 240, 0.95);
   border-radius: var(--radius-inner);
   font-family: inherit;
   font-size: 13.5px;
   color: var(--text-primary);
-  margin-bottom: 14px;
-  transition: all 0.25s var(--smooth-flow);
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--accent-sky);
-  box-shadow: 0 0 0 3.5px rgba(2, 132, 199, 0.15);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
   background: #ffffff;
 }
 
 button {
   font-family: inherit;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
-  padding: 12px 24px;
+  padding: 9px 18px;
   background: #0f172a;
   color: #ffffff;
   border: none;
   border-radius: var(--radius-capsule);
   cursor: pointer;
-  transition: all 0.3s var(--spring-bounce);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  transition: all 0.25s var(--smooth-flow);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -120,159 +134,318 @@ button:hover {
 }
 
 /* ================================================= */
-/* 2. KHUNG LỊCH THÁNG CHẤM CÔNG DẠNG LƯỚI GRID      */
+/* 2. STYLE BẢNG BIỂU ADMIN (KHẮC PHỤC CHỮ DỒN CỤC)  */
 /* ================================================= */
-.realtime-calendar-card {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(28px);
-  border: 1.5px solid rgba(255, 255, 255, 0.95);
-  border-radius: 36px;
-  padding: 26px 30px;
-  box-shadow: 0 16px 36px -12px rgba(15, 23, 42, 0.08);
-  max-width: 500px;
-  margin: 30px auto;
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-inner);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: rgba(255, 255, 255, 0.6);
 }
 
-.calendar-header-bar {
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+
+.admin-table th {
+  background: rgba(241, 245, 249, 0.9);
+  color: var(--text-primary);
+  font-weight: 700;
+  padding: 12px 14px;
+  border-bottom: 1.5px solid rgba(226, 232, 240, 1);
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(241, 245, 249, 0.9);
+  background: rgba(255, 255, 255, 0.4);
+  vertical-align: middle;
+}
+
+.admin-table tr:hover td {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.badge-payment {
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 3px 8px;
+  border-radius: var(--radius-capsule);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.badge-done {
+  background: #dcfce7;
+  color: #15803d;
+  padding: 3px 8px;
+  border-radius: var(--radius-capsule);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.btn-xoa {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 4px 10px;
+  font-size: 11.5px;
+}
+.btn-xoa:hover { background: #fca5a5; color: white; }
+
+.admin-header {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.95);
+  padding: 16px 36px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 18px;
 }
 
-.calendar-header-bar h3 {
-  margin: 0;
-  font-size: 17px;
+/* ================================================= */
+/* 3. THANH ĐIỀU HƯỚNG NAVBAR CAPSULE (LOBBY)        */
+/* ================================================= */
+.navbar-capsule-container {
+  position: sticky;
+  top: 18px;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.navbar-capsule {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-capsule);
+  padding: 6px 10px 6px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 16px 36px -10px rgba(15, 23, 42, 0.1);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
   font-weight: 700;
 }
 
-.calendar-weekdays {
-  display: grid !important;
-  grid-template-columns: repeat(7, 1fr) !important;
-  gap: 6px;
-  text-align: center;
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(241, 245, 249, 0.8);
+  padding: 4px;
+  border-radius: var(--radius-capsule);
+}
+
+.nav-item {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: var(--radius-capsule);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover { color: var(--text-primary); }
+
+.nav-item.active {
+  background: #ffffff !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  font-weight: 700;
+}
+
+.btn-nav-order {
+  background: var(--sky-gradient);
+  color: white;
+  border: none;
+  border-radius: var(--radius-capsule);
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px -3px rgba(2, 132, 199, 0.45);
+}
+
+/* ================================================= */
+/* 4. ĐỒNG HỒ IOS TIMER TỐI GIẢN (FIX LỖI MẤT CANVAS)*/
+/* ================================================= */
+.ios-timer-wrapper {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(28px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: 36px;
+  padding: 26px 32px;
+  box-shadow: 0 16px 36px -12px rgba(15, 23, 42, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.clock-info-box { max-width: 400px; text-align: left; }
+.clock-info-box h3 { margin: 0 0 6px 0; font-size: 18px; font-weight: 700; }
+.clock-info-box p { margin: 0 0 12px 0; font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+.shift-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-capsule);
   font-size: 12px;
   font-weight: 700;
-  color: var(--text-muted);
-  margin-bottom: 8px;
 }
+.shift-resting { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+.shift-active { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
 
-.calendar-days-grid {
-  display: grid !important;
-  grid-template-columns: repeat(7, 1fr) !important;
-  gap: 6px;
-}
-
-.cal-day-cell {
-  height: 48px;
-  background: rgba(248, 250, 252, 0.7);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: 14px;
+.ios-timer-dial {
+  position: relative;
+  width: 180px;
+  height: 180px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
+}
+
+#iosTimerCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 180px;
+}
+
+.ios-timer-center {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  pointer-events: none;
+}
+
+.ios-digital-clock {
+  font-size: 32px;
+  font-weight: 800;
   color: var(--text-primary);
+  line-height: 1;
 }
 
-.cal-day-cell.is-today {
-  border: 1.5px solid #0284c7;
-  background: #f0f9ff;
+.ios-status-tag {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 4px;
+  display: block;
 }
-
-.cal-day-cell.has-worked {
-  background: #fff7ed;
-  border-color: #fed7aa;
-  color: #c2410c;
-}
+.tag-shift { color: #16a34a; }
+.tag-resting { color: #94a3b8; }
 
 /* ================================================= */
-/* 3. LƯỚI FEEDBACK ĐÁNH GIÁ (STAFF & LOBBY)        */
+/* 5. BENTO PODS & LỊCH SỬ ĐƠN HÀNG 3 CỘT            */
 /* ================================================= */
-.feedback-grid {
+.bento-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-  margin-top: 14px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
+@media (max-width: 860px) { .bento-grid { grid-template-columns: 1fr; } }
 
-.feedback-card {
+.bento-card {
   background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  padding: 16px 18px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: 28px;
+  padding: 22px;
+}
+.bento-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; }
+.bento-card-icon { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.bento-uber .bento-card-icon { background: #e0f2fe; color: #0284c7; }
+.bento-host .bento-card-icon { background: #ffedd5; color: #ea580c; }
+.bento-log .bento-card-icon { background: #dcfce7; color: #059669; }
+
+.bento-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: #ffffff;
+  border-radius: 12px;
+  margin-bottom: 6px;
   font-size: 13px;
-  line-height: 1.5;
-  text-align: left;
-}
-
-.feedback-img-box img {
-  width: 100%;
-  max-height: 140px;
-  object-fit: cover;
-  border-radius: var(--radius-inner);
-  border: 1px solid #e2e8f0;
-  margin-top: 8px;
+  border: 1px solid #f1f5f9;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+.bento-item-row:hover { border-color: var(--accent-sky); transform: translateX(2px); }
+
+.orders-history-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+@media (max-width: 860px) { .orders-history-grid { grid-template-columns: 1fr; } }
+
+.order-col-box {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  padding: 20px 16px;
+  min-height: 380px;
+}
+.order-col-header { display: flex; justify-content: space-between; align-items: center; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; }
+.col-pending { border-top: 4px solid #f59e0b; }
+.col-running { border-top: 4px solid #0284c7; }
+.col-done { border-top: 4px solid #10b981; }
+
+.customer-order-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+.customer-order-card.is-rejected {
+  border-left: 4px solid #ef4444 !important;
+  background: #fef2f2 !important;
 }
 
-/* SIDE PANEL THÔNG BÁO */
-.side-panel {
+/* Ẩn triệt để mini chat mặc định */
+#chatBoxKhach, #chatBox {
+  display: none !important;
   position: fixed !important;
-  top: 0 !important;
-  right: -360px !important;
-  width: 330px !important;
-  height: 100vh !important;
-  background: rgba(255, 255, 255, 0.92) !important;
-  backdrop-filter: blur(28px) !important;
-  box-shadow: -10px 0 35px rgba(15, 23, 42, 0.12) !important;
-  transition: right 0.4s var(--smooth-flow) !important;
-  padding: 24px !important;
-  z-index: 100000 !important;
-  overflow-y: auto !important;
-}
-.side-panel.panel-open { right: 0 !important; }
-
-.toggle-btn {
-  position: fixed !important;
-  top: 50% !important;
-  right: 0 !important;
-  transform: translateY(-50%) !important;
-  background: rgba(15, 23, 42, 0.85) !important;
-  color: white !important;
-  padding: 12px 8px !important;
-  cursor: pointer !important;
-  border-radius: 12px 0 0 12px !important;
-  z-index: 99999 !important;
+  right: 24px !important;
+  bottom: 24px !important;
+  z-index: 999999 !important;
 }
 
-/* LỊCH CA TRỰC EXCEL */
-.schedule-table-wrap {
-  background: var(--liquid-glass);
-  backdrop-filter: blur(24px);
-  border: 1.5px solid var(--liquid-border);
-  border-radius: var(--radius-card);
-  padding: 24px;
-  overflow-x: auto;
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(16px);
+  display: none; justify-content: center; align-items: center; z-index: 9999999;
 }
-.schedule-table { width: 100%; border-collapse: separate; border-spacing: 4px; font-size: 13.5px; }
-.schedule-table th { background: rgba(241, 245, 249, 0.85); padding: 12px 16px; border-radius: 12px; }
-.schedule-table td { padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(226, 232, 240, 0.8); background: rgba(255, 255, 255, 0.45); text-align: center; }
-.ca-lam.ca-selected { background: #ffffff !important; color: #0284c7 !important; font-weight: 700 !important; border: 1.5px solid #38bdf8 !important; }
-
-.lobby-container { max-width: 1040px; margin: 0 auto; padding: 30px 20px 100px 20px; }
-.lobby-section { background: var(--liquid-glass); backdrop-filter: blur(24px); border: 1px solid var(--liquid-border); border-radius: 36px; padding: 30px 34px; margin-bottom: 26px; }
-.order-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 980px; margin: 0 auto; }
-@media (max-width: 800px) { .order-grid { grid-template-columns: 1fr; } }
-.order-card { background: rgba(255, 255, 255, 0.85); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; border: 1px solid rgba(255, 255, 255, 0.9); }
-.order-icon-box { width: 40px; height: 40px; background: rgba(241, 245, 249, 0.85); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 8px; }
-.btn-nhan-don { background: #0f172a; color: white; border-radius: var(--radius-capsule); padding: 9px 18px; width: 100%; margin-top: 10px; }
-
-#chatBoxKhach, #chatBox { display: none !important; position: fixed !important; right: 24px !important; bottom: 24px !important; z-index: 99999 !important; }
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(16px); display: none; justify-content: center; align-items: center; z-index: 999999; }
-.modal-content { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(28px); border-radius: var(--radius-card); padding: 32px; border: 1px solid var(--liquid-border); max-width: 90vw; position: relative; }
-.btn-dong-modal { position: absolute; top: 18px; right: 18px; background: rgba(148, 163, 184, 0.15); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.modal-content {
+  background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(28px);
+  border-radius: var(--radius-card); padding: 30px; border: 1.5px solid var(--liquid-border);
+  max-width: 90vw; position: relative;
+}
+.btn-dong-modal {
+  position: absolute; top: 16px; right: 16px; background: rgba(148, 163, 184, 0.15);
+  border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+}
