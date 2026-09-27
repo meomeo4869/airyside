@@ -707,6 +707,63 @@
       alert("Cảm ơn bạn đã đánh giá nha! Hẹn gặp lại bạn lần sau ✨");
       location.reload();
     }
+
+    // 1. Chuyển trang phẳng & Di chuyển vòng sáng Active trên Navbar
+    function chuyenTrang(tenTrang, btnElement) {
+      // Ẩn tất cả các trang
+      var pages = document.querySelectorAll('.lobby-page');
+      pages.forEach(function(p) { p.classList.remove('active-page'); });
+
+      // Hiện đúng trang được chọn
+      var targetPage = document.getElementById('tab-' + tenTrang);
+      if (targetPage) targetPage.classList.add('active-page');
+
+      // Chuyển nút bấm Active
+      var navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(function(item) { item.classList.remove('active'); });
+      if (btnElement) btnElement.classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 2. Mở / Đóng nhánh cây bảng giá
+    function toggleNhanh(branchId) {
+      var branch = document.getElementById(branchId);
+      if (branch) {
+        branch.classList.toggle('open');
+      }
+    }
+
+    // 3. Tải danh sách Staff dạng thẻ treo
+    db.ref('danhSachStaff').on('value', function(snapshot) {
+      var list = snapshot.val();
+      var box = document.getElementById("danhSachTheTreoStaff");
+      box.innerHTML = "";
+
+      if (!list) {
+        box.innerHTML = "<p style='grid-column:1/-1; color:var(--text-muted);'>Chưa có nhân sự nào.</p>";
+        return;
+      }
+
+      Object.keys(list).forEach(function(k) {
+        var st = list[k];
+        var mangHienThi = (st.kyNang || []).map(function(m) { return m.toUpperCase(); }).join(" • ");
+        
+        box.innerHTML += `
+          <div class="hanging-card">
+            <div class="card-pin"></div>
+            <div class="staff-avatar-box">${st.icon || "🌸"}</div>
+            <strong style="font-size: 16px; color: var(--text-primary); display: block;">${st.ten}</strong>
+            <p style="font-size: 12px; color: var(--accent-sky); font-weight: 600; margin: 4px 0 6px 0;">${mangHienThi || "Đồng hành chung"}</p>
+            <p style="font-size: 12px; color: var(--text-muted); margin: 0 0 10px 0;">Kinh nghiệm: Đồng hành chu đáo</p>
+            <div class="staff-status-badge status-online">
+              <span class="status-dot"></span>
+              <span>Đang Online</span>
+            </div>
+          </div>
+        `;
+      });
+    });
   </script>
 </body>
 </html>
