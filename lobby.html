@@ -801,7 +801,9 @@
       }
     }
 
-    // 7. ĐỒNG HỒ IOS COUNTDOWN TIMER (KHÔNG CÒN KIM GIỜ, SỐ DIGITAL LỚN Ở TÂM)
+    // ==========================================
+    // 1. ĐỒNG HỒ IOS COUNTDOWN TIMER (RÚT DẦN THEO CA)
+    // ==========================================
     var caLamHienTai = null;
     db.ref('caiDatPage/lichChiTiet').on('value', function(snap) {
       caLamHienTai = snap.val();
@@ -815,7 +817,7 @@
       var now = new Date();
       var curHourDec = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
 
-      // Giờ Digital lớn chạy theo thời gian thực
+      // Giờ digital chạy thời gian thực
       var h = now.getHours().toString().padStart(2, '0');
       var m = now.getMinutes().toString().padStart(2, '0');
       document.getElementById("iosDigitalClock").innerText = `${h}:${m}`;
@@ -844,37 +846,155 @@
         tag.className = "ios-status-tag tag-resting";
       }
 
-      // Vẽ vòng tròn phẳng chuẩn iOS Timer
       ctx.clearRect(0, 0, 200, 200);
       var cx = 100, cy = 100, r = 82;
 
-      // 1. Vòng tròn nền xám mờ
+      // 1. Vòng tròn nền xám mờ (luôn hiện đầy đủ 360 độ)
       ctx.beginPath();
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
       ctx.strokeStyle = "#e2e8f0";
-      ctx.lineWidth = 8;
+      ctx.lineWidth = 10;
       ctx.stroke();
 
-      // 2. Vòng tròn dải màu biểu thị ca làm việc
-      if (caLamHienTai && caLamHienTai.gioBatDau && caLamHienTai.gioKetThuc) {
-        // Đổi giờ sang góc bắt đầu từ đỉnh (-90 độ)
+      // 2. VÒNG MÀU ĐẾM NGƯỢC: Rút dần từ vị trí hiện tại đến khi hết ca
+      if (isInShift && caLamHienTai) {
         function hourToRad(hourVal) { return (hourVal / 24) * (Math.PI * 2) - Math.PI / 2; }
 
-        var a1 = hourToRad(sH), a2 = hourToRad(eH);
+        // Bắt đầu từ giờ hiện tại đến giờ kết thúc ca (vòng màu thu hẹp dần)
+        var aStart = hourToRad(curHourDec);
+        var aEnd = hourToRad(eH);
+
         var grad = ctx.createLinearGradient(0, 0, 200, 200);
         grad.addColorStop(0, '#38bdf8');
         grad.addColorStop(0.5, '#f472b6');
         grad.addColorStop(1, '#fbbf24');
 
         ctx.beginPath();
-        ctx.arc(cx, cy, r, a1, a2, (sH > eH));
+        ctx.arc(cx, cy, r, aStart, aEnd, (curHourDec > eH));
         ctx.strokeStyle = grad;
-        ctx.lineWidth = 8;
+        ctx.lineWidth = 10;
         ctx.lineCap = "round";
         ctx.stroke();
       }
     }
     setInterval(veDongHoIOSTimer, 1000);
+
+    // ==========================================
+    // 2. SỬA LỖI XÓA ĐƠN HÀNG BỊ TỪ CHỐI (LOBBY)
+    // ==========================================
+    var orderListenersMap = {}; // Lưu để ngắt kết nối khi bấm xóa
+
+    function theoDoiCacDonCuaKhach() {
+      var liveContainer = document.getElementById("liveOrdersContainer");
+      liveContainer.innerHTML = "";
+      danhSachDonDangChayKhach = {};
+
+      var boxPending = document.getElementById("listOrdersPending");
+      var boxRunning = document.getElementById("listOrdersRunning");
+      var boxDone = document.getElementById("listOrdersDone");
+
+      boxPending.innerHTML = "";
+      boxRunning.innerHTML = "";
+      boxDone.innerHTML = "";
+
+      var countP = 0, countR = 0, countD = 0;
+
+      if (!myOrderIds || myOrderIds.length === 0) {
+        boxPending.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Chưa có đơn nào.</p>";
+        boxRunning.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Chưa có đơn nào.</p>";
+        boxDone.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Chưa có đơn nào.</p>";
+        return;
+      }
+
+      myOrderIds.forEach(function(orderId) {
+        // Ngắt listener cũ nếu có
+        if (orderListenersMap[orderId]) {
+          db.ref('donHangSky/' + orderId).off('value', orderListenersMap[orderId]);
+        }
+
+        var callback = function(snapshot) {
+          var don = snapshot.val();
+
+          // Khi Admin xóa đơn: Thẻ báo từ chối
+          if (!don) {
+            var elCu = document.getElementById("card-order-" + orderId);
+            if (!elCu) {
+              boxPending.innerHTML += `
+                <div class="customer-order-card is-rejected" id="card-order-${orderId}">
+                  <strong style="color:#ef4444;">Đơn hàng đã bị từ chối / hủy</strong>
+                  <p style="font-size:11.5px; color:#991b1b; margin:4px 0 8px 0;">Admin đã hủy yêu cầu này do quá tải hoặc lịch hẹn chưa phù hợp.</p>
+                  <button type="button" onclick="xoaDonKhoiMayKhach('${orderId}')" style="background:#fee2e2; color:#dc2626; border:none; padding:4px 10px; border-radius:9999px; font-size:11px; cursor:pointer; font-weight:700;">Đã hiểu & Xóa ✕</button>
+                </div>
+              `;
+            }
+            return;
+          }
+
+          var cardHTML = `
+            <div class="customer-order-card" id="card-order-${orderId}">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong>${(don.mangDichVu || "").toUpperCase()} - ${don.cuThe}</strong>
+                <span style="color:#ea580c; font-weight:bold;">${don.giaNiemYet}</span>
+              </div>
+              <div class="order-meta">
+                📅 Hẹn: ${don.thoiGianHen || "N/A"}<br>
+                💳 Thanh toán: ${don.thanhToan === "Tim_Sky" ? "Tim Sky" : "Tiền mặt"}
+              </div>
+          `;
+
+          if (don.trangThai === "hoan_thanh") {
+            countD++;
+            cardHTML += `
+              <div style="color:#16a34a; font-size:11.5px; font-weight:bold;">✔️ Đã hoàn tất cùng Staff ${don.staffNhan || "🌸"}</div>
+            </div>`;
+            boxDone.innerHTML += cardHTML;
+          } else if (don.daNhan) {
+            countR++;
+            danhSachDonDangChayKhach[orderId] = don;
+            cardHTML += `
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+                <span style="color:#0284c7; font-weight:bold; font-size:12px;">Staff phụ trách: ${don.staffNhan}</span>
+                <button type="button" class="btn-chat-lobby" onclick="moChatChoDon('${orderId}')">Mở Chat 💬</button>
+              </div>
+            </div>`;
+            boxRunning.innerHTML += cardHTML;
+          } else {
+            countP++;
+            cardHTML += `
+              <div style="color:#d97706; font-size:11.5px;">⏳ Đang tìm Staff phù hợp...</div>
+            </div>`;
+            boxPending.innerHTML += cardHTML;
+          }
+
+          document.getElementById("badgePendingCount").innerText = countP;
+          document.getElementById("badgeRunningCount").innerText = countR;
+          document.getElementById("badgeDoneCount").innerText = countD;
+          capNhatBongBongChatKhach();
+        };
+
+        orderListenersMap[orderId] = callback;
+        db.ref('donHangSky/' + orderId).on('value', callback);
+      });
+    }
+
+    // Hàm xóa vĩnh viễn đơn bị từ chối khỏi máy khách
+    function xoaDonKhoiMayKhach(orderId) {
+      if (orderListenersMap[orderId]) {
+        db.ref('donHangSky/' + orderId).off('value', orderListenersMap[orderId]);
+        delete orderListenersMap[orderId];
+      }
+
+      myOrderIds = myOrderIds.filter(function(id) { return id !== orderId; });
+      localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
+
+      // Xóa ngay lập tức phần tử khỏi DOM
+      var el = document.getElementById("card-order-" + orderId);
+      if (el) el.remove();
+
+      theoDoiCacDonCuaKhach();
+    }
+
+      
 
     // 8. Tải Lời tựa, ảnh kỷ niệm, profile Staff
     db.ref('caiDatPage').on('value', function(snap) {
