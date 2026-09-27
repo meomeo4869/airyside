@@ -83,15 +83,15 @@
       </div>
     </section>
 
-    <!-- ==================== TRANG 2: BẢNG GIÁ SƠ ĐỒ NHÁNH CÂY ==================== -->
+    <!-- ==================== TRANG 2: BẢNG GIÁ DẠNG BENTO PODS ==================== -->
     <section id="tab-pricing" class="lobby-page">
-      <div class="lobby-section">
-        <h2>🌳 Sơ Đồ Phân Cấp Dịch Vụ & Bảng Giá</h2>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">Biểu đồ các mảng và gói dịch vụ đang hoạt động tại Page:</p>
+      <div class="lobby-section" style="border-radius: 36px;">
+        <h2>🌳 Bảng Giá Dịch Vụ Chi Tiết</h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 22px;">Khám phá các dịch vụ đồng hành chu đáo và an toàn cùng đội ngũ Sky:</p>
 
-        <!-- Khung Chứa Cây Vẽ Tự Động Từ Firebase -->
-        <div class="tree-board" id="dynamicTreeBoard">
-          <p style="text-align:center; color: var(--text-muted);">Đang dựng sơ đồ dịch vụ...</p>
+        <!-- Lưới Bento 3 Cột Động -->
+        <div class="bento-grid" id="dynamicBentoBoard">
+          <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">Đang tải bảng giá dịch vụ...</p>
         </div>
       </div>
     </section>
@@ -285,22 +285,21 @@
       });
     });
 
-    // Tự động dựng sơ đồ nhánh cây động (Hierarchy) từ Firebase
+    // Tự động dựng giao diện Bento Pods từ nhánh cây Firebase
     db.ref('cayBangGia').on('value', function(snapshot) {
       var treeData = snapshot.val();
-      var board = document.getElementById("dynamicTreeBoard");
+      var board = document.getElementById("dynamicBentoBoard");
       board.innerHTML = "";
 
       if (!treeData) {
-        board.innerHTML = "<p style='text-align:center; color:var(--text-muted);'>Page đang cập nhật bảng giá dịch vụ mới.</p>";
+        board.innerHTML = "<p style='grid-column: 1/-1; text-align:center; color:var(--text-muted);'>Hiện chưa có bảng giá. Vui lòng quay lại sau nha!</p>";
         return;
       }
 
-      // Nhóm dữ liệu theo Mảng -> Nhóm (Cấp 1) -> Gói (Cấp 2)
+      // Lọc dữ liệu theo Mảng -> Nhóm (Cấp 1) -> Gói (Cấp 2)
       var treeMap = { uber: {}, host: {}, logacc: {} };
 
       Object.values(treeData).forEach(function(item) {
-        // Chỉ vẽ các nhánh đang được bật hiển thị
         if (item.hienThi !== false) {
           if (!treeMap[item.mang]) treeMap[item.mang] = {};
           if (!treeMap[item.mang][item.nhom]) treeMap[item.mang][item.nhom] = [];
@@ -309,51 +308,56 @@
       });
 
       var mangConfig = [
-        { key: "uber", label: "Uber", class: "tree-uber" },
-        { key: "host", label: "Host", class: "tree-host" },
-        { key: "logacc", label: "Log Acc", class: "tree-log" }
+        { key: "uber", label: "UBER", sub: "Nhanh, tiện lợi & an toàn", icon: "⚡", cls: "bento-uber" },
+        { key: "host", label: "HOST", sub: "Người bạn luôn ở bên bạn", icon: "🌸", cls: "bento-host" },
+        { key: "logacc", label: "LOG ACC", sub: "Bảo mật & Uy tín tuyệt đối", icon: "🔒", cls: "bento-log" }
       ];
 
       mangConfig.forEach(function(cfg) {
-        var groups = treeMap[cfg.key];
+        var groups = treeMap[cfg.key] || {};
         var groupKeys = Object.keys(groups);
 
-        // Nếu mảng này có dịch vụ đang mở thì mới vẽ cây
-        if (groupKeys.length > 0) {
-          var midHTML = "";
-
-          groupKeys.forEach(function(nhomName) {
-            var leafHTML = "";
-            groups[nhomName].forEach(function(leaf) {
-              leafHTML += `
-                <div class="node-leaf-wrapper">
-                  <div class="node-leaf">
-                    <span>${leaf.goi}</span>
-                    <strong>${leaf.gia}</strong>
-                  </div>
+        var groupsHTML = "";
+        if (groupKeys.length === 0) {
+          groupsHTML = "<p style='font-size: 12px; color: #94a3b8; text-align: center; margin: 15px 0;'>Tạm thời chưa mở gói dịch vụ này</p>";
+        } else {
+          groupKeys.forEach(function(groupName) {
+            var itemsHTML = "";
+            groups[groupName].forEach(function(item) {
+              itemsHTML += `
+                <div class="bento-item-row">
+                  <span>${item.goi}</span>
+                  <strong>${item.gia}</strong>
                 </div>
               `;
             });
 
-            midHTML += `
-              <div class="node-mid-wrapper">
-                <div class="node-mid">${nhomName}</div>
-                <div class="leaf-branch-group">
-                  ${leafHTML}
+            groupsHTML += `
+              <div class="bento-group-box">
+                <div class="bento-group-title">
+                  <span>•</span>
+                  <span>${groupName}</span>
                 </div>
+                ${itemsHTML}
               </div>
             `;
           });
+        }
 
-          board.innerHTML += `
-            <div class="tree-container ${cfg.class}">
-              <div class="node-root">${cfg.label}</div>
-              <div class="mid-branch-group">
-                ${midHTML}
+        board.innerHTML += `
+          <div class="bento-card ${cfg.cls}">
+            <div class="bento-card-header">
+              <div class="bento-card-icon">${cfg.icon}</div>
+              <div class="bento-card-title">
+                <h3>${cfg.label}</h3>
+                <p>${cfg.sub}</p>
               </div>
             </div>
-          `;
-        }
+            <div class="bento-card-body">
+              ${groupsHTML}
+            </div>
+          </div>
+        `;
       });
     });
 
