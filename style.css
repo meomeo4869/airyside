@@ -577,99 +577,6 @@ button:hover {
 .admin-table td { padding: 14px 16px; border-bottom: 1px solid rgba(241, 245, 249, 0.8); }
 
 /* ================================================= */
-/* WIDGET ĐỒNG HỒ CA TRỰC 24H (SQUIRCLE GLASS DIAL)   */
-/* ================================================= */
-.work-clock-card {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(28px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.95);
-  border-radius: 36px; /* Bo tròn chuẩn phong cách Futuristic */
-  padding: 24px;
-  box-shadow: 0 16px 36px -12px rgba(15, 23, 42, 0.08), var(--liquid-specular);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin-bottom: 26px;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.clock-info-box {
-  max-width: 320px;
-  text-align: left;
-}
-
-.clock-info-box h3 {
-  margin: 0 0 6px 0;
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.clock-info-box p {
-  margin: 0 0 14px 0;
-  font-size: 13px;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-
-.shift-status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.shift-resting {
-  background: #f1f5f9;
-  color: #64748b;
-  border: 1px solid #e2e8f0;
-}
-
-.shift-active {
-  background: #dcfce7;
-  color: #15803d;
-  border: 1px solid #bbf7d0;
-}
-
-.clock-svg-wrap {
-  position: relative;
-  width: 200px;
-  height: 200px;
-}
-
-#dialCanvas {
-  width: 200px;
-  height: 200px;
-}
-
-.clock-center-label {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  pointer-events: none;
-}
-
-.clock-center-time {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--text-primary);
-  display: block;
-}
-
-.clock-center-sub {
-  font-size: 10.5px;
-  color: var(--text-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-/* ================================================= */
 /* BẢNG GIÁ DẠNG BENTO PODS (SQUIRCLE GLASS)         */
 /* ================================================= */
 .bento-grid {
@@ -798,4 +705,201 @@ button:hover {
   padding: 3px 8px;
   border-radius: 9999px;
   border: 1px solid #ffedd5;
+}
+
+/* ================================================= */
+/* 1. ĐỒNG HỒ THIÊN VĂN GENSHIN IMPACT AESTHETIC     */
+/* ================================================= */
+.genshin-clock-wrapper {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(28px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: 36px;
+  padding: 28px 32px;
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08), var(--liquid-specular);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.genshin-dial-container {
+  position: relative;
+  width: 220px;
+  height: 220px;
+}
+
+#genshinCanvas {
+  width: 220px;
+  height: 220px;
+}
+
+.genshin-clock-data {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.genshin-digital-time {
+  font-family: 'Plus Jakarta Sans', monospace, sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.genshin-status-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 4px;
+  display: block;
+}
+
+.status-in-shift { color: #16a34a; text-shadow: 0 0 10px rgba(34, 197, 94, 0.35); }
+.status-resting { color: #94a3b8; }
+
+/* 4 Icon Thiên thể quanh viền đồng hồ Genshin */
+.celestial-icon {
+  position: absolute;
+  font-size: 16px;
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e2e8f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+}
+
+.icon-noon { top: -6px; left: 50%; transform: translateX(-50%); }      /* Mặt trời trưa */
+.icon-midnight { bottom: -6px; left: 50%; transform: translateX(-50%); } /* Trăng khuya */
+.icon-dawn { top: 50%; left: -6px; transform: translateY(-50%); }       /* Bình minh */
+.icon-dusk { top: 50%; right: -6px; transform: translateY(-50%); }      /* Hoàng hôn */
+
+/* ================================================= */
+/* 2. KHUNG LỊCH THÁNG CHẤM CÔNG THỰC TẾ CỦA STAFF   */
+/* ================================================= */
+.realtime-calendar-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(28px);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: 36px;
+  padding: 26px 30px;
+  box-shadow: 0 16px 36px -12px rgba(15, 23, 42, 0.08);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.calendar-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.calendar-header-bar h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.calendar-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.cal-day-cell {
+  height: 48px;
+  background: rgba(248, 250, 252, 0.7);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.cal-day-cell.is-today {
+  border: 1.5px solid #0284c7;
+  background: #f0f9ff;
+}
+
+.cal-day-cell.has-worked {
+  background: #fff7ed;
+  border-color: #fed7aa;
+  color: #c2410c;
+}
+
+.cal-day-cell .staff-work-dot {
+  font-size: 13px;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+/* Thư viện quản lý ảnh kỷ niệm trong Admin */
+.admin-gallery-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.admin-photo-item {
+  position: relative;
+  height: 100px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+}
+
+.admin-photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btn-del-photo {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
 }
