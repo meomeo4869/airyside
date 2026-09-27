@@ -86,10 +86,49 @@
           <textarea id="adminLichPage" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
         </div>
         <div>
-          <label>Điều Khoản & Quy Định Chung:</label>
-          <textarea id="adminDieuKhoan" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
+
+          <!-- 2. QUẢN LÝ LỜI TỰA, ẢNH KỶ NIỆM VÀ 4 KHUNG LUẬT -->
+    <section class="admin-section" style="border-left: 4px solid #0284c7;">
+      <div class="section-title-box">
+        <h3>📜 Quản Lý Giới Thiệu & 4 Khung Luật Sảnh Chờ</h3>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <label>Lời Giới Thiệu Của Page (Trang Chủ):</label>
+        <textarea id="admGioiThieuPage" rows="2" style="width: 100%; box-sizing: border-box;"></textarea>
+      </div>
+
+      <!-- Ô Đăng Ảnh Kỷ Niệm Cho Trang Chủ -->
+      <div style="background: rgba(248, 250, 252, 0.7); padding: 14px; border-radius: var(--radius-inner); margin-bottom: 20px; border: 1px solid #e2e8f0;">
+        <label>Đăng Ảnh Kỷ Niệm Page Lên Trang Chủ:</label>
+        <div style="display: flex; gap: 10px; align-items: center; margin-top: 6px;">
+          <input type="file" id="admFileKyNiem" accept="image/*" style="font-size: 12px; margin-bottom: 0;">
+          <button type="button" onclick="taiAnhKyNiemPage()" style="background:#0284c7; color:white;">Tải Ảnh Lên 📸</button>
         </div>
       </div>
+
+      <!-- 4 Khung Luật -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div>
+          <label><strong>1. Quy Định Chung Của Page:</strong></label>
+          <textarea id="admLuatChung" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
+        </div>
+        <div>
+          <label><strong>2. Luật Riêng Mảng UBER:</strong></label>
+          <textarea id="admLuatUber" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
+        </div>
+        <div>
+          <label><strong>3. Luật Riêng Mảng HOST:</strong></label>
+          <textarea id="admLuatHost" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
+        </div>
+        <div>
+          <label><strong>4. Luật Riêng Mảng LOG ACC:</strong></label>
+          <textarea id="admLuatLogAcc" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
+        </div>
+      </div>
+
+      <button type="button" onclick="luuToanBoLuatAdmin()" style="background: #0f172a; color: white; margin-top: 18px;">💾 Lưu Toàn Bộ Giới Thiệu & 4 Khung Luật</button>
+    </section>
 
       <!-- Điều khoản trên hóa đơn -->
       <div style="margin-top: 15px;">
