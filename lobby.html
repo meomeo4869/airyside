@@ -10,10 +10,10 @@
 </head>
 <body class="lobby-layout">
 
-  <!-- 1. BONG BÓNG MINI CHAT RIÊNG BIỆT CỦA KHÁCH -->
+  <!-- BONG BÓNG MINI CHAT RIÊNG BIỆT -->
   <div id="customerChatheadsList" class="chatheads-container"></div>
 
-  <!-- 2. NAVBAR CAPSULE TRẮNG DỊU (NÚT XEM ĐƠN HÀNG NỔI BẬT) -->
+  <!-- NAVBAR CAPSULE: NÚT XEM ĐƠN HÀNG THAY THẾ HOÀN TOÀN NÚT ĐẶT ĐƠN -->
   <nav class="navbar-capsule-container">
     <div class="navbar-capsule">
       <div class="nav-brand">
@@ -26,44 +26,39 @@
         <button type="button" class="nav-item" onclick="chuyenTrang('pricing', this)">Bảng Giá</button>
         <button type="button" class="nav-item" onclick="chuyenTrang('rules', this)">Lịch & Luật</button>
         <button type="button" class="nav-item" onclick="chuyenTrang('feedback', this)">Đánh Giá</button>
-        <button type="button" class="nav-item" id="navBtnHistory" onclick="chuyenTrang('orders', this)">Đơn Hàng Của Bạn 📦</button>
       </div>
 
-      <button type="button" class="btn-nav-order" onclick="chuyenTrang('pricing', document.querySelectorAll('.nav-item')[1])">
-        Đặt Dịch Vụ ✨
+      <!-- Nút chuyển thẳng qua trang đơn hàng của khách -->
+      <button type="button" class="btn-nav-order" onclick="chuyenTrang('orders', null)">
+        Đơn Hàng Của Bạn 📦
       </button>
     </div>
   </nav>
 
-  <!-- BANNER BÁO ĐƠN ĐANG CHẠY NỔI -->
+  <!-- BANNER BÁO ĐƠN NỔI -->
   <div id="liveOrdersContainer" style="position: sticky; top: 80px; z-index: 999; max-width: 1040px; margin: 10px auto 0 auto; display: flex; flex-direction: column; gap: 8px; padding: 0 20px;"></div>
 
   <div class="lobby-container">
 
-    <!-- ==================== TRANG 1: TRANG CHỦ & ĐỒNG HỒ GENSHIN ==================== -->
+    <!-- ==================== TRANG 1: TRANG CHỦ & ĐỒNG HỒ IOS ==================== -->
     <section id="tab-home" class="lobby-page active-page">
-      <div class="genshin-clock-wrapper">
+      <!-- WIDGET ĐỒNG HỒ IOS TIMER -->
+      <div class="ios-timer-wrapper">
         <div class="clock-info-box">
-          <div style="font-size: 26px; margin-bottom: 4px;">✨</div>
-          <h3>Đồng Hồ Ca Trực Thiên Hà</h3>
-          <p id="clockShiftDesc">Hệ thống đang đồng bộ lịch trực hôm nay cùng Admin...</p>
+          <div style="font-size: 24px; margin-bottom: 4px;">⏱️</div>
+          <h3>Thời Gian Làm Việc Hôm Nay</h3>
+          <p id="clockShiftDesc">Hệ thống đang đồng bộ thời gian thực tế cùng Admin...</p>
           <div id="clockStatusPill" class="shift-status-pill shift-resting">
             <span style="font-size: 8px;">●</span>
             <span id="clockStatusTxt">Resting...</span>
           </div>
         </div>
 
-        <div class="genshin-dial-container">
-          <div class="celestial-icon icon-noon" title="12:00 Trưa">☀️</div>
-          <div class="celestial-icon icon-midnight" title="00:00 Đêm">🌙</div>
-          <div class="celestial-icon icon-dawn" title="06:00 Sáng">🌅</div>
-          <div class="celestial-icon icon-dusk" title="18:00 Chiều">🌇</div>
-
-          <canvas id="genshinCanvas" width="220" height="220"></canvas>
-          
-          <div class="genshin-clock-data">
-            <span class="genshin-digital-time" id="genshinDigitalTime">--:--</span>
-            <span class="genshin-status-label" id="genshinStatusLabel">RESTING</span>
+        <div class="ios-timer-dial">
+          <canvas id="iosTimerCanvas" width="200" height="200"></canvas>
+          <div class="ios-timer-center">
+            <span class="ios-digital-clock" id="iosDigitalClock">--:--</span>
+            <span class="ios-status-tag tag-resting" id="iosStatusTag">RESTING</span>
           </div>
         </div>
       </div>
@@ -88,11 +83,11 @@
       </div>
     </section>
 
-    <!-- ==================== TRANG 2: BẢNG GIÁ BENTO PODS & NÚT ĐẶT TRỰC TIẾP ==================== -->
+    <!-- ==================== TRANG 2: BẢNG GIÁ BENTO ==================== -->
     <section id="tab-pricing" class="lobby-page">
       <div class="lobby-section" style="border-radius: 36px;">
-        <h2>🌳 Bảng Giá Dịch Vụ & Đặt Đơn Trực Tiếp</h2>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 22px;">Bấm trực tiếp vào nút <strong>Đặt Ngay</strong> trên từng gói để tiến hành book lịch:</p>
+        <h2>🌳 Bảng Giá Dịch Vụ</h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 22px;">Bấm trực tiếp vào từng gói dịch vụ để điền thông tin đặt lịch:</p>
 
         <div class="bento-grid" id="dynamicBentoBoard">
           <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">Đang tải bảng giá dịch vụ...</p>
@@ -100,7 +95,7 @@
       </div>
     </section>
 
-    <!-- ==================== TRANG 3: 4 KHUNG LUẬT PHÂN TẦNG ==================== -->
+    <!-- ==================== TRANG 3: LUẬT ==================== -->
     <section id="tab-rules" class="lobby-page">
       <div class="lobby-section">
         <h2>📜 Quy Định Chung Khi Đặt Dịch Vụ</h2>
@@ -131,7 +126,7 @@
     <section id="tab-orders" class="lobby-page">
       <div class="lobby-section" style="border-radius: 36px;">
         <h2>📦 Tiến Trình & Lịch Sử Đơn Hàng Của Bạn</h2>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Theo dõi trực tiếp trạng thái các đơn bạn đã đặt và mở mini chat với Staff:</p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Theo dõi tiến trình đơn hàng của bạn theo thời gian thực:</p>
 
         <div class="orders-history-grid">
           <!-- Cột 1: Chờ Nhận -->
@@ -182,7 +177,7 @@
 
   </div>
 
-  <!-- POPUP ĐẶT ĐƠN TRỰC TIẾP TỪ BẢNG GIÁ BENTO -->
+  <!-- POPUP ĐẶT ĐƠN TRỰC TIẾP -->
   <div id="modalDatDonTrucTiep" class="modal-overlay">
     <div class="modal-content" style="max-width: 440px; width: 92%; border-radius: 36px; text-align: left;">
       <button type="button" class="btn-dong-modal" onclick="dongPopupDatDon()">✕</button>
@@ -202,9 +197,9 @@
       <div id="popBoxVoucher" style="display: none; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px; padding: 10px 12px; margin-bottom: 12px; font-size: 12.5px;">
         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #15803d; font-weight: 700; width: auto; margin-bottom: 0;">
           <input type="checkbox" id="popChkDungVoucher" onchange="tinhToanGiaPopup()" style="width: auto; margin: 0;">
-          <span id="popVoucherLabel">Sử dụng voucher giảm giá (10.000đ)</span>
+          <span id="popVoucherLabel">Sử dụng voucher tích lũy</span>
         </label>
-        <span style="font-size: 11px; color: #166534; display: block; margin-top: 3px;">*Số tiền voucher dư sẽ tiếp tục được giữ lại cho đơn sau!</span>
+        <span style="font-size: 11px; color: #166534; display: block; margin-top: 3px;">*Số tiền voucher dư sẽ tiếp tục được lưu cho đơn sau.</span>
       </div>
 
       <label>Lịch hẹn (Ngày & Giờ bắt đầu):</label>
@@ -240,7 +235,7 @@
     </div>
   </div>
 
-  <!-- 4. KHUNG CHAT MINI LIQUID GLASS -->
+  <!-- KHUNG CHAT MINI LIQUID GLASS (CÓ DISPLAY: NONE MẶC ĐỊNH) -->
   <div id="chatBoxKhach" class="chat-container">
     <div class="chat-header">
       <span id="chatTitleKhach" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;">Chat Với Staff</span>
@@ -282,7 +277,7 @@
     </div>
   </div>
 
-  <!-- POPUP REPORT & POPUP FEEDBACK GIỮ NGUYÊN -->
+  <!-- POPUP REPORT & FEEDBACK -->
   <div id="modalReport" class="modal-overlay">
     <div class="modal-content" style="max-width: 400px; width: 90%;">
       <button type="button" class="btn-dong-modal" onclick="dongPopupReport()">✕</button>
@@ -334,7 +329,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 1. Quản lý ID đơn hàng của khách an toàn
+    // 1. Quản lý danh sách đơn đã đặt trong localStorage
     var myOrderIds = [];
     try {
       myOrderIds = JSON.parse(localStorage.getItem("myOrderIdsList")) || [];
@@ -346,7 +341,7 @@
     var danhSachDonDangChayKhach = {};
     var selectedStar = 5;
 
-    // 2. Chuyển đổi tab 5 trang
+    // 2. Chuyển đổi trang
     function chuyenTrang(tenTrang, btnElement) {
       document.querySelectorAll('.lobby-page').forEach(function(p) { p.classList.remove('active-page'); });
       var target = document.getElementById('tab-' + tenTrang);
@@ -357,7 +352,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 3. Tải Bento Pods Bảng Giá & Nút Đặt Đơn Trực Tiếp
+    // 3. Tải Bento Pods: bấm vào cả ô để đặt đơn
     db.ref('cayBangGia').on('value', function(snapshot) {
       var treeData = snapshot.val();
       var board = document.getElementById("dynamicBentoBoard");
@@ -394,13 +389,11 @@
           groupKeys.forEach(function(groupName) {
             var itemsHTML = "";
             groups[groupName].forEach(function(item) {
+              // Bấm vào cả hàng để mở popup đặt đơn
               itemsHTML += `
-                <div class="bento-item-row">
-                  <div>
-                    <span>${item.goi}</span>
-                    <strong style="margin-left: 6px;">${item.gia}</strong>
-                  </div>
-                  <button type="button" class="btn-order-pill" onclick='moPopupDatDon("${item.mang}", "${item.goi}", "${item.gia}")'>Đặt Ngay ✨</button>
+                <div class="bento-item-row" onclick='moPopupDatDon("${item.mang}", "${item.goi}", "${item.gia}")' title="Bấm để đặt gói này">
+                  <span>${item.goi}</span>
+                  <strong>${item.gia}</strong>
                 </div>
               `;
             });
@@ -429,7 +422,7 @@
       });
     });
 
-    // 4. XỬ LÝ POPUP ĐẶT ĐƠN TRỰC TIẾP & LOGIC TRỪ VOUCHER DƯ
+    // 4. Popup Đặt đơn trực tiếp & Quản lý số dư Voucher
     var popItemDangChon = null;
     var voucherKhaDung = 0;
     var userEmailKey = "";
@@ -465,7 +458,7 @@
         if (mem && mem.uuDaiRieng && !mem.uuDaiRieng.daDung && mem.uuDaiRieng.giaTri > 0) {
           voucherKhaDung = mem.uuDaiRieng.giaTri;
           box.style.display = "block";
-          chk.checked = true; // Mặc định tự bật cho khách
+          chk.checked = true;
           document.getElementById("popVoucherLabel").innerText = `Sử dụng voucher tích lũy (-${voucherKhaDung.toLocaleString('vi-VN')}đ)`;
         } else {
           box.style.display = "none";
@@ -512,10 +505,6 @@
       btn.disabled = true;
       btn.innerText = "Đang gửi đơn... ⏳";
 
-      var giaGocHienThi = document.getElementById("popGiaGocTxt").innerText;
-      var tongTienHienThi = document.getElementById("popTongTienTxt").innerText;
-      var giamGiaHienThi = document.getElementById("popGiamGiaTxt").innerText;
-
       var chk = document.getElementById("popChkDungVoucher");
       var coDungVoucher = (chk.checked && voucherKhaDung > 0);
 
@@ -527,9 +516,9 @@
         cuThe: popItemDangChon.goi,
         thoiGianHen: tgDinhDang,
         thanhToan: pttt,
-        phiGoc: giaGocHienThi,
-        giamGia: giamGiaHienThi,
-        giaNiemYet: tongTienHienThi,
+        phiGoc: document.getElementById("popGiaGocTxt").innerText,
+        giamGia: document.getElementById("popGiamGiaTxt").innerText,
+        giaNiemYet: document.getElementById("popTongTienTxt").innerText,
         daThanhToanFull: (pttt === "Tim_Sky"),
         yeuCau: yc || "Không có yêu cầu đặc biệt",
         daNhan: false,
@@ -539,20 +528,18 @@
 
       var newRef = db.ref('donHangSky').push();
       newRef.set(donData).then(function() {
-        // CẬP NHẬT TRỪ SỐ DƯ VOUCHER
+        // Cập nhật trừ số dư voucher thông minh
         if (coDungVoucher && userEmailKey) {
           var chuoiSo = popItemDangChon.gia.toLowerCase().replace(/[^0-9k]/g, '');
           var phiDon = chuoiSo.includes('k') ? (parseFloat(chuoiSo.replace('k', '')) * 1000) : (parseFloat(chuoiSo) || 0);
 
           if (voucherKhaDung > phiDon) {
-            // Còn dư voucher -> trừ bớt, không hủy voucher
             var soDuConLai = voucherKhaDung - phiDon;
             db.ref(`thanhVienSky/${userEmailKey}/uuDaiRieng`).update({
               giaTri: soDuConLai,
               daDung: false
             });
           } else {
-            // Đã dùng hết tiền voucher
             db.ref(`thanhVienSky/${userEmailKey}/uuDaiRieng`).update({
               giaTri: 0,
               daDung: true
@@ -560,15 +547,14 @@
           }
         }
 
-        // Lưu đơn vào danh sách máy của khách
         myOrderIds.push(newRef.key);
         localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
 
         dongPopupDatDon();
         btn.disabled = false;
         btn.innerText = "Xác Nhận Đặt Đơn ✨";
-        alert("Đặt đơn thành công! Bạn có thể theo dõi tiến trình tại mục Đơn Hàng Của Bạn.");
-        chuyenTrang('orders', document.getElementById("navBtnHistory"));
+        alert("Đặt đơn thành công! Bạn có thể theo dõi tại mục Đơn Hàng Của Bạn.");
+        chuyenTrang('orders', null);
         theoDoiCacDonCuaKhach();
       }).catch(function(err) {
         alert("Lỗi: " + err.message);
@@ -577,7 +563,7 @@
       });
     }
 
-    // 5. THEO DÕI VÀ VẼ LỊCH SỬ ĐƠN HÀNG 3 CỘT
+    // 5. THEO DÕI ĐƠN HÀNG VÀ TỰ ĐỘNG BÁO TỪ CHỐI KHI ADMIN XÓA
     function theoDoiCacDonCuaKhach() {
       var liveContainer = document.getElementById("liveOrdersContainer");
       liveContainer.innerHTML = "";
@@ -603,7 +589,18 @@
       myOrderIds.forEach(function(orderId) {
         db.ref('donHangSky/' + orderId).on('value', function(snapshot) {
           var don = snapshot.val();
-          if (!don) return;
+
+          // KHI ADMIN ĐÃ XÓA ĐƠN TRÊN DASHBOARD
+          if (!don) {
+            boxPending.innerHTML += `
+              <div class="customer-order-card is-rejected">
+                <strong style="color:#ef4444;">Đơn hàng đã bị từ chối / hủy</strong>
+                <p style="font-size:11.5px; color:#991b1b; margin:4px 0 8px 0;">Admin đã hủy yêu cầu này do quá tải hoặc lịch hẹn chưa phù hợp.</p>
+                <button type="button" onclick="xoaDonKhoiMayKhach('${orderId}')" style="background:#fee2e2; color:#dc2626; border:none; padding:4px 10px; border-radius:9999px; font-size:11px; cursor:pointer; font-weight:700;">Đã hiểu & Xóa ✕</button>
+              </div>
+            `;
+            return;
+          }
 
           var cardHTML = `
             <div class="customer-order-card">
@@ -620,7 +617,7 @@
           if (don.trangThai === "hoan_thanh") {
             countD++;
             cardHTML += `
-              <div style="color:#16a34a; font-size:11.5px; font-weight:bold;">✔️ Ca hoàn tất cùng Staff ${don.staffNhan || "🌸"}</div>
+              <div style="color:#16a34a; font-size:11.5px; font-weight:bold;">✔️ Đã hoàn tất cùng Staff ${don.staffNhan || "🌸"}</div>
             </div>`;
             boxDone.innerHTML += cardHTML;
           } else if (don.daNhan) {
@@ -634,12 +631,12 @@
             </div>`;
             boxRunning.innerHTML += cardHTML;
 
-            // Đồng thời vẽ Banner nổi ở đầu trang
+            // Banner nổi trên đầu trang
             liveContainer.innerHTML += `
               <div class="status-banner">
                 <div class="banner-content">
                   <span class="pulse-dot"></span>
-                  <div>Staff <strong>${don.staffNhan}</strong> đã nhận đơn ${don.cuThe}! Hãy trao đổi mã kết bạn nhé.</div>
+                  <div>Staff <strong>${don.staffNhan}</strong> đã nhận đơn ${don.cuThe}! Hãy bấm để trao đổi.</div>
                   <button type="button" class="btn-chat-lobby" style="margin-left:auto;" onclick="moChatChoDon('${orderId}')">Chat Ngay</button>
                 </div>
               </div>
@@ -661,7 +658,13 @@
     }
     theoDoiCacDonCuaKhach();
 
-    // 6. MINI CHAT & ĐỒNG HỒ GENSHIN GIỮ NGUYÊN HOÀN HẢO
+    function xoaDonKhoiMayKhach(orderId) {
+      myOrderIds = myOrderIds.filter(function(id) { return id !== orderId; });
+      localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
+      theoDoiCacDonCuaKhach();
+    }
+
+    // 6. MINI CHAT RIÊNG BIỆT
     function capNhatBongBongChatKhach() {
       var box = document.getElementById("customerChatheadsList");
       box.innerHTML = "";
@@ -678,12 +681,15 @@
 
     var chatOrderListener = null, chatRoomListener = null;
     function moChatChoDon(orderId) {
-      if (chatOrderListener) { db.ref('donHangSky/' + chatOrderListener.orderId).off('value', chatOrderListener.callback); }
-      if (chatRoomListener) { db.ref('phongChat/' + chatRoomListener.orderId).off('value', chatRoomListener.callback); }
+      if (chatOrderListener) db.ref('donHangSky/' + chatOrderListener.orderId).off('value', chatOrderListener.callback);
+      if (chatRoomListener) db.ref('phongChat/' + chatRoomListener.orderId).off('value', chatRoomListener.callback);
 
       activeChatOrderId = orderId;
       capNhatBongBongChatKhach();
-      document.getElementById("chatBoxKhach").style.display = "flex";
+      
+      // Mở khung chat bằng inline-style để ghi đè class ẩn
+      var chatBox = document.getElementById("chatBoxKhach");
+      chatBox.style.setProperty("display", "flex", "important");
       document.getElementById("tinNhanKhach").innerHTML = "";
 
       var orderCallback = function(snap) {
@@ -770,7 +776,9 @@
     function dongChatKhach() {
       if (chatOrderListener) db.ref('donHangSky/' + chatOrderListener.orderId).off('value', chatOrderListener.callback);
       if (chatRoomListener) db.ref('phongChat/' + chatRoomListener.orderId).off('value', chatRoomListener.callback);
-      document.getElementById("chatBoxKhach").style.display = "none";
+      
+      var chatBox = document.getElementById("chatBoxKhach");
+      chatBox.style.setProperty("display", "none", "important");
       activeChatOrderId = null;
       capNhatBongBongChatKhach();
     }
@@ -793,22 +801,24 @@
       }
     }
 
-    // 7. Đồng Hồ Thiên Văn Genshin Impact
+    // 7. ĐỒNG HỒ IOS COUNTDOWN TIMER (KHÔNG CÒN KIM GIỜ, SỐ DIGITAL LỚN Ở TÂM)
     var caLamHienTai = null;
     db.ref('caiDatPage/lichChiTiet').on('value', function(snap) {
       caLamHienTai = snap.val();
-      veDongHoGenshin();
+      veDongHoIOSTimer();
     });
 
-    function veDongHoGenshin() {
-      var canvas = document.getElementById("genshinCanvas");
+    function veDongHoIOSTimer() {
+      var canvas = document.getElementById("iosTimerCanvas");
       if (!canvas) return;
       var ctx = canvas.getContext("2d");
       var now = new Date();
       var curHourDec = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
 
-      document.getElementById("genshinDigitalTime").innerText = 
-        `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+      // Giờ Digital lớn chạy theo thời gian thực
+      var h = now.getHours().toString().padStart(2, '0');
+      var m = now.getMinutes().toString().padStart(2, '0');
+      document.getElementById("iosDigitalClock").innerText = `${h}:${m}`;
 
       var isInShift = false, sH = 0, eH = 0;
       if (caLamHienTai && caLamHienTai.gioBatDau && caLamHienTai.gioKetThuc) {
@@ -820,61 +830,51 @@
 
       var pill = document.getElementById("clockStatusPill");
       var statusTxt = document.getElementById("clockStatusTxt");
-      var lbl = document.getElementById("genshinStatusLabel");
+      var tag = document.getElementById("iosStatusTag");
 
       if (isInShift) {
         pill.className = "shift-status-pill shift-active";
         statusTxt.innerText = "Đang Trong Ca Trực ✨";
-        lbl.innerText = "IN SHIFT";
-        lbl.className = "genshin-status-label status-in-shift";
+        tag.innerText = "IN SHIFT";
+        tag.className = "ios-status-tag tag-shift";
       } else {
         pill.className = "shift-status-pill shift-resting";
         statusTxt.innerText = "Resting... (Nghỉ)";
-        lbl.innerText = "RESTING";
-        lbl.className = "genshin-status-label status-resting";
+        tag.innerText = "RESTING";
+        tag.className = "ios-status-tag tag-resting";
       }
 
-      ctx.clearRect(0, 0, 220, 220);
-      var cx = 110, cy = 110, r = 82;
-      function hourToGenshinRad(hVal) { return ((hVal - 6) / 24) * (Math.PI * 2); }
+      // Vẽ vòng tròn phẳng chuẩn iOS Timer
+      ctx.clearRect(0, 0, 200, 200);
+      var cx = 100, cy = 100, r = 82;
 
+      // 1. Vòng tròn nền xám mờ
       ctx.beginPath();
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
       ctx.strokeStyle = "#e2e8f0";
-      ctx.lineWidth = 10;
+      ctx.lineWidth = 8;
       ctx.stroke();
 
+      // 2. Vòng tròn dải màu biểu thị ca làm việc
       if (caLamHienTai && caLamHienTai.gioBatDau && caLamHienTai.gioKetThuc) {
+        // Đổi giờ sang góc bắt đầu từ đỉnh (-90 độ)
+        function hourToRad(hourVal) { return (hourVal / 24) * (Math.PI * 2) - Math.PI / 2; }
+
+        var a1 = hourToRad(sH), a2 = hourToRad(eH);
+        var grad = ctx.createLinearGradient(0, 0, 200, 200);
+        grad.addColorStop(0, '#38bdf8');
+        grad.addColorStop(0.5, '#f472b6');
+        grad.addColorStop(1, '#fbbf24');
+
         ctx.beginPath();
-        var a1 = hourToGenshinRad(sH), a2 = hourToGenshinRad(eH);
-        var grad = ctx.createLinearGradient(0, 0, 220, 220);
-        grad.addColorStop(0, '#38bdf8'); grad.addColorStop(0.5, '#f472b6'); grad.addColorStop(1, '#fbbf24');
         ctx.arc(cx, cy, r, a1, a2, (sH > eH));
         ctx.strokeStyle = grad;
-        ctx.lineWidth = 10;
+        ctx.lineWidth = 8;
         ctx.lineCap = "round";
         ctx.stroke();
       }
-
-      var needleAng = hourToGenshinRad(curHourDec);
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(needleAng);
-      ctx.beginPath();
-      ctx.moveTo(0, 0); ctx.lineTo(r - 4, 0);
-      ctx.strokeStyle = isInShift ? "#0284c7" : "#475569";
-      ctx.lineWidth = 3;
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(r - 4, 0, 5, 0, Math.PI * 2);
-      ctx.fillStyle = isInShift ? "#38bdf8" : "#94a3b8";
-      ctx.fill();
-      ctx.strokeStyle = "#ffffff";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.restore();
     }
-    setInterval(veDongHoGenshin, 1000);
+    setInterval(veDongHoIOSTimer, 1000);
 
     // 8. Tải Lời tựa, ảnh kỷ niệm, profile Staff
     db.ref('caiDatPage').on('value', function(snap) {
