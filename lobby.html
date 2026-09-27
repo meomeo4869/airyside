@@ -8,20 +8,37 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
-<body class="lobby-layout">
 
-  <!-- 1. CỤM BONG BÓNG MINI CHAT RIÊNG BIỆT CỦA KHÁCH -->
+  <body class="lobby-layout">
+
+  <!-- 1. THANH ĐIỀU HƯỚNG CAPSULE LƠ LỬNG (CHUẨN DRIBBBLE CONCEPT) -->
+  <nav class="navbar-capsule-container">
+    <div class="navbar-capsule">
+      <div class="nav-brand">
+        <span class="nav-logo">☁️</span>
+        <strong>Sky Service</strong>
+      </div>
+      
+      <div class="nav-links">
+        <a href="#section-hero" class="nav-item active">Trang Chủ</a>
+        <a href="#section-pricing" class="nav-item">Bảng Giá</a>
+        <a href="#section-terms" class="nav-item">Lịch & Luật</a>
+        <a href="#section-feedback" class="nav-item">Đánh Giá</a>
+      </div>
+
+      <button type="button" class="btn-nav-order" onclick="window.location.href='order.html'">
+        Đặt Đơn Ngay ✨
+      </button>
+    </div>
+  </nav>
+
+  <!-- CỤM BONG BÓNG MINI CHAT RIÊNG BIỆT CỦA KHÁCH -->
   <div id="customerChatheadsList" class="chatheads-container"></div>
 
-  <!-- 2. BANNER CÁC ĐƠN ĐANG CHẠY TRÊN CÙNG -->
-  <div id="liveOrdersContainer" style="position: sticky; top: 0; z-index: 1000; display: flex; flex-direction: column; gap: 4px;"></div>
+  <!-- BANNER CÁC ĐƠN ĐANG CHẠY -->
+  <div id="liveOrdersContainer" style="position: sticky; top: 76px; z-index: 999; display: flex; flex-direction: column; gap: 4px;"></div>
 
-  <!-- 3. NÚT ĐẶT ĐƠN NỔI (CAPSULE ACTION BUTTON) -->
-  <div class="floating-order-btn" onclick="window.location.href='order.html'">
-    ✨ Đặt Đơn Ngay
-  </div>
-
-  <div class="lobby-container">
+  <div class="lobby-container" id="section-hero">
     
     <!-- HỘP THÔNG BÁO TỪ PAGE -->
     <div id="boxThongBaoPage" class="lobby-announcement" style="display: none;">
@@ -34,17 +51,17 @@
 
     <!-- TIÊU ĐỀ SẢNH -->
     <header class="lobby-header">
-      <h1>Chào mừng bạn đến với Sky Service</h1>
-      <p>Nơi thư giãn, xem bảng giá chi tiết và kết nối cùng đội ngũ đồng hành</p>
+      <h1>Một góc nhỏ cho hành trình Sky của bạn</h1>
+      <p>Nơi thư giãn, xem bảng giá chi tiết và kết nối cùng đội ngũ đồng hành tận tâm</p>
     </header>
 
-    <!-- BẢNG GIÁ DỊCH VỤ CHI TIẾT 3 MẢNG -->
-    <section class="lobby-section">
+    <!-- BẢNG GIÁ DỊCH VỤ CHI TIẾT 3 MẢNG (ĐÃ BỎ VIỀN XANH CỦA HOST) -->
+    <section class="lobby-section" id="section-pricing">
       <h2>Bảng Giá Dịch Vụ Chi Tiết</h2>
       <div class="detailed-pricing-grid">
         
-        <!-- Mảng Uber -->
-        <div class="price-category-card">
+        <!-- Mảng Uber (Tone Xanh) -->
+        <div class="price-category-card card-uber">
           <div class="category-header uber-header">
             <h3>UBER</h3>
             <p>Nhanh, tiện lợi & an toàn</p>
@@ -59,8 +76,8 @@
           </div>
         </div>
 
-        <!-- Mảng Host -->
-        <div class="price-category-card popular-card">
+        <!-- Mảng Host (Tone Cam Hoàng Hôn - Bỏ class popular-card gây viền xanh) -->
+        <div class="price-category-card card-host">
           <div class="category-header host-header">
             <h3>HOST</h3>
             <p>Người bạn luôn ở bên bạn</p>
@@ -73,8 +90,8 @@
           </div>
         </div>
 
-        <!-- Mảng Log Acc -->
-        <div class="price-category-card">
+        <!-- Mảng Log Acc (Tone Xanh Lá Ngọc) -->
+        <div class="price-category-card card-log">
           <div class="category-header log-header">
             <h3>LOG ACC</h3>
             <p>Bảo mật & Uy tín tuyệt đối</p>
@@ -91,7 +108,7 @@
     </section>
 
     <!-- LỊCH HOẠT ĐỘNG & ĐIỀU KHOẢN -->
-    <section class="lobby-section">
+    <section class="lobby-section" id="section-terms">
       <div class="terms-container">
         <div class="terms-box">
           <h3>🕒 Lịch Hoạt Động Của Page</h3>
@@ -112,7 +129,7 @@
     </section>
 
     <!-- TƯỜNG FEEDBACK TỪ KHÁCH HÀNG -->
-    <section class="lobby-section">
+    <section class="lobby-section" id="section-feedback">
       <h2>⭐ Feedback Từ Khách Hàng</h2>
       <div class="feedback-grid" id="feedbackWall">
         <p style="grid-column: 1/-1; color: var(--text-muted);">Đang tải feedback...</p>
