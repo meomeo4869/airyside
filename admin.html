@@ -698,6 +698,46 @@
         `;
       });
     });
+
+    // Tải dữ liệu luật cũ
+    db.ref('caiDatPage').once('value').then(function(snap) {
+      var set = snap.val() || {};
+      document.getElementById("admGioiThieuPage").value = set.gioiThieuPage || "";
+      document.getElementById("admLuatChung").value = set.dieuKhoan || "";
+      document.getElementById("admLuatUber").value = set.luatUber || "";
+      document.getElementById("admLuatHost").value = set.luatHost || "";
+      document.getElementById("admLuatLogAcc").value = set.luatLogAcc || "";
+    });
+
+    // Lưu 4 khung luật
+    function luuToanBoLuatAdmin() {
+      db.ref('caiDatPage').update({
+        gioiThieuPage: document.getElementById("admGioiThieuPage").value,
+        dieuKhoan: document.getElementById("admLuatChung").value,
+        luatUber: document.getElementById("admLuatUber").value,
+        luatHost: document.getElementById("admLuatHost").value,
+        luatLogAcc: document.getElementById("admLuatLogAcc").value
+      }).then(function() {
+        alert("Đã cập nhật toàn bộ nội dung Giới thiệu & 4 Khung Luật thành công!");
+      });
+    }
+
+    // Tải ảnh kỷ niệm lên Firebase
+    function taiAnhKyNiemPage() {
+      var fileInput = document.getElementById("admFileKyNiem");
+      if (!fileInput.files || !fileInput.files[0]) {
+        alert("Vui lòng chọn 1 ảnh để tải lên!");
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        db.ref('anhKyNiemPage').push(e.target.result).then(function() {
+          alert("Đã tải ảnh kỷ niệm lên Trang Chủ thành công! ✨");
+          fileInput.value = "";
+        });
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    }
   </script>
 </body>
 </html>
