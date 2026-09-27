@@ -10,49 +10,38 @@
 </head>
 <body>
 
-  <!-- THẺ ĐĂNG NHẬP DẠNG LIQUID GLASS -->
+  <!-- THẺ CARD LIQUID GLASS CĂN GIỮA TUYỆT ĐỐI -->
   <div class="card">
-    <div style="font-size: 32px; margin-bottom: 8px;">☁️</div>
+    <div style="font-size: 34px; margin-bottom: 6px;">☁️</div>
     <h2>Cổng Kết Nối Sky</h2>
     
-    <label for="roleSelect">Bạn muốn đăng nhập vai trò nào?</label>
-    <select id="roleSelect" onchange="hienThiTheoVaiTro()">
+    <label for="vaiTro">Bạn muốn đăng nhập vai trò nào?</label>
+    <select id="vaiTro" onchange="chuyenVaiTro()">
       <option value="khach">Khách Hàng</option>
       <option value="staff">Nhân Sự (Staff)</option>
-      <option value="admin">Chủ Page (Admin)</option>
+      <option value="admin">Quản Trị Viên (Admin)</option>
     </select>
-    <br><br>
 
-    <!-- 1. KHÁCH HÀNG (VÀO SẢNH TRỰC TIẾP) -->
-    <div id="khuVucKhach">
-      <button type="button" onclick="window.location.href='lobby.html'" style="width: 100%;">
-        Vào Sảnh Tham Quan ✨
-      </button>
-    </div>
-
-    <!-- 2. ADMIN NHẬP PASS (TRA CỨU CLOUD & CẤP SESSION) -->
-    <div id="khuVucAdmin" style="display: none;">
-      <label for="passAdmin">Mật mã Quản Trị:</label>
-      <input type="password" id="passAdmin" placeholder="Nhập mật khẩu Admin..." onkeypress="if(event.key==='Enter') dangNhapAdmin()">
-      <button type="button" id="btnAdminLogin" onclick="dangNhapAdmin()" style="width: 100%;">
-        Vào Trang Quản Trị 👑
-      </button>
-    </div>
-
-    <!-- 3. STAFF ĐĂNG NHẬP THEO TÀI KHOẢN CLOUD -->
-    <div id="khuVucStaff" style="display: none;">
-      <label for="selectStaffCloud">Chọn nhân sự của bạn:</label>
-      <select id="selectStaffCloud">
-        <option value="none">-- Đang tải danh sách Staff --</option>
+    <!-- KHUNG ĐĂNG NHẬP DÀNH CHO STAFF -->
+    <div id="formStaff" style="display: none; margin-top: 10px;">
+      <label for="staffSelect">Chọn nhân sự của bạn:</label>
+      <select id="staffSelect">
+        <option value="">-- Đang tải danh sách Staff... --</option>
       </select>
-      
-      <label for="passStaff">Mật khẩu riêng của bạn:</label>
-      <input type="password" id="passStaff" placeholder="Nhập pass riêng..." onkeypress="if(event.key==='Enter') dangNhapStaff()">
-      
-      <button type="button" onclick="dangNhapStaff()" style="width: 100%;">
-        Vào Ca Làm Việc 🚀
-      </button>
+
+      <label for="staffPass">Mật khẩu riêng của bạn:</label>
+      <input type="password" id="staffPass" placeholder="Nhập mật khẩu Staff...">
     </div>
+
+    <!-- KHUNG ĐĂNG NHẬP DÀNH CHO ADMIN -->
+    <div id="formAdmin" style="display: none; margin-top: 10px;">
+      <label for="adminPass">Mật khẩu Admin:</label>
+      <input type="password" id="adminPass" placeholder="Nhập mật khẩu quản trị viên...">
+    </div>
+
+    <button type="button" id="btnDangNhap" onclick="xuLyDangNhap()" style="width: 100%; margin-top: 8px;">
+      Vào Sảnh Tham Quan ✨
+    </button>
   </div>
 
   <script>
@@ -71,91 +60,67 @@
 
     var danhSachStaffData = {};
 
-    // 1. Tải danh sách Staff theo thời gian thực từ Firebase
     db.ref('danhSachStaff').on('value', function(snapshot) {
       danhSachStaffData = snapshot.val() || {};
-      var select = document.getElementById("selectStaffCloud");
-      select.innerHTML = "";
-
-      var keys = Object.keys(danhSachStaffData);
-      if (keys.length === 0) {
-        select.innerHTML = `<option value="none">Chưa có Staff nào (Liên hệ Admin)</option>`;
-      } else {
-        keys.forEach(function(k) {
-          var st = danhSachStaffData[k];
-          select.innerHTML += `<option value="${k}">${st.icon || "🌸"} ${st.ten}</option>`;
-        });
-      }
+      var select = document.getElementById("staffSelect");
+      select.innerHTML = '<option value="">-- Chọn tên của bạn --</option>';
+      Object.keys(danhSachStaffData).forEach(function(key) {
+        var st = danhSachStaffData[key];
+        select.innerHTML += `<option value="${key}">${st.icon || "🌸"} ${st.ten}</option>`;
+      });
     });
 
-    // 2. Chuyển đổi giao diện theo vai trò
-    function hienThiTheoVaiTro() {
-      var vaiTro = document.getElementById("roleSelect").value;
-      document.getElementById("khuVucKhach").style.display = vaiTro === "khach" ? "block" : "none";
-      document.getElementById("khuVucAdmin").style.display = vaiTro === "admin" ? "block" : "none";
-      document.getElementById("khuVucStaff").style.display = vaiTro === "staff" ? "block" : "none";
+    function chuyenVaiTro() {
+      var vt = document.getElementById("vaiTro").value;
+      var fStaff = document.getElementById("formStaff");
+      var fAdmin = document.getElementById("formAdmin");
+      var btn = document.getElementById("btnDangNhap");
+
+      if (vt === "khach") {
+        fStaff.style.display = "none";
+        fAdmin.style.display = "none";
+        btn.innerText = "Vào Sảnh Tham Quan ✨";
+      } else if (vt === "staff") {
+        fStaff.style.display = "block";
+        fAdmin.style.display = "none";
+        btn.innerText = "Vào Ca Làm Việc 🚀";
+      } else if (vt === "admin") {
+        fStaff.style.display = "none";
+        fAdmin.style.display = "block";
+        btn.innerText = "Đăng Nhập Quản Trị 🛡️";
+      }
     }
 
-    // 3. Đăng nhập Admin bảo mật: tra cứu pass từ Firebase và cấp sessionStorage
-    function dangNhapAdmin() {
-      var passInput = document.getElementById("passAdmin").value.trim();
-      var btn = document.getElementById("btnAdminLogin");
+    function xuLyDangNhap() {
+      var vt = document.getElementById("vaiTro").value;
 
-      if (!passInput) {
-        alert("Vui lòng nhập mật khẩu Quản Trị!");
-        return;
-      }
+      if (vt === "khach") {
+        window.location.href = "lobby.html";
+      } else if (vt === "staff") {
+        var staffKey = document.getElementById("staffSelect").value;
+        var pass = document.getElementById("staffPass").value.trim();
 
-      btn.disabled = true;
-      btn.innerText = "Đang kiểm tra... ⏳";
-
-      db.ref('caiDatBaoMat/passAdmin').once('value').then(function(snap) {
-        var realPass = snap.val() || "boss123"; // Giá trị mặc định nếu chưa tạo node trên Firebase
-
-        if (passInput === realPass) {
-          // Cấp vé thông hành bảo mật cho Admin
+        if (!staffKey) { alert("Vui lòng chọn nhân sự!"); return; }
+        var st = danhSachStaffData[staffKey];
+        if (st && st.pass === pass) {
+          sessionStorage.setItem("sky_staff_logged", "true");
+          localStorage.setItem("myStaffName", st.ten);
+          localStorage.setItem("myIcon", st.icon || "🌸");
+          localStorage.setItem("myStaffSkills", JSON.stringify(st.kyNang || ["uber", "host", "logacc"]));
+          window.location.href = "staff.html";
+        } else {
+          alert("Sai mật khẩu Staff!");
+        }
+      } else if (vt === "admin") {
+        var passAd = document.getElementById("adminPass").value.trim();
+        if (passAd === "0000") {
           sessionStorage.setItem("sky_admin_logged", "true");
-          sessionStorage.setItem("sky_admin_time", Date.now());
           window.location.href = "admin.html";
         } else {
-          alert("Mật mã Admin không chính xác!");
-          btn.disabled = false;
-          btn.innerText = "Vào Trang Quản Trị 👑";
+          alert("Mật khẩu Admin không chính xác!");
         }
-      }).catch(function(err) {
-        alert("Lỗi kiểm tra bảo mật: " + err.message);
-        btn.disabled = false;
-        btn.innerText = "Vào Trang Quản Trị 👑";
-      });
-    }
-
-    // 4. Đăng nhập Staff an toàn: lưu thông tin và quyền hạn làm việc
-    function dangNhapStaff() {
-      var staffId = document.getElementById("selectStaffCloud").value;
-      var pass = document.getElementById("passStaff").value.trim();
-
-      if (staffId === "none" || !danhSachStaffData[staffId]) {
-        alert("Chưa có thông tin nhân sự!");
-        return;
-      }
-
-      var st = danhSachStaffData[staffId];
-      if (st.pass === pass) {
-        // Cấp session và dữ liệu nhân sự để trang staff.html nhận diện
-        sessionStorage.setItem("sky_staff_logged", "true");
-        localStorage.setItem("myIcon", st.icon || "🌸");
-        localStorage.setItem("myStaffName", st.ten);
-        localStorage.setItem("myStaffSkills", JSON.stringify(st.kyNang || ["uber", "host", "logacc"]));
-        
-        window.location.href = "staff.html";
-      } else {
-        alert("Sai mật khẩu riêng của bồ rồi nha!");
       }
     }
-
-    // Khởi chạy hiển thị ban đầu
-    hienThiTheoVaiTro();
   </script>
-
 </body>
 </html>
