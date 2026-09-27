@@ -64,78 +64,12 @@
     <!-- ==================== TRANG 2: BẢNG GIÁ SƠ ĐỒ NHÁNH CÂY ==================== -->
     <section id="tab-pricing" class="lobby-page">
       <div class="lobby-section">
-        <h2>🌳 Sơ Đồ Bảng Giá Chi Tiết</h2>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">Biểu đồ phân cấp dịch vụ và giá niêm yết tương ứng của Page:</p>
+        <h2>🌳 Sơ Đồ Phân Cấp Dịch Vụ & Bảng Giá</h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">Biểu đồ các mảng và gói dịch vụ đang hoạt động tại Page:</p>
 
-        <div class="tree-board">
-          
-          <!-- Nhánh 1: UBER -->
-          <div class="tree-container tree-uber">
-            <div class="node-root">Uber</div>
-            <div class="mid-branch-group">
-              
-              <!-- Nhánh con: Nhặt nến -->
-              <div class="node-mid-wrapper">
-                <div class="node-mid">Nhặt Nến</div>
-                <div class="leaf-branch-group">
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>Nhặt 15 Nến</span><strong id="p_uber_15nen">Liên hệ</strong></div></div>
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>15 Nến + Quest</span><strong id="p_uber_15nen_quest">Liên hệ</strong></div></div>
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>Xám Nến</span><strong id="p_uber_xamnen">Liên hệ</strong></div></div>
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>Xám Nến + Quest</span><strong id="p_uber_xamnen_quest">Liên hệ</strong></div></div>
-                </div>
-              </div>
-
-              <!-- Nhánh con: Nhặt cánh -->
-              <div class="node-mid-wrapper">
-                <div class="node-mid">Nhặt Cánh</div>
-                <div class="leaf-branch-group">
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>Toàn Map Winglight</span><strong id="p_uber_nhatcanh">Liên hệ</strong></div></div>
-                </div>
-              </div>
-
-              <!-- Nhánh con: Đi Eden -->
-              <div class="node-mid-wrapper">
-                <div class="node-mid">Đi Eden</div>
-                <div class="leaf-branch-group">
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>Dẫn Đi Trọn Gói</span><strong id="p_uber_eden">Liên hệ</strong></div></div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- Nhánh 2: HOST -->
-          <div class="tree-container tree-host">
-            <div class="node-root">Host</div>
-            <div class="mid-branch-group">
-              <div class="node-mid-wrapper">
-                <div class="node-mid">Dịch Vụ Đồng Hành</div>
-                <div class="leaf-branch-group">
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>Tâm Sự (1h / 30p)</span><strong id="p_host_tamsu">Liên hệ</strong></div></div>
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>Đàn Nhạc (1h / 30p)</span><strong id="p_host_dan">Liên hệ</strong></div></div>
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>Fakelove (1h / 30p)</span><strong id="p_host_nguoiyeu">Liên hệ</strong></div></div>
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>Treo Máy Cùng Nhau</span><strong id="p_host_treomay">Liên hệ</strong></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Nhánh 3: LOG ACC -->
-          <div class="tree-container tree-log">
-            <div class="node-root">Log Acc</div>
-            <div class="mid-branch-group">
-              <div class="node-mid-wrapper">
-                <div class="node-mid">Gói Chăm Sóc Acc</div>
-                <div class="leaf-branch-group">
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>15 Nến (Ngày/Tuần/Tháng)</span><strong id="p_log_15nen">Liên hệ</strong></div></div>
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>Xám Nến + Quest</span><strong id="p_log_xamnen">Liên hệ</strong></div></div>
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>Gói Tuần (+ Vé Sự Kiện)</span><strong id="p_log_tuan">Liên hệ</strong></div></div>
-                  <div class="node-leaf-wrapper"><div class="node-leaf"><span>Gói Tháng (+ Vé Sự Kiện)</span><strong id="p_log_thang">Liên hệ</strong></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
+        <!-- Khung Chứa Cây Vẽ Tự Động Từ Firebase -->
+        <div class="tree-board" id="dynamicTreeBoard">
+          <p style="text-align:center; color: var(--text-muted);">Đang dựng sơ đồ dịch vụ...</p>
         </div>
       </div>
     </section>
@@ -326,6 +260,78 @@
             <span class="feedback-author" style="display:block; margin-top:8px;">- Khách hàng ${tenAnDanh}</span>
           </div>
         `;
+      });
+    });
+
+    // Tự động dựng sơ đồ nhánh cây động (Hierarchy) từ Firebase
+    db.ref('cayBangGia').on('value', function(snapshot) {
+      var treeData = snapshot.val();
+      var board = document.getElementById("dynamicTreeBoard");
+      board.innerHTML = "";
+
+      if (!treeData) {
+        board.innerHTML = "<p style='text-align:center; color:var(--text-muted);'>Page đang cập nhật bảng giá dịch vụ mới.</p>";
+        return;
+      }
+
+      // Nhóm dữ liệu theo Mảng -> Nhóm (Cấp 1) -> Gói (Cấp 2)
+      var treeMap = { uber: {}, host: {}, logacc: {} };
+
+      Object.values(treeData).forEach(function(item) {
+        // Chỉ vẽ các nhánh đang được bật hiển thị
+        if (item.hienThi !== false) {
+          if (!treeMap[item.mang]) treeMap[item.mang] = {};
+          if (!treeMap[item.mang][item.nhom]) treeMap[item.mang][item.nhom] = [];
+          treeMap[item.mang][item.nhom].push({ goi: item.goi, gia: item.gia });
+        }
+      });
+
+      var mangConfig = [
+        { key: "uber", label: "Uber", class: "tree-uber" },
+        { key: "host", label: "Host", class: "tree-host" },
+        { key: "logacc", label: "Log Acc", class: "tree-log" }
+      ];
+
+      mangConfig.forEach(function(cfg) {
+        var groups = treeMap[cfg.key];
+        var groupKeys = Object.keys(groups);
+
+        // Nếu mảng này có dịch vụ đang mở thì mới vẽ cây
+        if (groupKeys.length > 0) {
+          var midHTML = "";
+
+          groupKeys.forEach(function(nhomName) {
+            var leafHTML = "";
+            groups[nhomName].forEach(function(leaf) {
+              leafHTML += `
+                <div class="node-leaf-wrapper">
+                  <div class="node-leaf">
+                    <span>${leaf.goi}</span>
+                    <strong>${leaf.gia}</strong>
+                  </div>
+                </div>
+              `;
+            });
+
+            midHTML += `
+              <div class="node-mid-wrapper">
+                <div class="node-mid">${nhomName}</div>
+                <div class="leaf-branch-group">
+                  ${leafHTML}
+                </div>
+              </div>
+            `;
+          });
+
+          board.innerHTML += `
+            <div class="tree-container ${cfg.class}">
+              <div class="node-root">${cfg.label}</div>
+              <div class="mid-branch-group">
+                ${midHTML}
+              </div>
+            </div>
+          `;
+        }
       });
     });
   </script>
