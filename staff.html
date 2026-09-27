@@ -10,31 +10,37 @@
 </head>
 <body class="staff-layout">
 
-  <!-- BONG BÓNG MINI CHAT RIÊNG BIỆT CỦA STAFF -->
+  <!-- BONG BÓNG MINI CHAT RIÊNG BIỆT -->
   <div id="chatheadsList" class="chatheads-container"></div>
 
   <!-- NÚT MỞ THÔNG BÁO TỪ ADMIN -->
   <div class="toggle-btn" onclick="moThongBao()">◀</div>
 
-  <!-- SIDE PANEL THÔNG BÁO TỪ ADMIN -->
+  <!-- SIDE PANEL THÔNG BÁO TỪ ADMIN (ĐÃ CỐ ĐỊNH CHUẨN) -->
   <div id="sidePanel" class="side-panel">
     <div class="noti-header">
       <h3 style="margin: 0; font-size: 15px; font-weight: 700;">Thông Báo Từ Admin 🔔</h3>
-      <button type="button" onclick="moThongBao()" class="close-btn">✖</button>
+      <button type="button" onclick="moThongBao()" class="close-btn">✕</button>
     </div>
     <div id="danhSachThongBaoAdmin">
       <div class="noti-card">
-        <strong>Hệ thống</strong> <span class="time">Mới</span>
-        <p>Chào mừng bạn đến với ca làm việc hôm nay!</p>
+        <strong>Hệ thống</strong>
+        <p style="margin: 4px 0 0 0;">Chào mừng bạn đến với ca trực hôm nay!</p>
       </div>
     </div>
   </div>
 
   <div class="lobby-container">
     
-    <!-- 1. BẢNG LỊCH ĐĂNG KÝ CA LÀM VIỆC -->
-    <div class="lobby-section" style="border-radius: 36px; text-align: center;">
-      <h2 style="justify-content: center;">🕒 Lịch Đăng Ký Ca Làm Việc</h2>
+    <!-- 1. BẢNG LỊCH ĐĂNG KÝ CA LÀM VIỆC DẠNG EXCEL KÍNH MỜ -->
+    <div class="schedule-table-wrap" style="margin-bottom: 26px;">
+      <h2 style="font-size: 18px; font-weight: 700; margin-top: 0; margin-bottom: 16px; text-align: center;">
+        🕒 Lịch Đăng Ký Ca Làm Việc
+      </h2>
+      <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: -10px; margin-bottom: 16px;">
+        Bấm vào ô ca của bạn để chuyển đổi: <strong>Trống / Rảnh / Bận</strong>
+      </p>
+
       <table class="schedule-table" id="bangLich">
         <thead>
           <tr>
@@ -123,34 +129,84 @@
       if (Array.isArray(p)) mySkills = p;
     } catch(e) {}
 
-    function moThongBao() { document.getElementById("sidePanel").classList.toggle("panel-open"); }
+    // Bật tắt side panel
+    function moThongBao() {
+      document.getElementById("sidePanel").classList.toggle("panel-open");
+    }
 
-    // ==========================================
-    // KHỞI TẠO LỊCH THÁNG CHẤM CÔNG REALTIME
-    // ==========================================
+    // 1. Tải thông báo từ Admin
+    db.ref('thongBaoAdmin').on('value', function(snap) {
+      var notis = snap.val();
+      var box = document.getElementById("danhSachThongBaoAdmin");
+      if (notis) {
+        box.innerHTML = "";
+        Object.values(notis).reverse().forEach(function(n) {
+          box.innerHTML += `
+            <div class="noti-card">
+              <strong>Admin:</strong> <span style="font-size:11px; color:#94a3b8; float:right;">${n.gio || ""}</span>
+              <p style="margin:4px 0 0 0;">${n.noiDung}</p>
+            </div>
+          `;
+        });
+      }
+    });
+
+    // 2. Bảng Lịch Đăng Ký Ca Làm Việc Kính Mờ Excel
+    db.ref('danhSachStaff').on('value', function(snapshot) {
+      var staffList = snapshot.val();
+      var tbody = document.getElementById("tbodyLichStaff");
+      tbody.innerHTML = "";
+      if (!staffList) return;
+
+      Object.keys(staffList).forEach(function(k) {
+        var st = staffList[k];
+        var isMe = (st.ten === myStaffName);
+        var clickAttr = isMe ? 'onclick="doiTrangThaiCa(this)" style="cursor:pointer;"' : 'style="opacity:0.6; cursor:not-allowed;" title="Chỉ ' + st.ten + ' mới có quyền đổi"';
+
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${st.ten} ${st.icon || "🌸"}</strong></td>
+            <td class="ca-lam" ${clickAttr}>Trống</td>
+            <td class="ca-lam" ${clickAttr}>Trống</td>
+            <td class="ca-lam" ${clickAttr}>Trống</td>
+          </tr>
+        `;
+      });
+    });
+
+    function doiTrangThaiCa(cell) {
+      if (cell.innerHTML === "Trống") {
+        cell.className = "ca-lam ca-selected";
+        cell.innerHTML = "Rảnh ✨";
+      } else if (cell.innerHTML.includes("Rảnh")) {
+        cell.className = "ca-lam busy";
+        cell.innerHTML = "Bận";
+      } else {
+        cell.className = "ca-lam";
+        cell.innerHTML = "Trống";
+      }
+    }
+
+    // 3. Lịch tháng chấm công realtime
     function dungLichThangRealtime() {
       var now = new Date();
       var y = now.getFullYear();
-      var m = now.getMonth(); // 0 - 11
+      var m = now.getMonth();
       var todayDate = now.getDate();
 
       document.getElementById("calCurrentMonthTitle").innerText = `Lịch Tháng ${(m + 1)}/${y}`;
 
-      var firstDay = new Date(y, m, 1).getDay(); // 0 là CN, 1 là T2...
+      var firstDay = new Date(y, m, 1).getDay();
       var daysInMonth = new Date(y, m + 1, 0).getDate();
-      
-      // Đổi để T2 là cột đầu tiên (0: T2 ... 6: CN)
       var startCol = (firstDay === 0) ? 6 : (firstDay - 1);
 
       var grid = document.getElementById("realtimeDaysGrid");
       grid.innerHTML = "";
 
-      // Tạo các ô trống đầu tháng
       for (var b = 0; b < startCol; b++) {
         grid.innerHTML += `<div class="cal-day-cell" style="opacity: 0.2; background: transparent; border: none;"></div>`;
       }
 
-      // Tạo các ô ngày trong tháng
       for (var d = 1; d <= daysInMonth; d++) {
         var isTodayCls = (d === todayDate) ? "is-today" : "";
         grid.innerHTML += `
@@ -161,7 +217,6 @@
         `;
       }
 
-      // Lắng nghe dữ liệu chấm công từ Firebase
       db.ref(`chamCong/${iconCuaToi}/${y}_${m+1}`).on('value', function(snap) {
         var workedDays = snap.val() || {};
         Object.keys(workedDays).forEach(function(dayNum) {
@@ -176,35 +231,7 @@
     }
     dungLichThangRealtime();
 
-    // 1. Lắng nghe lịch ca trực
-    db.ref('danhSachStaff').on('value', function(snapshot) {
-      var staffList = snapshot.val();
-      var tbody = document.getElementById("tbodyLichStaff");
-      tbody.innerHTML = "";
-      if (!staffList) return;
-
-      Object.keys(staffList).forEach(function(k) {
-        var st = staffList[k];
-        var isMe = st.ten === myStaffName;
-        var clickAttr = isMe ? 'onclick="doiTrangThai(this)" style="cursor:pointer;"' : 'style="opacity:0.6;"';
-
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${st.ten} ${st.icon || "🌸"}</strong></td>
-            <td class="ca-lam" ${clickAttr}>Trống</td>
-            <td class="ca-lam" ${clickAttr}>Trống</td>
-            <td class="ca-lam" ${clickAttr}>Trống</td>
-          </tr>
-        `;
-      });
-    });
-
-    function doiTrangThai(o) {
-      if (o.classList.contains("available")) { o.className = "ca-lam busy"; o.innerHTML = "Bận"; }
-      else { o.className = "ca-lam available"; o.innerHTML = "Rảnh"; }
-    }
-
-    // 2. Lắng nghe đơn hàng
+    // 4. Lưới đơn hàng
     db.ref('donHangSky').on('value', function(snap) {
       var list = snap.val();
       var box = document.getElementById("danhSachDonHang");
@@ -239,9 +266,8 @@
       db.ref('donHangSky/' + maDon).update({ daNhan: true, staffNhan: iconCuaToi }).then(function() {
         dongModal();
         var now = new Date();
-        // Chấm công theo Tháng/Năm thực tế
         db.ref(`chamCong/${iconCuaToi}/${now.getFullYear()}_${now.getMonth()+1}/${now.getDate()}`).set(true);
-        alert("Đã nhận đơn thành công! Hãy liên hệ khách hàng ngay.");
+        alert("Đã nhận đơn thành công! Hãy trao đổi cùng khách hàng.");
       });
     }
 
