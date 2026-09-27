@@ -44,41 +44,60 @@
     </section>
 
     <!-- 3. KHU VỰC CHỈNH SỬA BẢNG GIÁ CHI TIẾT & LUẬT HÓA ĐƠN -->
+    <!-- 2. QUẢN LÝ CÂY BẢNG GIÁ ĐỘNG (DẠNG HIERARCHY CẤP 1 & CẤP 2) -->
     <section class="admin-section" style="border-left: 4px solid #0284c7;">
       <div class="section-title-box">
-        <h3>⚙️ Chỉnh Sửa Bảng Giá Từng Dịch Vụ Cụ Thể</h3>
+        <h3> Quản Lý Bảng Giá </h3>
+        <span class="badge-count">Dynamic Hierarchy</span>
       </div>
-      
-      <div class="admin-price-columns">
-        <!-- Cột Uber -->
-        <div class="admin-price-box">
-          <h4 style="color: #0284c7;">Uber</h4>
-          <div class="admin-input-row"><label>Nhặt 15 Nến:</label><input type="text" id="adm_uber_15nen"></div>
-          <div class="admin-input-row"><label>15 Nến + Quest:</label><input type="text" id="adm_uber_15nen_quest"></div>
-          <div class="admin-input-row"><label>Xám Nến:</label><input type="text" id="adm_uber_xamnen"></div>
-          <div class="admin-input-row"><label>Xám Nến + Quest:</label><input type="text" id="adm_uber_xamnen_quest"></div>
-          <div class="admin-input-row"><label>Nhặt winglights:</label><input type="text" id="adm_uber_nhatcanh"></div>
-          <div class="admin-input-row"><label>Đi Eden:</label><input type="text" id="adm_uber_eden"></div>
-        </div>
 
-        <!-- Cột Host -->
-        <div class="admin-price-box">
-          <h4 style="color: #d97706;">Host</h4>
-          <div class="admin-input-row"><label>Tâm Sự (1h / 30p):</label><input type="text" id="adm_host_tamsu"></div>
-          <div class="admin-input-row"><label>Đàn (1h / 30p):</label><input type="text" id="adm_host_dan"></div>
-          <div class="admin-input-row"><label>Fakelove (1h / 30p):</label><input type="text" id="adm_host_nguoiyeu"></div>
-          <div class="admin-input-row"><label>Treo Máy (1h / 30p):</label><input type="text" id="adm_host_treomay"></div>
-        </div>
-
-        <!-- Cột Log Acc -->
-        <div class="admin-price-box">
-          <h4 style="color: #059669;">Log Acc</h4>
-          <div class="admin-input-row"><label>15 Nến (Ngày/Tuần/Tháng):</label><input type="text" id="adm_log_15nen"></div>
-          <div class="admin-input-row"><label>Xám Nến + Quest (Ngày/Tuần/Tháng):</label><input type="text" id="adm_log_xamnen"></div>
-          <div class="admin-input-row"><label>Gói Tuần (xám + quest + vé):</label><input type="text" id="adm_log_tuan"></div>
-          <div class="admin-input-row"><label>Gói Tháng (xám + quest + vé):</label><input type="text" id="adm_log_thang"></div>
+      <!-- Khung Thêm Nhanh Dịch Vụ Mới -->
+      <div style="background: rgba(248, 250, 252, 0.85); padding: 18px; border-radius: var(--radius-inner); border: 1px solid #e2e8f0; margin-bottom: 20px;">
+        <h4 style="margin: 0 0 12px 0; font-size: 14px;">➕ Thêm Nhánh Dịch Vụ Vào Bảng Giá</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1fr auto; gap: 10px; align-items: flex-end;">
+          <div>
+            <label style="font-size: 12px;">Mảng Lớn:</label>
+            <select id="admTreeMang" style="margin-bottom:0;">
+              <option value="uber">⚡ UBER</option>
+              <option value="host">🌸 HOST</option>
+              <option value="logacc">🔒 LOG ACC</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 12px;">Nhánh Cấp 1 (Nhóm Gói):</label>
+            <input type="text" id="admTreeNhom" placeholder="vd: Nhặt Nến, Đi Eden..." style="margin-bottom:0;">
+          </div>
+          <div>
+            <label style="font-size: 12px;">Nhánh Cấp 2 (Gói Cụ Thể):</label>
+            <input type="text" id="admTreeGoi" placeholder="vd: 15 nến, 1h, Tâm sự..." style="margin-bottom:0;">
+          </div>
+          <div>
+            <label style="font-size: 12px;">Giá Niêm Yết:</label>
+            <input type="text" id="admTreeGia" placeholder="vd: 5k, 20k, Liên hệ..." style="margin-bottom:0;">
+          </div>
+          <button type="button" onclick="themNhanhCayMoi()" style="background:#0284c7; color:white; height: 42px;">Thêm ✨</button>
         </div>
       </div>
+
+      <!-- Danh Sách Cây Phân Cấp Đang Hoạt Động (Cho Phép Ẩn/Hiện Hoặc Xóa) -->
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Mảng Lớn</th>
+              <th>Nhánh Cấp 1 (Nhóm Dịch Vụ)</th>
+              <th>Nhánh Cấp 2 (Gói Cụ Thể)</th>
+              <th>Giá Tiền</th>
+              <th>Trạng Thái</th>
+              <th>Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody id="bangTreeDichVu">
+            <tr><td colspan="6" style="text-align:center;">Đang tải danh sách cây dịch vụ...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
         <div>
@@ -737,6 +756,80 @@
         });
       };
       reader.readAsDataURL(fileInput.files[0]);
+    }
+
+    // 1. Tải và hiển thị danh sách cây dịch vụ phân cấp
+    db.ref('cayBangGia').on('value', function(snapshot) {
+      var treeData = snapshot.val();
+      var tbody = document.getElementById("bangTreeDichVu");
+      tbody.innerHTML = "";
+
+      if (!treeData) {
+        tbody.innerHTML = "<tr><td colspan='6' style='text-align:center; color:#888;'>Chưa có gói dịch vụ nào. Hãy thêm nhánh đầu tiên!</td></tr>";
+        return;
+      }
+
+      Object.keys(treeData).forEach(function(itemId) {
+        var item = treeData[itemId];
+        var mangTag = item.mang === "uber" ? `<span class="badge-payment">UBER</span>` : (item.mang === "host" ? `<span class="badge-done" style="background:#fef3c7; color:#b45309;">HOST</span>` : `<span class="badge-done">LOG ACC</span>`);
+        var statusBadge = item.hienThi !== false 
+          ? `<span style="color:#16a34a; font-weight:bold; font-size:12px;">● Đang Bật</span>` 
+          : `<span style="color:#94a3b8; font-weight:bold; font-size:12px;">○ Đang Ẩn</span>`;
+        var nutDoiTrangThai = item.hienThi !== false 
+          ? `<button type="button" onclick="doiTrangThaiNhanh('${itemId}', false)" style="font-size:11px; padding:3px 8px; background:#e2e8f0; color:#334155;">Tạm Ẩn</button>` 
+          : `<button type="button" onclick="doiTrangThaiNhanh('${itemId}', true)" style="font-size:11px; padding:3px 8px; background:#dcfce7; color:#15803d;">Bật Lại</button>`;
+
+        tbody.innerHTML += `
+          <tr>
+            <td>${mangTag}</td>
+            <td><strong>${item.nhom}</strong></td>
+            <td>${item.goi}</td>
+            <td><strong style="color:#ea580c;">${item.gia}</strong></td>
+            <td>${statusBadge}</td>
+            <td>
+              ${nutDoiTrangThai}
+              <button type="button" class="btn-xoa" onclick="xoaNhanhCay('${itemId}')" style="font-size:11px; padding:3px 8px; margin-left:6px;">Xóa 🗑️</button>
+            </td>
+          </tr>
+        `;
+      });
+    });
+
+    // 2. Thêm nhánh dịch vụ mới vào cây phân cấp
+    function themNhanhCayMoi() {
+      var mang = document.getElementById("admTreeMang").value;
+      var nhom = document.getElementById("admTreeNhom").value.trim();
+      var goi = document.getElementById("admTreeGoi").value.trim();
+      var gia = document.getElementById("admTreeGia").value.trim() || "Liên hệ";
+
+      if (!nhom || !goi) {
+        alert("Vui lòng nhập tên Nhánh cấp 1 (Nhóm) và Nhánh cấp 2 (Gói)!");
+        return;
+      }
+
+      db.ref('cayBangGia').push({
+        mang: mang,
+        nhom: nhom,
+        goi: goi,
+        gia: gia,
+        hienThi: true,
+        thoiGianTao: Date.now()
+      }).then(function() {
+        document.getElementById("admTreeGoi").value = "";
+        document.getElementById("admTreeGia").value = "";
+      });
+    }
+
+    // 3. Ẩn/Hiện nhánh dịch vụ
+    function doiTrangThaiNhanh(id, status) {
+      db.ref('cayBangGia/' + id).update({ hienThi: status });
+    }
+
+    // 4. Xóa nhánh dịch vụ
+    function xoaNhanhCay(id) {
+      if (confirm("Admin có chắc chắn muốn xóa gói dịch vụ này khỏi cây bảng giá?")) {
+        db.ref('cayBangGia/' + id).remove();
+      }
     }
   </script>
 </body>
