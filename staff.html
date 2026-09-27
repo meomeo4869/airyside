@@ -16,7 +16,7 @@
   <!-- NÚT MỞ THÔNG BÁO TỪ ADMIN -->
   <div class="toggle-btn" onclick="moThongBao()">◀</div>
 
-  <!-- SIDE PANEL THÔNG BÁO TỪ ADMIN (ĐÃ CỐ ĐỊNH CHUẨN) -->
+  <!-- SIDE PANEL THÔNG BÁO TỪ ADMIN -->
   <div id="sidePanel" class="side-panel">
     <div class="noti-header">
       <h3 style="margin: 0; font-size: 15px; font-weight: 700;">Thông Báo Từ Admin 🔔</h3>
@@ -32,13 +32,13 @@
 
   <div class="lobby-container">
     
-    <!-- 1. BẢNG LỊCH ĐĂNG KÝ CA LÀM VIỆC DẠNG EXCEL KÍNH MỜ -->
+    <!-- 1. BẢNG LỊCH ĐĂNG KÝ CA LÀM VIỆC DẠNG KÍNH EXCEL -->
     <div class="schedule-table-wrap" style="margin-bottom: 26px;">
       <h2 style="font-size: 18px; font-weight: 700; margin-top: 0; margin-bottom: 16px; text-align: center;">
         🕒 Lịch Đăng Ký Ca Làm Việc
       </h2>
       <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: -10px; margin-bottom: 16px;">
-        Bấm vào ô ca của bạn để chuyển đổi: <strong>Trống / Rảnh / Bận</strong>
+        Bấm vào ô ca của bạn để đổi: <strong>Trống / Rảnh / Bận</strong>
       </p>
 
       <table class="schedule-table" id="bangLich">
@@ -57,8 +57,8 @@
     </div>
 
     <!-- 2. LƯỚI ĐƠN HÀNG MỚI NHẤT -->
-    <div class="lobby-section" style="border-radius: 36px;">
-      <h2>📦 Đơn Hàng Mới Nhất</h2>
+    <div class="lobby-section">
+      <h2 style="margin-top:0;">📦 Đơn Hàng Mới Nhất</h2>
       <div id="danhSachDonHang" class="order-grid"></div>
     </div>
 
@@ -74,6 +74,14 @@
       </div>
 
       <div class="calendar-days-grid" id="realtimeDaysGrid"></div>
+    </div>
+
+    <!-- 4. KHU VỰC FEEDBACK KHÁCH HÀNG ĐÁNH GIÁ -->
+    <div class="lobby-section">
+      <h2 style="margin-top:0;">⭐ Feedback Từ Khách Hàng</h2>
+      <div class="feedback-grid" id="staffFeedbackGrid">
+        <p style="grid-column: 1/-1; color: var(--text-muted);">Đang tải feedback...</p>
+      </div>
     </div>
 
   </div>
@@ -129,7 +137,6 @@
       if (Array.isArray(p)) mySkills = p;
     } catch(e) {}
 
-    // Bật tắt side panel
     function moThongBao() {
       document.getElementById("sidePanel").classList.toggle("panel-open");
     }
@@ -151,7 +158,7 @@
       }
     });
 
-    // 2. Bảng Lịch Đăng Ký Ca Làm Việc Kính Mờ Excel
+    // 2. Lịch đăng ký ca làm việc
     db.ref('danhSachStaff').on('value', function(snapshot) {
       var staffList = snapshot.val();
       var tbody = document.getElementById("tbodyLichStaff");
@@ -187,7 +194,7 @@
       }
     }
 
-    // 3. Lịch tháng chấm công realtime
+    // 3. Lịch tháng chấm công realtime dạng lưới 7 cột
     function dungLichThangRealtime() {
       var now = new Date();
       var y = now.getFullYear();
@@ -292,6 +299,38 @@
     }
 
     function dongModal() { document.getElementById("modalChiTiet").style.display = "none"; }
+
+    // 5. TẢI TƯỜNG FEEDBACK ĐÁNH GIÁ PHÍA STAFF
+    db.ref('feedbacks').on('value', function(snap) {
+      var data = snap.val();
+      var box = document.getElementById("staffFeedbackGrid");
+      box.innerHTML = "";
+
+      if (!data) {
+        box.innerHTML = "<p style='grid-column: 1/-1; color: var(--text-muted);'>Chưa có feedback nào từ khách hàng.</p>";
+        return;
+      }
+
+      Object.values(data).reverse().forEach(function(fb) {
+        var starStr = "★".repeat(fb.sao || 5);
+        var staffText = fb.staffPhuTrach ? `<span style="font-size: 11.5px; color: #0284c7; font-weight: bold;">(Phục vụ: ${fb.staffPhuTrach})</span>` : "";
+        var anhHTML = (fb.anhFeedback && fb.anhFeedback !== "none") 
+          ? `<div class="feedback-img-box"><img src="${fb.anhFeedback}" onclick="window.open('${fb.anhFeedback}')" title="Bấm xem ảnh lớn"></div>` 
+          : "";
+
+        box.innerHTML += `
+          <div class="feedback-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <div style="color: #f59e0b; font-size:13px;">${starStr}</div>
+              ${staffText}
+            </div>
+            <p style="margin: 6px 0;">"${fb.nhanXet}"</p>
+            ${anhHTML}
+            <span style="font-size: 11.5px; color: var(--text-muted); display: block; margin-top: 6px;">- Khách hàng ${fb.tenKhach ? (fb.tenKhach.charAt(0) + "***") : "Ẩn danh"}</span>
+          </div>
+        `;
+      });
+    });
   </script>
 </body>
 </html>
