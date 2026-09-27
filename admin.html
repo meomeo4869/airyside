@@ -99,55 +99,87 @@
       </div>
     </section>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
-        <div>
-          <label>Lịch Hoạt Động Của Page:</label>
-          <textarea id="adminLichPage" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
-        </div>
-        <div>
-
-          <!-- 2. QUẢN LÝ LỜI TỰA, ẢNH KỶ NIỆM VÀ 4 KHUNG LUẬT -->
-    <section class="admin-section" style="border-left: 4px solid #0284c7;">
+<!-- 2.1. LỊCH HOẠT ĐỘNG CỦA PAGE (DÀN HÀNG NGANG TÙY CHỈNH THEO NGÀY) -->
+    <section class="admin-section" style="border-left: 4px solid #f59e0b;">
       <div class="section-title-box">
-        <h3>📜 Quản Lý Giới Thiệu & 4 Khung Luật Sảnh Chờ</h3>
+        <h3>🕒 Lịch Hoạt Động & Ca Trực Của Page</h3>
+        <span class="badge-count">Thời Gian Hoạt Động</span>
       </div>
 
-      <div style="margin-bottom: 16px;">
-        <label>Lời Giới Thiệu Của Page (Trang Chủ):</label>
+      <div style="background: rgba(248, 250, 252, 0.85); padding: 18px 22px; border-radius: var(--radius-inner); border: 1px solid #e2e8f0;">
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 2fr auto; gap: 12px; align-items: flex-end;">
+          <div>
+            <label style="font-size: 12px;">Ngày Áp Dụng / Ca:</label>
+            <input type="text" id="admLichNgay" placeholder="vd: Hôm nay, Thứ 2 - CN..." style="margin-bottom: 0;">
+          </div>
+          <div>
+            <label style="font-size: 12px;">Giờ Bắt Đầu:</label>
+            <input type="time" id="admLichGioBatDau" style="margin-bottom: 0;">
+          </div>
+          <div>
+            <label style="font-size: 12px;">Giờ Kết Thúc:</label>
+            <input type="time" id="admLichGioKetThuc" style="margin-bottom: 0;">
+          </div>
+          <div>
+            <label style="font-size: 12px;">Ghi Chú Ca Trực (Tùy chọn):</label>
+            <input type="text" id="admLichGhiChu" placeholder="vd: Ca sáng, Nhận full đơn..." style="margin-bottom: 0;">
+          </div>
+          <button type="button" onclick="luuLichHoatDong()" style="background: #f59e0b; color: white; height: 44px; white-space: nowrap;">Lưu Lịch ✨</button>
+        </div>
+
+        <!-- Dòng hiển thị trạng thái lịch đang chạy hiện tại -->
+        <div style="margin-top: 12px; font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
+          <span>Lịch hiện tại đang hiển thị trên Sảnh:</span>
+          <strong id="hienThiLichLive" style="color: #ea580c;">Đang tải...</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.2. QUẢN LÝ GIỚI THIỆU & 4 KHUNG LUẬT (DÀN FULL RỘNG CẢ TRANG) -->
+    <section class="admin-section" style="border-left: 4px solid #0284c7; width: 100%; box-sizing: border-box;">
+      <div class="section-title-box">
+        <h3>📜 Quản Lý Giới Thiệu & 4 Khung Luật Sảnh Chờ</h3>
+        <span class="badge-count">Toàn Quyền Admin</span>
+      </div>
+
+      <!-- Lời Giới Thiệu Page -->
+      <div style="margin-bottom: 18px;">
+        <label>Lời Giới Thiệu Của Page (Hiển thị Trang Chủ Sảnh):</label>
         <textarea id="admGioiThieuPage" rows="2" style="width: 100%; box-sizing: border-box;"></textarea>
       </div>
 
-      <!-- Ô Đăng Ảnh Kỷ Niệm Cho Trang Chủ -->
-      <div style="background: rgba(248, 250, 252, 0.7); padding: 14px; border-radius: var(--radius-inner); margin-bottom: 20px; border: 1px solid #e2e8f0;">
+      <!-- Đăng Ảnh Kỷ Niệm Page -->
+      <div style="background: rgba(248, 250, 252, 0.75); padding: 16px 20px; border-radius: var(--radius-inner); margin-bottom: 22px; border: 1px solid #e2e8f0;">
         <label>Đăng Ảnh Kỷ Niệm Page Lên Trang Chủ:</label>
-        <div style="display: flex; gap: 10px; align-items: center; margin-top: 6px;">
-          <input type="file" id="admFileKyNiem" accept="image/*" style="font-size: 12px; margin-bottom: 0;">
-          <button type="button" onclick="taiAnhKyNiemPage()" style="background:#0284c7; color:white;">Tải Ảnh Lên 📸</button>
+        <div style="display: flex; gap: 12px; align-items: center; margin-top: 6px;">
+          <input type="file" id="admFileKyNiem" accept="image/*" style="font-size: 12px; margin-bottom: 0; flex: 1;">
+          <button type="button" onclick="taiAnhKyNiemPage()" style="background:#0284c7; color:white; white-space: nowrap;">Tải Ảnh Lên 📸</button>
         </div>
       </div>
 
-      <!-- 4 Khung Luật -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <!-- 4 Khung Luật Riêng Biệt (Dàn lưới 2x2 cân xứng) -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
         <div>
           <label><strong>1. Quy Định Chung Của Page:</strong></label>
-          <textarea id="admLuatChung" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
+          <textarea id="admLuatChung" rows="4" style="width: 100%; box-sizing: border-box;"></textarea>
         </div>
         <div>
           <label><strong>2. Luật Riêng Mảng UBER:</strong></label>
-          <textarea id="admLuatUber" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
+          <textarea id="admLuatUber" rows="4" style="width: 100%; box-sizing: border-box;"></textarea>
         </div>
         <div>
           <label><strong>3. Luật Riêng Mảng HOST:</strong></label>
-          <textarea id="admLuatHost" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
+          <textarea id="admLuatHost" rows="4" style="width: 100%; box-sizing: border-box;"></textarea>
         </div>
         <div>
           <label><strong>4. Luật Riêng Mảng LOG ACC:</strong></label>
-          <textarea id="admLuatLogAcc" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
+          <textarea id="admLuatLogAcc" rows="4" style="width: 100%; box-sizing: border-box;"></textarea>
         </div>
       </div>
 
-      <button type="button" onclick="luuToanBoLuatAdmin()" style="background: #0f172a; color: white; margin-top: 18px;">💾 Lưu Toàn Bộ Giới Thiệu & 4 Khung Luật</button>
+      <button type="button" onclick="luuToanBoLuatAdmin()" style="background: #0f172a; color: white; margin-top: 20px; width: 100%; padding: 13px; font-size: 14px;">💾 Lưu Toàn Bộ Giới Thiệu & 4 Khung Luật</button>
     </section>
+          
 
       <!-- Điều khoản trên hóa đơn -->
       <div style="margin-top: 15px;">
