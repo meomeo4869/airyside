@@ -707,85 +707,6 @@ button:hover {
   border: 1px solid #ffedd5;
 }
 
-/* ================================================= */
-/* 1. ĐỒNG HỒ THIÊN VĂN GENSHIN IMPACT AESTHETIC     */
-/* ================================================= */
-.genshin-clock-wrapper {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(28px) saturate(180%);
-  border: 1.5px solid rgba(255, 255, 255, 0.95);
-  border-radius: 36px;
-  padding: 28px 32px;
-  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08), var(--liquid-specular);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin-bottom: 28px;
-  flex-wrap: wrap;
-  gap: 24px;
-}
-
-.genshin-dial-container {
-  position: relative;
-  width: 220px;
-  height: 220px;
-}
-
-#genshinCanvas {
-  width: 220px;
-  height: 220px;
-}
-
-.genshin-clock-data {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  pointer-events: none;
-}
-
-.genshin-digital-time {
-  font-family: 'Plus Jakarta Sans', monospace, sans-serif;
-  font-size: 24px;
-  font-weight: 800;
-  color: var(--text-primary);
-  letter-spacing: 1px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.genshin-status-label {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-top: 4px;
-  display: block;
-}
-
-.status-in-shift { color: #16a34a; text-shadow: 0 0 10px rgba(34, 197, 94, 0.35); }
-.status-resting { color: #94a3b8; }
-
-/* 4 Icon Thiên thể quanh viền đồng hồ Genshin */
-.celestial-icon {
-  position: absolute;
-  font-size: 16px;
-  width: 28px;
-  height: 28px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid #e2e8f0;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  pointer-events: none;
-}
-
-.icon-noon { top: -6px; left: 50%; transform: translateX(-50%); }      /* Mặt trời trưa */
-.icon-midnight { bottom: -6px; left: 50%; transform: translateX(-50%); } /* Trăng khuya */
-.icon-dawn { top: 50%; left: -6px; transform: translateY(-50%); }       /* Bình minh */
-.icon-dusk { top: 50%; right: -6px; transform: translateY(-50%); }      /* Hoàng hôn */
 
 /* ================================================= */
 /* 2. KHUNG LỊCH THÁNG CHẤM CÔNG THỰC TẾ CỦA STAFF   */
@@ -987,20 +908,116 @@ button:hover {
   margin: 4px 0 8px 0;
 }
 
-/* Nút đặt đơn mini ngay trên từng gói bảng giá */
-.btn-order-pill {
-  background: var(--sky-gradient);
-  color: white;
-  border: none;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 9999px;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
-  transition: all 0.2s ease;
+/* 1. KHẮC PHỤC LỖI MINI CHAT BỊ LỘ RA NGOÀI */
+#chatBoxKhach,
+#chatBox {
+  display: none !important;
+  position: fixed !important;
+  right: 24px !important;
+  bottom: 24px !important;
+  z-index: 99999 !important;
 }
 
-.btn-order-pill:hover {
-  transform: scale(1.05);
+/* 2. ĐỒNG HỒ ĐẾM NGƯỢC TỐI GIẢN KIỂU IPHONE (IOS TIMER STYLE) */
+.ios-timer-wrapper {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: 36px;
+  padding: 30px;
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.ios-timer-dial {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#iosTimerCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+}
+
+.ios-timer-center {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  pointer-events: none;
+}
+
+.ios-digital-clock {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.ios-status-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 2px;
+  display: block;
+}
+
+.tag-shift { color: #16a34a; }
+.tag-resting { color: #94a3b8; }
+
+/* 3. BẢNG GIÁ BENTO: BẤM CẢ HÀNG ĐỂ ĐẶT ĐƠN */
+.bento-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background: #ffffff;
+  border-radius: 14px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  cursor: pointer;
+  transition: all 0.25s var(--smooth-flow);
+}
+
+.bento-item-row:hover {
+  border-color: var(--accent-sky);
+  background: #f0f9ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.12);
+}
+
+.bento-item-row span {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.bento-item-row strong {
+  color: #ea580c;
+  font-weight: 700;
+  font-size: 12.5px;
+  background: #fff7ed;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid #ffedd5;
+}
+
+/* 4. THẺ ĐƠN BỊ TỪ CHỐI */
+.customer-order-card.is-rejected {
+  border-left: 4px solid #ef4444;
+  background: #fef2f2;
 }
