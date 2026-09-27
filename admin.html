@@ -863,6 +863,90 @@
         db.ref('cayBangGia/' + id).remove();
       }
     }
+
+    // 1. Tải và lắng nghe Lịch làm việc + 4 Khung luật từ Firebase
+    db.ref('caiDatPage').on('value', function(snap) {
+      var set = snap.val() || {};
+      
+      // Đổ dữ liệu Lịch làm việc
+      if (set.lichChiTiet) {
+        document.getElementById("admLichNgay").value = set.lichChiTiet.ngay || "";
+        document.getElementById("admLichGioBatDau").value = set.lichChiTiet.gioBatDau || "";
+        document.getElementById("admLichGioKetThuc").value = set.lichChiTiet.gioKetThuc || "";
+        document.getElementById("admLichGhiChu").value = set.lichChiTiet.ghiChu || "";
+        
+        var note = set.lichChiTiet.ghiChu ? ` (${set.lichChiTiet.ghiChu})` : "";
+        document.getElementById("hienThiLichLive").innerText = 
+          `${set.lichChiTiet.ngay}: ${set.lichChiTiet.gioBatDau} - ${set.lichChiTiet.gioKetThuc}${note}`;
+      } else {
+        document.getElementById("hienThiLichLive").innerText = set.lichPage || "Chưa thiết lập lịch chi tiết";
+      }
+
+      // Đổ dữ liệu Giới thiệu & 4 Khung luật
+      document.getElementById("admGioiThieuPage").value = set.gioiThieuPage || "";
+      document.getElementById("admLuatChung").value = set.dieuKhoan || "";
+      document.getElementById("admLuatUber").value = set.luatUber || "";
+      document.getElementById("admLuatHost").value = set.luatHost || "";
+      document.getElementById("admLuatLogAcc").value = set.luatLogAcc || "";
+    });
+
+    // 2. Hàm Lưu Lịch làm việc hàng ngang
+    function luuLichHoatDong() {
+      var ngay = document.getElementById("admLichNgay").value.trim() || "Hàng ngày";
+      var batDau = document.getElementById("admLichGioBatDau").value;
+      var ketThuc = document.getElementById("admLichGioKetThuc").value;
+      var ghiChu = document.getElementById("admLichGhiChu").value.trim();
+
+      if (!batDau || !ketThuc) {
+        alert("Vui lòng chọn cả Giờ Bắt Đầu và Giờ Kết Thúc ca trực!");
+        return;
+      }
+
+      var chuoiLichHienThi = `• ${ngay}: ${batDau} - ${ketThuc}` + (ghiChu ? ` (${ghiChu})` : "");
+
+      db.ref('caiDatPage').update({
+        lichPage: chuoiLichHienThi,
+        lichChiTiet: {
+          ngay: ngay,
+          gioBatDau: batDau,
+          gioKetThuc: ketThuc,
+          ghiChu: ghiChu,
+          capNhatLuc: Date.now()
+        }
+      }).then(function() {
+        alert("Đã cập nhật lịch làm việc thành công! ✨");
+      });
+    }
+
+    // 3. Hàm Lưu Lời giới thiệu & 4 Khung luật
+    function luuToanBoLuatAdmin() {
+      db.ref('caiDatPage').update({
+        gioiThieuPage: document.getElementById("admGioiThieuPage").value,
+        dieuKhoan: document.getElementById("admLuatChung").value,
+        luatUber: document.getElementById("admLuatUber").value,
+        luatHost: document.getElementById("admLuatHost").value,
+        luatLogAcc: document.getElementById("admLuatLogAcc").value
+      }).then(function() {
+        alert("Đã lưu thành công Lời giới thiệu & 4 Khung luật lên hệ thống!");
+      });
+    }
+
+    // 4. Hàm tải ảnh kỷ niệm Page
+    function taiAnhKyNiemPage() {
+      var fileInput = document.getElementById("admFileKyNiem");
+      if (!fileInput.files || !fileInput.files[0]) {
+        alert("Vui lòng chọn 1 ảnh để tải lên!");
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        db.ref('anhKyNiemPage').push(e.target.result).then(function() {
+          alert("Đã tải ảnh kỷ niệm lên Trang Chủ thành công! 📸");
+          fileInput.value = "";
+        });
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    }
   </script>
 </body>
 </html>
