@@ -903,3 +903,104 @@ button:hover {
   justify-content: center;
   font-size: 11px;
 }
+
+/* ================================================= */
+/* TRANG LỊCH SỬ ĐƠN HÀNG (3 CỘT TRẠNG THÁI)         */
+/* ================================================= */
+.orders-history-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 15px;
+}
+
+@media (max-width: 900px) {
+  .orders-history-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.order-col-box {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(24px);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: 28px;
+  padding: 22px 18px;
+  box-shadow: 0 14px 30px -10px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+}
+
+.order-col-header {
+  font-size: 15px;
+  font-weight: 700;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-col-badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-weight: 700;
+}
+
+.col-pending { border-top: 4px solid #f59e0b; }
+.col-pending .order-col-badge { background: #fef3c7; color: #b45309; }
+
+.col-running { border-top: 4px solid #0284c7; }
+.col-running .order-col-badge { background: #e0f2fe; color: #0369a1; }
+
+.col-done { border-top: 4px solid #10b981; }
+.col-done .order-col-badge { background: #dcfce7; color: #15803d; }
+
+.customer-order-card {
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 18px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  font-size: 13px;
+  line-height: 1.5;
+  transition: all 0.25s ease;
+}
+
+.customer-order-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-sky);
+  box-shadow: 0 8px 18px rgba(2, 132, 199, 0.1);
+}
+
+.customer-order-card strong {
+  color: var(--text-primary);
+}
+
+.customer-order-card .order-meta {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin: 4px 0 8px 0;
+}
+
+/* Nút đặt đơn mini ngay trên từng gói bảng giá */
+.btn-order-pill {
+  background: var(--sky-gradient);
+  color: white;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-order-pill:hover {
+  transform: scale(1.05);
+}
