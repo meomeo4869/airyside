@@ -1,5 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
 /* ================================================= */
-/* 1. SỬA THANH NAVBAR CAPSULE SÁNG DỊU (HẾT NÚT TỐI MÀU) */
+/* 1. NỀN HOÀNG HÔN SKY SUNSET GRADIENT (CHUẨN ĐẸP)  */
+/* ================================================= */
+:root {
+  --liquid-glass: rgba(255, 255, 255, 0.75);
+  --liquid-border: rgba(255, 255, 255, 0.9);
+  --liquid-specular: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.3);
+  --liquid-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(255, 255, 255, 0.85);
+  
+  --text-primary: #1e293b;
+  --text-muted: #64748b;
+  --text-sub: #94a3b8;
+  --accent-sky: #0284c7;
+  --accent-sky-soft: rgba(2, 132, 199, 0.12);
+  --sky-gradient: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+
+  --radius-capsule: 9999px;
+  --radius-card: 28px;
+  --radius-inner: 16px;
+
+  --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --smooth-flow: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #fdfaf7;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.35) 0px, transparent 45%),
+    radial-gradient(at 100% 0%, rgba(244, 114, 182, 0.3) 0px, transparent 45%),
+    radial-gradient(at 50% 60%, rgba(251, 191, 36, 0.22) 0px, transparent 55%),
+    radial-gradient(at 100% 100%, rgba(147, 197, 253, 0.3) 0px, transparent 50%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+body.staff-layout,
+body.lobby-layout,
+body.admin-layout {
+  display: block;
+  height: auto;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+/* Khung Card căn giữa tuyệt đối */
+.card {
+  background: var(--liquid-glass);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid var(--liquid-border);
+  box-shadow: var(--liquid-shadow), var(--liquid-specular);
+  padding: 42px 36px;
+  border-radius: var(--radius-card);
+  width: 400px;
+  max-width: 90vw;
+  margin: auto;
+  text-align: center;
+}
+
+.card h2 {
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  margin: 0 0 20px 0;
+}
+
+label {
+  display: inline-block;
+  text-align: left;
+  width: 100%;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-inner);
+  font-family: inherit;
+  font-size: 13.5px;
+  color: var(--text-primary);
+  transition: all 0.25s var(--smooth-flow);
+  margin-bottom: 14px;
+}
+
+input:focus, textarea:focus, select:focus {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: var(--accent-sky);
+  outline: none;
+  box-shadow: 0 0 0 3.5px var(--accent-sky-soft), var(--liquid-specular);
+}
+
+button {
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 11px 22px;
+  background: #0f172a;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-capsule);
+  cursor: pointer;
+  transition: all 0.3s var(--spring-bounce);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+button:hover {
+  background: #1e293b;
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* ================================================= */
+/* 2. NAVBAR CAPSULE SÁNG DỊU (HẾT NÚT TỐI MÀU)      */
 /* ================================================= */
 .navbar-capsule-container {
   position: sticky;
@@ -11,12 +146,12 @@
 }
 
 .navbar-capsule {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.95);
   box-shadow: 0 16px 36px -10px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9);
-  border-radius: 9999px;
+  border-radius: var(--radius-capsule);
   padding: 8px 14px 8px 22px;
   display: flex;
   align-items: center;
@@ -36,12 +171,11 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(241, 245, 249, 0.7);
+  background: rgba(241, 245, 249, 0.75);
   padding: 4px;
-  border-radius: 9999px;
+  border-radius: var(--radius-capsule);
 }
 
-/* Các nút chưa chọn: nền trong mờ, chữ mềm mại */
 .nav-item {
   background: transparent;
   color: var(--text-muted);
@@ -49,7 +183,7 @@
   font-size: 13px;
   font-weight: 600;
   padding: 8px 18px;
-  border-radius: 9999px;
+  border-radius: var(--radius-capsule);
   cursor: pointer;
   box-shadow: none;
   transition: all 0.25s ease;
@@ -61,7 +195,6 @@
   transform: none;
 }
 
-/* Nút được bấm chọn: Viên nang trắng tinh khôi nổi bật */
 .nav-item.active {
   background: #ffffff !important;
   color: var(--text-primary) !important;
@@ -70,16 +203,16 @@
 }
 
 .btn-nav-order {
-  background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+  background: var(--sky-gradient);
   color: white;
   border: none;
-  border-radius: 9999px;
+  border-radius: var(--radius-capsule);
   padding: 9px 20px;
   font-size: 13px;
   font-weight: 600;
   box-shadow: 0 6px 18px -3px rgba(2, 132, 199, 0.45);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.3s var(--spring-bounce);
 }
 
 .btn-nav-order:hover {
@@ -88,12 +221,56 @@
 }
 
 /* ================================================= */
-/* 2. SƠ ĐỒ NHÁNH CÂY BẢNG GIÁ NGANG (TREE MINDMAP)  */
+/* 3. BỐ CỤC 4 TRANG PHẲNG & SECTIONS                 */
+/* ================================================= */
+.lobby-container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 30px 20px 100px 20px;
+}
+
+.lobby-page {
+  display: none;
+  animation: fadeSlideUp 0.35s var(--smooth-flow) forwards;
+}
+
+.lobby-page.active-page {
+  display: block;
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.lobby-section {
+  background: var(--liquid-glass);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--liquid-border);
+  border-radius: var(--radius-card);
+  padding: 30px 34px;
+  margin-bottom: 26px;
+  box-shadow: var(--liquid-shadow), var(--liquid-specular);
+}
+
+.lobby-section h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ================================================= */
+/* 4. SƠ ĐỒ NHÁNH CÂY BẢNG GIÁ NGANG 3 CẤP (MINDMAP) */
 /* ================================================= */
 .tree-board {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 36px;
   margin-top: 15px;
 }
 
@@ -234,7 +411,7 @@
 }
 
 /* ================================================= */
-/* 3. THẺ PROFILE STAFF & GÓC KỶ NIỆM PAGE           */
+/* 5. PROFILE MEMBER THẺ TREO & GÓC KỶ NIỆM          */
 /* ================================================= */
 .staff-hanging-grid {
   display: grid;
@@ -252,16 +429,13 @@
   text-align: center;
   box-shadow: 0 12px 28px -8px rgba(15, 23, 42, 0.08), var(--liquid-specular);
   position: relative;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.3s var(--spring-bounce);
 }
 
-.hanging-card:hover {
-  transform: translateY(-5px);
-}
+.hanging-card:hover { transform: translateY(-5px); }
 
 .card-pin {
-  width: 12px;
-  height: 12px;
+  width: 12px; height: 12px;
   background: #cbd5e1;
   border-radius: 50%;
   margin: -10px auto 14px auto;
@@ -269,14 +443,11 @@
 }
 
 .staff-avatar-box {
-  width: 64px;
-  height: 64px;
+  width: 64px; height: 64px;
   background: rgba(241, 245, 249, 0.9);
   border-radius: 50%;
   margin: 0 auto 12px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   font-size: 28px;
   border: 2px solid white;
   box-shadow: 0 6px 16px rgba(0,0,0,0.06);
@@ -288,14 +459,27 @@
   gap: 14px;
   margin: 10px 0;
   padding: 8px 12px;
-  background: rgba(248, 250, 252, 0.8);
+  background: rgba(248, 250, 252, 0.85);
   border-radius: 12px;
   font-size: 12px;
 }
 
+.staff-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--radius-capsule);
+  margin-top: 6px;
+}
+.status-online { background: #dcfce7; color: #15803d; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 6px #22c55e; }
+
 .page-gallery-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
   margin-top: 16px;
 }
@@ -310,9 +494,84 @@
 }
 
 .gallery-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 100%; height: 100%; object-fit: cover;
   transition: transform 0.3s ease;
 }
 .gallery-card img:hover { transform: scale(1.08); }
+
+/* ================================================= */
+/* 6. 4 KHUNG LUẬT PHÂN TẦNG                         */
+/* ================================================= */
+.rules-columns-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.rule-col-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 20px rgba(148, 163, 184, 0.06);
+}
+
+.rule-col-card h4 { margin: 0 0 10px 0; font-size: 15px; font-weight: 700; }
+
+/* ================================================= */
+/* 7. POPUP & MODALS FROSTED GLASS (ẨN MẶC ĐỊNH)     */
+/* ================================================= */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: none;
+  justify-content: center; align-items: center;
+  z-index: 99999;
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(28px);
+  border-radius: var(--radius-card);
+  box-shadow: 0 30px 60px -15px rgba(15, 23, 42, 0.3), var(--liquid-specular);
+  border: 1px solid var(--liquid-border);
+  padding: 32px;
+  position: relative;
+  max-width: 90vw;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.btn-dong-modal {
+  position: absolute; top: 18px; right: 18px;
+  background: rgba(148, 163, 184, 0.15); border: none;
+  width: 32px; height: 32px; font-size: 16px; font-weight: bold;
+  color: var(--text-muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+}
+.btn-dong-modal:hover { background: rgba(148, 163, 184, 0.3); color: var(--text-primary); }
+
+/* Bảng dữ liệu Admin */
+.admin-header {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--liquid-border);
+  padding: 20px 36px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.admin-container { max-width: 1100px; margin: 36px auto; padding: 0 24px; }
+.admin-section {
+  background: var(--liquid-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--liquid-border);
+  border-radius: var(--radius-card);
+  padding: 26px 30px; margin-bottom: 26px;
+  box-shadow: var(--liquid-shadow), var(--liquid-specular);
+}
+.admin-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+.admin-table th { background: rgba(248, 250, 252, 0.8); color: var(--text-muted); padding: 13px 16px; border-bottom: 1px solid rgba(226, 232, 240, 0.9); }
+.admin-table td { padding: 14px 16px; border-bottom: 1px solid rgba(241, 245, 249, 0.8); }
