@@ -148,12 +148,18 @@
         <textarea id="admGioiThieuPage" rows="2" style="width: 100%; box-sizing: border-box;"></textarea>
       </div>
 
-      <!-- Đăng Ảnh Kỷ Niệm Page -->
+      <!-- KHU VỰC QUẢN LÝ & XÓA ẢNH KỶ NIỆM CỦA PAGE -->
       <div style="background: rgba(248, 250, 252, 0.75); padding: 16px 20px; border-radius: var(--radius-inner); margin-bottom: 22px; border: 1px solid #e2e8f0;">
         <label>Đăng Ảnh Kỷ Niệm Page Lên Trang Chủ:</label>
         <div style="display: flex; gap: 12px; align-items: center; margin-top: 6px;">
           <input type="file" id="admFileKyNiem" accept="image/*" style="font-size: 12px; margin-bottom: 0; flex: 1;">
           <button type="button" onclick="taiAnhKyNiemPage()" style="background:#0284c7; color:white; white-space: nowrap;">Tải Ảnh Lên 📸</button>
+        </div>
+
+        <!-- Lưới Xem & Xóa Từng Tấm Ảnh -->
+        <label style="margin-top: 14px; font-size: 12px;">Các Ảnh Đang Treo Ở Sảnh (Bấm nút đỏ để xóa):</label>
+        <div class="admin-gallery-preview" id="adminPhotoGallery">
+          <p style="font-size: 11.5px; color: #94a3b8;">Chưa có ảnh nào.</p>
         </div>
       </div>
 
