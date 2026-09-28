@@ -1,10 +1,62 @@
-<!-- Khung Thêm Nhanh Dịch Vụ Mới (Có Cả Giá Tiền Mặt & Tim Sky) -->
-      <div style="background: rgba(248, 250, 252, 0.85); padding: 16px; border-radius: 14px; margin-bottom: 16px;">
-        <h4 style="margin:0 0 10px 0; font-size:13px;">➕ Thêm Gói Dịch Vụ Mới</h4>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Sky Services</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+</head>
+<body class="admin-layout">
+
+  <!-- 1. THANH TIÊU ĐỀ ADMIN TRÊN CÙNG -->
+  <div style="background: rgba(255,255,255,0.85); backdrop-filter: blur(16px); padding: 16px 36px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.95); position: sticky; top: 0; z-index: 1000;">
+    <div>
+      <h2 style="margin: 0; font-size: 20px; font-weight: 700;">Admin Dashboard</h2>
+      <p style="margin: 2px 0 0 0; font-size: 12px; color: var(--text-muted);">Bảng điều khiển trung tâm & Cài đặt hệ thống Sky</p>
+    </div>
+    <button onclick="dangXuatAdmin()">Đăng Xuất</button>
+  </div>
+
+  <div class="admin-container">
+
+    <!-- 2. CÀI ĐẶT PHƯƠNG THỨC THANH TOÁN (QR / STK) -->
+    <section class="admin-section" style="border-left: 4px solid #10b981 !important;">
+      <div class="section-title-box">
+        <h3>💳 Phương Thức Thanh Toán (QR / STK)</h3>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: flex-end;">
+        <div>
+          <label>Số Tài Khoản / Ví:</label>
+          <input type="text" id="cfgSTK" placeholder="vd: 0987.654.321" style="margin-bottom:0 !important;">
+        </div>
+        <div>
+          <label>Ngân Hàng / Ví:</label>
+          <input type="text" id="cfgNganHang" placeholder="vd: MB Bank / Momo" style="margin-bottom:0 !important;">
+        </div>
+        <div>
+          <label>Tải Ảnh Mã QR Mới:</label>
+          <input type="file" id="cfgFileQR" accept="image/*" style="font-size:12px; margin-bottom:0 !important;">
+        </div>
+        <button type="button" onclick="luuCaiDatThanhToan()" style="background:#10b981; color:white;">Lưu QR ✨</button>
+      </div>
+    </section>
+
+    <!-- 3. QUẢN LÝ CÂY BẢNG GIÁ ĐỘNG (CẢ TIỀN MẶT VÀ TIM SKY) -->
+    <section class="admin-section" style="border-left: 4px solid #0284c7 !important;">
+      <div class="section-title-box">
+        <h3>🌳 Quản Lý Cây Dịch Vụ & Bảng Giá Động</h3>
+        <span class="badge-count">Dynamic Hierarchy</span>
+      </div>
+
+      <!-- Khung Thêm Nhanh Dịch Vụ Mới -->
+      <div style="background: rgba(248, 250, 252, 0.85); padding: 16px; border-radius: 14px; margin-bottom: 16px; border: 1px solid #e2e8f0;">
+        <h4 style="margin:0 0 10px 0; font-size:13px;">➕ Thêm Gói Dịch Vụ Mới Vào Bảng Giá</h4>
         <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1fr 1fr auto; gap: 8px; align-items: flex-end;">
           <div>
             <label>Mảng:</label>
-            <select id="admTreeMang" style="margin-bottom:0;">
+            <select id="admTreeMang" style="margin-bottom:0 !important;">
               <option value="uber">⚡ UBER</option>
               <option value="host">🌸 HOST</option>
               <option value="logacc">🔒 LOG ACC</option>
@@ -12,20 +64,698 @@
           </div>
           <div>
             <label>Nhóm (Cấp 1):</label>
-            <input type="text" id="admTreeNhom" placeholder="vd: Nhặt nến, Đi eden..." style="margin-bottom:0;">
+            <input type="text" id="admTreeNhom" placeholder="vd: Nhặt nến, Đi eden..." style="margin-bottom:0 !important;">
           </div>
           <div>
-            <label>Gói (Cấp 2):</label>
-            <input type="text" id="admTreeGoi" placeholder="vd: 15 nến, 1h..." style="margin-bottom:0;">
+            <label>Gói Cụ Thể (Cấp 2):</label>
+            <input type="text" id="admTreeGoi" placeholder="vd: 15 nến, 1h..." style="margin-bottom:0 !important;">
           </div>
           <div>
             <label>Giá Tiền Mặt:</label>
-            <input type="text" id="admTreeGia" placeholder="vd: 15k..." style="margin-bottom:0;">
+            <input type="text" id="admTreeGia" placeholder="vd: 15k..." style="margin-bottom:0 !important;">
           </div>
           <div>
             <label>Giá Tim Sky:</label>
-            <input type="text" id="admTreeGiaTim" placeholder="vd: 6 Tim..." style="margin-bottom:0;">
+            <input type="text" id="admTreeGiaTim" placeholder="vd: 6 Tim..." style="margin-bottom:0 !important;">
           </div>
           <button type="button" onclick="themNhanhCayMoi()" style="background:#0284c7; color:white; height:38px;">Thêm ✨</button>
         </div>
       </div>
+
+      <!-- Danh Sách Gói Dịch Vụ Đang Chạy -->
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Mảng Lớn</th>
+              <th>Nhóm (Cấp 1)</th>
+              <th>Gói Cụ Thể (Cấp 2)</th>
+              <th>Giá Tiền Mặt</th>
+              <th>Giá Tim Sky</th>
+              <th>Trạng Thái</th>
+              <th>Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody id="bangTreeDichVu">
+            <tr><td colspan="7" style="text-align:center;">Đang tải bảng giá dịch vụ...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. LỊCH HOẠT ĐỘNG VÀ CA TRỰC CỦA PAGE -->
+    <section class="admin-section" style="border-left: 4px solid #f59e0b !important;">
+      <div class="section-title-box">
+        <h3>🕒 Lịch Hoạt Động & Ca Trực Của Page</h3>
+        <span class="badge-count">Thời Gian Hoạt Động</span>
+      </div>
+
+      <div style="background: rgba(248, 250, 252, 0.85); padding: 16px; border-radius: 14px; border: 1px solid #e2e8f0;">
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 2fr auto; gap: 10px; align-items: flex-end;">
+          <div>
+            <label>Ngày Áp Dụng / Ca:</label>
+            <input type="text" id="admLichNgay" placeholder="vd: Hôm nay, Thứ 2 - CN..." style="margin-bottom:0 !important;">
+          </div>
+          <div>
+            <label>Giờ Bắt Đầu:</label>
+            <input type="time" id="admLichGioBatDau" style="margin-bottom:0 !important;">
+          </div>
+          <div>
+            <label>Giờ Kết Thúc:</label>
+            <input type="time" id="admLichGioKetThuc" style="margin-bottom:0 !important;">
+          </div>
+          <div>
+            <label>Ghi Chú Ca Trực:</label>
+            <input type="text" id="admLichGhiChu" placeholder="vd: Nhận full đơn, trực tối..." style="margin-bottom:0 !important;">
+          </div>
+          <button type="button" onclick="luuLichHoatDong()" style="background:#f59e0b; color:white; height:38px;">Lưu Lịch ✨</button>
+        </div>
+
+        <div style="margin-top: 12px; font-size: 13px; color: var(--text-muted);">
+          <span>Lịch hiện tại đang hiển thị trên Sảnh:</span>
+          <strong id="hienThiLichLive" style="color:#ea580c;">Đang tải...</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. QUẢN LÝ LỜI TỰA, KHO ẢNH KỶ NIỆM & 4 KHUNG LUẬT -->
+    <section class="admin-section" style="border-left: 4px solid #0284c7 !important;">
+      <div class="section-title-box">
+        <h3>📜 Quản Lý Nội Dung Sảnh & 4 Khung Luật</h3>
+        <span class="badge-count">Toàn Quyền Admin</span>
+      </div>
+
+      <div style="margin-bottom: 14px;">
+        <label>Lời Giới Thiệu Của Page (Hiển thị Trang Chủ Sảnh):</label>
+        <textarea id="admGioiThieuPage" rows="2" placeholder="Nhập lời chào mừng khách..."></textarea>
+      </div>
+
+      <!-- Khung Tải & Xóa Ảnh Kỷ Niệm -->
+      <div style="background: rgba(248, 250, 252, 0.85); border: 1px solid #e2e8f0; border-radius: var(--radius-inner); padding: 14px; margin-bottom: 16px;">
+        <label style="margin-top: 0 !important;">Đăng Ảnh Kỷ Niệm Lên Trang Chủ:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <input type="file" id="admFileKyNiem" accept="image/*" style="font-size: 12px; margin-bottom: 0 !important; flex: 1;">
+          <button type="button" onclick="taiAnhKyNiemPage()" style="white-space: nowrap;">Tải Ảnh 📸</button>
+        </div>
+        <label style="margin-top: 12px !important;">Các Ảnh Đang Treo Ở Sảnh (Bấm ✕ để xóa):</label>
+        <div id="adminPhotoGallery" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;"></div>
+      </div>
+
+      <!-- 4 Khung Luật Riêng Biệt -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div>
+          <label><strong>1. Quy Định Chung:</strong></label>
+          <textarea id="admLuatChung" rows="3" placeholder="Nội dung quy định chung..."></textarea>
+        </div>
+        <div>
+          <label><strong>2. Luật Mảng UBER:</strong></label>
+          <textarea id="admLuatUber" rows="3" placeholder="Nội dung luật Uber..."></textarea>
+        </div>
+        <div>
+          <label><strong>3. Luật Mảng HOST:</strong></label>
+          <textarea id="admLuatHost" rows="3" placeholder="Nội dung luật Host..."></textarea>
+        </div>
+        <div>
+          <label><strong>4. Luật Mảng LOG ACC:</strong></label>
+          <textarea id="admLuatLogAcc" rows="3" placeholder="Nội dung luật Log Acc..."></textarea>
+        </div>
+      </div>
+
+      <button type="button" class="btn-dark" onclick="luuToanBoLuatAdmin()" style="width: 100%; padding: 12px; margin-top: 14px;">
+        💾 Lưu Toàn Bộ Giới Thiệu & 4 Khung Luật
+      </button>
+    </section>
+
+    <!-- 6. THEO DÕI ĐƠN HÀNG ĐANG TIẾN HÀNH & DUYỆT TIỀN MẶT -->
+    <section class="admin-section" style="border-left: 4px solid #f59e0b !important;">
+      <div class="section-title-box">
+        <h3>⏳ Đơn Hàng Đang Tiến Hành</h3>
+      </div>
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Khách Hàng</th>
+              <th>Dịch Vụ</th>
+              <th>Thời Gian Hẹn</th>
+              <th>Thanh Toán</th>
+              <th>Staff Phụ Trách</th>
+              <th>Duyệt Tiền Mặt</th>
+              <th>Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody id="bangDonDangChay">
+            <tr><td colspan="7" style="text-align:center;">Chưa có đơn nào đang hoạt động.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 7. QUẢN LÝ HỘI VIÊN GMAIL & TẶNG VOUCHER -->
+    <section class="admin-section" style="border-left: 4px solid #0284c7 !important;">
+      <div class="section-title-box">
+        <h3>📧 Danh Sách Hội Viên Gmail & Quản Lý Ưu Đãi</h3>
+      </div>
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Gmail Hội Viên</th>
+              <th>Số Đơn Đã Đặt</th>
+              <th>Ưu Đãi Đang Có</th>
+              <th>Thao Tác Tặng & Quản Lý</th>
+            </tr>
+          </thead>
+          <tbody id="bangHoiVienAdmin">
+            <tr><td colspan="4" style="text-align:center;">Đang tải danh sách hội viên...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 8. HỘP THƯ BÁO CÁO & KHIẾU NẠI -->
+    <section class="admin-section" style="border-left: 4px solid #dc2626 !important;">
+      <div class="section-title-box">
+        <h3 style="color:#dc2626;">🚩 Hộp Thư Báo Cáo & Khiếu Nại</h3>
+      </div>
+      <div id="bangDanhSachBaoCao">
+        <p style="color:#888;">Chưa có báo cáo vi phạm nào.</p>
+      </div>
+    </section>
+
+    <!-- 9. PHÁT THÔNG BÁO SẢNH & STAFF -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px;">
+      <section class="admin-section" style="border-left: 4px solid #ea580c !important; margin-bottom: 0;">
+        <div class="section-title-box"><h3>📢 Thông Báo Sảnh Chờ</h3></div>
+        <textarea id="tbLobbyInput" rows="2" placeholder="Nội dung thông báo Sảnh..."></textarea>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" onclick="guiThongBaoLobby()" style="background: #ea580c; color:white;">Đăng Lên Sảnh ✨</button>
+          <button type="button" onclick="xoaThongBaoLobby()" style="background: #e2e8f0; color: #334155;">Tắt</button>
+        </div>
+      </section>
+
+      <section class="admin-section" style="border-left: 4px solid #0284c7 !important; margin-bottom: 0;">
+        <div class="section-title-box"><h3>🔔 Gửi Thông Báo Staff (Side Panel)</h3></div>
+        <textarea id="noiDungThongBao" rows="2" placeholder="Nội dung gửi cho Staff..."></textarea>
+        <button type="button" onclick="guiThongBaoAdmin()" style="background: #0284c7; color:white;">Gửi Tới Staff 🚀</button>
+      </section>
+    </div>
+
+    <!-- 10. QUẢN LÝ BLACKLIST (DANH SÁCH ĐEN) -->
+    <section class="admin-section" style="border-left: 4px solid #111827 !important;">
+      <div class="section-title-box"><h3>⛔ Danh Sách Đen (Blacklist)</h3></div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+        <div style="background: rgba(248, 250, 252, 0.7); padding: 14px; border-radius: var(--radius-inner); border: 1px solid #e2e8f0;">
+          <h4 style="margin-top:0; color:#dc2626;">Khách Hàng Bị Cấm</h4>
+          <div style="display:flex; gap:8px; margin-bottom:8px;">
+            <input type="text" id="inputCamKhach" placeholder="Tên khách cần cấm..." style="margin-bottom:0 !important;">
+            <button type="button" onclick="themBlacklistKhach()" style="background:#dc2626; color:white; white-space:nowrap;">Thêm Cấm</button>
+          </div>
+          <ul id="listBlacklistKhach" style="padding-left:18px; font-size:13px; margin:0;"></ul>
+        </div>
+
+        <div style="background: rgba(248, 250, 252, 0.7); padding: 14px; border-radius: var(--radius-inner); border: 1px solid #e2e8f0;">
+          <h4 style="margin-top:0; color:#475569;">Nhân Sự Bị Cấm</h4>
+          <ul id="listBlacklistStaff" style="padding-left:18px; font-size:13px; margin:0;">
+            <li style="color:#888;">Chưa có staff nào vi phạm</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. QUẢN LÝ NHÂN SỰ VÀ PHÂN QUYỀN -->
+    <section class="admin-section" style="border-left: 4px solid #8b5cf6 !important;">
+      <div class="section-title-box"><h3>👥 Quản Lý Nhân Sự & Phân Quyền</h3></div>
+      
+      <div style="background: rgba(248, 250, 252, 0.7); padding: 14px; border-radius: var(--radius-inner); margin-bottom: 16px; border: 1px solid #e2e8f0;">
+        <h4 style="margin-top: 0; margin-bottom: 8px;">➕ Thêm Tài Khoản Nhân Sự Mới</h4>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <input type="text" id="newStaffTen" placeholder="Tên Staff (vd: Michii)" style="flex: 2; margin-bottom:0 !important;">
+          <input type="text" id="newStaffIcon" placeholder="Icon (vd: 🌸)" style="flex: 1; max-width: 90px; margin-bottom:0 !important;">
+          <input type="password" id="newStaffPass" placeholder="Mật khẩu" style="flex: 2; margin-bottom:0 !important;">
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 8px 12px; border-radius: 10px; border: 1px solid #e2e8f0;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <span style="font-size: 13px; font-weight: bold; color: var(--text-muted);">Mảng:</span>
+            <label style="display: inline-flex; align-items: center; gap: 4px; cursor: pointer; margin: 0 !important;"><input type="checkbox" id="skill_uber" value="uber" checked style="width:auto !important; margin:0 !important;">Uber</label>
+            <label style="display: inline-flex; align-items: center; gap: 4px; cursor: pointer; margin: 0 !important;"><input type="checkbox" id="skill_host" value="host" checked style="width:auto !important; margin:0 !important;">Host</label>
+            <label style="display: inline-flex; align-items: center; gap: 4px; cursor: pointer; margin: 0 !important;"><input type="checkbox" id="skill_logacc" value="logacc" style="width:auto !important; margin:0 !important;">Log Acc</label>
+          </div>
+          <button type="button" onclick="themStaffMoi()" style="background: #8b5cf6; color:white;">Tạo Tài Khoản ✨</button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr><th>Icon</th><th>Tên Staff</th><th>Mật Khẩu</th><th>Mảng Phụ Trách</th><th>Thao Tác</th></tr>
+          </thead>
+          <tbody id="bangDanhSachStaff"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 12. SỔ LƯU TRỮ HÓA ĐƠN ĐÃ HOÀN THÀNH (CÓ NÚT XÓA VĨNH VIỄN) -->
+    <section class="admin-section">
+      <div class="section-title-box">
+        <h3>Hóa Đơn Đã Hoàn Thành</h3>
+        <span class="badge-count" id="countHoaDon">0 hóa đơn</span>
+      </div>
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Mã Đơn</th>
+              <th>Khách Hàng</th>
+              <th>Dịch Vụ</th>
+              <th>Thời Gian Hẹn</th>
+              <th>Thanh Toán</th>
+              <th>Staff Phụ Trách</th>
+              <th>Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody id="bangHoaDon">
+            <tr><td colspan="7" style="text-align:center;">Chưa có đơn hoàn thành nào.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // 🛡️ KIỂM TRA BẢO MẬT ADMIN
+    var isAuthAdmin = sessionStorage.getItem("sky_admin_logged");
+    if (isAuthAdmin !== "true") {
+      alert("⛔ Khu vực quản trị tối mật! Vui lòng đăng nhập.");
+      window.location.href = "index.html";
+    }
+
+    function dangXuatAdmin() {
+      sessionStorage.removeItem("sky_admin_logged");
+      window.location.href = "index.html";
+    }
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCEuMuKn4ZrzQNQCYnxt9XeNpPUsfQk54c",
+      authDomain: "ordersky.firebaseapp.com",
+      databaseURL: "https://ordersky-default-rtdb.firebaseio.com",
+      projectId: "ordersky",
+      storageBucket: "ordersky.firebasestorage.app",
+      messagingSenderId: "332284986658",
+      appId: "1:332284986658:web:02c42c4181900fc2e0917b",
+      measurementId: "G-35XQCYMK8V"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // 1. Cấu hình thanh toán
+    db.ref('caiDatThanhToan').once('value').then(function(s) {
+      var d = s.val() || {};
+      document.getElementById("cfgSTK").value = d.stk || "";
+      document.getElementById("cfgNganHang").value = d.nganHang || "";
+    });
+
+    function luuCaiDatThanhToan() {
+      var stk = document.getElementById("cfgSTK").value.trim();
+      var ng = document.getElementById("cfgNganHang").value.trim();
+      var file = document.getElementById("cfgFileQR").files[0];
+
+      if (file) {
+        var r = new FileReader();
+        r.onload = function(e) {
+          db.ref('caiDatThanhToan').update({ stk: stk, nganHang: ng, anhQR: e.target.result });
+          alert("Đã lưu STK và Mã QR thành công!");
+        };
+        r.readAsDataURL(file);
+      } else {
+        db.ref('caiDatThanhToan').update({ stk: stk, nganHang: ng });
+        alert("Đã lưu STK thành công!");
+      }
+    }
+
+    // 2. Cây Bảng Giá Động (Có Tiền Mặt & Tim Sky)
+    db.ref('cayBangGia').on('value', function(snap) {
+      var data = snap.val(), tb = document.getElementById("bangTreeDichVu");
+      tb.innerHTML = "";
+      if (!data) { tb.innerHTML = "<tr><td colspan='7' style='text-align:center;'>Chưa có gói dịch vụ nào.</td></tr>"; return; }
+
+      Object.keys(data).forEach(function(k) {
+        var it = data[k];
+        var stt = it.hienThi !== false 
+          ? "<span style='color:#16a34a; font-weight:bold;'>● Đang Bật</span>" 
+          : "<span style='color:#94a3b8;'>○ Đang Ẩn</span>";
+
+        var btnToggle = it.hienThi !== false 
+          ? `<button type="button" onclick="db.ref('cayBangGia/${k}').update({hienThi:false})" style="font-size:11px; padding:2px 8px; background:#e2e8f0; color:#334155;">Tạm Ẩn</button>` 
+          : `<button type="button" onclick="db.ref('cayBangGia/${k}').update({hienThi:true})" style="font-size:11px; padding:2px 8px; background:#dcfce7; color:#15803d;">Bật Lại</button>`;
+
+        tb.innerHTML += `
+          <tr>
+            <td><strong>${(it.mang || "").toUpperCase()}</strong></td>
+            <td>${it.nhom}</td>
+            <td>${it.goi}</td>
+            <td><strong style="color:#ea580c;">${it.gia}</strong></td>
+            <td><strong style="color:#e11d48;">💖 ${it.giaTim || "2 Tim"}</strong></td>
+            <td>${stt}</td>
+            <td>
+              ${btnToggle}
+              <button type="button" class="btn-xoa" onclick="xoaGoiDichVu('${k}')" style="font-size:11px; padding:2px 8px; margin-left:4px;">Xóa 🗑️</button>
+            </td>
+          </tr>
+        `;
+      });
+    });
+
+    function themNhanhCayMoi() {
+      var m = document.getElementById("admTreeMang").value;
+      var nh = document.getElementById("admTreeNhom").value.trim();
+      var g = document.getElementById("admTreeGoi").value.trim();
+      var gia = document.getElementById("admTreeGia").value.trim() || "15k";
+      var giaTim = document.getElementById("admTreeGiaTim").value.trim() || "2 Tim";
+
+      if (!nh || !g) { alert("Vui lòng điền đủ Nhóm (Cấp 1) và Gói (Cấp 2)!"); return; }
+
+      db.ref('cayBangGia').push({
+        mang: m,
+        nhom: nh,
+        goi: g,
+        gia: gia,
+        giaTim: giaTim,
+        hienThi: true,
+        thoiGianTao: Date.now()
+      }).then(function() {
+        document.getElementById("admTreeGoi").value = "";
+        document.getElementById("admTreeGia").value = "";
+        document.getElementById("admTreeGiaTim").value = "";
+      });
+    }
+
+    function xoaGoiDichVu(id) {
+      if (confirm("Admin có chắc chắn muốn xóa gói dịch vụ này khỏi Bảng Giá?")) {
+        db.ref('cayBangGia/' + id).remove();
+      }
+    }
+
+    // 3. Lịch hoạt động & 4 Khung Luật
+    db.ref('caiDatPage').on('value', function(snap) {
+      var set = snap.val() || {};
+      if (set.lichChiTiet) {
+        document.getElementById("admLichNgay").value = set.lichChiTiet.ngay || "";
+        document.getElementById("admLichGioBatDau").value = set.lichChiTiet.gioBatDau || "";
+        document.getElementById("admLichGioKetThuc").value = set.lichChiTiet.gioKetThuc || "";
+        document.getElementById("admLichGhiChu").value = set.lichChiTiet.ghiChu || "";
+        var note = set.lichChiTiet.ghiChu ? ` (${set.lichChiTiet.ghiChu})` : "";
+        document.getElementById("hienThiLichLive").innerText = `${set.lichChiTiet.ngay}: ${set.lichChiTiet.gioBatDau} - ${set.lichChiTiet.gioKetThuc}${note}`;
+      } else {
+        document.getElementById("hienThiLichLive").innerText = set.lichPage || "Chưa thiết lập";
+      }
+
+      document.getElementById("admGioiThieuPage").value = set.gioiThieuPage || "";
+      document.getElementById("admLuatChung").value = set.dieuKhoan || "";
+      document.getElementById("admLuatUber").value = set.luatUber || "";
+      document.getElementById("admLuatHost").value = set.luatHost || "";
+      document.getElementById("admLuatLogAcc").value = set.luatLogAcc || "";
+    });
+
+    function luuLichHoatDong() {
+      var ng = document.getElementById("admLichNgay").value.trim() || "Hôm nay";
+      var bd = document.getElementById("admLichGioBatDau").value;
+      var kt = document.getElementById("admLichGioKetThuc").value;
+      var gc = document.getElementById("admLichGhiChu").value.trim();
+
+      if (!bd || !kt) { alert("Vui lòng chọn cả Giờ Bắt Đầu và Giờ Kết Thúc!"); return; }
+
+      db.ref('caiDatPage').update({
+        lichPage: `• ${ng}: ${bd} - ${kt}` + (gc ? ` (${gc})` : ""),
+        lichChiTiet: { ngay: ng, gioBatDau: bd, gioKetThuc: kt, ghiChu: gc, capNhatLuc: Date.now() }
+      }).then(function() { alert("Đã cập nhật lịch làm việc thành công!"); });
+    }
+
+    function luuToanBoLuatAdmin() {
+      db.ref('caiDatPage').update({
+        gioiThieuPage: document.getElementById("admGioiThieuPage").value,
+        dieuKhoan: document.getElementById("admLuatChung").value,
+        luatUber: document.getElementById("admLuatUber").value,
+        luatHost: document.getElementById("admLuatHost").value,
+        luatLogAcc: document.getElementById("admLuatLogAcc").value
+      }).then(function() { alert("Đã lưu nội dung Giới thiệu & 4 Khung Luật!"); });
+    }
+
+    // 4. Kho ảnh kỷ niệm (Có nút xóa ✕)
+    db.ref('anhKyNiemPage').on('value', function(snap) {
+      var ph = snap.val(), box = document.getElementById("adminPhotoGallery");
+      box.innerHTML = "";
+      if (!ph) return;
+
+      Object.keys(ph).forEach(function(k) {
+        box.innerHTML += `
+          <div style="position:relative; width:80px; height:80px; border-radius:10px; overflow:hidden; border:1px solid #cbd5e1;">
+            <img src="${ph[k]}" style="width:100%; height:100%; object-fit:cover;">
+            <button type="button" onclick="xoaAnhKyNiem('${k}')" style="position:absolute; top:2px; right:2px; background:rgba(239,68,68,0.9); color:white; border:none; width:18px; height:18px; border-radius:50%; font-size:10px; cursor:pointer;" title="Xóa ảnh này">✕</button>
+          </div>
+        `;
+      });
+    });
+
+    function taiAnhKyNiemPage() {
+      var f = document.getElementById("admFileKyNiem").files[0];
+      if (!f) { alert("Vui lòng chọn 1 tệp ảnh!"); return; }
+      var r = new FileReader();
+      r.onload = function(e) {
+        db.ref('anhKyNiemPage').push(e.target.result).then(function() {
+          alert("Đã tải ảnh kỷ niệm lên Trang Chủ!");
+          document.getElementById("admFileKyNiem").value = "";
+        });
+      };
+      r.readAsDataURL(f);
+    }
+
+    function xoaAnhKyNiem(k) {
+      if (confirm("Admin có chắc chắn muốn xóa ảnh này khỏi Sảnh Chờ?")) {
+        db.ref('anhKyNiemPage/' + k).remove();
+      }
+    }
+
+    // 5. Đơn hàng đang chạy & Duyệt tiền mặt
+    db.ref('donHangSky').on('value', function(snap) {
+      var data = snap.val();
+      var tbRunning = document.getElementById("bangDonDangChay");
+      var tbDone = document.getElementById("bangHoaDon");
+      tbRunning.innerHTML = "";
+      tbDone.innerHTML = "";
+
+      if (!data) return;
+
+      var countXong = 0;
+      Object.keys(data).reverse().forEach(function(k) {
+        var dh = data[k];
+
+        if (dh.trangThai === "hoan_thanh") {
+          countXong++;
+          tbDone.innerHTML += `
+            <tr>
+              <td><code>${k.substring(1,7)}</code></td>
+              <td><strong>${dh.tenKhach}</strong></td>
+              <td>${(dh.mangDichVu||"").toUpperCase()} - ${dh.cuThe}</td>
+              <td>${dh.thoiGianHen}</td>
+              <td>${dh.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền mặt"}</td>
+              <td><strong>${dh.staffNhan || "-"}</strong></td>
+              <td><button class="btn-xoa" onclick="xoaDonHoanThanh('${k}')">Xóa 🗑️</button></td>
+            </tr>
+          `;
+        } else {
+          var nutDuyet = (dh.thanhToan === "Tien_VND")
+            ? (dh.daThanhToanFull ? "<span style='color:#16a34a; font-weight:bold;'>Đã Nhận Tiền ✔️</span>" : `<button type="button" onclick="adminDuyetTien('${k}')" style="background:#16a34a; color:white; font-size:11px; padding:4px 8px;">Duyệt Tiền 💸</button>`)
+            : "<span style='color:#94a3b8; font-size:11px;'>Đơn Trả Tim</span>";
+
+          var staffStatus = dh.daNhan 
+            ? `<strong>${dh.staffNhan}</strong>` 
+            : `<span style="color:#d97706;">Chưa nhận</span>`;
+
+          tbRunning.innerHTML += `
+            <tr>
+              <td><strong>${dh.tenKhach}</strong></td>
+              <td>${(dh.mangDichVu||"").toUpperCase()} - ${dh.cuThe}</td>
+              <td>${dh.thoiGianHen}</td>
+              <td>${dh.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền mặt"}</td>
+              <td>${staffStatus}</td>
+              <td>${nutDuyet}</td>
+              <td><button type="button" class="btn-xoa" onclick="adminHuyDon('${k}')">Hủy</button></td>
+            </tr>
+          `;
+        }
+      });
+      document.getElementById("countHoaDon").innerText = countXong + " hóa đơn";
+    });
+
+    function adminDuyetTien(k) {
+      if (confirm("Admin xác nhận đã nhận đủ tiền chuyển khoản cho đơn này?")) {
+        db.ref('donHangSky/' + k).update({ daThanhToanFull: true });
+        db.ref('phongChat/' + k + '/tinNhan').push({ nguoiGui: "Hệ thống", noiDung: "Admin đã xác nhận nhận tiền. Gửi mã kết bạn đã mở!" });
+      }
+    }
+
+    function adminHuyDon(k) {
+      if (confirm("Admin có chắc chắn muốn hủy đơn hàng này không?")) {
+        db.ref('donHangSky/' + k).remove();
+      }
+    }
+
+    function xoaDonHoanThanh(k) {
+      if (confirm("Admin có chắc chắn muốn xóa vĩnh viễn hóa đơn này khỏi kho lưu trữ?")) {
+        db.ref('donHangSky/' + k).remove();
+      }
+    }
+
+    // 6. Hội viên & Tặng Voucher
+    db.ref('thanhVienSky').on('value', function(snap) {
+      var data = snap.val(), tb = document.getElementById("bangHoiVienAdmin");
+      tb.innerHTML = "";
+      if (!data) { tb.innerHTML = "<tr><td colspan='4' style='text-align:center;'>Chưa có hội viên nào.</td></tr>"; return; }
+
+      Object.keys(data).forEach(function(k) {
+        var m = data[k];
+        var vc = (m.uuDaiRieng && !m.uuDaiRieng.daDung && m.uuDaiRieng.giaTri > 0) 
+          ? `<strong style='color:#16a34a;'>Giảm ${(m.uuDaiRieng.giaTri).toLocaleString()}đ</strong>` 
+          : "<span style='color:#94a3b8;'>Không có</span>";
+
+        tb.innerHTML += `
+          <tr>
+            <td><strong>${k.replace(/_/g, '.')}</strong></td>
+            <td>${m.soDonDaDat || 0} đơn</td>
+            <td>${vc}</td>
+            <td>
+              <button type="button" onclick="tangVoucher('${k}')" style="font-size:11px; padding:4px 8px;">Tặng Voucher 🎁</button>
+              <button type="button" class="btn-xoa" onclick="xoaHoiVien('${k}')" style="margin-left:4px;">Xóa</button>
+            </td>
+          </tr>
+        `;
+      });
+    });
+
+    function tangVoucher(k) {
+      var t = prompt("Nhập số tiền voucher muốn tặng (vd: 10000 hoặc 10k):", "10000");
+      if (!t) return;
+      var num = parseFloat(t.replace(/[^0-9]/g, '')) || 0;
+      if (num > 0) {
+        db.ref('thanhVienSky/' + k + '/uuDaiRieng').set({ giaTri: num, daDung: false, thoiGianTang: Date.now() })
+          .then(function() { alert("Đã tặng voucher thành công!"); });
+      }
+    }
+
+    function xoaHoiVien(k) {
+      if (confirm("Xóa hội viên này?")) db.ref('thanhVienSky/' + k).remove();
+    }
+
+    // 7. Hộp thư khiếu nại / Báo cáo
+    db.ref('danhSachBaoCao').on('value', function(snap) {
+      var data = snap.val(), box = document.getElementById("bangDanhSachBaoCao");
+      box.innerHTML = "";
+      if (!data) { box.innerHTML = "<p style='color:#888;'>Chưa có báo cáo vi phạm nào.</p>"; return; }
+
+      Object.keys(data).reverse().forEach(function(k) {
+        var bc = data[k];
+        box.innerHTML += `
+          <div style="background: rgba(254, 242, 242, 0.7); border: 1px solid #fecaca; border-radius: var(--radius-inner); padding: 12px; margin-bottom: 10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="color: #dc2626;">Từ: ${bc.nguoiBaoCao} ➔ Tố cáo: ${bc.doiTuongBiBaoCao}</strong>
+              <button type="button" onclick="db.ref('danhSachBaoCao/${k}').remove()" style="font-size:11px; padding:2px 8px;">Đã Xử Lý / Xóa</button>
+            </div>
+            <p style="margin: 4px 0; font-size: 13px;"><strong>Lý do:</strong> ${bc.lyDo}</p>
+          </div>
+        `;
+      });
+    });
+
+    // 8. Thông báo Sảnh & Staff
+    db.ref('thongBaoLobby').once('value').then(function(snap) {
+      var tb = snap.val();
+      if (tb && tb.noiDung) document.getElementById("tbLobbyInput").value = tb.noiDung;
+    });
+
+    function guiThongBaoLobby() {
+      var t = document.getElementById("tbLobbyInput").value.trim();
+      if (t) db.ref('thongBaoLobby').set({ noiDung: t, capNhat: Date.now() }).then(function() { alert("Đã cập nhật thông báo Sảnh!"); });
+    }
+    function xoaThongBaoLobby() { db.ref('thongBaoLobby').remove(); document.getElementById("tbLobbyInput").value = ""; }
+
+    function guiThongBaoAdmin() {
+      var t = document.getElementById("noiDungThongBao").value.trim();
+      var dt = new Date();
+      if (t) {
+        db.ref('thongBaoAdmin').push({ 
+          noiDung: t, 
+          gio: `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')}`, 
+          thoiGian: Date.now() 
+        }).then(function() { 
+          alert("Đã gửi thông báo tới Staff!"); 
+          document.getElementById("noiDungThongBao").value = "";
+        });
+      }
+    }
+
+    // 9. Blacklist
+    db.ref('blackListKhach').on('value', function(snap) {
+      var data = snap.val(), ul = document.getElementById("listBlacklistKhach");
+      ul.innerHTML = "";
+      if (!data) return;
+      Object.keys(data).forEach(function(k) {
+        ul.innerHTML += `<li>${data[k].ten || k} <button type="button" onclick="db.ref('blackListKhach/${k}').remove()" style="font-size:10px; margin-left:6px; background:#e2e8f0; border:none; cursor:pointer;">Gỡ ✕</button></li>`;
+      });
+    });
+
+    function themBlacklistKhach() {
+      var t = document.getElementById("inputCamKhach").value.trim();
+      if (t) {
+        db.ref('blackListKhach/' + t.toLowerCase()).set({ ten: t, thoiGian: Date.now() });
+        document.getElementById("inputCamKhach").value = "";
+      }
+    }
+
+    // 10. Quản lý nhân sự Staff
+    db.ref('danhSachStaff').on('value', function(snap) {
+      var staffList = snap.val(), tbody = document.getElementById("bangDanhSachStaff");
+      tbody.innerHTML = "";
+      if (!staffList) return;
+
+      Object.keys(staffList).forEach(function(k) {
+        var st = staffList[k];
+        tbody.innerHTML += `
+          <tr>
+            <td style="font-size: 18px;">${st.icon || "🌸"}</td>
+            <td><strong>${st.ten}</strong></td>
+            <td><code>${st.pass}</code></td>
+            <td>${(st.kyNang || []).join(", ").toUpperCase()}</td>
+            <td><button type="button" class="btn-xoa" onclick="xoaStaff('${k}')">Xóa</button></td>
+          </tr>
+        `;
+      });
+    });
+
+    function themStaffMoi() {
+      var ten = document.getElementById("newStaffTen").value.trim();
+      var icon = document.getElementById("newStaffIcon").value.trim() || "🌸";
+      var pass = document.getElementById("newStaffPass").value.trim();
+      var kyNang = [];
+      if (document.getElementById("skill_uber").checked) kyNang.push("uber");
+      if (document.getElementById("skill_host").checked) kyNang.push("host");
+      if (document.getElementById("skill_logacc").checked) kyNang.push("logacc");
+
+      if (!ten || !pass) { alert("Vui lòng điền đủ Tên và Mật khẩu Staff!"); return; }
+
+      db.ref('danhSachStaff').push({ ten: ten, icon: icon, pass: pass, kyNang: kyNang, ngayTao: Date.now() }).then(function() {
+        document.getElementById("newStaffTen").value = "";
+        document.getElementById("newStaffPass").value = "";
+        alert("Đã tạo Staff mới!");
+      });
+    }
+
+    function xoaStaff(k) {
+      if (confirm("Admin có chắc muốn xóa tài khoản Staff này không?")) {
+        db.ref('danhSachStaff/' + k).remove();
+      }
+    }
+  </script>
+</body>
+</html>
