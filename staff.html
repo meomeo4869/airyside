@@ -10,9 +10,13 @@
 </head>
 <body class="staff-layout">
 
-  <div id="chatheadsList" class="chatheads-container"></div>
+  <!-- HỆ THỐNG BONG BÓNG MINI CHAT CỦA STAFF -->
+  <div id="staffChatheadsList" class="chatheads-container"></div>
+
+  <!-- NÚT MỞ SIDEBAR THÔNG BÁO TỪ ADMIN -->
   <div class="toggle-btn" onclick="moThongBao()">◀</div>
 
+  <!-- SIDEBAR THÔNG BÁO TRƯỢT TỪ MÉP PHẢI (FIX LỖI TRÀN) -->
   <div id="sidePanel" class="side-panel">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
       <h3 style="margin: 0; font-size: 15px;">Thông Báo Từ Admin 🔔</h3>
@@ -76,6 +80,32 @@
 
   </div>
 
+  <!-- KHUNG CHAT MINI LIQUID GLASS CHO STAFF -->
+  <div id="chatBoxStaff" class="chat-container">
+    <div class="chat-header">
+      <span id="chatTitleStaff">Chat Với Khách</span>
+      <div style="display: flex; gap: 6px;">
+        <button type="button" onclick="dongChatStaff()" style="background:#f1f5f9; border:none; width:24px; height:24px; border-radius:50%; cursor:pointer;">✕</button>
+      </div>
+    </div>
+
+    <div class="chat-body" id="chatBodyStaff">
+      <div id="thongBaoChoTienStaff" style="display:none; background:#fff7ed; border:1px solid #fed7aa; padding:10px; border-radius:12px; font-size:12px; color:#c2410c; text-align:center;">
+        ⏳ Đang chờ Admin duyệt tiền chuyển khoản của khách.
+      </div>
+      <div id="thongBaoChoMaKBStaff" style="display:none; background:#f0f9ff; border:1px solid #bae6fd; padding:10px; border-radius:12px; font-size:12px; color:#0369a1; text-align:center;">
+        ✨ Chờ khách gửi link/mã kết bạn Sky.
+      </div>
+      <div id="tinNhanStaff" style="display: flex; flex-direction: column; gap: 8px;"></div>
+    </div>
+
+    <div class="chat-footer">
+      <input type="text" id="nhapTinStaff" placeholder="Nhập tin nhắn..." disabled onkeypress="if(event.key==='Enter') guiTinStaff()" style="margin-bottom:0 !important;">
+      <button type="button" id="btnGuiTinStaff" disabled onclick="guiTinStaff()">➤</button>
+      <button type="button" id="btnHoanThanhStaff" disabled onclick="xacNhanXongStaff()" style="background:#10b981;" title="Xác nhận hoàn thành ca">✔</button>
+    </div>
+  </div>
+
   <script>
     var isAuthStaff = sessionStorage.getItem("sky_staff_logged");
     var savedStaffIcon = localStorage.getItem("myIcon");
@@ -98,9 +128,31 @@
     var myStaffName = localStorage.getItem("myStaffName") || "Staff";
     document.getElementById("calStaffBadge").innerText = `${iconCuaToi} ${myStaffName}`;
 
+    var mySkills = ["uber", "host", "logacc"];
+    try {
+      var p = JSON.parse(localStorage.getItem("myStaffSkills"));
+      if (Array.isArray(p)) mySkills = p;
+    } catch(e) {}
+
     function moThongBao() { document.getElementById("sidePanel").classList.toggle("panel-open"); }
 
-    // 1. Lịch đăng ký ca làm việc
+    // 1. Tải thông báo từ Admin
+    db.ref('thongBaoAdmin').on('value', function(snap) {
+      var notis = snap.val(), box = document.getElementById("danhSachThongBaoAdmin");
+      if (notis) {
+        box.innerHTML = "";
+        Object.values(notis).reverse().forEach(function(n) {
+          box.innerHTML += `
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:10px; font-size:13px; margin-bottom:8px;">
+              <strong>Admin:</strong> <span style="font-size:11px; color:#94a3b8; float:right;">${n.gio || ""}</span>
+              <p style="margin:4px 0 0 0;">${n.noiDung}</p>
+            </div>
+          `;
+        });
+      }
+    });
+
+    // 2. Lịch đăng ký ca làm việc
     db.ref('danhSachStaff').on('value', function(snapshot) {
       var staffList = snapshot.val(), tbody = document.getElementById("tbodyLichStaff");
       tbody.innerHTML = "";
@@ -124,18 +176,18 @@
 
     function doiTrangThaiCa(cell) {
       if (cell.innerHTML === "Trống") {
-        cell.className = "ca-lam ca-selected";
+        cell.style.background = "#ffffff"; cell.style.color = "#0284c7"; cell.style.fontWeight = "bold";
         cell.innerHTML = "Rảnh ✨";
       } else if (cell.innerHTML.includes("Rảnh")) {
-        cell.className = "ca-lam busy";
+        cell.style.background = "#fee2e2"; cell.style.color = "#991b1b"; cell.style.fontWeight = "normal";
         cell.innerHTML = "Bận";
       } else {
-        cell.className = "ca-lam";
+        cell.style.background = "rgba(255,255,255,0.45)"; cell.style.color = "inherit"; cell.style.fontWeight = "normal";
         cell.innerHTML = "Trống";
       }
     }
 
-    // 2. Lịch tháng chấm công realtime
+    // 3. Lịch tháng chấm công realtime
     function dungLichThangRealtime() {
       var now = new Date(), y = now.getFullYear(), m = now.getMonth(), todayDate = now.getDate();
       document.getElementById("calCurrentMonthTitle").innerText = `Lịch Tháng ${(m + 1)}/${y}`;
@@ -173,49 +225,178 @@
     }
     dungLichThangRealtime();
 
-    // 3. Đơn hàng
+    // 4. Lưới nhận đơn & Quản lý bong bóng chat của Staff
+    var danhSachDonCuaToi = {};
+
     db.ref('donHangSky').on('value', function(snap) {
       var list = snap.val(), box = document.getElementById("danhSachDonHang");
       box.innerHTML = "";
-      if (!list) { box.innerHTML = "<p style='color:var(--text-muted);'>Chưa có đơn nào.</p>"; return; }
+      danhSachDonCuaToi = {};
+
+      if (!list) { box.innerHTML = "<p style='color:var(--text-muted);'>Chưa có đơn nào.</p>"; capNhatBongBongStaff(); return; }
 
       Object.keys(list).reverse().forEach(function(k) {
         var dh = list[k];
         if (dh.trangThai === "hoan_thanh") return;
+
+        // Nếu là đơn mình nhận -> đưa vào danh sách bong bóng chat
+        if (dh.daNhan && dh.staffNhan === iconCuaToi) {
+          danhSachDonCuaToi[k] = dh;
+        }
+
+        if (!mySkills.includes(dh.mangDichVu)) return;
+
         var btnHTML = dh.daNhan 
           ? `<button disabled style="background:#cbd5e1; color:#475569; width:100%; border:none; padding:8px; border-radius:9999px;">ĐÃ NHẬN (${dh.staffNhan})</button>`
           : `<button onclick="chotDon('${k}')" style="background:#0f172a; color:white; width:100%; border:none; padding:8px; border-radius:9999px; cursor:pointer;">Nhận Đơn Ngay</button>`;
 
         box.innerHTML += `
-          <div class="glass-box" style="padding:16px;">
+          <div class="lobby-section" style="padding:16px;">
             <h4 style="margin:0 0 6px 0;">${(dh.mangDichVu||"").toUpperCase()} - ${dh.cuThe}</h4>
             <p style="margin:2px 0; font-size:13px;">Khách: <strong>${dh.tenKhach}</strong></p>
             <p style="margin:2px 0; font-size:12px; color:#ea580c;">Hẹn: ${dh.thoiGianHen}</p>
+            <p style="margin:2px 0; font-size:12px; color:#10b981;">Thanh toán: ${dh.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "Tiền mặt"}</p>
             <div style="margin-top:10px;">${btnHTML}</div>
           </div>
         `;
       });
+      capNhatBongBongStaff();
     });
 
     function chotDon(maDon) {
       db.ref('donHangSky/' + maDon).update({ daNhan: true, staffNhan: iconCuaToi }).then(function() {
         var now = new Date();
         db.ref(`chamCong/${iconCuaToi}/${now.getFullYear()}_${now.getMonth()+1}/${now.getDate()}`).set(true);
-        alert("Đã nhận đơn!");
+        alert("Đã nhận đơn! Bong bóng chat với khách đã mở ở góc phải dưới.");
+        moChatStaff(maDon);
       });
     }
 
-    // 4. Feedback
+    // BONG BÓNG MINI CHAT CỦA STAFF
+    function capNhatBongBongStaff() {
+      var box = document.getElementById("staffChatheadsList");
+      box.innerHTML = "";
+      Object.keys(danhSachDonCuaToi).forEach(function(idDon) {
+        var dh = danhSachDonCuaToi[idDon];
+        box.innerHTML += `
+          <div class="chathead-bubble" onclick="moChatStaff('${idDon}')" title="Khách ${dh.tenKhach} - ${dh.cuThe}">
+            <span>💬</span>
+          </div>
+        `;
+      });
+    }
+
+    var activeStaffChatId = null;
+    var staffOrderListener = null, staffRoomListener = null;
+
+    function moChatStaff(idDon) {
+      if (staffOrderListener) db.ref('donHangSky/' + staffOrderListener.idDon).off('value', staffOrderListener.callback);
+      if (staffRoomListener) db.ref('phongChat/' + staffRoomListener.idDon).off('value', staffRoomListener.callback);
+
+      activeStaffChatId = idDon;
+      document.getElementById("chatBoxStaff").style.display = "flex";
+      document.getElementById("tinNhanStaff").innerHTML = "";
+
+      var orderCb = function(snap) {
+        var don = snap.val();
+        if (!don || don.trangThai === "hoan_thanh") { dongChatStaff(); return; }
+        document.getElementById("chatTitleStaff").innerText = `Khách: ${don.tenKhach} (${don.cuThe})`;
+
+        var choTien = document.getElementById("thongBaoChoTienStaff");
+        var choKB = document.getElementById("thongBaoChoMaKBStaff");
+
+        if (don.thanhToan === "Tien_VND" && !don.daThanhToanFull) {
+          choTien.style.display = "block";
+          choKB.style.display = "none";
+        } else {
+          choTien.style.display = "none";
+        }
+        langNgheChatStaff(idDon);
+      };
+
+      staffOrderListener = { idDon: idDon, callback: orderCb };
+      db.ref('donHangSky/' + idDon).on('value', orderCb);
+    }
+
+    function langNgheChatStaff(idDon) {
+      var roomCb = function(snap) {
+        var data = snap.val();
+        var choKB = document.getElementById("thongBaoChoMaKBStaff");
+        var choTien = document.getElementById("thongBaoChoTienStaff");
+        var tinNhanBox = document.getElementById("tinNhanStaff");
+
+        if (choTien.style.display === "block") return;
+
+        if (data && data.maKetBan) {
+          choKB.style.display = "none";
+          tinNhanBox.style.display = "flex";
+          document.getElementById("nhapTinStaff").disabled = false;
+          document.getElementById("btnGuiTinStaff").disabled = false;
+          document.getElementById("btnHoanThanhStaff").disabled = false;
+
+          tinNhanBox.innerHTML = "";
+          if (data.tinNhan) {
+            Object.values(data.tinNhan).forEach(function(m) {
+              var loai = m.nguoiGui === myStaffName ? "msg right" : (m.nguoiGui === "Hệ thống" ? "msg system" : "msg left");
+              tinNhanBox.innerHTML += `<div class="${loai}"><strong>${m.nguoiGui}:</strong> ${m.noiDung}</div>`;
+            });
+            tinNhanBox.scrollTop = tinNhanBox.scrollHeight;
+          }
+        } else {
+          choKB.style.display = "block";
+          tinNhanBox.style.display = "none";
+        }
+      };
+
+      staffRoomListener = { idDon: idDon, callback: roomCb };
+      db.ref('phongChat/' + idDon).on('value', roomCb);
+    }
+
+    function guiTinStaff() {
+      var txt = document.getElementById("nhapTinStaff").value.trim();
+      if (txt && activeStaffChatId) {
+        db.ref('phongChat/' + activeStaffChatId + '/tinNhan').push({ nguoiGui: myStaffName, noiDung: txt });
+        document.getElementById("nhapTinStaff").value = "";
+      }
+    }
+
+    function dongChatStaff() {
+      if (staffOrderListener) db.ref('donHangSky/' + staffOrderListener.idDon).off('value', staffOrderListener.callback);
+      if (staffRoomListener) db.ref('phongChat/' + staffRoomListener.idDon).off('value', staffRoomListener.callback);
+      document.getElementById("chatBoxStaff").style.display = "none";
+      activeStaffChatId = null;
+    }
+
+    function xacNhanXongStaff() {
+      if (!activeStaffChatId) return;
+      if (confirm("Staff xác nhận đã hoàn thành xong nhiệm vụ cho đơn này?")) {
+        db.ref('donHangSky/' + activeStaffChatId).update({ staffHoanThanh: true });
+        db.ref('phongChat/' + activeStaffChatId + '/tinNhan').push({ nguoiGui: "Hệ thống", noiDung: "Staff đã xác nhận xong nhiệm vụ!" });
+
+        db.ref('donHangSky/' + activeStaffChatId).once('value').then(function(s) {
+          var dh = s.val();
+          if (dh.khachHoanThanh) {
+            db.ref('donHangSky/' + activeStaffChatId).update({ trangThai: "hoan_thanh" });
+            alert("Ca trực đã kết thúc hoàn hảo!");
+            dongChatStaff();
+          } else {
+            alert("Đã xác nhận xong! Đang chờ khách hàng xác nhận kết thúc ca.");
+          }
+        });
+      }
+    }
+
+    // 5. Feedback
     db.ref('feedbacks').on('value', function(snap) {
       var data = snap.val(), box = document.getElementById("staffFeedbackGrid");
       box.innerHTML = "";
       if (!data) return;
       Object.values(data).reverse().forEach(function(fb) {
         box.innerHTML += `
-          <div class="glass-box" style="padding:12px 14px;">
+          <div class="lobby-section" style="padding:12px 14px;">
             <div style="color:#f59e0b; font-size:12px;">${"★".repeat(fb.sao || 5)}</div>
             <p style="margin:4px 0; font-size:13px;">"${fb.nhanXet}"</p>
-            <span style="font-size:11px; color:#64748b;">- Khách hàng ${fb.tenKhach ? (fb.tenKhach.charAt(0) + "***") : "Ẩn danh"}</span>
+            <span style="font-size:11px; color:#64748b;">- Khách hàng ${fb.tenKhach ? (fb.tenKhach.charAt(0) + "***") : "Ẩn danh"} (${fb.keHoachTraTim || ""})</span>
           </div>
         `;
       });
