@@ -159,54 +159,61 @@
 
   </div>
 
-  <!-- POPUP ĐẶT ĐƠN TẠI SẢNH -->
+<!-- POPUP ĐẶT ĐƠN DẠNG FORM DÀI LIQUID GLASS CHỈN CHU -->
   <div id="modalDatDonTrucTiep" class="modal-overlay">
-    <div class="modal-content" style="max-width: 440px; width: 92%; text-align: left;">
+    <div class="modal-content" style="max-width: 460px; width: 92%; text-align: left; max-height: 90vh; overflow-y: auto;">
       <button type="button" class="btn-dong-modal" onclick="dongPopupDatDon()">✕</button>
       
-      <div style="text-align: center; margin-bottom: 14px;">
-        <h3 style="margin: 0; color: #0284c7;">Phiếu Đặt Dịch Vụ ✨</h3>
-        <p id="popSubDichVu" style="font-size: 13px; color: var(--text-muted); margin: 4px 0 0 0;">-</p>
+      <div style="text-align: center; margin-bottom: 16px;">
+        <div style="font-size: 32px; margin-bottom: 2px;">✨</div>
+        <h3 style="margin: 0; color: #0284c7; font-size: 20px;">Phiếu Đặt Dịch Vụ</h3>
+        <p id="popSubDichVu" style="font-size: 13px; color: var(--text-muted); margin: 4px 0 0 0; font-weight: 600;">UBER - 15 Nến (5k)</p>
       </div>
 
-      <label>Tên của bạn:</label>
-      <input type="text" id="popPlayerName" placeholder="Nhập tên của bạn...">
+      <label for="popPlayerName">Tên của bạn:</label>
+      <input type="text" id="popPlayerName" placeholder="Nhập tên nhân vật hoặc biệt danh của bạn..." required>
 
-      <label>Gmail tích điểm & ưu đãi (Tùy chọn):</label>
+      <label for="popPlayerEmail">Gmail tích điểm & nhận ưu đãi (Tùy chọn):</label>
       <input type="email" id="popPlayerEmail" placeholder="vd: skylove@gmail.com" onblur="kiemTraVoucherTrucTiep()">
       
-      <div id="popBoxVoucher" style="display: none; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; font-size: 12.5px;">
-        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #15803d; font-weight: 700; margin-bottom: 0;">
-          <input type="checkbox" id="popChkDungVoucher" onchange="tinhToanGiaPopup()" style="width: auto; margin: 0;">
-          <span id="popVoucherLabel">Dùng voucher</span>
+      <!-- HỘP LỰA CHỌN VOUCHER -->
+      <div id="popBoxVoucher" style="display: none; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-inner); padding: 12px; margin-bottom: 14px; font-size: 13px;">
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #15803d; font-weight: 700; margin: 0 !important;">
+          <input type="checkbox" id="popChkDungVoucher" onchange="tinhToanGiaPopup()" style="width: auto !important; margin: 0 !important;">
+          <span id="popVoucherLabel">Sử dụng voucher tích lũy</span>
         </label>
+        <span style="font-size: 11px; color: #166534; display: block; margin-top: 4px;">*Số tiền voucher còn thừa sẽ được giữ nguyên cho các đơn sau.</span>
       </div>
 
-      <label>Lịch hẹn (Ngày & Giờ):</label>
+      <label for="popThoiGian">Lịch hẹn (Ngày & Giờ bắt đầu):</label>
       <input type="datetime-local" id="popThoiGian" required>
 
-      <label>Hình thức thanh toán:</label>
+      <label for="popPhuongThucTT">Hình thức thanh toán:</label>
       <select id="popPhuongThucTT">
         <option value="Tien_VND">Tiền mặt (Ngân hàng / Momo)</option>
         <option value="Tim_Sky">Tim Sky</option>
       </select>
 
-      <label>Yêu cầu thêm:</label>
-      <input type="text" id="popYeuCau" placeholder="Ghi chú thêm...">
+      <label for="popYeuCau">Yêu cầu hoặc ghi chú thêm cho Staff:</label>
+      <input type="text" id="popYeuCau" placeholder="Ghi chú thêm về mốc thời gian, trang phục...">
 
-      <div style="background: rgba(248, 250, 252, 0.9); border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px; margin: 14px 0; font-size: 13px;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-          <span>Phí gốc:</span> <strong id="popGiaGocTxt">0đ</strong>
+      <!-- BẢNG TÍNH TIỀN LIQUID GLASS -->
+      <div style="background: rgba(248, 250, 252, 0.9); border: 1px solid #e2e8f0; border-radius: var(--radius-inner); padding: 14px 16px; margin: 16px 0; font-size: 13.5px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span style="color: var(--text-muted);">Phí dịch vụ:</span>
+          <strong id="popGiaGocTxt">0đ</strong>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 4px; color: #ea580c;">
-          <span>Giảm giá:</span> <strong id="popGiamGiaTxt">-0đ</strong>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #ea580c;">
+          <span>Giảm giá Voucher:</span>
+          <strong id="popGiamGiaTxt">-0đ</strong>
         </div>
-        <div style="display: flex; justify-content: space-between; border-top: 1px dashed #cbd5e1; padding-top: 6px; font-size: 15px;">
-          <span style="font-weight: 700;">Tổng thanh toán:</span> <strong id="popTongTienTxt" style="color: #16a34a;">0đ</strong>
+        <div style="display: flex; justify-content: space-between; border-top: 1px dashed #cbd5e1; padding-top: 8px; font-size: 15.5px;">
+          <span style="font-weight: 700; color: var(--text-primary);">Tổng thanh toán:</span>
+          <strong id="popTongTienTxt" style="color: #16a34a; font-size: 16.5px;">0đ</strong>
         </div>
       </div>
 
-      <button type="button" id="popBtnXacNhan" onclick="xacNhanLuuDonTrucTiep()" style="width: 100%; background: var(--sky-gradient); color: white; padding: 12px;">
+      <button type="button" id="popBtnXacNhan" onclick="xacNhanLuuDonTrucTiep()" style="width: 100%; padding: 13px; font-size: 14.5px;">
         Xác Nhận Đặt Đơn ✨
       </button>
     </div>
