@@ -57,20 +57,20 @@
       <div id="danhSachDonHang" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;"></div>
     </div>
 
-    <!-- 3. LỊCH THÁNG CHẤM CÔNG THỰC TẾ -->
-    <div class="realtime-calendar-card">
+    <!-- 3. LỊCH THÁNG CHẤM CÔNG (KHÓA INLINE-GRID CHUẨN 7 CỘT HẾT BỊ RƠI DÒNG) -->
+    <div class="lobby-section" style="max-width: 520px; margin: 0 auto 24px auto;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-        <h3 id="calCurrentMonthTitle" style="margin:0; font-size:16px;">Lịch Chấm Công Tháng</h3>
+        <h3 id="calCurrentMonthTitle" style="margin:0; font-size:16px; font-weight:700;">Lịch Chấm Công Tháng</h3>
         <span style="font-size: 12px; font-weight: 700; color: #0284c7;" id="calStaffBadge">🌸 Staff</span>
       </div>
 
-      <div class="calendar-weekdays">
+      <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">
         <div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div><div>CN</div>
       </div>
-      <div class="calendar-days-grid" id="realtimeDaysGrid"></div>
+      <div id="realtimeDaysGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;"></div>
     </div>
 
-    <!-- 4. FEEDBACK -->
+    <!-- 4. FEEDBACK CỦA KHÁCH -->
     <div class="lobby-section">
       <h2 style="margin-top:0;">⭐ Feedback Từ Khách Hàng</h2>
       <div id="staffFeedbackGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-top: 10px;">
@@ -96,10 +96,15 @@
       <button type="button" id="btnCopyMaStaff" onclick="copyMaKBStaff()" style="display:none; padding:2px 8px; font-size:10px; background:#0284c7; color:white;">Sao chép</button>
     </div>
 
-    <!-- THANH TRỪ DẦN NỢ TIM (ĐƠN TIM) -->
-    <div id="boxTruTimStaff" style="display:none; background:#fff7ed; border-bottom:1px solid #fed7aa; padding:6px 12px; font-size:12px; color:#c2410c; display:flex; justify-content:space-between; align-items:center;">
-      <span>💖 Đã nhận: <strong id="txtTienDoTimStaff">0/0 Tim</strong></span>
-      <button type="button" onclick="staffXacNhanNhanTim()" style="background:#ea580c; color:white; font-size:10.5px; padding:2px 8px; border-radius:9999px;">+1 Tim hôm nay</button>
+    <!-- THANH XÁC NHẬN NHẬN TIM HÀNG NGÀY (LOGIC CHUẨN XÁC THEO NGÀY) -->
+    <div id="boxTruTimStaff" style="display:none; background:#fff7ed; border-bottom:1px solid #fed7aa; padding:8px 12px; font-size:12px; color:#c2410c; display:flex; flex-direction:column; gap:6px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span>💖 Đã nhận: <strong id="txtTienDoTimStaff">0/0 Tim</strong></span>
+        <span id="txtTrangThaiTimHomNay" style="font-size:11px; font-weight:bold;"></span>
+      </div>
+      <button type="button" id="btnNhanTimHomNay" onclick="staffXacNhanNhanTim()" style="background:#ea580c; color:white; font-size:11px; padding:5px 10px; border-radius:9999px; width:100%;">
+        Xác Nhận Nhận Tim Hôm Nay ✨
+      </button>
     </div>
 
     <div class="chat-body" id="chatBodyStaff">
@@ -107,7 +112,7 @@
         ⏳ Đang chờ Admin duyệt tiền chuyển khoản của khách.
       </div>
       
-      <!-- STAFF GỬI MÃ KẾT BẠN CHO KHÁCH (NẾU KHÁCH CHƯA GỬI) -->
+      <!-- STAFF GỬI MÃ KẾT BẠN CHO KHÁCH -->
       <div id="manHinhKetBanStaff" style="text-align: center; padding: 10px; background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0; margin-bottom:8px;">
         <p style="font-size: 12px; color: var(--text-muted); margin: 0 0 6px 0;">Gửi link/mã kết bạn Sky cho Khách:</p>
         <div style="display:flex; gap:6px;">
@@ -122,8 +127,8 @@
     <div class="chat-footer">
       <input type="text" id="nhapTinStaff" placeholder="Nhập tin nhắn..." disabled onkeypress="if(event.key==='Enter') guiTinStaff()" style="margin-bottom:0 !important;">
       <button type="button" id="btnGuiTinStaff" disabled onclick="guiTinStaff()">➤</button>
-      <!-- NÚT HOÀN THÀNH: CHỈ BẤM ĐƯỢC KHI KHÁCH ĐÃ BẤM TRƯỚC -->
-      <button type="button" id="btnHoanThanhStaff" disabled onclick="xacNhanXongStaff()" style="background:#cbd5e1; color:#64748b;" title="Chỉ mở khi khách đã bấm hoàn thành">✔ Xong</button>
+      <!-- NÚT HOÀN THÀNH: CHỈ MỞ KHI KHÁCH ĐÃ BẤM XONG TRƯỚC -->
+      <button type="button" id="btnHoanThanhStaff" disabled onclick="xacNhanXongStaff()" style="background:#cbd5e1; color:#64748b;" title="Chờ khách bấm hoàn thành trước">✔ Xong</button>
     </div>
   </div>
 
@@ -133,7 +138,7 @@
       <button type="button" class="btn-dong-modal" onclick="dongPopupReportStaff()">✕</button>
       <h3 style="margin-top:0; color:#dc2626;">🚩 Báo Cáo Khách Hàng</h3>
       <label>Lý do khiếu nại khách:</label>
-      <textarea id="reportLyDoStaff" rows="3" placeholder="Mô tả hành vi vi phạm..."></textarea>
+      <textarea id="reportLyDoStaff" rows="3" placeholder="Mô tả sự cố..."></textarea>
       <button type="button" onclick="guiBaoCaoStaff()" style="width:100%; background:#dc2626; color:white; margin-top:8px;">Gửi Báo Cáo</button>
     </div>
   </div>
@@ -219,7 +224,7 @@
       }
     }
 
-    // 3. Lịch tháng chấm công realtime
+    // 3. Lịch tháng chấm công realtime chuẩn 7 cột
     function dungLichThangRealtime() {
       var now = new Date(), y = now.getFullYear(), m = now.getMonth(), todayDate = now.getDate();
       document.getElementById("calCurrentMonthTitle").innerText = `Lịch Tháng ${(m + 1)}/${y}`;
@@ -231,12 +236,12 @@
       grid.innerHTML = "";
 
       for (var b = 0; b < startCol; b++) {
-        grid.innerHTML += `<div class="cal-day-cell" style="opacity: 0.2; background: transparent; border: none;"></div>`;
+        grid.innerHTML += `<div style="height:44px; opacity:0.1;"></div>`;
       }
       for (var d = 1; d <= daysInMonth; d++) {
-        var isTodayCls = (d === todayDate) ? "is-today" : "";
+        var isToday = (d === todayDate) ? "border: 1.5px solid #0284c7; background: #f0f9ff;" : "border: 1px solid #e2e8f0; background: rgba(255,255,255,0.8);";
         grid.innerHTML += `
-          <div class="cal-day-cell ${isTodayCls}" id="cal-day-${d}">
+          <div id="cal-day-${d}" style="height:44px; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:12px; font-weight:600; ${isToday}">
             <span>${d}</span>
             <span id="dot-day-${d}" style="font-size:11px; margin-top:2px;"></span>
           </div>
@@ -249,7 +254,9 @@
           var cell = document.getElementById("cal-day-" + dayNum);
           var dot = document.getElementById("dot-day-" + dayNum);
           if (cell && dot) {
-            cell.classList.add("has-worked");
+            cell.style.background = "#fff7ed";
+            cell.style.borderColor = "#fed7aa";
+            cell.style.color = "#c2410c";
             dot.innerText = iconCuaToi;
           }
         });
@@ -269,13 +276,21 @@
 
       Object.keys(list).reverse().forEach(function(k) {
         var dh = list[k];
-        if (dh.trangThai === "hoan_thanh") return;
 
-        // Nếu là đơn Staff này nhận -> đưa vào danh sách bong bóng chat
+        // LOGIC BONG BÓNG CHAT STAFF:
+        // Đơn tiền: đóng khi hoan_thanh
+        // Đơn tim: CHỈ ĐÓNG KHI ĐÃ NHẬN ĐỦ 100% TIM (daHoanTatTim === true)
+        var moBongBong = false;
         if (dh.daNhan && dh.staffNhan === iconCuaToi) {
-          danhSachDonCuaToi[k] = dh;
+          if (dh.thanhToan === "Tim_Sky") {
+            if (!dh.daHoanTatTim) moBongBong = true;
+          } else {
+            if (dh.trangThai !== "hoan_thanh") moBongBong = true;
+          }
         }
+        if (moBongBong) danhSachDonCuaToi[k] = dh;
 
+        if (dh.trangThai === "hoan_thanh") return;
         if (!mySkills.includes(dh.mangDichVu)) return;
 
         var btnHTML = dh.daNhan 
@@ -299,7 +314,7 @@
       db.ref('donHangSky/' + maDon).update({ daNhan: true, staffNhan: iconCuaToi }).then(function() {
         var now = new Date();
         db.ref(`chamCong/${iconCuaToi}/${now.getFullYear()}_${now.getMonth()+1}/${now.getDate()}`).set(true);
-        alert("Đã nhận đơn! Bong bóng chat với khách đã mở ở góc phải dưới.");
+        alert("Đã nhận đơn thành công!");
         moChatStaff(maDon);
       });
     }
@@ -331,7 +346,7 @@
 
       var orderCb = function(snap) {
         var don = snap.val();
-        if (!don || don.trangThai === "hoan_thanh") { dongChatStaff(); return; }
+        if (!don) { dongChatStaff(); return; }
         currentStaffOrderData = don;
         document.getElementById("chatTitleStaff").innerText = `Khách: ${don.tenKhach} (${don.cuThe})`;
 
@@ -340,27 +355,50 @@
         var boxTruTim = document.getElementById("boxTruTimStaff");
         var btnXong = document.getElementById("btnHoanThanhStaff");
 
-        // KHUNG TRỪ TIM NẾU LÀ ĐƠN TIM
+        // KHUNG XÁC NHẬN TIM THEO NGÀY
         if (don.thanhToan === "Tim_Sky") {
           boxTruTim.style.display = "flex";
           var tongTim = parseInt((don.giaNiemYet || "2").replace(/[^0-9]/g, '')) || 2;
           var daNhan = don.timDaNhan || 0;
           document.getElementById("txtTienDoTimStaff").innerText = `${daNhan}/${tongTim} Tim`;
+
+          // Kiểm tra xem hôm nay đã bấm nhận tim chưa
+          var todayStr = new Date().toISOString().slice(0, 10);
+          var btnNhanTim = document.getElementById("btnNhanTimHomNay");
+          var txtTrangThai = document.getElementById("txtTrangThaiTimHomNay");
+
+          if (don.ngayNhanTimCuoi === todayStr) {
+            btnNhanTim.disabled = true;
+            btnNhanTim.style.background = "#cbd5e1";
+            btnNhanTim.innerText = "Đã nhận tim hôm nay (Hẹn mai nhé) ⏳";
+            txtTrangThai.innerText = "Đã nhận";
+            txtTrangThai.style.color = "#16a34a";
+          } else {
+            var timMoiNgay = parseInt(don.soTimMoiNgay) || 1;
+            var conLai = tongTim - daNhan;
+            var soTimHomNay = Math.min(timMoiNgay, conLai);
+
+            btnNhanTim.disabled = false;
+            btnNhanTim.style.background = "#ea580c";
+            btnNhanTim.innerText = `Xác Nhận Nhận ${soTimHomNay} Tim Hôm Nay ✨`;
+            txtTrangThai.innerText = "Chưa nhận hôm nay";
+            txtTrangThai.style.color = "#ea580c";
+          }
         } else {
           boxTruTim.style.display = "none";
         }
 
-        // ĐIỀU KIỆN MỞ NÚT HOÀN TẤT: KHÁCH PHẢI BẤM TRƯỚC
+        // ĐIỀU KIỆN NÚT HOÀN TẤT: KHÁCH PHẢI BẤM TRƯỚC
         if (don.khachHoanThanh) {
           btnXong.disabled = false;
           btnXong.style.background = "#10b981";
           btnXong.style.color = "white";
-          btnXong.innerText = "✔ Xác Nhận Ca";
+          btnXong.innerText = "✔ Xác Nhận Xong Ca";
         } else {
           btnXong.disabled = true;
           btnXong.style.background = "#cbd5e1";
           btnXong.style.color = "#64748b";
-          btnXong.innerText = "Chờ Khách Bấm";
+          btnXong.innerText = "Chờ Khách Bấm Xong";
         }
 
         if (don.thanhToan === "Tien_VND" && !don.daThanhToanFull) {
@@ -387,7 +425,6 @@
 
         if (choTien.style.display === "block") return;
 
-        // GHIM MÃ KẾT BẠN LÊN HEADER STAFF
         if (data && data.maKetBan) {
           ghimTxt.innerText = `📌 Mã Sky: ${data.maKetBan}`;
           btnCopy.style.display = "block";
@@ -432,23 +469,39 @@
       }
     }
 
-    // TRỪ DẦN NỢ TIM THEO NGÀY PHÍA STAFF
+    // XÁC NHẬN NHẬN TIM THEO NGÀY (LOGIC CHUẨN XÁC)
     function staffXacNhanNhanTim() {
       if (!activeStaffChatId || !currentStaffOrderData) return;
       var tongTim = parseInt((currentStaffOrderData.giaNiemYet || "2").replace(/[^0-9]/g, '')) || 2;
-      var daNhan = (currentStaffOrderData.timDaNhan || 0) + 1;
+      var daNhanHienTai = currentStaffOrderData.timDaNhan || 0;
+      var timMoiNgay = parseInt(currentStaffOrderData.soTimMoiNgay) || 1;
+      var conLai = tongTim - daNhanHienTai;
+      var soTimNhanHomNay = Math.min(timMoiNgay, conLai);
+      var tongMoi = daNhanHienTai + soTimNhanHomNay;
+      var todayStr = new Date().toISOString().slice(0, 10);
 
-      db.ref('donHangSky/' + activeStaffChatId).update({ timDaNhan: daNhan });
+      var updateData = {
+        timDaNhan: tongMoi,
+        ngayNhanTimCuoi: todayStr
+      };
+
+      // Nếu đã đủ 100% tim thì đánh dấu hoàn tất tim để đóng bong bóng chat
+      if (tongMoi >= tongTim) {
+        updateData.daHoanTatTim = true;
+        updateData.trangThai = "hoan_thanh";
+      }
+
+      db.ref('donHangSky/' + activeStaffChatId).update(updateData);
       db.ref('phongChat/' + activeStaffChatId + '/tinNhan').push({
         nguoiGui: "Hệ thống",
-        noiDung: `Staff đã xác nhận nhận thêm 1 Tim hôm nay! (Tổng nhận: ${daNhan}/${tongTim} Tim)`
+        noiDung: `Staff đã xác nhận nhận ${soTimNhanHomNay} Tim hôm nay! (Tổng tiến độ: ${tongMoi}/${tongTim} Tim)`
       });
 
-      // Nếu đã nhận đủ tim -> tự động hoàn thành đơn và đóng bong bóng chat
-      if (daNhan >= tongTim) {
-        alert("Khách đã thanh toán đủ 100% số Tim! Đơn sẽ tự động hoàn tất và đóng chat.");
-        db.ref('donHangSky/' + activeStaffChatId).update({ trangThai: "hoan_thanh", staffHoanThanh: true });
+      if (tongMoi >= tongTim) {
+        alert("Khách đã thanh toán đủ 100% số Tim! Đơn chính thức hoàn tất.");
         dongChatStaff();
+      } else {
+        alert(`Đã nhận ${soTimNhanHomNay} Tim hôm nay! Hẹn khách vào ngày mai tiếp tục nhé.`);
       }
     }
 
@@ -467,7 +520,6 @@
       activeStaffChatId = null;
     }
 
-    // NÚT HOÀN THÀNH CỦA STAFF (CHỈ CHẠY ĐƯỢC KHI KHÁCH ĐÃ BẤM TRƯỚC)
     function xacNhanXongStaff() {
       if (!activeStaffChatId || !currentStaffOrderData) return;
       if (!currentStaffOrderData.khachHoanThanh) {
@@ -475,10 +527,17 @@
         return;
       }
 
-      if (confirm("Staff xác nhận kết thúc ca dịch vụ này?")) {
-        db.ref('donHangSky/' + activeStaffChatId).update({ staffHoanThanh: true, trangThai: "hoan_thanh" });
-        alert("Ca trực đã kết thúc thành công!");
-        dongChatStaff();
+      if (confirm("Staff xác nhận đã hoàn thành xong chuyến đi này?")) {
+        // Nếu là đơn tiền mặt -> hoàn tất đóng đơn luôn
+        // Nếu là đơn tim -> chỉ báo cáo xong ca, bong bóng chat vẫn giữ cho đến khi trả đủ tim
+        var updateObj = { staffHoanThanh: true };
+        if (currentStaffOrderData.thanhToan !== "Tim_Sky") {
+          updateObj.trangThai = "hoan_thanh";
+          dongChatStaff();
+        } else {
+          alert("Đã xác nhận xong ca! Khung chat sẽ tiếp tục mở để bạn nhận tim theo ngày nhé.");
+        }
+        db.ref('donHangSky/' + activeStaffChatId).update(updateObj);
       }
     }
 
@@ -498,7 +557,7 @@
       });
     }
 
-    // 5. Feedback hiển thị kèm ảnh
+    // 5. Feedback hiển thị chuẩn chỉ có tên m****i, không còn hiện phương thức thanh toán
     db.ref('feedbacks').on('value', function(snap) {
       var data = snap.val(), box = document.getElementById("staffFeedbackGrid");
       box.innerHTML = "";
@@ -513,7 +572,7 @@
             <div style="color:#f59e0b; font-size:12px;">${"★".repeat(fb.sao || 5)}</div>
             <p style="margin:4px 0; font-size:13px;">"${fb.nhanXet}"</p>
             ${anhHTML}
-            <span style="font-size:11px; color:#64748b; display:block; margin-top:6px;">- Khách hàng ${fb.tenKhach} (${fb.keHoachTraTim || "Tiền mặt"})</span>
+            <span style="font-size:11px; color:#64748b; display:block; margin-top:6px;">- Khách hàng ${fb.tenKhach}</span>
           </div>
         `;
       });
