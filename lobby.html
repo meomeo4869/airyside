@@ -10,9 +10,10 @@
 </head>
 <body class="lobby-layout">
 
+  <!-- HỆ THỐNG BONG BÓNG MINI CHAT ĐA NHIỆM (GÓC PHẢI DƯỚI) -->
   <div id="customerChatheadsList" class="chatheads-container"></div>
 
-  <!-- NAVBAR CAPSULE NỔI -->
+  <!-- THANH ĐIỀU HƯỚNG NAVBAR CAPSULE NỔI -->
   <nav class="navbar-capsule-container">
     <div class="navbar-capsule">
       <div class="nav-brand">
@@ -83,7 +84,7 @@
     <section id="tab-pricing" class="lobby-page" style="display: none;">
       <div class="lobby-section">
         <h2>🌳 Bảng Giá Dịch Vụ Chi Tiết</h2>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Bấm trực tiếp vào từng dòng gói dịch vụ để điền thông tin đặt lịch hẹn:</p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Bấm trực tiếp vào từng dòng để mở phiếu đặt dịch vụ:</p>
         <div id="dynamicBentoBoard" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
           <p style="text-align: center; color: var(--text-muted);">Đang tải bảng giá dịch vụ...</p>
         </div>
@@ -113,14 +114,14 @@
       </div>
     </section>
 
-    <!-- ==================== TRANG 4: ĐƠN HÀNG CỦA BẠN ==================== -->
+    <!-- ==================== TRANG 4: ĐƠN HÀNG CỦA BẠN (3 CỘT) ==================== -->
     <section id="tab-orders" class="lobby-page" style="display: none;">
       <div class="lobby-section">
         <h2>📦 Đơn Hàng Của Bạn</h2>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Quản lý, theo dõi tiến trình và hủy/xóa đơn:</p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Theo dõi tiến trình, trò chuyện với Staff và thanh lý đơn:</p>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px;">
-          <!-- 1. Đang Chờ Nhận -->
+          <!-- Cột 1: Chờ Staff Nhận -->
           <div class="order-col-box" style="border-top: 4px solid #f59e0b !important; padding: 20px 16px;">
             <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0;">
               <span>⏳ Chờ Staff Nhận</span> <span id="badgePendingCount" style="background:#fef3c7; color:#b45309; padding:2px 8px; border-radius:9999px; font-size:11px;">0</span>
@@ -128,7 +129,7 @@
             <div id="listOrdersPending"><p style="font-size: 12px; color: #94a3b8; text-align: center;">Không có đơn chờ.</p></div>
           </div>
 
-          <!-- 2. Đang Xử Lý / Đã Có Staff -->
+          <!-- Cột 2: Đang Trao Đổi / Đã Có Staff -->
           <div class="order-col-box" style="border-top: 4px solid #0284c7 !important; padding: 20px 16px;">
             <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0;">
               <span>💬 Đang Trao Đổi</span> <span id="badgeRunningCount" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:9999px; font-size:11px;">0</span>
@@ -136,7 +137,7 @@
             <div id="listOrdersRunning"><p style="font-size: 12px; color: #94a3b8; text-align: center;">Không có đơn đang chạy.</p></div>
           </div>
 
-          <!-- 3. Đã Hoàn Thành -->
+          <!-- Cột 3: Đã Hoàn Thành -->
           <div class="order-col-box" style="border-top: 4px solid #10b981 !important; padding: 20px 16px;">
             <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0;">
               <span>✔️ Đã Hoàn Thành</span> <span id="badgeDoneCount" style="background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:9999px; font-size:11px;">0</span>
@@ -152,70 +153,153 @@
       <div class="lobby-section">
         <h2>⭐ Feedback Từ Khách Hàng</h2>
         <div id="feedbackWall" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-top: 14px;">
-          <p style="color: var(--text-muted);">Đang tải đánh giá...</p>
+          <p style="color: var(--text-muted);">Đang tải feedback...</p>
         </div>
       </div>
     </section>
 
   </div>
 
-<!-- POPUP ĐẶT ĐƠN DẠNG FORM DÀI LIQUID GLASS CHỈN CHU -->
+  <!-- POPUP ĐẶT ĐƠN ÉP GỌN 1 KHUNG (HẾT CUỘN TRANG) -->
   <div id="modalDatDonTrucTiep" class="modal-overlay">
-    <div class="modal-content" style="max-width: 460px; width: 92%; text-align: left; max-height: 90vh; overflow-y: auto;">
+    <div class="modal-content-compact">
       <button type="button" class="btn-dong-modal" onclick="dongPopupDatDon()">✕</button>
       
-      <div style="text-align: center; margin-bottom: 16px;">
-        <div style="font-size: 32px; margin-bottom: 2px;">✨</div>
-        <h3 style="margin: 0; color: #0284c7; font-size: 20px;">Phiếu Đặt Dịch Vụ</h3>
-        <p id="popSubDichVu" style="font-size: 13px; color: var(--text-muted); margin: 4px 0 0 0; font-weight: 600;">UBER - 15 Nến (5k)</p>
+      <div style="text-align: center; margin-bottom: 10px;">
+        <h3 style="margin: 0; color: #0284c7; font-size: 18px;">Phiếu Đặt Dịch Vụ ✨</h3>
+        <p id="popSubDichVu" style="font-size: 12px; color: var(--text-muted); margin: 2px 0 0 0; font-weight: 600;">UBER - 15 Nến (5k / 2 Tim)</p>
       </div>
 
-      <label for="popPlayerName">Tên của bạn:</label>
-      <input type="text" id="popPlayerName" placeholder="Nhập tên nhân vật hoặc biệt danh của bạn..." required>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <div>
+          <label>Tên của bạn:</label>
+          <input type="text" id="popPlayerName" placeholder="Tên Sky / Biệt danh..." style="margin-bottom: 6px !important;">
+        </div>
+        <div>
+          <label>Gmail nhận ưu đãi:</label>
+          <input type="email" id="popPlayerEmail" placeholder="vd: sky@gmail.com" onblur="kiemTraVoucherTrucTiep()" style="margin-bottom: 6px !important;">
+        </div>
+      </div>
 
-      <label for="popPlayerEmail">Gmail tích điểm & nhận ưu đãi (Tùy chọn):</label>
-      <input type="email" id="popPlayerEmail" placeholder="vd: skylove@gmail.com" onblur="kiemTraVoucherTrucTiep()">
-      
-      <!-- HỘP LỰA CHỌN VOUCHER -->
-      <div id="popBoxVoucher" style="display: none; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-inner); padding: 12px; margin-bottom: 14px; font-size: 13px;">
-        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #15803d; font-weight: 700; margin: 0 !important;">
+      <!-- VOUCHER NHỎ GỌN -->
+      <div id="popBoxVoucher" style="display: none; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 6px 10px; margin-bottom: 8px; font-size: 12px;">
+        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: #15803d; font-weight: 700; margin: 0 !important;">
           <input type="checkbox" id="popChkDungVoucher" onchange="tinhToanGiaPopup()" style="width: auto !important; margin: 0 !important;">
-          <span id="popVoucherLabel">Sử dụng voucher tích lũy</span>
+          <span id="popVoucherLabel">Dùng voucher</span>
         </label>
-        <span style="font-size: 11px; color: #166534; display: block; margin-top: 4px;">*Số tiền voucher còn thừa sẽ được giữ nguyên cho các đơn sau.</span>
       </div>
 
-      <label for="popThoiGian">Lịch hẹn (Ngày & Giờ bắt đầu):</label>
-      <input type="datetime-local" id="popThoiGian" required>
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 8px;">
+        <div>
+          <label>Lịch hẹn (Ngày & Giờ):</label>
+          <input type="datetime-local" id="popThoiGian" required style="margin-bottom: 6px !important;">
+        </div>
+        <div>
+          <label>Hình thức TT:</label>
+          <select id="popPhuongThucTT" onchange="tinhToanGiaPopup()" style="margin-bottom: 6px !important;">
+            <option value="Tien_VND">Tiền mặt (QR/STK)</option>
+            <option value="Tim_Sky">💖 Tim Sky</option>
+          </select>
+        </div>
+      </div>
 
-      <label for="popPhuongThucTT">Hình thức thanh toán:</label>
-      <select id="popPhuongThucTT">
-        <option value="Tien_VND">Tiền mặt (Ngân hàng / Momo)</option>
-        <option value="Tim_Sky">Tim Sky</option>
-      </select>
+      <label>Yêu cầu ghi chú thêm:</label>
+      <input type="text" id="popYeuCau" placeholder="Ghi chú thêm về mốc thời gian, map..." style="margin-bottom: 10px !important;">
 
-      <label for="popYeuCau">Yêu cầu hoặc ghi chú thêm cho Staff:</label>
-      <input type="text" id="popYeuCau" placeholder="Ghi chú thêm về mốc thời gian, trang phục...">
-
-      <!-- BẢNG TÍNH TIỀN LIQUID GLASS -->
-      <div style="background: rgba(248, 250, 252, 0.9); border: 1px solid #e2e8f0; border-radius: var(--radius-inner); padding: 14px 16px; margin: 16px 0; font-size: 13.5px;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+      <!-- BẢNG TÍNH TIỀN GỌN NHẸ -->
+      <div style="background: rgba(248, 250, 252, 0.9); border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; font-size: 13px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
           <span style="color: var(--text-muted);">Phí dịch vụ:</span>
           <strong id="popGiaGocTxt">0đ</strong>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #ea580c;">
-          <span>Giảm giá Voucher:</span>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 2px; color: #ea580c;">
+          <span>Giảm giá:</span>
           <strong id="popGiamGiaTxt">-0đ</strong>
         </div>
-        <div style="display: flex; justify-content: space-between; border-top: 1px dashed #cbd5e1; padding-top: 8px; font-size: 15.5px;">
-          <span style="font-weight: 700; color: var(--text-primary);">Tổng thanh toán:</span>
-          <strong id="popTongTienTxt" style="color: #16a34a; font-size: 16.5px;">0đ</strong>
+        <div style="display: flex; justify-content: space-between; border-top: 1px dashed #cbd5e1; padding-top: 4px; font-size: 14.5px;">
+          <span style="font-weight: 700;">Tổng thanh toán:</span>
+          <strong id="popTongTienTxt" style="color: #16a34a;">0đ</strong>
         </div>
       </div>
 
-      <button type="button" id="popBtnXacNhan" onclick="xacNhanLuuDonTrucTiep()" style="width: 100%; padding: 13px; font-size: 14.5px;">
+      <button type="button" id="popBtnXacNhan" onclick="xacNhanLuuDonTrucTiep()" style="width: 100%; padding: 10px; font-size: 14px;">
         Xác Nhận Đặt Đơn ✨
       </button>
+    </div>
+  </div>
+
+  <!-- KHUNG CHAT MINI LIQUID GLASS (MỞ KHI BẤM BONG BÓNG) -->
+  <div id="chatBoxKhach" class="chat-container">
+    <div class="chat-header">
+      <span id="chatTitleKhach">Chat Với Staff</span>
+      <div style="display: flex; gap: 6px;">
+        <button type="button" onclick="moPopupReport()" style="background:#fee2e2; color:#dc2626; border:none; padding:3px 8px; font-size:11px; border-radius:9999px;">🚩 Báo cáo</button>
+        <button type="button" onclick="dongChatKhach()" style="background:#f1f5f9; border:none; width:24px; height:24px; border-radius:50%; cursor:pointer;">✕</button>
+      </div>
+    </div>
+
+    <div class="chat-body" id="chatBodyKhach">
+      <!-- 1. MÀN HÌNH THANH TOÁN TIỀN MẶT -->
+      <div id="manHinhThanhToanKhach" style="text-align: center; padding: 14px; background: rgba(255, 247, 237, 0.9); border-radius: 14px; border: 1px solid #fed7aa; display: none;">
+        <p style="font-size: 12px; margin: 0 0 6px 0; color: #c2410c; font-weight: bold;">THANH TOÁN ĐƠN HÀNG</p>
+        <div id="qrThanhToanBox" style="margin-bottom: 6px;"></div>
+        <p style="font-size: 11px; margin: 0; color: #78350f;">Vui lòng chuyển khoản để Admin duyệt tiền mở mã kết bạn nhé.</p>
+      </div>
+
+      <!-- 2. MÀN HÌNH NHẬP MÃ KẾT BẠN -->
+      <div id="manHinhKetBanKhach" style="text-align: center; padding: 14px; display: none;">
+        <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 8px;">Gửi mã kết bạn Sky để bắt đầu ca:</p>
+        <input type="text" id="maKetBanKhach" placeholder="Dán link/mã kết bạn Sky..." style="margin-bottom: 8px;">
+        <button type="button" onclick="xacNhanMaKhach()" style="padding: 6px 16px; font-size: 12px;">Gửi Mã Kết Bạn</button>
+      </div>
+
+      <!-- 3. TIN NHẮN TRÒ CHUYỆN -->
+      <div id="tinNhanKhach" style="display: flex; flex-direction: column; gap: 8px;"></div>
+    </div>
+
+    <div class="chat-footer">
+      <input type="text" id="nhapTinKhach" placeholder="Nhập tin nhắn..." disabled onkeypress="if(event.key==='Enter') guiTinKhach()" style="margin-bottom:0 !important;">
+      <button type="button" id="btnGuiTinKhach" disabled onclick="guiTinKhach()">➤</button>
+      <button type="button" id="btnXacNhanHoanThanhKhach" disabled onclick="xacNhanXongKhach()" style="background:#10b981;" title="Xác nhận hoàn thành ca">✔</button>
+    </div>
+  </div>
+
+  <!-- POPUP BÁO CÁO REPORT -->
+  <div id="modalReport" class="modal-overlay">
+    <div class="modal-content-compact" style="width: 380px;">
+      <button type="button" class="btn-dong-modal" onclick="dongPopupReport()">✕</button>
+      <h3 style="margin-top:0; color:#dc2626;">🚩 Báo Cáo Sự Cố</h3>
+      <label>Lý do khiếu nại:</label>
+      <textarea id="reportLyDo" rows="3" placeholder="Mô tả sự cố cần Admin hỗ trợ..."></textarea>
+      <button type="button" onclick="guiBaoCao()" style="width:100%; background:#dc2626; color:white; margin-top:8px;">Gửi Báo Cáo</button>
+    </div>
+  </div>
+
+  <!-- POPUP ĐÁNH GIÁ FEEDBACK & KẾ HOẠCH TRẢ TIM THEO NGÀY -->
+  <div id="modalFeedback" class="modal-overlay">
+    <div class="modal-content-compact" style="width: 400px; text-align: center;">
+      <h3 style="margin-top:0; color:#0284c7;">Hoàn Tất Đơn Hàng 🎉</h3>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: -4px;">Cảm ơn bạn đã đồng hành cùng <strong id="fbStaffNameTxt">Staff</strong>!</p>
+      
+      <!-- NẾU LÀ ĐƠN TIM: HIỆN CHỌN SỐ TIM TRẢ MỖI NGÀY -->
+      <div id="boxKeHoachTraTim" style="display: none; background: #fff7ed; border: 1px solid #ffedd5; border-radius: 12px; padding: 10px; margin-bottom: 12px; text-align: left; font-size: 12.5px;">
+        <strong style="color: #c2410c; display: block; margin-bottom: 4px;">💖 Kế hoạch trả Tim nợ:</strong>
+        <p style="margin: 0 0 6px 0; color: #78350f;">Đơn của bạn là: <strong id="fbTongTimTxt">0 Tim</strong></p>
+        <label>Bạn muốn trả bao nhiêu tim một ngày?</label>
+        <select id="selTimMoiNgay" onchange="tinhSoNgayTraTim()">
+          <option value="1">1 Tim / Ngày</option>
+          <option value="2">2 Tim / Ngày</option>
+        </select>
+        <span id="fbDuKienTraTim" style="font-size: 11.5px; color: #ea580c; font-weight: bold; display: block; margin-top: 4px;">Dự kiến trả trong: - ngày</span>
+      </div>
+
+      <label style="text-align: center !important;">Đánh giá Staff:</label>
+      <div style="font-size: 24px; color: #f59e0b; cursor: pointer; margin-bottom: 10px;" id="starBox">
+        <span onclick="setRating(1)">★</span><span onclick="setRating(2)">★</span><span onclick="setRating(3)">★</span><span onclick="setRating(4)">★</span><span onclick="setRating(5)">★</span>
+      </div>
+
+      <input type="text" id="loiNhanFeedback" placeholder="Đôi lời nhắn gửi đến Staff..." style="margin-bottom: 12px !important;">
+      <button type="button" onclick="guiFeedback()" style="width: 100%;">Gửi Đánh Giá ✨</button>
     </div>
   </div>
 
@@ -236,6 +320,13 @@
     var myOrderIds = [];
     try { myOrderIds = JSON.parse(localStorage.getItem("myOrderIdsList")) || []; } catch(e) { myOrderIds = []; }
 
+    var activeChatOrderId = null;
+    var currentTenKhach = "Khách Hàng";
+    var currentStaffCuaDon = "";
+    var currentDonHangData = null;
+    var danhSachDonDangChayKhach = {};
+    var selectedStar = 5;
+
     function chuyenTrang(tenTrang, btnElement) {
       document.querySelectorAll('.lobby-page').forEach(function(p) { p.style.display = 'none'; });
       var target = document.getElementById('tab-' + tenTrang);
@@ -246,7 +337,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 1. Tải Bento Pods
+    // 1. Tải Bento Pods Bảng Giá Động
     db.ref('cayBangGia').on('value', function(snapshot) {
       var treeData = snapshot.val();
       var board = document.getElementById("dynamicBentoBoard");
@@ -258,7 +349,7 @@
         if (item.hienThi !== false) {
           if (!treeMap[item.mang]) treeMap[item.mang] = {};
           if (!treeMap[item.mang][item.nhom]) treeMap[item.mang][item.nhom] = [];
-          treeMap[item.mang][item.nhom].push({ goi: item.goi, gia: item.gia, mang: item.mang });
+          treeMap[item.mang][item.nhom].push({ goi: item.goi, gia: item.gia, giaTim: item.giaTim || "2 Tim", mang: item.mang });
         }
       });
 
@@ -280,9 +371,12 @@
             var itemsHTML = "";
             groups[gName].forEach(function(it) {
               itemsHTML += `
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 12px; background:#fff; border-radius:12px; margin-bottom:6px; cursor:pointer; border:1px solid #f1f5f9;" onclick='moPopupDatDon("${it.mang}", "${it.goi}", "${it.gia}")' title="Bấm đặt gói này">
+                <div class="bento-item-row" onclick='moPopupDatDon("${it.mang}", "${it.goi}", "${it.gia}", "${it.giaTim}")' title="Bấm đặt gói này">
                   <span style="font-weight:600;">${it.goi}</span>
-                  <strong style="color:#ea580c; background:#fff7ed; padding:3px 8px; border-radius:9999px;">${it.gia}</strong>
+                  <div style="display:flex; gap:6px;">
+                    <strong style="color:#ea580c; background:#fff7ed; padding:3px 8px; border-radius:9999px;">${it.gia}</strong>
+                    <strong style="color:#e11d48; background:#ffe4e6; padding:3px 8px; border-radius:9999px;">💖 ${it.giaTim}</strong>
+                  </div>
                 </div>
               `;
             });
@@ -296,7 +390,7 @@
         }
 
         board.innerHTML += `
-          <div class="glass-box" style="padding: 22px;">
+          <div class="lobby-section" style="padding: 20px;">
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px; border-bottom:1px solid #e2e8f0; padding-bottom:10px;">
               <span style="font-size:22px;">${cfg.icon}</span>
               <div><h3 style="margin:0; font-size:16px;">${cfg.label}</h3><p style="margin:2px 0 0 0; font-size:11.5px; color:#64748b;">${cfg.sub}</p></div>
@@ -312,9 +406,9 @@
     var voucherKhaDung = 0;
     var userEmailKey = "";
 
-    function moPopupDatDon(mang, goi, gia) {
-      popItemDangChon = { mang: mang, goi: goi, gia: gia };
-      document.getElementById("popSubDichVu").innerText = `${mang.toUpperCase()} - ${goi} (${gia})`;
+    function moPopupDatDon(mang, goi, gia, giaTim) {
+      popItemDangChon = { mang: mang, goi: goi, gia: gia, giaTim: giaTim || "2 Tim" };
+      document.getElementById("popSubDichVu").innerText = `${mang.toUpperCase()} - ${goi} (${gia} / ${popItemDangChon.giaTim})`;
       document.getElementById("modalDatDonTrucTiep").style.display = "flex";
       kiemTraVoucherTrucTiep();
     }
@@ -343,6 +437,14 @@
 
     function tinhToanGiaPopup() {
       if (!popItemDangChon) return;
+      var pttt = document.getElementById("popPhuongThucTT").value;
+      if (pttt === "Tim_Sky") {
+        document.getElementById("popGiaGocTxt").innerText = popItemDangChon.giaTim;
+        document.getElementById("popGiamGiaTxt").innerText = "-0 Tim";
+        document.getElementById("popTongTienTxt").innerText = popItemDangChon.giaTim;
+        return;
+      }
+
       var chuoiSo = popItemDangChon.gia.toLowerCase().replace(/[^0-9k]/g, '');
       var phiGoc = chuoiSo.includes('k') ? (parseFloat(chuoiSo.replace('k', '')) * 1000) : (parseFloat(chuoiSo) || 0);
       var chk = document.getElementById("popChkDungVoucher");
@@ -366,7 +468,7 @@
       var tgDinhDang = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')} ngày ${dt.getDate().toString().padStart(2, '0')}/${(dt.getMonth()+1).toString().padStart(2, '0')}/${dt.getFullYear()}`;
 
       var chk = document.getElementById("popChkDungVoucher");
-      var coDungVoucher = (chk.checked && voucherKhaDung > 0);
+      var coDungVoucher = (chk.checked && voucherKhaDung > 0 && pttt === "Tien_VND");
 
       var donData = {
         tenKhach: tenKhach,
@@ -379,7 +481,7 @@
         phiGoc: document.getElementById("popGiaGocTxt").innerText,
         giamGia: document.getElementById("popGiamGiaTxt").innerText,
         giaNiemYet: document.getElementById("popTongTienTxt").innerText,
-        daThanhToanFull: (pttt === "Tim_Sky"),
+        daThanhToanFull: (pttt === "Tim_Sky"), // Đơn tim không cần admin duyệt tiền
         yeuCau: yc || "Không có yêu cầu đặc biệt",
         daNhan: false,
         trangThai: "dang_cho",
@@ -401,13 +503,13 @@
         myOrderIds.push(newRef.key);
         localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
         dongPopupDatDon();
-        alert("Đặt đơn thành công!");
+        alert("Đặt đơn thành công! Bạn có thể theo dõi tiến trình ở mục Đơn Hàng Của Bạn.");
         chuyenTrang('orders', null);
         theoDoiCacDonCuaKhach();
       });
     }
 
-    // 3. Theo dõi & Xóa đơn / Hủy đơn khách
+    // 3. Theo dõi tiến trình đơn hàng & Tự dọn sạch đơn đã bị xóa trên Admin
     var orderListenersMap = {};
 
     function theoDoiCacDonCuaKhach() {
@@ -420,10 +522,13 @@
       boxDone.innerHTML = "";
 
       var countP = 0, countR = 0, countD = 0;
+      danhSachDonDangChayKhach = {};
+
       if (!myOrderIds || myOrderIds.length === 0) {
         boxPending.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Chưa có đơn nào.</p>";
         boxRunning.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Chưa có đơn nào.</p>";
         boxDone.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Chưa có đơn nào.</p>";
+        capNhatBongBongChat();
         return;
       }
 
@@ -433,18 +538,12 @@
         var callback = function(snap) {
           var don = snap.val();
 
-          // Khi Admin xóa đơn: Báo từ chối
+          // NẾU ADMIN ĐÃ XÓA TRÊN DASHBOARD -> TỰ ĐỘNG DỌN SẠCH KHỎI MÁY KHÁCH
           if (!don) {
-            var elCu = document.getElementById("card-order-" + orderId);
-            if (!elCu) {
-              boxPending.innerHTML += `
-                <div class="customer-order-card is-rejected" id="card-order-${orderId}">
-                  <strong style="color:#ef4444;">Đơn hàng đã bị từ chối / hủy</strong>
-                  <p style="font-size:11.5px; color:#991b1b; margin:4px 0 8px 0;">Admin đã hủy yêu cầu này.</p>
-                  <button type="button" onclick="xoaDonKhoiMayKhach('${orderId}')" style="background:#fee2e2; color:#dc2626; border:none; padding:4px 10px; border-radius:9999px; font-size:11px; cursor:pointer; font-weight:700;">Đã hiểu & Xóa ✕</button>
-                </div>
-              `;
-            }
+            myOrderIds = myOrderIds.filter(function(id) { return id !== orderId; });
+            localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
+            delete danhSachDonDangChayKhach[orderId];
+            capNhatBongBongChat();
             return;
           }
 
@@ -459,22 +558,30 @@
 
           if (don.trangThai === "hoan_thanh") {
             countD++;
+            delete danhSachDonDangChayKhach[orderId];
             cardHTML += `
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
                 <span style="color:#16a34a; font-size:11.5px; font-weight:bold;">✔️ Hoàn tất (${don.staffNhan || "🌸"})</span>
-                <button type="button" onclick="xoaDonKhoiMayKhach('${orderId}')" style="background:#f1f5f9; color:#64748b; border:none; font-size:10.5px; padding:2px 8px; border-radius:9999px; cursor:pointer;">Xóa lịch sử ✕</button>
+                <button type="button" onclick="xoaDonKhoiMayKhach('${orderId}')" style="background:#f1f5f9; color:#64748b; border:none; font-size:10.5px; padding:2px 8px; border-radius:9999px; cursor:pointer;">Xóa ✕</button>
               </div>
             </div>`;
             boxDone.innerHTML += cardHTML;
           } else if (don.daNhan) {
             countR++;
-            cardHTML += `<div style="color:#0284c7; font-weight:bold; font-size:12px; margin-top:6px;">Staff: ${don.staffNhan}</div></div>`;
+            danhSachDonDangChayKhach[orderId] = don;
+            cardHTML += `
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+                <span style="color:#0284c7; font-weight:bold; font-size:12px;">Staff: ${don.staffNhan}</span>
+                <button type="button" onclick="moChatChoDon('${orderId}')" style="background:#0284c7; color:white; font-size:11px; padding:3px 8px; border-radius:9999px;">Mở Chat 💬</button>
+              </div>
+            </div>`;
             boxRunning.innerHTML += cardHTML;
           } else {
             countP++;
+            delete danhSachDonDangChayKhach[orderId];
             cardHTML += `
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
-                <span style="color:#d97706; font-size:11.5px;">⏳ Đang chờ Staff nhận...</span>
+                <span style="color:#d97706; font-size:11.5px;">⏳ Chờ Staff nhận...</span>
                 <button type="button" onclick="khachHuyDonDangCho('${orderId}')" style="background:#fee2e2; color:#dc2626; border:none; font-size:10.5px; padding:2px 8px; border-radius:9999px; cursor:pointer;">Hủy Đơn ✕</button>
               </div>
             </div>`;
@@ -484,6 +591,7 @@
           document.getElementById("badgePendingCount").innerText = countP;
           document.getElementById("badgeRunningCount").innerText = countR;
           document.getElementById("badgeDoneCount").innerText = countD;
+          capNhatBongBongChat();
         };
 
         orderListenersMap[orderId] = callback;
@@ -492,7 +600,6 @@
     }
     theoDoiCacDonCuaKhach();
 
-    // Khách tự hủy đơn đang chờ
     function khachHuyDonDangCho(orderId) {
       if (confirm("Bạn có chắc chắn muốn hủy đơn đặt này không?")) {
         db.ref('donHangSky/' + orderId).remove().then(function() {
@@ -502,7 +609,6 @@
       }
     }
 
-    // Xóa đơn khỏi lịch sử khách
     function xoaDonKhoiMayKhach(orderId) {
       if (orderListenersMap[orderId]) {
         db.ref('donHangSky/' + orderId).off('value', orderListenersMap[orderId]);
@@ -512,10 +618,212 @@
       localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
       var el = document.getElementById("card-order-" + orderId);
       if (el) el.remove();
+      delete danhSachDonDangChayKhach[orderId];
       theoDoiCacDonCuaKhach();
     }
 
-    // 4. Đồng hồ đếm ngược rút dần
+    // 4. HỆ THỐNG BONG BÓNG MINI CHAT ĐA NHIỆM (GÓC PHẢI DƯỚI)
+    function capNhatBongBongChat() {
+      var box = document.getElementById("customerChatheadsList");
+      box.innerHTML = "";
+      Object.keys(danhSachDonDangChayKhach).forEach(function(idDon) {
+        var dh = danhSachDonDangChayKhach[idDon];
+        box.innerHTML += `
+          <div class="chathead-bubble" onclick="moChatChoDon('${idDon}')" title="Staff ${dh.staffNhan} - ${dh.cuThe}">
+            <span>${dh.staffNhan || "🌸"}</span>
+          </div>
+        `;
+      });
+    }
+
+    var chatOrderListener = null, chatRoomListener = null;
+
+    function moChatChoDon(orderId) {
+      if (chatOrderListener) db.ref('donHangSky/' + chatOrderListener.orderId).off('value', chatOrderListener.callback);
+      if (chatRoomListener) db.ref('phongChat/' + chatRoomListener.orderId).off('value', chatRoomListener.callback);
+
+      activeChatOrderId = orderId;
+      document.getElementById("chatBoxKhach").style.display = "flex";
+      document.getElementById("tinNhanKhach").innerHTML = "";
+
+      var orderCallback = function(snap) {
+        if (activeChatOrderId !== orderId) return;
+        var don = snap.val();
+        if (!don) { dongChatKhach(); return; }
+        currentDonHangData = don;
+        currentTenKhach = don.tenKhach;
+        currentStaffCuaDon = don.staffNhan;
+        document.getElementById("chatTitleKhach").innerText = `Chat: ${don.cuThe} (${don.staffNhan})`;
+
+        var boxTT = document.getElementById("manHinhThanhToanKhach");
+        var boxKB = document.getElementById("manHinhKetBanKhach");
+
+        // ĐƠN TIỀN MẶT: BẮT BUỘC ADMIN DUYỆT MỚI MỞ MÃ KẾT BẠN
+        if (don.thanhToan === "Tien_VND" && !don.daThanhToanFull) {
+          boxTT.style.display = "block";
+          boxKB.style.display = "none";
+          db.ref('caiDatThanhToan').once('value').then(function(s) {
+            var tt = s.val() || {};
+            var qrBox = document.getElementById("qrThanhToanBox");
+            if (tt.anhQR) qrBox.innerHTML = `<img src="${tt.anhQR}" style="max-width:130px; border-radius:10px;"><p style="font-size:11px; margin:4px 0 0 0; color:#ea580c; font-weight:bold;">STK: ${tt.stk} (${tt.nganHang})</p>`;
+            else qrBox.innerHTML = `<p style="font-size:12px; color:#ea580c; font-weight:bold;">STK: ${tt.stk} (${tt.nganHang})</p>`;
+          });
+        } else {
+          boxTT.style.display = "none";
+        }
+
+        langNghePhongChat(orderId);
+      };
+
+      chatOrderListener = { orderId: orderId, callback: orderCallback };
+      db.ref('donHangSky/' + orderId).on('value', orderCallback);
+    }
+
+    function langNghePhongChat(idDon) {
+      var chatCallback = function(snap) {
+        if (activeChatOrderId !== idDon) return;
+        var data = snap.val();
+        var boxKB = document.getElementById("manHinhKetBanKhach");
+        var tinNhanBox = document.getElementById("tinNhanKhach");
+        var boxTT = document.getElementById("manHinhThanhToanKhach");
+
+        if (boxTT.style.display === "block") return;
+
+        // CÓ MÃ KẾT BẠN THÌ MỚI MỞ PHÒNG CHAT
+        if (data && data.maKetBan) {
+          boxKB.style.display = "none";
+          tinNhanBox.style.display = "flex";
+          document.getElementById("nhapTinKhach").disabled = false;
+          document.getElementById("btnGuiTinKhach").disabled = false;
+          document.getElementById("btnXacNhanHoanThanhKhach").disabled = false;
+
+          tinNhanBox.innerHTML = "";
+          if (data.tinNhan) {
+            Object.values(data.tinNhan).forEach(function(m) {
+              var loai = m.nguoiGui === "Khách" ? "msg right" : (m.nguoiGui === "Hệ thống" ? "msg system" : "msg left");
+              tinNhanBox.innerHTML += `<div class="${loai}"><strong>${m.nguoiGui}:</strong> ${m.noiDung}</div>`;
+            });
+            tinNhanBox.scrollTop = tinNhanBox.scrollHeight;
+          }
+        } else {
+          boxKB.style.display = "block";
+          tinNhanBox.style.display = "none";
+        }
+      };
+
+      chatRoomListener = { orderId: idDon, callback: chatCallback };
+      db.ref('phongChat/' + idDon).on('value', chatCallback);
+    }
+
+    function xacNhanMaKhach() {
+      var ma = document.getElementById("maKetBanKhach").value.trim();
+      if (ma && activeChatOrderId) {
+        db.ref('phongChat/' + activeChatOrderId).update({ maKetBan: ma });
+        db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({ nguoiGui: "Hệ thống", noiDung: "Mã kết bạn Sky: " + ma });
+        document.getElementById("maKetBanKhach").value = "";
+      }
+    }
+
+    function guiTinKhach() {
+      var txt = document.getElementById("nhapTinKhach").value.trim();
+      if (txt && activeChatOrderId) {
+        db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({ nguoiGui: "Khách", noiDung: txt });
+        document.getElementById("nhapTinKhach").value = "";
+      }
+    }
+
+    function dongChatKhach() {
+      if (chatOrderListener) db.ref('donHangSky/' + chatOrderListener.orderId).off('value', chatOrderListener.callback);
+      if (chatRoomListener) db.ref('phongChat/' + chatRoomListener.orderId).off('value', chatRoomListener.callback);
+      document.getElementById("chatBoxKhach").style.display = "none";
+      activeChatOrderId = null;
+    }
+
+    // XÁC NHẬN HOÀN TẤT & POPUP TRẢ NỢ TIM THEO NGÀY
+    function xacNhanXongKhach() {
+      if (!activeChatOrderId) return;
+      if (confirm("Bạn xác nhận đã hoàn tất ca đồng hành này cùng Staff?")) {
+        db.ref('donHangSky/' + activeChatOrderId).update({ khachHoanThanh: true });
+        db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({ nguoiGui: "Hệ thống", noiDung: "Khách đã bấm xác nhận hoàn tất ca!" });
+
+        db.ref('donHangSky/' + activeChatOrderId).once('value').then(function(s) {
+          var dh = s.val();
+          if (dh.staffHoanThanh) {
+            db.ref('donHangSky/' + activeChatOrderId).update({ trangThai: "hoan_thanh" });
+            dongChatKhach();
+            moModalFeedbackKhach(dh);
+          } else {
+            alert("Bạn đã xác nhận hoàn tất! Vui lòng chờ Staff bấm xác nhận cùng nhé.");
+          }
+        });
+      }
+    }
+
+    function moModalFeedbackKhach(dh) {
+      document.getElementById("fbStaffNameTxt").innerText = "Staff " + (dh.staffNhan || "🌸");
+      var boxTraTim = document.getElementById("boxKeHoachTraTim");
+
+      if (dh.thanhToan === "Tim_Sky") {
+        boxTraTim.style.display = "block";
+        document.getElementById("fbTongTimTxt").innerText = dh.giaNiemYet || "2 Tim";
+        tinhSoNgayTraTim();
+      } else {
+        boxTraTim.style.display = "none";
+      }
+
+      document.getElementById("modalFeedback").style.display = "flex";
+    }
+
+    function tinhSoNgayTraTim() {
+      if (!currentDonHangData) return;
+      var chuoi = (currentDonHangData.giaNiemYet || "2").replace(/[^0-9]/g, '');
+      var tongTim = parseInt(chuoi) || 2;
+      var timMoiNgay = parseInt(document.getElementById("selTimMoiNgay").value) || 1;
+      var soNgay = Math.ceil(tongTim / timMoiNgay);
+      document.getElementById("fbDuKienTraTim").innerText = `Dự kiến bạn sẽ trả xong nợ tim trong: ${soNgay} ngày (mỗi ngày trả ${timMoiNgay} Tim).`;
+    }
+
+    function setRating(n) {
+      selectedStar = n;
+      var stars = document.querySelectorAll("#starBox span");
+      stars.forEach(function(s, idx) { s.style.opacity = idx < n ? "1" : "0.3"; });
+    }
+
+    function guiFeedback() {
+      var txt = document.getElementById("loiNhanFeedback").value.trim();
+      var timMoiNgay = document.getElementById("selTimMoiNgay").value;
+
+      db.ref('feedbacks').push({
+        tenKhach: currentTenKhach,
+        staffPhuTrach: currentStaffCuaDon,
+        sao: selectedStar,
+        nhanXet: txt || "Dịch vụ tuyệt vời!",
+        keHoachTraTim: (currentDonHangData && currentDonHangData.thanhToan === "Tim_Sky") ? `Trả ${timMoiNgay} tim/ngày` : "Tiền mặt",
+        thoiGian: Date.now()
+      });
+
+      document.getElementById("modalFeedback").style.display = "none";
+      alert("Cảm ơn bạn đã đánh giá! Chúc bạn có những phút giây vui vẻ.");
+      location.reload();
+    }
+
+    function moPopupReport() { document.getElementById("modalReport").style.display = "flex"; }
+    function dongPopupReport() { document.getElementById("modalReport").style.display = "none"; }
+    function guiBaoCao() {
+      var lyDo = document.getElementById("reportLyDo").value.trim();
+      if (!lyDo) { alert("Vui lòng ghi rõ lý do sự cố!"); return; }
+      db.ref('danhSachBaoCao').push({
+        nguoiBaoCao: currentTenKhach,
+        doiTuongBiBaoCao: "Staff " + currentStaffCuaDon,
+        lyDo: lyDo,
+        thoiGian: Date.now()
+      }).then(function() {
+        alert("Đã gửi báo cáo tới Admin xử lý!");
+        dongPopupReport();
+      });
+    }
+
+    // 5. Đồng hồ iOS Timer đếm ngược rút dần theo ca
     var caLamHienTai = null;
     db.ref('caiDatPage/lichChiTiet').on('value', function(snap) {
       caLamHienTai = snap.val();
@@ -582,7 +890,7 @@
     }
     setInterval(veDongHoIOSTimer, 1000);
 
-    // 5. Tải Lời tựa, ảnh kỷ niệm, luật
+    // 6. Tải Lời tựa, ảnh kỷ niệm, luật
     db.ref('caiDatPage').on('value', function(snap) {
       var set = snap.val() || {};
       if (set.gioiThieuPage) document.getElementById("gioiThieuPageTxt").innerText = set.gioiThieuPage;
@@ -593,8 +901,7 @@
     });
 
     db.ref('anhKyNiemPage').on('value', function(snap) {
-      var photos = snap.val();
-      var box = document.getElementById("pageGalleryBox");
+      var photos = snap.val(), box = document.getElementById("pageGalleryBox");
       box.innerHTML = "";
       if (!photos) { box.innerHTML = "<p style='color:#94a3b8; font-size:12px;'>Chưa có ảnh nào.</p>"; return; }
       Object.values(photos).forEach(function(url) {
@@ -602,7 +909,6 @@
       });
     });
 
-    // Profile Staff
     Promise.all([db.ref('danhSachStaff').once('value'), db.ref('donHangSky').once('value'), db.ref('feedbacks').once('value')]).then(function(res) {
       var sList = res[0].val() || {}, orders = res[1].val() || {}, fbs = res[2].val() || {};
       var box = document.getElementById("danhSachTheTreoStaff");
@@ -616,7 +922,7 @@
         var tb = countF > 0 ? (tongS / countF).toFixed(1) : "5.0";
 
         box.innerHTML += `
-          <div class="glass-box" style="padding:20px; text-align:center;">
+          <div class="lobby-section" style="padding:20px; text-align:center;">
             <div style="font-size:32px; margin-bottom:8px;">${st.icon || "🌸"}</div>
             <strong style="font-size:16px;">${st.ten}</strong>
             <p style="font-size:12px; color:var(--accent-sky); font-weight:700; margin:4px 0 8px 0;">${(st.kyNang || []).join(" • ").toUpperCase()}</p>
@@ -629,18 +935,16 @@
       });
     });
 
-    // Feedbacks
     db.ref('feedbacks').on('value', function(snap) {
-      var data = snap.val();
-      var box = document.getElementById("feedbackWall");
+      var data = snap.val(), box = document.getElementById("feedbackWall");
       box.innerHTML = "";
       if (!data) return;
       Object.values(data).reverse().forEach(function(fb) {
         box.innerHTML += `
-          <div class="glass-box" style="padding:14px 16px;">
+          <div class="lobby-section" style="padding:14px 16px;">
             <div style="color:#f59e0b; font-size:12px;">${"★".repeat(fb.sao || 5)}</div>
             <p style="margin:6px 0; font-size:13px;">"${fb.nhanXet}"</p>
-            <span style="font-size:11px; color:#0284c7; font-weight:bold;">- Khách hàng ${fb.tenKhach.charAt(0)}***</span>
+            <span style="font-size:11px; color:#0284c7; font-weight:bold;">- Khách hàng ${fb.tenKhach ? (fb.tenKhach.charAt(0) + "***") : "Ẩn danh"} (${fb.keHoachTraTim || ""})</span>
           </div>
         `;
       });
