@@ -10,35 +10,28 @@
 </head>
 <body class="staff-layout">
 
-  <!-- BONG BÓNG MINI CHAT RIÊNG BIỆT -->
   <div id="chatheadsList" class="chatheads-container"></div>
-
-  <!-- NÚT MỞ THÔNG BÁO TỪ ADMIN -->
   <div class="toggle-btn" onclick="moThongBao()">◀</div>
 
-  <!-- SIDE PANEL THÔNG BÁO TỪ ADMIN -->
   <div id="sidePanel" class="side-panel">
-    <div class="noti-header">
-      <h3 style="margin: 0; font-size: 15px; font-weight: 700;">Thông Báo Từ Admin 🔔</h3>
-      <button type="button" onclick="moThongBao()" class="close-btn">✕</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <h3 style="margin: 0; font-size: 15px;">Thông Báo Từ Admin 🔔</h3>
+      <button type="button" onclick="moThongBao()" style="background:#f1f5f9; border:none; border-radius:50%; width:26px; height:26px; cursor:pointer;">✕</button>
     </div>
     <div id="danhSachThongBaoAdmin">
-      <div class="noti-card">
-        <strong>Hệ thống</strong>
-        <p style="margin: 4px 0 0 0;">Chào mừng bạn đến với ca trực hôm nay!</p>
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:10px; font-size:13px;">
+        <strong>Hệ thống</strong><p style="margin:4px 0 0 0;">Chào mừng bạn đến với ca trực!</p>
       </div>
     </div>
   </div>
 
   <div class="lobby-container">
     
-    <!-- 1. BẢNG LỊCH ĐĂNG KÝ CA LÀM VIỆC DẠNG KÍNH EXCEL -->
-    <div class="schedule-table-wrap" style="margin-bottom: 26px;">
-      <h2 style="font-size: 18px; font-weight: 700; margin-top: 0; margin-bottom: 16px; text-align: center;">
-        🕒 Lịch Đăng Ký Ca Làm Việc
-      </h2>
-      <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: -10px; margin-bottom: 16px;">
-        Bấm vào ô ca của bạn để đổi: <strong>Trống / Rảnh / Bận</strong>
+    <!-- 1. BẢNG ĐĂNG KÝ CA LÀM VIỆC DẠNG EXCEL KÍNH MỜ -->
+    <div class="schedule-table-wrap" style="margin-bottom: 24px;">
+      <h2 style="font-size: 18px; margin: 0 0 12px 0; text-align: center;">🕒 Lịch Đăng Ký Ca Làm Việc</h2>
+      <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: -6px; margin-bottom: 16px;">
+        Bấm vào ô ca của bạn để chọn: <strong>Trống ➔ Rảnh (Trắng sáng) ➔ Bận</strong>
       </p>
 
       <table class="schedule-table" id="bangLich">
@@ -50,69 +43,43 @@
             <th>22:00 - 24:00</th>
           </tr>
         </thead>
-        <tbody id="tbodyLichStaff">
-          <tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Đang tải nhân sự...</td></tr>
-        </tbody>
+        <tbody id="tbodyLichStaff"><tr><td colspan="4" style="text-align:center;">Đang tải nhân sự...</td></tr></tbody>
       </table>
     </div>
 
-    <!-- 2. LƯỚI ĐƠN HÀNG MỚI NHẤT -->
+    <!-- 2. ĐƠN HÀNG MỚI NHẤT -->
     <div class="lobby-section">
       <h2 style="margin-top:0;">📦 Đơn Hàng Mới Nhất</h2>
-      <div id="danhSachDonHang" class="order-grid"></div>
+      <div id="danhSachDonHang" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;"></div>
     </div>
 
-    <!-- 3. KHUNG LỊCH THÁNG CHẤM CÔNG REALTIME -->
+    <!-- 3. LỊCH THÁNG CHẤM CÔNG THỰC TẾ -->
     <div class="realtime-calendar-card">
-      <div class="calendar-header-bar">
-        <h3 id="calCurrentMonthTitle">Lịch Chấm Công Tháng</h3>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h3 id="calCurrentMonthTitle" style="margin:0; font-size:16px;">Lịch Chấm Công Tháng</h3>
         <span style="font-size: 12px; font-weight: 700; color: #0284c7;" id="calStaffBadge">🌸 Staff</span>
       </div>
 
       <div class="calendar-weekdays">
         <div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div><div>CN</div>
       </div>
-
       <div class="calendar-days-grid" id="realtimeDaysGrid"></div>
     </div>
 
-    <!-- 4. KHU VỰC FEEDBACK KHÁCH HÀNG ĐÁNH GIÁ -->
+    <!-- 4. FEEDBACK -->
     <div class="lobby-section">
       <h2 style="margin-top:0;">⭐ Feedback Từ Khách Hàng</h2>
-      <div class="feedback-grid" id="staffFeedbackGrid">
-        <p style="grid-column: 1/-1; color: var(--text-muted);">Đang tải feedback...</p>
+      <div id="staffFeedbackGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-top: 10px;">
+        <p style="color: var(--text-muted);">Đang tải feedback...</p>
       </div>
     </div>
 
-  </div>
-
-  <!-- POPUP CHI TIẾT ĐƠN HÀNG -->
-  <div id="modalChiTiet" class="modal-overlay">
-    <div class="modal-content" style="max-width: 440px; width: 90%; border-radius: 36px;">
-      <button type="button" class="btn-dong-modal" onclick="dongModal()">✕</button>
-      <h2 id="modalTieuDe" style="margin-top:0; font-size: 17px; font-weight: 700; color: #0284c7;">Chi Tiết Đơn Hàng</h2>
-      
-      <div style="font-size: 13.5px; line-height: 1.6; margin-bottom: 16px; text-align: left;">
-        <p style="margin: 4px 0;"><strong>Khách hàng:</strong> <span id="modalKhach">-</span></p>
-        <p style="margin: 4px 0;"><strong>Lịch hẹn:</strong> <span id="modalGio" style="color: #ea580c; font-weight: 600;">-</span></p>
-        <p style="margin: 4px 0;"><strong>Hình thức TT:</strong> <span id="modalTT" style="color: #16a34a; font-weight: 600;">-</span></p>
-        <p style="margin: 4px 0;"><strong>Giá niêm yết:</strong> <span id="modalGia" style="color: var(--text-primary); font-weight: 700;">-</span></p>
-        <p style="margin: 6px 0 4px 0;"><strong>Yêu cầu:</strong></p>
-        <div id="modalYeuCau" style="background: rgba(248, 250, 252, 0.85); border: 1px solid #e2e8f0; padding: 12px; border-radius: var(--radius-inner); font-size: 13px; color: var(--text-muted); white-space: pre-line;"></div>
-      </div>
-
-      <button type="button" class="btn-nhan-don" id="modalBtnNhan" style="width: 100%; padding: 12px; font-weight: 600;">Nhận Đơn Này</button>
-    </div>
   </div>
 
   <script>
     var isAuthStaff = sessionStorage.getItem("sky_staff_logged");
     var savedStaffIcon = localStorage.getItem("myIcon");
-
-    if (!isAuthStaff && !savedStaffIcon) {
-      alert("Vui lòng đăng nhập tài khoản Staff!");
-      window.location.href = "index.html";
-    }
+    if (!isAuthStaff && !savedStaffIcon) { alert("Vui lòng đăng nhập Staff!"); window.location.href = "index.html"; }
 
     const firebaseConfig = {
       apiKey: "AIzaSyCEuMuKn4ZrzQNQCYnxt9XeNpPUsfQk54c",
@@ -131,44 +98,18 @@
     var myStaffName = localStorage.getItem("myStaffName") || "Staff";
     document.getElementById("calStaffBadge").innerText = `${iconCuaToi} ${myStaffName}`;
 
-    var mySkills = ["uber", "host", "logacc"];
-    try {
-      var p = JSON.parse(localStorage.getItem("myStaffSkills"));
-      if (Array.isArray(p)) mySkills = p;
-    } catch(e) {}
+    function moThongBao() { document.getElementById("sidePanel").classList.toggle("panel-open"); }
 
-    function moThongBao() {
-      document.getElementById("sidePanel").classList.toggle("panel-open");
-    }
-
-    // 1. Tải thông báo từ Admin
-    db.ref('thongBaoAdmin').on('value', function(snap) {
-      var notis = snap.val();
-      var box = document.getElementById("danhSachThongBaoAdmin");
-      if (notis) {
-        box.innerHTML = "";
-        Object.values(notis).reverse().forEach(function(n) {
-          box.innerHTML += `
-            <div class="noti-card">
-              <strong>Admin:</strong> <span style="font-size:11px; color:#94a3b8; float:right;">${n.gio || ""}</span>
-              <p style="margin:4px 0 0 0;">${n.noiDung}</p>
-            </div>
-          `;
-        });
-      }
-    });
-
-    // 2. Lịch đăng ký ca làm việc
+    // 1. Lịch đăng ký ca làm việc
     db.ref('danhSachStaff').on('value', function(snapshot) {
-      var staffList = snapshot.val();
-      var tbody = document.getElementById("tbodyLichStaff");
+      var staffList = snapshot.val(), tbody = document.getElementById("tbodyLichStaff");
       tbody.innerHTML = "";
       if (!staffList) return;
 
       Object.keys(staffList).forEach(function(k) {
         var st = staffList[k];
         var isMe = (st.ten === myStaffName);
-        var clickAttr = isMe ? 'onclick="doiTrangThaiCa(this)" style="cursor:pointer;"' : 'style="opacity:0.6; cursor:not-allowed;" title="Chỉ ' + st.ten + ' mới có quyền đổi"';
+        var clickAttr = isMe ? 'onclick="doiTrangThaiCa(this)" style="cursor:pointer;"' : 'style="opacity:0.6; cursor:not-allowed;"';
 
         tbody.innerHTML += `
           <tr>
@@ -194,32 +135,26 @@
       }
     }
 
-    // 3. Lịch tháng chấm công realtime dạng lưới 7 cột
+    // 2. Lịch tháng chấm công realtime
     function dungLichThangRealtime() {
-      var now = new Date();
-      var y = now.getFullYear();
-      var m = now.getMonth();
-      var todayDate = now.getDate();
-
+      var now = new Date(), y = now.getFullYear(), m = now.getMonth(), todayDate = now.getDate();
       document.getElementById("calCurrentMonthTitle").innerText = `Lịch Tháng ${(m + 1)}/${y}`;
 
       var firstDay = new Date(y, m, 1).getDay();
       var daysInMonth = new Date(y, m + 1, 0).getDate();
       var startCol = (firstDay === 0) ? 6 : (firstDay - 1);
-
       var grid = document.getElementById("realtimeDaysGrid");
       grid.innerHTML = "";
 
       for (var b = 0; b < startCol; b++) {
         grid.innerHTML += `<div class="cal-day-cell" style="opacity: 0.2; background: transparent; border: none;"></div>`;
       }
-
       for (var d = 1; d <= daysInMonth; d++) {
         var isTodayCls = (d === todayDate) ? "is-today" : "";
         grid.innerHTML += `
           <div class="cal-day-cell ${isTodayCls}" id="cal-day-${d}">
             <span>${d}</span>
-            <span class="staff-work-dot" id="dot-day-${d}"></span>
+            <span id="dot-day-${d}" style="font-size:11px; margin-top:2px;"></span>
           </div>
         `;
       }
@@ -238,32 +173,25 @@
     }
     dungLichThangRealtime();
 
-    // 4. Lưới đơn hàng
+    // 3. Đơn hàng
     db.ref('donHangSky').on('value', function(snap) {
-      var list = snap.val();
-      var box = document.getElementById("danhSachDonHang");
+      var list = snap.val(), box = document.getElementById("danhSachDonHang");
       box.innerHTML = "";
-      if (!list) { box.innerHTML = "<p style='grid-column: 1/-1; color: var(--text-muted);'>Hiện chưa có đơn nào.</p>"; return; }
+      if (!list) { box.innerHTML = "<p style='color:var(--text-muted);'>Chưa có đơn nào.</p>"; return; }
 
       Object.keys(list).reverse().forEach(function(k) {
         var dh = list[k];
-        dh.id = k;
         if (dh.trangThai === "hoan_thanh") return;
-        if (!mySkills.includes(dh.mangDichVu)) return;
-
-        var ttLabel = dh.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền mặt";
         var btnHTML = dh.daNhan 
-          ? `<button type="button" class="btn-nhan-don" style="background:#cbd5e1; color:#475569;" disabled>ĐÃ NHẬN (${dh.staffNhan})</button>`
-          : `<button type="button" class="btn-nhan-don" onclick="event.stopPropagation(); chotDon('${k}')">Nhận Đơn</button>`;
+          ? `<button disabled style="background:#cbd5e1; color:#475569; width:100%; border:none; padding:8px; border-radius:9999px;">ĐÃ NHẬN (${dh.staffNhan})</button>`
+          : `<button onclick="chotDon('${k}')" style="background:#0f172a; color:white; width:100%; border:none; padding:8px; border-radius:9999px; cursor:pointer;">Nhận Đơn Ngay</button>`;
 
         box.innerHTML += `
-          <div class="order-card" onclick='moModal(${JSON.stringify(dh)})'>
-            <div class="order-icon-box">📦</div>
-            <h3 style="margin: 6px 0;">${dh.mangDichVu.toUpperCase()}</h3>
-            <p style="margin: 2px 0;"><strong>Khách:</strong> ${dh.tenKhach}</p>
-            <p style="font-size: 11.5px; color: #ea580c; margin: 2px 0;"><strong>Hẹn:</strong> ${dh.thoiGianHen || "N/A"}</p>
-            <p style="font-size: 11.5px; color: #16a34a; margin: 2px 0;"><strong>TT:</strong> ${ttLabel}</p>
-            <div style="width: 100%; margin-top: 10px;">${btnHTML}</div>
+          <div class="glass-box" style="padding:16px;">
+            <h4 style="margin:0 0 6px 0;">${(dh.mangDichVu||"").toUpperCase()} - ${dh.cuThe}</h4>
+            <p style="margin:2px 0; font-size:13px;">Khách: <strong>${dh.tenKhach}</strong></p>
+            <p style="margin:2px 0; font-size:12px; color:#ea580c;">Hẹn: ${dh.thoiGianHen}</p>
+            <div style="margin-top:10px;">${btnHTML}</div>
           </div>
         `;
       });
@@ -271,62 +199,23 @@
 
     function chotDon(maDon) {
       db.ref('donHangSky/' + maDon).update({ daNhan: true, staffNhan: iconCuaToi }).then(function() {
-        dongModal();
         var now = new Date();
         db.ref(`chamCong/${iconCuaToi}/${now.getFullYear()}_${now.getMonth()+1}/${now.getDate()}`).set(true);
-        alert("Đã nhận đơn thành công! Hãy trao đổi cùng khách hàng.");
+        alert("Đã nhận đơn!");
       });
     }
 
-    function moModal(dh) {
-      document.getElementById("modalTieuDe").innerText = "Đơn: " + dh.mangDichVu.toUpperCase();
-      document.getElementById("modalKhach").innerText = dh.tenKhach;
-      document.getElementById("modalGio").innerText = dh.thoiGianHen || "N/A";
-      document.getElementById("modalTT").innerText = dh.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền mặt";
-      document.getElementById("modalGia").innerText = dh.giaNiemYet || "Liên hệ";
-      document.getElementById("modalYeuCau").innerText = dh.yeuCau || "Không có yêu cầu.";
-      
-      var btn = document.getElementById("modalBtnNhan");
-      if (dh.daNhan) {
-        btn.innerText = "ĐÃ NHẬN (" + dh.staffNhan + ")";
-        btn.disabled = true;
-      } else {
-        btn.innerText = "Nhận Đơn Này";
-        btn.disabled = false;
-        btn.onclick = function() { chotDon(dh.id); };
-      }
-      document.getElementById("modalChiTiet").style.display = "flex";
-    }
-
-    function dongModal() { document.getElementById("modalChiTiet").style.display = "none"; }
-
-    // 5. TẢI TƯỜNG FEEDBACK ĐÁNH GIÁ PHÍA STAFF
+    // 4. Feedback
     db.ref('feedbacks').on('value', function(snap) {
-      var data = snap.val();
-      var box = document.getElementById("staffFeedbackGrid");
+      var data = snap.val(), box = document.getElementById("staffFeedbackGrid");
       box.innerHTML = "";
-
-      if (!data) {
-        box.innerHTML = "<p style='grid-column: 1/-1; color: var(--text-muted);'>Chưa có feedback nào từ khách hàng.</p>";
-        return;
-      }
-
+      if (!data) return;
       Object.values(data).reverse().forEach(function(fb) {
-        var starStr = "★".repeat(fb.sao || 5);
-        var staffText = fb.staffPhuTrach ? `<span style="font-size: 11.5px; color: #0284c7; font-weight: bold;">(Phục vụ: ${fb.staffPhuTrach})</span>` : "";
-        var anhHTML = (fb.anhFeedback && fb.anhFeedback !== "none") 
-          ? `<div class="feedback-img-box"><img src="${fb.anhFeedback}" onclick="window.open('${fb.anhFeedback}')" title="Bấm xem ảnh lớn"></div>` 
-          : "";
-
         box.innerHTML += `
-          <div class="feedback-card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-              <div style="color: #f59e0b; font-size:13px;">${starStr}</div>
-              ${staffText}
-            </div>
-            <p style="margin: 6px 0;">"${fb.nhanXet}"</p>
-            ${anhHTML}
-            <span style="font-size: 11.5px; color: var(--text-muted); display: block; margin-top: 6px;">- Khách hàng ${fb.tenKhach ? (fb.tenKhach.charAt(0) + "***") : "Ẩn danh"}</span>
+          <div class="glass-box" style="padding:12px 14px;">
+            <div style="color:#f59e0b; font-size:12px;">${"★".repeat(fb.sao || 5)}</div>
+            <p style="margin:4px 0; font-size:13px;">"${fb.nhanXet}"</p>
+            <span style="font-size:11px; color:#64748b;">- Khách hàng ${fb.tenKhach ? (fb.tenKhach.charAt(0) + "***") : "Ẩn danh"}</span>
           </div>
         `;
       });
