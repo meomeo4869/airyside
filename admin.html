@@ -50,7 +50,7 @@
         <span class="badge-count">Dynamic Hierarchy</span>
       </div>
 
-      <!-- Khung Thêm Nhanh Dịch Vụ Mới -->
+      <!-- Khung Thêm Nhanh Dịch Vụ Mới (Cấp 2 & Giá Tim là tùy chọn) -->
       <div style="background: rgba(248, 250, 252, 0.85); padding: 16px; border-radius: 14px; margin-bottom: 16px; border: 1px solid #e2e8f0;">
         <h4 style="margin:0 0 10px 0; font-size:13px;">➕ Thêm Gói Dịch Vụ Mới Vào Bảng Giá</h4>
         <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1fr 1fr auto; gap: 8px; align-items: flex-end;">
@@ -63,20 +63,20 @@
             </select>
           </div>
           <div>
-            <label>Nhóm (Cấp 1):</label>
-            <input type="text" id="admTreeNhom" placeholder="vd: Nhặt nến, Đi eden..." style="margin-bottom:0 !important;">
+            <label>Nhánh Cấp 1 (*Bắt buộc):</label>
+            <input type="text" id="admTreeNhom" placeholder="vd: Đi Eden, Dẫn Map..." style="margin-bottom:0 !important;">
           </div>
           <div>
-            <label>Gói Cụ Thể (Cấp 2):</label>
-            <input type="text" id="admTreeGoi" placeholder="vd: 15 nến, 1h..." style="margin-bottom:0 !important;">
+            <label>Nhánh Cấp 2 (Tùy chọn):</label>
+            <input type="text" id="admTreeGoi" placeholder="Có thể bỏ trống..." style="margin-bottom:0 !important;">
           </div>
           <div>
-            <label>Giá Tiền Mặt:</label>
-            <input type="text" id="admTreeGia" placeholder="vd: 15k..." style="margin-bottom:0 !important;">
+            <label>Giá Tiền Mặt (vd: 15k):</label>
+            <input type="text" id="admTreeGia" placeholder="Bỏ trống nếu chỉ nhận Tim" style="margin-bottom:0 !important;">
           </div>
           <div>
-            <label>Giá Tim Sky:</label>
-            <input type="text" id="admTreeGiaTim" placeholder="vd: 6 Tim..." style="margin-bottom:0 !important;">
+            <label>Giá Tim Sky (vd: 2 Tim):</label>
+            <input type="text" id="admTreeGiaTim" placeholder="Bỏ trống nếu không nhận Tim" style="margin-bottom:0 !important;">
           </div>
           <button type="button" onclick="themNhanhCayMoi()" style="background:#0284c7; color:white; height:38px;">Thêm ✨</button>
         </div>
@@ -427,24 +427,34 @@
       });
     });
 
+    
     function themNhanhCayMoi() {
       var m = document.getElementById("admTreeMang").value;
       var nh = document.getElementById("admTreeNhom").value.trim();
       var g = document.getElementById("admTreeGoi").value.trim();
-      var gia = document.getElementById("admTreeGia").value.trim() || "15k";
-      var giaTim = document.getElementById("admTreeGiaTim").value.trim() || "2 Tim";
+      var gia = document.getElementById("admTreeGia").value.trim();
+      var giaTim = document.getElementById("admTreeGiaTim").value.trim();
 
-      if (!nh || !g) { alert("Vui lòng điền đủ Nhóm (Cấp 1) và Gói (Cấp 2)!"); return; }
+      if (!nh) {
+        alert("Vui lòng điền tên dịch vụ (Nhánh Cấp 1)!");
+        return;
+      }
+
+      if (!gia && !giaTim) {
+        alert("Vui lòng nhập ít nhất 1 loại giá (Tiền mặt hoặc Tim Sky)!");
+        return;
+      }
 
       db.ref('cayBangGia').push({
         mang: m,
         nhom: nh,
-        goi: g,
-        gia: gia,
-        giaTim: giaTim,
+        goi: g || "", // Nếu không có cấp 2 thì để trống
+        gia: gia || "Không áp dụng",
+        giaTim: giaTim || "Không áp dụng",
         hienThi: true,
         thoiGianTao: Date.now()
       }).then(function() {
+        document.getElementById("admTreeNhom").value = "";
         document.getElementById("admTreeGoi").value = "";
         document.getElementById("admTreeGia").value = "";
         document.getElementById("admTreeGiaTim").value = "";
