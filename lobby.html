@@ -13,7 +13,7 @@
   <!-- HỆ THỐNG BONG BÓNG MINI CHAT ĐA NHIỆM (GÓC PHẢI DƯỚI) -->
   <div id="customerChatheadsList" class="chatheads-container"></div>
 
-  <!-- THANH ĐIỀU HƯỚNG NAVBAR CAPSULE NỔI -->
+  <!-- NAVBAR CAPSULE NỔI -->
   <nav class="navbar-capsule-container">
     <div class="navbar-capsule">
       <div class="nav-brand">
@@ -114,7 +114,7 @@
       </div>
     </section>
 
-    <!-- ==================== TRANG 4: ĐƠN HÀNG CỦA BẠN (3 CỘT) ==================== -->
+    <!-- ==================== TRANG 4: ĐƠN HÀNG CỦA BẠN (3 CỘT ĐÃ ĐỒNG BỘ CHUẨN) ==================== -->
     <section id="tab-orders" class="lobby-page" style="display: none;">
       <div class="lobby-section">
         <h2>📦 Đơn Hàng Của Bạn</h2>
@@ -160,14 +160,14 @@
 
   </div>
 
-  <!-- POPUP ĐẶT ĐƠN ÉP GỌN 1 KHUNG (HẾT CUỘN TRANG) -->
+  <!-- POPUP ĐẶT ĐƠN GỌN GÀNG FIT VIEWPORT -->
   <div id="modalDatDonTrucTiep" class="modal-overlay">
     <div class="modal-content-compact">
       <button type="button" class="btn-dong-modal" onclick="dongPopupDatDon()">✕</button>
       
       <div style="text-align: center; margin-bottom: 10px;">
         <h3 style="margin: 0; color: #0284c7; font-size: 18px;">Phiếu Đặt Dịch Vụ ✨</h3>
-        <p id="popSubDichVu" style="font-size: 12px; color: var(--text-muted); margin: 2px 0 0 0; font-weight: 600;">UBER - 15 Nến (5k / 2 Tim)</p>
+        <p id="popSubDichVu" style="font-size: 12px; color: var(--text-muted); margin: 2px 0 0 0; font-weight: 600;">-</p>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
@@ -228,7 +228,7 @@
     </div>
   </div>
 
-  <!-- KHUNG CHAT MINI LIQUID GLASS (MỞ KHI BẤM BONG BÓNG) -->
+  <!-- KHUNG CHAT MINI LIQUID GLASS CỦA KHÁCH -->
   <div id="chatBoxKhach" class="chat-container">
     <div class="chat-header">
       <span id="chatTitleKhach">Chat Với Staff</span>
@@ -238,29 +238,42 @@
       </div>
     </div>
 
+    <!-- KHUNG GHIM MÃ KẾT BẠN 2 CHIỀU -->
+    <div id="boxGhimMaKBKhach" style="background:#f0f9ff; border-bottom:1px solid #bae6fd; padding:6px 12px; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
+      <span id="txtGhimMaKBKhach">📌 Chưa có mã kết bạn Sky</span>
+      <button type="button" id="btnCopyMaKhach" onclick="copyMaKBKhach()" style="display:none; padding:2px 8px; font-size:10px; background:#0284c7; color:white;">Sao chép</button>
+    </div>
+
+    <!-- TIẾN ĐỘ TRẢ NỢ TIM (NẾU LÀ ĐƠN TIM) -->
+    <div id="boxTienDoTimKhach" style="display:none; background:#fff7ed; border-bottom:1px solid #fed7aa; padding:6px 12px; font-size:12px; color:#c2410c; text-align:center;">
+      💖 Tiến độ gửi Tim: <strong id="txtTienDoTimKhach">0/0 Tim</strong> (Hằng ngày gửi tim cho Staff)
+    </div>
+
     <div class="chat-body" id="chatBodyKhach">
-      <!-- 1. MÀN HÌNH THANH TOÁN TIỀN MẶT -->
+      <!-- MÀN HÌNH THANH TOÁN TIỀN MẶT -->
       <div id="manHinhThanhToanKhach" style="text-align: center; padding: 14px; background: rgba(255, 247, 237, 0.9); border-radius: 14px; border: 1px solid #fed7aa; display: none;">
         <p style="font-size: 12px; margin: 0 0 6px 0; color: #c2410c; font-weight: bold;">THANH TOÁN ĐƠN HÀNG</p>
         <div id="qrThanhToanBox" style="margin-bottom: 6px;"></div>
         <p style="font-size: 11px; margin: 0; color: #78350f;">Vui lòng chuyển khoản để Admin duyệt tiền mở mã kết bạn nhé.</p>
       </div>
 
-      <!-- 2. MÀN HÌNH NHẬP MÃ KẾT BẠN -->
-      <div id="manHinhKetBanKhach" style="text-align: center; padding: 14px; display: none;">
-        <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 8px;">Gửi mã kết bạn Sky để bắt đầu ca:</p>
-        <input type="text" id="maKetBanKhach" placeholder="Dán link/mã kết bạn Sky..." style="margin-bottom: 8px;">
-        <button type="button" onclick="xacNhanMaKhach()" style="padding: 6px 16px; font-size: 12px;">Gửi Mã Kết Bạn</button>
+      <!-- Ô GỬI MÃ KẾT BẠN SKY (CẢ 2 BÊN ĐỀU GỬI ĐƯỢC) -->
+      <div id="manHinhKetBanKhach" style="text-align: center; padding: 10px; background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0; margin-bottom:8px;">
+        <p style="font-size: 12px; color: var(--text-muted); margin: 0 0 6px 0;">Gửi link/mã kết bạn Sky cho Staff:</p>
+        <div style="display:flex; gap:6px;">
+          <input type="text" id="maKetBanKhach" placeholder="Dán mã kết bạn..." style="margin-bottom:0 !important; font-size:12px;">
+          <button type="button" onclick="xacNhanMaKhach()" style="padding:6px 12px; font-size:11.5px; white-space:nowrap;">Gửi Mã</button>
+        </div>
       </div>
 
-      <!-- 3. TIN NHẮN TRÒ CHUYỆN -->
+      <!-- TIN NHẮN TRÒ CHUYỆN -->
       <div id="tinNhanKhach" style="display: flex; flex-direction: column; gap: 8px;"></div>
     </div>
 
     <div class="chat-footer">
       <input type="text" id="nhapTinKhach" placeholder="Nhập tin nhắn..." disabled onkeypress="if(event.key==='Enter') guiTinKhach()" style="margin-bottom:0 !important;">
       <button type="button" id="btnGuiTinKhach" disabled onclick="guiTinKhach()">➤</button>
-      <button type="button" id="btnXacNhanHoanThanhKhach" disabled onclick="xacNhanXongKhach()" style="background:#10b981;" title="Xác nhận hoàn thành ca">✔</button>
+      <button type="button" id="btnXacNhanHoanThanhKhach" onclick="xacNhanXongKhach()" style="background:#10b981;" title="Bấm hoàn thành ca">✔ Xong</button>
     </div>
   </div>
 
@@ -269,36 +282,40 @@
     <div class="modal-content-compact" style="width: 380px;">
       <button type="button" class="btn-dong-modal" onclick="dongPopupReport()">✕</button>
       <h3 style="margin-top:0; color:#dc2626;">🚩 Báo Cáo Sự Cố</h3>
-      <label>Lý do khiếu nại:</label>
+      <label>Lý do khiếu nại Staff:</label>
       <textarea id="reportLyDo" rows="3" placeholder="Mô tả sự cố cần Admin hỗ trợ..."></textarea>
       <button type="button" onclick="guiBaoCao()" style="width:100%; background:#dc2626; color:white; margin-top:8px;">Gửi Báo Cáo</button>
     </div>
   </div>
 
-  <!-- POPUP ĐÁNH GIÁ FEEDBACK & KẾ HOẠCH TRẢ TIM THEO NGÀY -->
+  <!-- POPUP ĐÁNH GIÁ FEEDBACK (CÓ ẢNH & ĐƠN THANH TOÁN TIM) -->
   <div id="modalFeedback" class="modal-overlay">
-    <div class="modal-content-compact" style="width: 400px; text-align: center;">
+    <div class="modal-content-compact" style="width: 420px; text-align: center;">
       <h3 style="margin-top:0; color:#0284c7;">Hoàn Tất Đơn Hàng 🎉</h3>
       <p style="font-size: 13px; color: var(--text-muted); margin-top: -4px;">Cảm ơn bạn đã đồng hành cùng <strong id="fbStaffNameTxt">Staff</strong>!</p>
       
-      <!-- NẾU LÀ ĐƠN TIM: HIỆN CHỌN SỐ TIM TRẢ MỖI NGÀY -->
+      <!-- HÓA ĐƠN THANH TOÁN TIM THEO NGÀY -->
       <div id="boxKeHoachTraTim" style="display: none; background: #fff7ed; border: 1px solid #ffedd5; border-radius: 12px; padding: 10px; margin-bottom: 12px; text-align: left; font-size: 12.5px;">
-        <strong style="color: #c2410c; display: block; margin-bottom: 4px;">💖 Kế hoạch trả Tim nợ:</strong>
-        <p style="margin: 0 0 6px 0; color: #78350f;">Đơn của bạn là: <strong id="fbTongTimTxt">0 Tim</strong></p>
-        <label>Bạn muốn trả bao nhiêu tim một ngày?</label>
-        <select id="selTimMoiNgay" onchange="tinhSoNgayTraTim()">
-          <option value="1">1 Tim / Ngày</option>
-          <option value="2">2 Tim / Ngày</option>
-        </select>
-        <span id="fbDuKienTraTim" style="font-size: 11.5px; color: #ea580c; font-weight: bold; display: block; margin-top: 4px;">Dự kiến trả trong: - ngày</span>
+        <strong style="color: #c2410c; display: block; margin-bottom: 4px;">💖 Hóa đơn thanh toán Tim:</strong>
+        <p style="margin: 0 0 6px 0; color: #78350f;">Tổng số tim đơn hàng: <strong id="fbTongTimTxt">0 Tim</strong></p>
+        <label>Bạn có thể gửi bao nhiêu tim mỗi ngày? (Tùy số acc bạn có):</label>
+        <input type="number" id="numTimMoiNgay" value="1" min="1" max="10" oninput="tinhSoNgayTraTim()" style="margin-bottom:4px !important;">
+        <span id="fbDuKienTraTim" style="font-size: 11.5px; color: #ea580c; font-weight: bold; display: block; margin-top: 4px;">Dự kiến thanh toán xong trong: - ngày</span>
       </div>
 
       <label style="text-align: center !important;">Đánh giá Staff:</label>
-      <div style="font-size: 24px; color: #f59e0b; cursor: pointer; margin-bottom: 10px;" id="starBox">
+      <div style="font-size: 24px; color: #f59e0b; cursor: pointer; margin-bottom: 8px;" id="starBox">
         <span onclick="setRating(1)">★</span><span onclick="setRating(2)">★</span><span onclick="setRating(3)">★</span><span onclick="setRating(4)">★</span><span onclick="setRating(5)">★</span>
       </div>
 
-      <input type="text" id="loiNhanFeedback" placeholder="Đôi lời nhắn gửi đến Staff..." style="margin-bottom: 12px !important;">
+      <input type="text" id="loiNhanFeedback" placeholder="Đôi lời nhận xét về chuyến đi..." style="margin-bottom: 8px !important;">
+      
+      <!-- NÚT TẢI ẢNH FEEDBACK -->
+      <div style="background: rgba(248, 250, 252, 0.9); border: 1px dashed #cbd5e1; border-radius: 10px; padding: 8px; margin-bottom: 12px; text-align: left;">
+        <label style="margin: 0 0 4px 0 !important; font-size: 11.5px;">Tải ảnh kỷ niệm chuyến đi 📸 (Tùy chọn):</label>
+        <input type="file" id="fileFeedbackAnh" accept="image/*" style="font-size: 11px; margin-bottom: 0 !important;">
+      </div>
+
       <button type="button" onclick="guiFeedback()" style="width: 100%;">Gửi Đánh Giá ✨</button>
     </div>
   </div>
@@ -337,7 +354,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 1. Tải Bento Pods Bảng Giá Động
+    // 1. Tải Bento Pods Bảng Giá Động (Gói cấp 2 và Giá tiền/tim tùy chọn)
     db.ref('cayBangGia').on('value', function(snapshot) {
       var treeData = snapshot.val();
       var board = document.getElementById("dynamicBentoBoard");
@@ -349,7 +366,12 @@
         if (item.hienThi !== false) {
           if (!treeMap[item.mang]) treeMap[item.mang] = {};
           if (!treeMap[item.mang][item.nhom]) treeMap[item.mang][item.nhom] = [];
-          treeMap[item.mang][item.nhom].push({ goi: item.goi, gia: item.gia, giaTim: item.giaTim || "2 Tim", mang: item.mang });
+          treeMap[item.mang][item.nhom].push({
+            goi: item.goi || item.nhom,
+            gia: item.gia || "",
+            giaTim: item.giaTim || "",
+            mang: item.mang
+          });
         }
       });
 
@@ -370,13 +392,13 @@
           groupKeys.forEach(function(gName) {
             var itemsHTML = "";
             groups[gName].forEach(function(it) {
+              var giaTienHTML = it.gia ? `<strong style="color:#ea580c; background:#fff7ed; padding:3px 8px; border-radius:9999px;">${it.gia}</strong>` : "";
+              var giaTimHTML = it.giaTim ? `<strong style="color:#e11d48; background:#ffe4e6; padding:3px 8px; border-radius:9999px;">💖 ${it.giaTim}</strong>` : "";
+
               itemsHTML += `
                 <div class="bento-item-row" onclick='moPopupDatDon("${it.mang}", "${it.goi}", "${it.gia}", "${it.giaTim}")' title="Bấm đặt gói này">
                   <span style="font-weight:600;">${it.goi}</span>
-                  <div style="display:flex; gap:6px;">
-                    <strong style="color:#ea580c; background:#fff7ed; padding:3px 8px; border-radius:9999px;">${it.gia}</strong>
-                    <strong style="color:#e11d48; background:#ffe4e6; padding:3px 8px; border-radius:9999px;">💖 ${it.giaTim}</strong>
-                  </div>
+                  <div style="display:flex; gap:6px;">${giaTienHTML} ${giaTimHTML}</div>
                 </div>
               `;
             });
@@ -407,8 +429,18 @@
     var userEmailKey = "";
 
     function moPopupDatDon(mang, goi, gia, giaTim) {
-      popItemDangChon = { mang: mang, goi: goi, gia: gia, giaTim: giaTim || "2 Tim" };
-      document.getElementById("popSubDichVu").innerText = `${mang.toUpperCase()} - ${goi} (${gia} / ${popItemDangChon.giaTim})`;
+      popItemDangChon = { mang: mang, goi: goi, gia: gia, giaTim: giaTim };
+      var subGia = [];
+      if (gia) subGia.push(gia);
+      if (giaTim) subGia.push(giaTim);
+      document.getElementById("popSubDichVu").innerText = `${mang.toUpperCase()} - ${goi} (${subGia.join(" / ")})`;
+
+      // Cập nhật phương thức thanh toán khả dụng theo giá
+      var selPT = document.getElementById("popPhuongThucTT");
+      selPT.innerHTML = "";
+      if (gia) selPT.innerHTML += `<option value="Tien_VND">Tiền mặt (QR/STK)</option>`;
+      if (giaTim) selPT.innerHTML += `<option value="Tim_Sky">💖 Tim Sky</option>`;
+
       document.getElementById("modalDatDonTrucTiep").style.display = "flex";
       kiemTraVoucherTrucTiep();
     }
@@ -439,21 +471,21 @@
       if (!popItemDangChon) return;
       var pttt = document.getElementById("popPhuongThucTT").value;
       if (pttt === "Tim_Sky") {
-        document.getElementById("popGiaGocTxt").innerText = popItemDangChon.giaTim;
+        document.getElementById("popGiaGocTxt").innerText = popItemDangChon.giaTim || "2 Tim";
         document.getElementById("popGiamGiaTxt").innerText = "-0 Tim";
-        document.getElementById("popTongTienTxt").innerText = popItemDangChon.giaTim;
+        document.getElementById("popTongTienTxt").innerText = popItemDangChon.giaTim || "2 Tim";
         return;
       }
 
-      var chuoiSo = popItemDangChon.gia.toLowerCase().replace(/[^0-9k]/g, '');
+      var chuoiSo = (popItemDangChon.gia || "0").toLowerCase().replace(/[^0-9k]/g, '');
       var phiGoc = chuoiSo.includes('k') ? (parseFloat(chuoiSo.replace('k', '')) * 1000) : (parseFloat(chuoiSo) || 0);
       var chk = document.getElementById("popChkDungVoucher");
       var mucGiam = (chk.checked && voucherKhaDung > 0) ? voucherKhaDung : 0;
       var tongTien = Math.max(0, phiGoc - mucGiam);
 
-      document.getElementById("popGiaGocTxt").innerText = phiGoc > 0 ? (phiGoc.toLocaleString('vi-VN') + "đ") : popItemDangChon.gia;
+      document.getElementById("popGiaGocTxt").innerText = phiGoc > 0 ? (phiGoc.toLocaleString('vi-VN') + "đ") : (popItemDangChon.gia || "Liên hệ");
       document.getElementById("popGiamGiaTxt").innerText = mucGiam > 0 ? (`-${Math.min(phiGoc, mucGiam).toLocaleString('vi-VN')}đ`) : "-0đ";
-      document.getElementById("popTongTienTxt").innerText = phiGoc > 0 ? (tongTien.toLocaleString('vi-VN') + "đ") : popItemDangChon.gia;
+      document.getElementById("popTongTienTxt").innerText = phiGoc > 0 ? (tongTien.toLocaleString('vi-VN') + "đ") : (popItemDangChon.gia || "Liên hệ");
     }
 
     function xacNhanLuuDonTrucTiep() {
@@ -485,13 +517,14 @@
         yeuCau: yc || "Không có yêu cầu đặc biệt",
         daNhan: false,
         trangThai: "dang_cho",
+        timDaNhan: 0, // Đếm số tim staff đã nhận
         thoiGianTao: Date.now()
       };
 
       var newRef = db.ref('donHangSky').push();
       newRef.set(donData).then(function() {
         if (coDungVoucher && userEmailKey) {
-          var chuoiSo = popItemDangChon.gia.toLowerCase().replace(/[^0-9k]/g, '');
+          var chuoiSo = (popItemDangChon.gia || "0").toLowerCase().replace(/[^0-9k]/g, '');
           var phiDon = chuoiSo.includes('k') ? (parseFloat(chuoiSo.replace('k', '')) * 1000) : (parseFloat(chuoiSo) || 0);
           if (voucherKhaDung > phiDon) {
             db.ref(`thanhVienSky/${userEmailKey}/uuDaiRieng`).update({ giaTri: voucherKhaDung - phiDon, daDung: false });
@@ -503,13 +536,13 @@
         myOrderIds.push(newRef.key);
         localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
         dongPopupDatDon();
-        alert("Đặt đơn thành công! Bạn có thể theo dõi tiến trình ở mục Đơn Hàng Của Bạn.");
+        alert("Đặt đơn thành công! Theo dõi tiến trình tại mục Đơn Hàng Của Bạn.");
         chuyenTrang('orders', null);
         theoDoiCacDonCuaKhach();
       });
     }
 
-    // 3. Theo dõi tiến trình đơn hàng & Tự dọn sạch đơn đã bị xóa trên Admin
+    // 3. THEO DÕI ĐƠN HÀNG CỦA KHÁCH (PHÂN LUỒNG TÁCH BẠCH CHUẨN XÁC)
     var orderListenersMap = {};
 
     function theoDoiCacDonCuaKhach() {
@@ -532,20 +565,27 @@
         return;
       }
 
+      // Xóa sạch bộ đệm DOM cũ trước khi vẽ
       myOrderIds.forEach(function(orderId) {
         if (orderListenersMap[orderId]) db.ref('donHangSky/' + orderId).off('value', orderListenersMap[orderId]);
 
         var callback = function(snap) {
           var don = snap.val();
 
-          // NẾU ADMIN ĐÃ XÓA TRÊN DASHBOARD -> TỰ ĐỘNG DỌN SẠCH KHỎI MÁY KHÁCH
+          // TỰ ĐỘNG DỌN DẸP NẾU ĐƠN BỊ XÓA TRÊN ADMIN
           if (!don) {
             myOrderIds = myOrderIds.filter(function(id) { return id !== orderId; });
             localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
             delete danhSachDonDangChayKhach[orderId];
+            var el = document.getElementById("card-order-" + orderId);
+            if (el) el.remove();
             capNhatBongBongChat();
             return;
           }
+
+          // Xóa thẻ cũ của đơn này ở bất kỳ cột nào trước khi cập nhật cột mới
+          var existingCard = document.getElementById("card-order-" + orderId);
+          if (existingCard) existingCard.remove();
 
           var cardHTML = `
             <div class="customer-order-card" id="card-order-${orderId}">
@@ -556,6 +596,7 @@
               <div style="font-size:11.5px; color:#64748b; margin:4px 0;">📅 Hẹn: ${don.thoiGianHen || "N/A"}</div>
           `;
 
+          // PHÂN NHÁNH RÕ RÀNG: HOÀN THÀNH -> ĐANG CHẠY -> CHỜ NHẬN
           if (don.trangThai === "hoan_thanh") {
             countD++;
             delete danhSachDonDangChayKhach[orderId];
@@ -567,6 +608,7 @@
             </div>`;
             boxDone.innerHTML += cardHTML;
           } else if (don.daNhan) {
+            // ĐÃ NHẬN: CHỈ XUẤT HIỆN Ở CỘT ĐANG TRAO ĐỔI (KHÔNG CÒN Ở CỘT CHỜ)
             countR++;
             danhSachDonDangChayKhach[orderId] = don;
             cardHTML += `
@@ -577,6 +619,7 @@
             </div>`;
             boxRunning.innerHTML += cardHTML;
           } else {
+            // CHƯA NHẬN: CHỈ Ở CỘT CHỜ NHẬN
             countP++;
             delete danhSachDonDangChayKhach[orderId];
             cardHTML += `
@@ -622,7 +665,7 @@
       theoDoiCacDonCuaKhach();
     }
 
-    // 4. HỆ THỐNG BONG BÓNG MINI CHAT ĐA NHIỆM (GÓC PHẢI DƯỚI)
+    // 4. HỆ THỐNG BONG BÓNG MINI CHAT ĐA NHIỆM
     function capNhatBongBongChat() {
       var box = document.getElementById("customerChatheadsList");
       box.innerHTML = "";
@@ -649,7 +692,7 @@
       var orderCallback = function(snap) {
         if (activeChatOrderId !== orderId) return;
         var don = snap.val();
-        if (!don) { dongChatKhach(); return; }
+        if (!don || don.trangThai === "hoan_thanh") { dongChatKhach(); return; }
         currentDonHangData = don;
         currentTenKhach = don.tenKhach;
         currentStaffCuaDon = don.staffNhan;
@@ -657,6 +700,17 @@
 
         var boxTT = document.getElementById("manHinhThanhToanKhach");
         var boxKB = document.getElementById("manHinhKetBanKhach");
+        var boxTienDo = document.getElementById("boxTienDoTimKhach");
+
+        // HIỂN THỊ TIẾN ĐỘ TRẢ TIM NẾU LÀ ĐƠN TIM
+        if (don.thanhToan === "Tim_Sky") {
+          boxTienDo.style.display = "block";
+          var tongTim = parseInt((don.giaNiemYet || "2").replace(/[^0-9]/g, '')) || 2;
+          var daNhan = don.timDaNhan || 0;
+          document.getElementById("txtTienDoTimKhach").innerText = `${daNhan}/${tongTim} Tim`;
+        } else {
+          boxTienDo.style.display = "none";
+        }
 
         // ĐƠN TIỀN MẶT: BẮT BUỘC ADMIN DUYỆT MỚI MỞ MÃ KẾT BẠN
         if (don.thanhToan === "Tien_VND" && !don.daThanhToanFull) {
@@ -686,16 +740,21 @@
         var boxKB = document.getElementById("manHinhKetBanKhach");
         var tinNhanBox = document.getElementById("tinNhanKhach");
         var boxTT = document.getElementById("manHinhThanhToanKhach");
+        var ghimTxt = document.getElementById("txtGhimMaKBKhach");
+        var btnCopy = document.getElementById("btnCopyMaKhach");
 
         if (boxTT.style.display === "block") return;
 
-        // CÓ MÃ KẾT BẠN THÌ MỚI MỞ PHÒNG CHAT
+        // GHIM MÃ KẾT BẠN 2 CHIỀU LÊN HEADER
         if (data && data.maKetBan) {
+          ghimTxt.innerText = `📌 Mã Sky: ${data.maKetBan}`;
+          btnCopy.style.display = "block";
+          btnCopy.setAttribute("data-code", data.maKetBan);
+
           boxKB.style.display = "none";
           tinNhanBox.style.display = "flex";
           document.getElementById("nhapTinKhach").disabled = false;
           document.getElementById("btnGuiTinKhach").disabled = false;
-          document.getElementById("btnXacNhanHoanThanhKhach").disabled = false;
 
           tinNhanBox.innerHTML = "";
           if (data.tinNhan) {
@@ -706,6 +765,8 @@
             tinNhanBox.scrollTop = tinNhanBox.scrollHeight;
           }
         } else {
+          ghimTxt.innerText = `📌 Chưa có mã kết bạn Sky`;
+          btnCopy.style.display = "none";
           boxKB.style.display = "block";
           tinNhanBox.style.display = "none";
         }
@@ -715,11 +776,16 @@
       db.ref('phongChat/' + idDon).on('value', chatCallback);
     }
 
+    function copyMaKBKhach() {
+      var code = document.getElementById("btnCopyMaKhach").getAttribute("data-code");
+      if (code) { navigator.clipboard.writeText(code); alert("Đã sao chép mã kết bạn!"); }
+    }
+
     function xacNhanMaKhach() {
       var ma = document.getElementById("maKetBanKhach").value.trim();
       if (ma && activeChatOrderId) {
         db.ref('phongChat/' + activeChatOrderId).update({ maKetBan: ma });
-        db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({ nguoiGui: "Hệ thống", noiDung: "Mã kết bạn Sky: " + ma });
+        db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({ nguoiGui: "Hệ thống", noiDung: `Khách đã gửi mã kết bạn: ${ma}` });
         document.getElementById("maKetBanKhach").value = "";
       }
     }
@@ -739,23 +805,16 @@
       activeChatOrderId = null;
     }
 
-    // XÁC NHẬN HOÀN TẤT & POPUP TRẢ NỢ TIM THEO NGÀY
+    // 5. LOGIC HOÀN TẤT: KHÁCH BẤM TRƯỚC -> MỞ POPUP FEEDBACK
     function xacNhanXongKhach() {
       if (!activeChatOrderId) return;
-      if (confirm("Bạn xác nhận đã hoàn tất ca đồng hành này cùng Staff?")) {
+      if (confirm("Bạn xác nhận đã đi xong dịch vụ này cùng Staff?")) {
+        // Khách bấm hoàn thành trước
         db.ref('donHangSky/' + activeChatOrderId).update({ khachHoanThanh: true });
         db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({ nguoiGui: "Hệ thống", noiDung: "Khách đã bấm xác nhận hoàn tất ca!" });
-
-        db.ref('donHangSky/' + activeChatOrderId).once('value').then(function(s) {
-          var dh = s.val();
-          if (dh.staffHoanThanh) {
-            db.ref('donHangSky/' + activeChatOrderId).update({ trangThai: "hoan_thanh" });
-            dongChatKhach();
-            moModalFeedbackKhach(dh);
-          } else {
-            alert("Bạn đã xác nhận hoàn tất! Vui lòng chờ Staff bấm xác nhận cùng nhé.");
-          }
-        });
+        
+        // Mở popup feedback cho khách
+        moModalFeedbackKhach(currentDonHangData);
       }
     }
 
@@ -778,9 +837,9 @@
       if (!currentDonHangData) return;
       var chuoi = (currentDonHangData.giaNiemYet || "2").replace(/[^0-9]/g, '');
       var tongTim = parseInt(chuoi) || 2;
-      var timMoiNgay = parseInt(document.getElementById("selTimMoiNgay").value) || 1;
+      var timMoiNgay = parseInt(document.getElementById("numTimMoiNgay").value) || 1;
       var soNgay = Math.ceil(tongTim / timMoiNgay);
-      document.getElementById("fbDuKienTraTim").innerText = `Dự kiến bạn sẽ trả xong nợ tim trong: ${soNgay} ngày (mỗi ngày trả ${timMoiNgay} Tim).`;
+      document.getElementById("fbDuKienTraTim").innerText = `Dự kiến bạn sẽ thanh toán xong trong: ${soNgay} ngày (mỗi ngày gửi ${timMoiNgay} Tim).`;
     }
 
     function setRating(n) {
@@ -789,29 +848,58 @@
       stars.forEach(function(s, idx) { s.style.opacity = idx < n ? "1" : "0.3"; });
     }
 
+    // TẢI ẢNH FEEDBACK & ĐỊNH DẠNG TÊN ẨN DANH m****i
+    function formatTenAnDanh(ten) {
+      if (!ten) return "k****h";
+      var t = ten.trim();
+      if (t.length <= 2) return t.charAt(0) + "****";
+      return t.charAt(0) + "****" + t.charAt(t.length - 1);
+    }
+
     function guiFeedback() {
       var txt = document.getElementById("loiNhanFeedback").value.trim();
-      var timMoiNgay = document.getElementById("selTimMoiNgay").value;
+      var timMoiNgay = document.getElementById("numTimMoiNgay").value;
+      var fileInput = document.getElementById("fileFeedbackAnh");
 
-      db.ref('feedbacks').push({
-        tenKhach: currentTenKhach,
-        staffPhuTrach: currentStaffCuaDon,
-        sao: selectedStar,
-        nhanXet: txt || "Dịch vụ tuyệt vời!",
-        keHoachTraTim: (currentDonHangData && currentDonHangData.thanhToan === "Tim_Sky") ? `Trả ${timMoiNgay} tim/ngày` : "Tiền mặt",
-        thoiGian: Date.now()
-      });
+      var handleSave = function(anhUrl) {
+        db.ref('feedbacks').push({
+          tenKhach: formatTenAnDanh(currentTenKhach),
+          staffPhuTrach: currentStaffCuaDon,
+          sao: selectedStar,
+          nhanXet: txt || "Dịch vụ đồng hành rất chu đáo!",
+          anhFeedback: anhUrl || "none",
+          keHoachTraTim: (currentDonHangData && currentDonHangData.thanhToan === "Tim_Sky") ? `Gửi ${timMoiNgay} tim/ngày` : "Tiền mặt",
+          thoiGian: Date.now()
+        });
 
-      document.getElementById("modalFeedback").style.display = "none";
-      alert("Cảm ơn bạn đã đánh giá! Chúc bạn có những phút giây vui vẻ.");
-      location.reload();
+        // Nếu là đơn tim, lưu kế hoạch gửi tim vào đơn hàng
+        if (currentDonHangData && currentDonHangData.thanhToan === "Tim_Sky") {
+          db.ref('donHangSky/' + activeChatOrderId).update({
+            soTimMoiNgay: timMoiNgay,
+            ghiChuThanhToan: `Khách gửi ${timMoiNgay} tim/ngày`
+          });
+        }
+
+        document.getElementById("modalFeedback").style.display = "none";
+        alert("Cảm ơn bạn đã gửi đánh giá! Chúc bạn có những phút giây vui vẻ cùng Sky.");
+        dongChatKhach();
+        theoDoiCacDonCuaKhach();
+      };
+
+      if (fileInput.files && fileInput.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) { handleSave(e.target.result); };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        handleSave(null);
+      }
     }
 
     function moPopupReport() { document.getElementById("modalReport").style.display = "flex"; }
     function dongPopupReport() { document.getElementById("modalReport").style.display = "none"; }
     function guiBaoCao() {
       var lyDo = document.getElementById("reportLyDo").value.trim();
-      if (!lyDo) { alert("Vui lòng ghi rõ lý do sự cố!"); return; }
+      if (!lyDo) { alert("Vui lòng ghi rõ lý do khiếu nại!"); return; }
       db.ref('danhSachBaoCao').push({
         nguoiBaoCao: currentTenKhach,
         doiTuongBiBaoCao: "Staff " + currentStaffCuaDon,
@@ -823,7 +911,7 @@
       });
     }
 
-    // 5. Đồng hồ iOS Timer đếm ngược rút dần theo ca
+    // 6. Đồng hồ iOS Timer đếm ngược rút dần theo ca
     var caLamHienTai = null;
     db.ref('caiDatPage/lichChiTiet').on('value', function(snap) {
       caLamHienTai = snap.val();
@@ -890,7 +978,7 @@
     }
     setInterval(veDongHoIOSTimer, 1000);
 
-    // 6. Tải Lời tựa, ảnh kỷ niệm, luật
+    // 7. Lời tựa, ảnh kỷ niệm, luật & Feedback hiển thị có ảnh
     db.ref('caiDatPage').on('value', function(snap) {
       var set = snap.val() || {};
       if (set.gioiThieuPage) document.getElementById("gioiThieuPageTxt").innerText = set.gioiThieuPage;
@@ -935,16 +1023,22 @@
       });
     });
 
+    // HIỂN THỊ TƯỜNG FEEDBACK (CÓ ẢNH & TÊN m****i)
     db.ref('feedbacks').on('value', function(snap) {
       var data = snap.val(), box = document.getElementById("feedbackWall");
       box.innerHTML = "";
       if (!data) return;
       Object.values(data).reverse().forEach(function(fb) {
+        var anhHTML = (fb.anhFeedback && fb.anhFeedback !== "none") 
+          ? `<div style="height:120px; border-radius:10px; overflow:hidden; margin-top:8px;"><img src="${fb.anhFeedback}" style="width:100%; height:100%; object-fit:cover;" onclick="window.open('${fb.anhFeedback}')" title="Xem ảnh"></div>` 
+          : "";
+
         box.innerHTML += `
           <div class="lobby-section" style="padding:14px 16px;">
             <div style="color:#f59e0b; font-size:12px;">${"★".repeat(fb.sao || 5)}</div>
             <p style="margin:6px 0; font-size:13px;">"${fb.nhanXet}"</p>
-            <span style="font-size:11px; color:#0284c7; font-weight:bold;">- Khách hàng ${fb.tenKhach ? (fb.tenKhach.charAt(0) + "***") : "Ẩn danh"} (${fb.keHoachTraTim || ""})</span>
+            ${anhHTML}
+            <span style="font-size:11px; color:#0284c7; font-weight:bold; display:block; margin-top:6px;">- Khách hàng ${fb.tenKhach} (${fb.keHoachTraTim || "Tiền mặt"})</span>
           </div>
         `;
       });
