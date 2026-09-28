@@ -8,12 +8,12 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
-<body>
+<body class="login-layout">
 
   <!-- THẺ CARD LIQUID GLASS CĂN GIỮA TUYỆT ĐỐI -->
-  <div class="card">
-    <div style="font-size: 34px; margin-bottom: 6px;">☁️</div>
-    <h2>Cổng Kết Nối Sky</h2>
+  <div class="card glass-box">
+    <div style="font-size: 38px; margin-bottom: 8px;">☁️</div>
+    <h2 style="margin: 0 0 16px 0;">Cổng Kết Nối Sky</h2>
     
     <label for="vaiTro">Bạn muốn đăng nhập vai trò nào?</label>
     <select id="vaiTro" onchange="chuyenVaiTro()">
@@ -22,7 +22,7 @@
       <option value="admin">Quản Trị Viên (Admin)</option>
     </select>
 
-    <!-- KHUNG ĐĂNG NHẬP DÀNH CHO STAFF -->
+    <!-- FORM ĐĂNG NHẬP STAFF -->
     <div id="formStaff" style="display: none; margin-top: 10px;">
       <label for="staffSelect">Chọn nhân sự của bạn:</label>
       <select id="staffSelect">
@@ -33,13 +33,13 @@
       <input type="password" id="staffPass" placeholder="Nhập mật khẩu Staff...">
     </div>
 
-    <!-- KHUNG ĐĂNG NHẬP DÀNH CHO ADMIN -->
+    <!-- FORM ĐĂNG NHẬP ADMIN -->
     <div id="formAdmin" style="display: none; margin-top: 10px;">
       <label for="adminPass">Mật khẩu Admin:</label>
-      <input type="password" id="adminPass" placeholder="Nhập mật khẩu quản trị viên...">
+      <input type="password" id="adminPass" placeholder="Nhập mật khẩu quản trị (0000)">
     </div>
 
-    <button type="button" id="btnDangNhap" onclick="xuLyDangNhap()" style="width: 100%; margin-top: 8px;">
+    <button type="button" id="btnDangNhap" onclick="xuLyDangNhap()" style="width: 100%; margin-top: 10px; background: var(--sky-gradient); color: white;">
       Vào Sảnh Tham Quan ✨
     </button>
   </div>
@@ -100,7 +100,10 @@
         var staffKey = document.getElementById("staffSelect").value;
         var pass = document.getElementById("staffPass").value.trim();
 
-        if (!staffKey) { alert("Vui lòng chọn nhân sự!"); return; }
+        if (!staffKey) { 
+          alert("Vui lòng chọn nhân sự!"); 
+          return; 
+        }
         var st = danhSachStaffData[staffKey];
         if (st && st.pass === pass) {
           sessionStorage.setItem("sky_staff_logged", "true");
@@ -117,7 +120,7 @@
           sessionStorage.setItem("sky_admin_logged", "true");
           window.location.href = "admin.html";
         } else {
-          alert("Mật khẩu Admin không chính xác!");
+          alert("Mật khẩu Admin không chính xác! (Mặc định: 0000)");
         }
       }
     }
