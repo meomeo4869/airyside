@@ -114,11 +114,11 @@
       </div>
     </section>
 
-    <!-- ==================== TRANG 4: ĐƠN HÀNG CỦA BẠN (3 CỘT ĐÃ ĐỒNG BỘ CHUẨN) ==================== -->
+    <!-- ==================== TRANG 4: ĐƠN HÀNG CỦA BẠN (3 CỘT) ==================== -->
     <section id="tab-orders" class="lobby-page" style="display: none;">
       <div class="lobby-section">
         <h2>📦 Đơn Hàng Của Bạn</h2>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Theo dõi tiến trình, trò chuyện với Staff và thanh lý đơn:</p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Theo dõi tiến trình, trò chuyện với Staff và nhận bàn giao ca:</p>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px;">
           <!-- Cột 1: Chờ Staff Nhận -->
@@ -160,7 +160,7 @@
 
   </div>
 
-  <!-- POPUP ĐẶT ĐƠN GỌN GÀNG FIT VIEWPORT -->
+  <!-- POPUP ĐẶT ĐƠN GỌN GÀNG (FIT VIEWPORT KHÔNG CUỘN) -->
   <div id="modalDatDonTrucTiep" class="modal-overlay">
     <div class="modal-content-compact">
       <button type="button" class="btn-dong-modal" onclick="dongPopupDatDon()">✕</button>
@@ -244,7 +244,7 @@
       <button type="button" id="btnCopyMaKhach" onclick="copyMaKBKhach()" style="display:none; padding:2px 8px; font-size:10px; background:#0284c7; color:white;">Sao chép</button>
     </div>
 
-    <!-- TIẾN ĐỘ TRẢ NỢ TIM (NẾU LÀ ĐƠN TIM) -->
+    <!-- TIẾN ĐỘ THANH TOÁN TIM (HIỂN THỊ TIẾN TRÌNH THEO NGÀY) -->
     <div id="boxTienDoTimKhach" style="display:none; background:#fff7ed; border-bottom:1px solid #fed7aa; padding:6px 12px; font-size:12px; color:#c2410c; text-align:center;">
       💖 Tiến độ gửi Tim: <strong id="txtTienDoTimKhach">0/0 Tim</strong> (Hằng ngày gửi tim cho Staff)
     </div>
@@ -354,7 +354,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 1. Tải Bento Pods Bảng Giá Động (Gói cấp 2 và Giá tiền/tim tùy chọn)
+    // 1. Tải Bento Pods Bảng Giá Động
     db.ref('cayBangGia').on('value', function(snapshot) {
       var treeData = snapshot.val();
       var board = document.getElementById("dynamicBentoBoard");
@@ -435,7 +435,6 @@
       if (giaTim) subGia.push(giaTim);
       document.getElementById("popSubDichVu").innerText = `${mang.toUpperCase()} - ${goi} (${subGia.join(" / ")})`;
 
-      // Cập nhật phương thức thanh toán khả dụng theo giá
       var selPT = document.getElementById("popPhuongThucTT");
       selPT.innerHTML = "";
       if (gia) selPT.innerHTML += `<option value="Tien_VND">Tiền mặt (QR/STK)</option>`;
@@ -513,11 +512,12 @@
         phiGoc: document.getElementById("popGiaGocTxt").innerText,
         giamGia: document.getElementById("popGiamGiaTxt").innerText,
         giaNiemYet: document.getElementById("popTongTienTxt").innerText,
-        daThanhToanFull: (pttt === "Tim_Sky"), // Đơn tim không cần admin duyệt tiền
+        daThanhToanFull: (pttt === "Tim_Sky"),
         yeuCau: yc || "Không có yêu cầu đặc biệt",
         daNhan: false,
         trangThai: "dang_cho",
-        timDaNhan: 0, // Đếm số tim staff đã nhận
+        timDaNhan: 0,
+        daHoanTatTim: false,
         thoiGianTao: Date.now()
       };
 
@@ -542,7 +542,7 @@
       });
     }
 
-    // 3. THEO DÕI ĐƠN HÀNG CỦA KHÁCH (PHÂN LUỒNG TÁCH BẠCH CHUẨN XÁC)
+    // 3. THEO DÕI VÀ ĐỒNG BỘ CHÍNH XÁC SỐ LƯỢNG BADGE & CỘT
     var orderListenersMap = {};
 
     function theoDoiCacDonCuaKhach() {
@@ -554,36 +554,35 @@
       boxRunning.innerHTML = "";
       boxDone.innerHTML = "";
 
-      var countP = 0, countR = 0, countD = 0;
       danhSachDonDangChayKhach = {};
 
       if (!myOrderIds || myOrderIds.length === 0) {
-        boxPending.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Chưa có đơn nào.</p>";
-        boxRunning.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Chưa có đơn nào.</p>";
-        boxDone.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Chưa có đơn nào.</p>";
+        boxPending.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Không có đơn chờ.</p>";
+        boxRunning.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Không có đơn đang chạy.</p>";
+        boxDone.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Chưa có đơn hoàn thành.</p>";
+        capNhatSoLuongBadgeThucTe();
         capNhatBongBongChat();
         return;
       }
 
-      // Xóa sạch bộ đệm DOM cũ trước khi vẽ
       myOrderIds.forEach(function(orderId) {
         if (orderListenersMap[orderId]) db.ref('donHangSky/' + orderId).off('value', orderListenersMap[orderId]);
 
         var callback = function(snap) {
           var don = snap.val();
 
-          // TỰ ĐỘNG DỌN DẸP NẾU ĐƠN BỊ XÓA TRÊN ADMIN
+          // Dọn dẹp đơn bị xóa khỏi database
           if (!don) {
             myOrderIds = myOrderIds.filter(function(id) { return id !== orderId; });
             localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
             delete danhSachDonDangChayKhach[orderId];
             var el = document.getElementById("card-order-" + orderId);
             if (el) el.remove();
+            capNhatSoLuongBadgeThucTe();
             capNhatBongBongChat();
             return;
           }
 
-          // Xóa thẻ cũ của đơn này ở bất kỳ cột nào trước khi cập nhật cột mới
           var existingCard = document.getElementById("card-order-" + orderId);
           if (existingCard) existingCard.remove();
 
@@ -596,9 +595,8 @@
               <div style="font-size:11.5px; color:#64748b; margin:4px 0;">📅 Hẹn: ${don.thoiGianHen || "N/A"}</div>
           `;
 
-          // PHÂN NHÁNH RÕ RÀNG: HOÀN THÀNH -> ĐANG CHẠY -> CHỜ NHẬN
+          // PHÂN NHÁNH RÕ RÀNG KHÔNG TRÙNG LẶP:
           if (don.trangThai === "hoan_thanh") {
-            countD++;
             delete danhSachDonDangChayKhach[orderId];
             cardHTML += `
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
@@ -608,9 +606,13 @@
             </div>`;
             boxDone.innerHTML += cardHTML;
           } else if (don.daNhan) {
-            // ĐÃ NHẬN: CHỈ XUẤT HIỆN Ở CỘT ĐANG TRAO ĐỔI (KHÔNG CÒN Ở CỘT CHỜ)
-            countR++;
-            danhSachDonDangChayKhach[orderId] = don;
+            // Đơn tim: chỉ đóng bong bóng khi daHoanTatTim === true
+            if (don.thanhToan === "Tim_Sky" && don.daHoanTatTim) {
+              delete danhSachDonDangChayKhach[orderId];
+            } else {
+              danhSachDonDangChayKhach[orderId] = don;
+            }
+
             cardHTML += `
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
                 <span style="color:#0284c7; font-weight:bold; font-size:12px;">Staff: ${don.staffNhan}</span>
@@ -619,8 +621,6 @@
             </div>`;
             boxRunning.innerHTML += cardHTML;
           } else {
-            // CHƯA NHẬN: CHỈ Ở CỘT CHỜ NHẬN
-            countP++;
             delete danhSachDonDangChayKhach[orderId];
             cardHTML += `
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
@@ -631,9 +631,7 @@
             boxPending.innerHTML += cardHTML;
           }
 
-          document.getElementById("badgePendingCount").innerText = countP;
-          document.getElementById("badgeRunningCount").innerText = countR;
-          document.getElementById("badgeDoneCount").innerText = countD;
+          capNhatSoLuongBadgeThucTe();
           capNhatBongBongChat();
         };
 
@@ -642,6 +640,17 @@
       });
     }
     theoDoiCacDonCuaKhach();
+
+    // HÀM ĐẾM CHUẨN XÁC TRỰC TIẾP TRÊN GIAO DIỆN
+    function capNhatSoLuongBadgeThucTe() {
+      var pCards = document.querySelectorAll("#listOrdersPending .customer-order-card").length;
+      var rCards = document.querySelectorAll("#listOrdersRunning .customer-order-card").length;
+      var dCards = document.querySelectorAll("#listOrdersDone .customer-order-card").length;
+
+      document.getElementById("badgePendingCount").innerText = pCards;
+      document.getElementById("badgeRunningCount").innerText = rCards;
+      document.getElementById("badgeDoneCount").innerText = dCards;
+    }
 
     function khachHuyDonDangCho(orderId) {
       if (confirm("Bạn có chắc chắn muốn hủy đơn đặt này không?")) {
@@ -662,10 +671,12 @@
       var el = document.getElementById("card-order-" + orderId);
       if (el) el.remove();
       delete danhSachDonDangChayKhach[orderId];
+      capNhatSoLuongBadgeThucTe();
+      capNhatBongBongChat();
       theoDoiCacDonCuaKhach();
     }
 
-    // 4. HỆ THỐNG BONG BÓNG MINI CHAT ĐA NHIỆM
+    // 4. BONG BÓNG MINI CHAT ĐA NHIỆM
     function capNhatBongBongChat() {
       var box = document.getElementById("customerChatheadsList");
       box.innerHTML = "";
@@ -707,7 +718,8 @@
           boxTienDo.style.display = "block";
           var tongTim = parseInt((don.giaNiemYet || "2").replace(/[^0-9]/g, '')) || 2;
           var daNhan = don.timDaNhan || 0;
-          document.getElementById("txtTienDoTimKhach").innerText = `${daNhan}/${tongTim} Tim`;
+          var conLai = Math.max(0, tongTim - daNhan);
+          document.getElementById("txtTienDoTimKhach").innerText = `${daNhan}/${tongTim} Tim (Còn nợ: ${conLai} Tim)`;
         } else {
           boxTienDo.style.display = "none";
         }
@@ -809,11 +821,8 @@
     function xacNhanXongKhach() {
       if (!activeChatOrderId) return;
       if (confirm("Bạn xác nhận đã đi xong dịch vụ này cùng Staff?")) {
-        // Khách bấm hoàn thành trước
         db.ref('donHangSky/' + activeChatOrderId).update({ khachHoanThanh: true });
         db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({ nguoiGui: "Hệ thống", noiDung: "Khách đã bấm xác nhận hoàn tất ca!" });
-        
-        // Mở popup feedback cho khách
         moModalFeedbackKhach(currentDonHangData);
       }
     }
@@ -848,7 +857,7 @@
       stars.forEach(function(s, idx) { s.style.opacity = idx < n ? "1" : "0.3"; });
     }
 
-    // TẢI ẢNH FEEDBACK & ĐỊNH DẠNG TÊN ẨN DANH m****i
+    // ĐỊNH DẠNG TÊN ẨN DANH m****i
     function formatTenAnDanh(ten) {
       if (!ten) return "k****h";
       var t = ten.trim();
@@ -856,6 +865,7 @@
       return t.charAt(0) + "****" + t.charAt(t.length - 1);
     }
 
+    // LƯU FEEDBACK (BỎ HOÀN TOÀN CHỮ PHƯƠNG THỨC THANH TOÁN)
     function guiFeedback() {
       var txt = document.getElementById("loiNhanFeedback").value.trim();
       var timMoiNgay = document.getElementById("numTimMoiNgay").value;
@@ -868,15 +878,12 @@
           sao: selectedStar,
           nhanXet: txt || "Dịch vụ đồng hành rất chu đáo!",
           anhFeedback: anhUrl || "none",
-          keHoachTraTim: (currentDonHangData && currentDonHangData.thanhToan === "Tim_Sky") ? `Gửi ${timMoiNgay} tim/ngày` : "Tiền mặt",
           thoiGian: Date.now()
         });
 
-        // Nếu là đơn tim, lưu kế hoạch gửi tim vào đơn hàng
         if (currentDonHangData && currentDonHangData.thanhToan === "Tim_Sky") {
           db.ref('donHangSky/' + activeChatOrderId).update({
-            soTimMoiNgay: timMoiNgay,
-            ghiChuThanhToan: `Khách gửi ${timMoiNgay} tim/ngày`
+            soTimMoiNgay: timMoiNgay
           });
         }
 
@@ -978,7 +985,7 @@
     }
     setInterval(veDongHoIOSTimer, 1000);
 
-    // 7. Lời tựa, ảnh kỷ niệm, luật & Feedback hiển thị có ảnh
+    // 7. Lời tựa, ảnh kỷ niệm, luật & Feedback hiển thị sạch sẽ
     db.ref('caiDatPage').on('value', function(snap) {
       var set = snap.val() || {};
       if (set.gioiThieuPage) document.getElementById("gioiThieuPageTxt").innerText = set.gioiThieuPage;
@@ -1023,7 +1030,7 @@
       });
     });
 
-    // HIỂN THỊ TƯỜNG FEEDBACK (CÓ ẢNH & TÊN m****i)
+    // HIỂN THỊ TƯỜNG FEEDBACK (CHỈ CÒN TÊN ẨN DANH m****i, BỎ CHỮ PHƯƠNG THỨC TT)
     db.ref('feedbacks').on('value', function(snap) {
       var data = snap.val(), box = document.getElementById("feedbackWall");
       box.innerHTML = "";
@@ -1038,7 +1045,7 @@
             <div style="color:#f59e0b; font-size:12px;">${"★".repeat(fb.sao || 5)}</div>
             <p style="margin:6px 0; font-size:13px;">"${fb.nhanXet}"</p>
             ${anhHTML}
-            <span style="font-size:11px; color:#0284c7; font-weight:bold; display:block; margin-top:6px;">- Khách hàng ${fb.tenKhach} (${fb.keHoachTraTim || "Tiền mặt"})</span>
+            <span style="font-size:11px; color:#0284c7; font-weight:bold; display:block; margin-top:6px;">- Khách hàng ${fb.tenKhach}</span>
           </div>
         `;
       });
