@@ -1,24 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --liquid-glass: rgba(255, 255, 255, 0.72);
-  --liquid-border: rgba(255, 255, 255, 0.85);
+  --liquid-glass: rgba(255, 255, 255, 0.82);
+  --liquid-border: rgba(255, 255, 255, 0.95);
   --liquid-border-hover: rgba(56, 189, 248, 0.6);
-  --liquid-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.06);
-  --liquid-glow: 0 14px 34px -6px rgba(56, 189, 248, 0.25);
+  --liquid-shadow: 0 16px 36px -10px rgba(15, 23, 42, 0.08);
+  --liquid-glow: 0 16px 36px -6px rgba(56, 189, 248, 0.28);
   
   --text-primary: #1e293b;
   --text-muted: #64748b;
   --accent-sky: #0284c7;
   --sky-gradient: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+  --sky-btn-shadow: 0 8px 20px -4px rgba(2, 132, 199, 0.4);
+  
   --radius-capsule: 9999px;
-  --radius-card: 22px;
+  --radius-card: 26px;
   --radius-inner: 14px;
   --smooth-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
+/* 1. NỀN SUNSET GRADIENT TOÀN TRANG */
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   background-color: #fdfaf7;
@@ -33,33 +36,139 @@ body {
   min-height: 100vh;
 }
 
+/* KHÓA CĂN GIỮA TUYỆT ĐỐI CHO TRANG LOGIN INDEX */
 body.login-layout {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   min-height: 100vh !important;
+  width: 100vw !important;
+  padding: 20px !important;
 }
 
 body.admin-layout, body.lobby-layout, body.staff-layout {
   display: block !important;
+  min-height: 100vh;
   padding-bottom: 80px;
 }
 
-/* KHUNG LIQUID GLASS CHUNG & HIỆU ỨNG NHẢY NHẸ KHI RÊ CHUỘT */
-.glass-box, .admin-section, .lobby-section, .card, .bento-card, .order-col-box, .realtime-calendar-card, .schedule-table-wrap {
+/* 2. CHUẨN HÓA TOÀN BỘ Ô NHẬP LIỆU (INPUT / SELECT / TEXTAREA) */
+label {
+  display: block !important;
+  text-align: left !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--text-muted) !important;
+  margin-top: 10px !important;
+  margin-bottom: 6px !important;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="datetime-local"],
+input[type="time"],
+select,
+textarea {
+  display: block !important;
+  width: 100% !important;
+  padding: 11px 15px !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1.5px solid rgba(226, 232, 240, 0.95) !important;
+  border-radius: var(--radius-inner) !important;
+  font-family: inherit !important;
+  font-size: 13.5px !important;
+  color: var(--text-primary) !important;
+  margin-bottom: 12px !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+  transition: all 0.25s ease !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none !important;
+  border-color: var(--accent-sky) !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 3.5px rgba(2, 132, 199, 0.18) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 3. CHUẨN HÓA TOÀN BỘ NÚT BẤM (BUTTON) */
+button {
+  font-family: inherit !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  padding: 10px 22px !important;
+  background: var(--sky-gradient) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: var(--radius-capsule) !important;
+  cursor: pointer !important;
+  box-shadow: var(--sky-btn-shadow) !important;
+  transition: all 0.25s var(--smooth-bounce) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  text-decoration: none !important;
+}
+
+button:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 12px 24px -4px rgba(2, 132, 199, 0.5) !important;
+}
+
+button:active {
+  transform: scale(0.98) !important;
+}
+
+/* Nút phụ / Nút màu tối */
+button.btn-dark {
+  background: #0f172a !important;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.15) !important;
+}
+button.btn-dark:hover {
+  background: #1e293b !important;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.22) !important;
+}
+
+button.btn-xoa {
+  background: #fee2e2 !important;
+  color: #dc2626 !important;
+  box-shadow: none !important;
+  padding: 4px 12px !important;
+  font-size: 12px !important;
+}
+button.btn-xoa:hover {
+  background: #ef4444 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+}
+
+/* 4. KHUNG LIQUID GLASS & CONTAINER */
+.card, .admin-section, .lobby-section, .order-col-box, .realtime-calendar-card, .schedule-table-wrap {
   background: var(--liquid-glass) !important;
-  backdrop-filter: blur(20px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
   border: 1.5px solid var(--liquid-border) !important;
   border-radius: var(--radius-card) !important;
   box-shadow: var(--liquid-shadow) !important;
   transition: transform 0.25s var(--smooth-bounce), box-shadow 0.25s ease, border-color 0.25s ease !important;
 }
 
-.glass-box:hover, .admin-section:hover, .lobby-section:hover, .bento-card:hover, .order-col-box:hover {
-  transform: translateY(-4px) !important;
+.card:hover, .admin-section:hover, .lobby-section:hover, .order-col-box:hover {
+  transform: translateY(-3px) !important;
   box-shadow: var(--liquid-glow) !important;
   border-color: var(--liquid-border-hover) !important;
+}
+
+.card {
+  width: 420px !important;
+  max-width: 92vw !important;
+  padding: 38px 32px !important;
+  text-align: center !important;
+  margin: auto !important;
 }
 
 .admin-container, .lobby-container {
@@ -71,69 +180,54 @@ body.admin-layout, body.lobby-layout, body.staff-layout {
 .lobby-section { padding: 26px 28px; margin-bottom: 24px; }
 .admin-section { padding: 24px 28px; margin-bottom: 22px; }
 
-/* NAVBAR NỔI DẠNG CAPSULE */
-.navbar-capsule-container {
-  position: sticky;
-  top: 18px;
-  z-index: 1000;
-  display: flex;
+/* 5. POPUP MODAL ĐẶT ĐƠN (DÀNG DÀI FORM CHUẨN) */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: none;
   justify-content: center;
-  padding: 0 20px;
-}
-
-.navbar-capsule {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(24px) saturate(180%);
-  border: 1.5px solid rgba(255, 255, 255, 0.95);
-  border-radius: var(--radius-capsule);
-  padding: 6px 10px 6px 18px;
-  display: flex;
   align-items: center;
-  gap: 16px;
-  box-shadow: 0 16px 36px -10px rgba(15, 23, 42, 0.08);
+  z-index: 9999999;
 }
 
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: rgba(241, 245, 249, 0.8);
-  padding: 4px;
-  border-radius: var(--radius-capsule);
+.modal-content {
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  border: 1.5px solid var(--liquid-border) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: 0 30px 60px -15px rgba(15, 23, 42, 0.25) !important;
+  padding: 32px 30px !important;
+  position: relative;
+  max-width: 92vw;
+  box-sizing: border-box;
 }
 
-.nav-item {
-  background: transparent;
-  color: var(--text-muted);
-  border: none;
-  font-size: 13px;
-  font-weight: 600;
-  padding: 7px 16px;
-  border-radius: var(--radius-capsule);
-  cursor: pointer;
-  transition: all 0.2s ease;
+.btn-dong-modal {
+  position: absolute !important;
+  top: 18px !important;
+  right: 18px !important;
+  background: rgba(148, 163, 184, 0.18) !important;
+  color: var(--text-muted) !important;
+  border: none !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 15px !important;
 }
-
-.nav-item:hover { color: var(--text-primary); }
-.nav-item.active {
-  background: #ffffff !important;
-  color: var(--text-primary) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
-  font-weight: 700;
+.btn-dong-modal:hover {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #dc2626 !important;
+  transform: none !important;
 }
-
-.btn-nav-order {
-  background: var(--sky-gradient);
-  color: white;
-  border: none;
-  border-radius: var(--radius-capsule);
-  padding: 8px 18px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-.btn-nav-order:hover { transform: scale(1.03); }
 
 /* BẢNG BIỂU ADMIN & LỊCH EXCEL */
 .table-responsive {
@@ -141,7 +235,7 @@ body.admin-layout, body.lobby-layout, body.staff-layout {
   overflow-x: auto;
   border-radius: var(--radius-inner);
   border: 1px solid rgba(226, 232, 240, 0.9);
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.65);
 }
 
 .admin-table, .schedule-table {
@@ -152,7 +246,7 @@ body.admin-layout, body.lobby-layout, body.staff-layout {
 }
 
 .admin-table th, .schedule-table th {
-  background: rgba(241, 245, 249, 0.9);
+  background: rgba(241, 245, 249, 0.95);
   color: var(--text-primary);
   font-weight: 700;
   padding: 12px 14px;
@@ -166,7 +260,77 @@ body.admin-layout, body.lobby-layout, body.staff-layout {
   vertical-align: middle;
 }
 
-/* LỊCH THÁNG CHẤM CÔNG CỦA STAFF */
+/* NAVBAR CAPSULE */
+.navbar-capsule-container {
+  position: sticky;
+  top: 18px;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.navbar-capsule {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(28px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-capsule);
+  padding: 6px 10px 6px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 16px 36px -10px rgba(15, 23, 42, 0.08);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(241, 245, 249, 0.85);
+  padding: 4px;
+  border-radius: var(--radius-capsule);
+}
+
+.nav-item {
+  background: transparent !important;
+  color: var(--text-muted) !important;
+  border: none !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  padding: 7px 16px !important;
+  border-radius: var(--radius-capsule) !important;
+  box-shadow: none !important;
+}
+.nav-item:hover { color: var(--text-primary) !important; transform: none !important; }
+.nav-item.active {
+  background: #ffffff !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  font-weight: 700 !important;
+}
+
+/* BẢNG GIÁ DÒNG ITEM */
+.bento-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 14px;
+  background: #ffffff;
+  border-radius: 14px;
+  margin-bottom: 7px;
+  font-size: 13px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  cursor: pointer;
+  transition: all 0.25s var(--smooth-bounce);
+}
+.bento-item-row:hover {
+  border-color: var(--accent-sky);
+  background: #f0f9ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.12);
+}
+
+/* LỊCH THÁNG CHẤM CÔNG */
 .calendar-weekdays {
   display: grid !important;
   grid-template-columns: repeat(7, 1fr) !important;
@@ -177,13 +341,11 @@ body.admin-layout, body.lobby-layout, body.staff-layout {
   color: var(--text-muted);
   margin-bottom: 8px;
 }
-
 .calendar-days-grid {
   display: grid !important;
   grid-template-columns: repeat(7, 1fr) !important;
   gap: 6px !important;
 }
-
 .cal-day-cell {
   height: 48px;
   background: rgba(248, 250, 252, 0.75);
@@ -199,39 +361,11 @@ body.admin-layout, body.lobby-layout, body.staff-layout {
 .cal-day-cell.is-today { border: 1.5px solid #0284c7; background: #f0f9ff; }
 .cal-day-cell.has-worked { background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
 
-/* SIDE PANEL STAFF */
-.side-panel {
+/* KHÓA ẨN CHAT MẶC ĐỊNH */
+#chatBoxKhach, #chatBox {
+  display: none !important;
   position: fixed !important;
-  top: 0 !important;
-  right: -360px !important;
-  width: 330px !important;
-  height: 100vh !important;
-  background: rgba(255, 255, 255, 0.94) !important;
-  backdrop-filter: blur(28px) !important;
-  box-shadow: -10px 0 35px rgba(15, 23, 42, 0.12) !important;
-  transition: right 0.35s var(--smooth-bounce) !important;
-  padding: 24px !important;
-  z-index: 100000 !important;
-  overflow-y: auto !important;
+  right: 24px !important;
+  bottom: 24px !important;
+  z-index: 999999 !important;
 }
-.side-panel.panel-open { right: 0 !important; }
-
-.toggle-btn {
-  position: fixed !important;
-  top: 50% !important;
-  right: 0 !important;
-  transform: translateY(-50%) !important;
-  background: #0f172a !important;
-  color: white !important;
-  padding: 12px 8px !important;
-  cursor: pointer !important;
-  border-radius: 12px 0 0 12px !important;
-  z-index: 99999 !important;
-}
-
-/* LỆNH ẨN VÀ POPUP */
-#chatBoxKhach, #chatBox { display: none !important; position: fixed !important; right: 24px !important; bottom: 24px !important; z-index: 999999 !important; }
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(16px); display: none; justify-content: center; align-items: center; z-index: 9999999; }
-.modal-content { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(28px); border-radius: var(--radius-card); padding: 30px; border: 1.5px solid var(--liquid-border); max-width: 90vw; position: relative; }
-.btn-dong-modal { position: absolute; top: 16px; right: 16px; background: rgba(148, 163, 184, 0.15); border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
-.customer-order-card.is-rejected { border-left: 4px solid #ef4444 !important; background: #fef2f2 !important; }
