@@ -38,7 +38,7 @@
 
     <!-- ==================== TRANG 1: TRANG CHỦ ==================== -->
     <section id="tab-home" class="lobby-page active-page">
-      <!-- WIDGET ĐỒNG HỒ ĐẾM NGƯỢC RÚT DẦN (ĐỒNG BỘ CHUẨN THEO NGÀY) -->
+      <!-- WIDGET ĐỒNG HỒ ĐẾM NGƯỢC RÚT DẦN -->
       <div class="lobby-section" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
         <div style="max-width: 440px;">
           <div style="font-size: 24px; margin-bottom: 4px;">⏱️</div>
@@ -160,7 +160,7 @@
 
   </div>
 
-  <!-- POPUP ĐẶT ĐƠN GỌN GÀNG (FIT VIEWPORT KHÔNG CUỘN) -->
+  <!-- POPUP ĐẶT ĐƠN: CÓ KHUNG CUỘN CHỌN VOUCHER TÙY Ý (FIT VIEWPORT) -->
   <div id="modalDatDonTrucTiep" class="modal-overlay">
     <div class="modal-content-compact">
       <button type="button" class="btn-dong-modal" onclick="dongPopupDatDon()">✕</button>
@@ -177,16 +177,8 @@
         </div>
         <div>
           <label>Gmail nhận ưu đãi:</label>
-          <input type="email" id="popPlayerEmail" placeholder="vd: sky@gmail.com" onblur="kiemTraVoucherTrucTiep()" style="margin-bottom: 6px !important;">
+          <input type="email" id="popPlayerEmail" placeholder="vd: sky@gmail.com" onblur="taiDanhSachVoucherKhaDung()" style="margin-bottom: 6px !important;">
         </div>
-      </div>
-
-      <!-- VOUCHER NHỎ GỌN -->
-      <div id="popBoxVoucher" style="display: none; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 6px 10px; margin-bottom: 8px; font-size: 12px;">
-        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: #15803d; font-weight: 700; margin: 0 !important;">
-          <input type="checkbox" id="popChkDungVoucher" onchange="tinhToanGiaPopup()" style="width: auto !important; margin: 0 !important;">
-          <span id="popVoucherLabel">Dùng voucher</span>
-        </label>
       </div>
 
       <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 8px;">
@@ -196,12 +188,18 @@
         </div>
         <div>
           <label>Hình thức TT:</label>
-          <select id="popPhuongThucTT" onchange="tinhToanGiaPopup()" style="margin-bottom: 6px !important;">
+          <select id="popPhuongThucTT" onchange="doiPhuongThucTT()" style="margin-bottom: 6px !important;">
             <option value="Tien_VND">Tiền mặt (QR/STK)</option>
             <option value="Tim_Sky">💖 Tim Sky</option>
           </select>
         </div>
       </div>
+
+      <!-- KHUNG CUỘN LỰA CHỌN VOUCHER TÙY Ý -->
+      <label>Chọn Voucher giảm giá:</label>
+      <select id="popSelectVoucher" onchange="tinhToanGiaPopup()" style="margin-bottom: 8px !important; background: #f0fdf4; border-color: #bbf7d0;">
+        <option value="none">-- Không sử dụng voucher --</option>
+      </select>
 
       <label>Yêu cầu ghi chú thêm:</label>
       <input type="text" id="popYeuCau" placeholder="Ghi chú thêm về mốc thời gian, map..." style="margin-bottom: 10px !important;">
@@ -288,16 +286,16 @@
     </div>
   </div>
 
-  <!-- POPUP ĐÁNH GIÁ FEEDBACK (5 SAO TMĐT & HỎI SỐ TIM/NGÀY DUY NHẤT) -->
+  <!-- POPUP ĐÁNH GIÁ FEEDBACK (5 SAO TMĐT & HỎI DUY NHẤT SỐ TIM/NGÀY) -->
   <div id="modalFeedback" class="modal-overlay">
     <div class="modal-content-compact" style="width: 420px; text-align: center;">
       <h3 style="margin-top:0; color:#0284c7;">Hoàn Tất Đơn Hàng 🎉</h3>
       <p style="font-size: 13px; color: var(--text-muted); margin-top: -4px;">Cảm ơn bạn đã đồng hành cùng <strong id="fbStaffNameTxt">Staff</strong>!</p>
       
-      <!-- HỎI DUY NHẤT SỐ TIM/NGÀY -->
+      <!-- HỎI DUY NHẤT SỐ TIM/NGÀY (NẾU ĐƠN TIM VẪN CÒN NỢ) -->
       <div id="boxKeHoachTraTim" style="display: none; background: #fff7ed; border: 1px solid #ffedd5; border-radius: 12px; padding: 10px; margin-bottom: 12px; text-align: left; font-size: 12.5px;">
         <strong style="color: #c2410c; display: block; margin-bottom: 4px;">💖 Hóa đơn thanh toán Tim:</strong>
-        <p style="margin: 0 0 6px 0; color: #78350f;">Tổng số tim đơn hàng: <strong id="fbTongTimTxt">0 Tim</strong></p>
+        <p style="margin: 0 0 6px 0; color: #78350f;">Số tim cần thanh toán: <strong id="fbTongTimTxt">0 Tim</strong></p>
         <label>Bạn có thể gửi bao nhiêu tim mỗi ngày?:</label>
         <input type="number" id="numTimMoiNgay" value="1" min="1" max="100" oninput="tinhSoNgayTraTim()" style="margin-bottom:4px !important;">
         <span id="fbDuKienTraTim" style="font-size: 11.5px; color: #ea580c; font-weight: bold; display: block; margin-top: 4px;">Dự kiến thanh toán xong trong: - ngày</span>
@@ -346,6 +344,9 @@
     var currentDonHangData = null;
     var danhSachDonDangChayKhach = {};
     var selectedStar = 5;
+
+    // Kho lưu trữ voucher khả dụng
+    var danhSachVoucherOptions = [];
 
     function chuyenTrang(tenTrang, btnElement) {
       document.querySelectorAll('.lobby-page').forEach(function(p) { p.style.display = 'none'; });
@@ -426,10 +427,8 @@
       });
     });
 
-    // 2. Popup Đặt đơn
+    // 2. Popup Đặt đơn & Menu cuộn chọn Voucher
     var popItemDangChon = null;
-    var voucherKhaDung = 0;
-    var userEmailKey = "";
 
     function moPopupDatDon(mang, goi, gia, giaTim) {
       popItemDangChon = { mang: mang, goi: goi, gia: gia, giaTim: giaTim };
@@ -444,27 +443,49 @@
       if (giaTim) selPT.innerHTML += `<option value="Tim_Sky">💖 Tim Sky</option>`;
 
       document.getElementById("modalDatDonTrucTiep").style.display = "flex";
-      kiemTraVoucherTrucTiep();
+      taiDanhSachVoucherKhaDung();
     }
     function dongPopupDatDon() { document.getElementById("modalDatDonTrucTiep").style.display = "none"; }
 
-    function kiemTraVoucherTrucTiep() {
-      var rawEmail = document.getElementById("popPlayerEmail").value.trim().toLowerCase();
-      var box = document.getElementById("popBoxVoucher");
-      var chk = document.getElementById("popChkDungVoucher");
-      if (!rawEmail) { box.style.display = "none"; chk.checked = false; voucherKhaDung = 0; tinhToanGiaPopup(); return; }
+    function doiPhuongThucTT() {
+      taiDanhSachVoucherKhaDung();
+    }
 
-      userEmailKey = rawEmail.replace(/\./g, '_');
-      db.ref('thanhVienSky/' + userEmailKey).once('value').then(function(snap) {
-        var mem = snap.val();
-        if (mem && mem.uuDaiRieng && !mem.uuDaiRieng.daDung && mem.uuDaiRieng.giaTri > 0) {
-          voucherKhaDung = mem.uuDaiRieng.giaTri;
-          box.style.display = "block";
-          chk.checked = true;
-          document.getElementById("popVoucherLabel").innerText = `Dùng voucher (-${voucherKhaDung.toLocaleString('vi-VN')}đ)`;
-        } else {
-          box.style.display = "none"; chk.checked = false; voucherKhaDung = 0;
+    // TẢI VOUCHER SERVER & VOUCHER KHÁCH THEO ĐÚNG LOẠI TIỀN/TIM
+    function taiDanhSachVoucherKhaDung() {
+      var pttt = document.getElementById("popPhuongThucTT").value;
+      var loaiCanTim = (pttt === "Tim_Sky") ? "tim" : "tien";
+      var rawEmail = document.getElementById("popPlayerEmail").value.trim().toLowerCase();
+      var selVoucher = document.getElementById("popSelectVoucher");
+      selVoucher.innerHTML = `<option value="none">-- Không sử dụng voucher --</option>`;
+      danhSachVoucherOptions = [];
+
+      Promise.all([
+        db.ref('voucherToanServer').once('value'),
+        rawEmail ? db.ref('thanhVienSky/' + rawEmail.replace(/\./g, '_')).once('value') : Promise.resolve({ val: () => null })
+      ]).then(function(res) {
+        var vServer = res[0].val();
+        var vUserSnap = res[1].val();
+
+        // 1. Voucher Toàn Server
+        if (vServer && vServer.dangBat && vServer.loai === loaiCanTim && vServer.giaTri > 0) {
+          var vObj = { id: "server", ten: `🌐 ${vServer.ten}`, loai: vServer.loai, giaTri: vServer.giaTri };
+          danhSachVoucherOptions.push(vObj);
+          var txtVal = vServer.loai === "tim" ? `${vServer.giaTri} Tim` : `${vServer.giaTri.toLocaleString()}đ`;
+          selVoucher.innerHTML += `<option value="server">${vObj.ten} (Giảm ${txtVal})</option>`;
         }
+
+        // 2. Voucher Riêng của Khách
+        if (vUserSnap && vUserSnap.uuDaiRieng && !vUserSnap.uuDaiRieng.daDung && vUserSnap.uuDaiRieng.giaTri > 0) {
+          var uUd = vUserSnap.uuDaiRieng;
+          if (uUd.loai === loaiCanTim) {
+            var vObjU = { id: "user", ten: "🎁 Voucher riêng của bạn", loai: uUd.loai, giaTri: uUd.giaTri };
+            danhSachVoucherOptions.push(vObjU);
+            var txtValU = uUd.loai === "tim" ? `${uUd.giaTri} Tim` : `${uUd.giaTri.toLocaleString()}đ`;
+            selVoucher.innerHTML += `<option value="user">${vObjU.ten} (Giảm ${txtValU})</option>`;
+          }
+        }
+
         tinhToanGiaPopup();
       });
     }
@@ -472,22 +493,29 @@
     function tinhToanGiaPopup() {
       if (!popItemDangChon) return;
       var pttt = document.getElementById("popPhuongThucTT").value;
+      var selVal = document.getElementById("popSelectVoucher").value;
+      var vDangChon = danhSachVoucherOptions.find(function(x) { return x.id === selVal; });
+      var mucGiam = vDangChon ? vDangChon.giaTri : 0;
+
       if (pttt === "Tim_Sky") {
-        document.getElementById("popGiaGocTxt").innerText = popItemDangChon.giaTim || "2 Tim";
-        document.getElementById("popGiamGiaTxt").innerText = "-0 Tim";
-        document.getElementById("popTongTienTxt").innerText = popItemDangChon.giaTim || "2 Tim";
+        var chuoiTim = (popItemDangChon.giaTim || "2").replace(/[^0-9]/g, '');
+        var tongTimGoc = parseInt(chuoiTim) || 2;
+        var tongTimSauGiam = Math.max(0, tongTimGoc - mucGiam);
+
+        document.getElementById("popGiaGocTxt").innerText = `${tongTimGoc} Tim`;
+        document.getElementById("popGiamGiaTxt").innerText = mucGiam > 0 ? `-${Math.min(tongTimGoc, mucGiam)} Tim` : "-0 Tim";
+        document.getElementById("popTongTienTxt").innerText = `${tongTimSauGiam} Tim`;
         return;
       }
 
+      // Đơn tiền
       var chuoiSo = (popItemDangChon.gia || "0").toLowerCase().replace(/[^0-9k]/g, '');
       var phiGoc = chuoiSo.includes('k') ? (parseFloat(chuoiSo.replace('k', '')) * 1000) : (parseFloat(chuoiSo) || 0);
-      var chk = document.getElementById("popChkDungVoucher");
-      var mucGiam = (chk.checked && voucherKhaDung > 0) ? voucherKhaDung : 0;
-      var tongTien = Math.max(0, phiGoc - mucGiam);
+      var tongTienSauGiam = Math.max(0, phiGoc - mucGiam);
 
       document.getElementById("popGiaGocTxt").innerText = phiGoc > 0 ? (phiGoc.toLocaleString('vi-VN') + "đ") : (popItemDangChon.gia || "Liên hệ");
       document.getElementById("popGiamGiaTxt").innerText = mucGiam > 0 ? (`-${Math.min(phiGoc, mucGiam).toLocaleString('vi-VN')}đ`) : "-0đ";
-      document.getElementById("popTongTienTxt").innerText = phiGoc > 0 ? (tongTien.toLocaleString('vi-VN') + "đ") : (popItemDangChon.gia || "Liên hệ");
+      document.getElementById("popTongTienTxt").innerText = phiGoc > 0 ? (tongTienSauGiam.toLocaleString('vi-VN') + "đ") : (popItemDangChon.gia || "Liên hệ");
     }
 
     function xacNhanLuuDonTrucTiep() {
@@ -496,43 +524,72 @@
       var thoiGian = document.getElementById("popThoiGian").value;
       var pttt = document.getElementById("popPhuongThucTT").value;
       var yc = document.getElementById("popYeuCau").value.trim();
+      var selVal = document.getElementById("popSelectVoucher").value;
 
       if (!tenKhach || !thoiGian) { alert("Vui lòng điền tên và chọn giờ hẹn!"); return; }
       var dt = new Date(thoiGian);
       var tgDinhDang = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')} ngày ${dt.getDate().toString().padStart(2, '0')}/${(dt.getMonth()+1).toString().padStart(2, '0')}/${dt.getFullYear()}`;
 
-      var chk = document.getElementById("popChkDungVoucher");
-      var coDungVoucher = (chk.checked && voucherKhaDung > 0 && pttt === "Tien_VND");
+      var vDangChon = danhSachVoucherOptions.find(function(x) { return x.id === selVal; });
+      var mucGiam = vDangChon ? vDangChon.giaTri : 0;
+      var emailKey = rawEmail ? rawEmail.replace(/\./g, '_') : null;
+
+      var daThanhToanXong = false;
+      var timCanTra = 0;
+      var giaNiemYetLuu = document.getElementById("popTongTienTxt").innerText;
+
+      if (pttt === "Tim_Sky") {
+        var chuoiTim = (popItemDangChon.giaTim || "2").replace(/[^0-9]/g, '');
+        var tongTimGoc = parseInt(chuoiTim) || 2;
+        timCanTra = Math.max(0, tongTimGoc - mucGiam);
+        // Nếu giảm hết tim (0 Tim) -> đã thanh toán xong
+        if (timCanTra === 0) daThanhToanXong = true;
+      } else {
+        // Đơn tiền
+        var chuoiSo = (popItemDangChon.gia || "0").toLowerCase().replace(/[^0-9k]/g, '');
+        var phiGoc = chuoiSo.includes('k') ? (parseFloat(chuoiSo.replace('k', '')) * 1000) : (parseFloat(chuoiSo) || 0);
+        if (phiGoc > 0 && (phiGoc - mucGiam) <= 0) daThanhToanXong = true;
+      }
 
       var donData = {
         tenKhach: tenKhach,
         emailKhach: rawEmail || "Không có",
-        emailKey: userEmailKey || null,
+        emailKey: emailKey,
         mangDichVu: popItemDangChon.mang,
         cuThe: popItemDangChon.goi,
         thoiGianHen: tgDinhDang,
         thanhToan: pttt,
         phiGoc: document.getElementById("popGiaGocTxt").innerText,
         giamGia: document.getElementById("popGiamGiaTxt").innerText,
-        giaNiemYet: document.getElementById("popTongTienTxt").innerText,
-        daThanhToanFull: (pttt === "Tim_Sky"),
+        giaNiemYet: giaNiemYetLuu,
+        daThanhToanFull: daThanhToanXong,
         yeuCau: yc || "Không có yêu cầu đặc biệt",
         daNhan: false,
         trangThai: "dang_cho",
-        timDaNhan: 0,
-        daHoanTatTim: false,
+        timDaNhan: (pttt === "Tim_Sky" && daThanhToanXong) ? parseInt((popItemDangChon.giaTim || "2").replace(/[^0-9]/g, '')) : 0,
+        daHoanTatTim: (pttt === "Tim_Sky" && daThanhToanXong),
         thoiGianTao: Date.now()
       };
 
       var newRef = db.ref('donHangSky').push();
       newRef.set(donData).then(function() {
-        if (coDungVoucher && userEmailKey) {
-          var chuoiSo = (popItemDangChon.gia || "0").toLowerCase().replace(/[^0-9k]/g, '');
-          var phiDon = chuoiSo.includes('k') ? (parseFloat(chuoiSo.replace('k', '')) * 1000) : (parseFloat(chuoiSo) || 0);
-          if (voucherKhaDung > phiDon) {
-            db.ref(`thanhVienSky/${userEmailKey}/uuDaiRieng`).update({ giaTri: voucherKhaDung - phiDon, daDung: false });
+        // XỬ LÝ TRỪ DÔI DƯ VOUCHER RIÊNG CỦA KHÁCH
+        if (selVal === "user" && emailKey && vDangChon) {
+          var soDuConLai = 0;
+          if (vDangChon.loai === "tim") {
+            var chuoiTim = (popItemDangChon.giaTim || "2").replace(/[^0-9]/g, '');
+            var tongTimGoc = parseInt(chuoiTim) || 2;
+            soDuConLai = Math.max(0, vDangChon.giaTri - tongTimGoc);
           } else {
-            db.ref(`thanhVienSky/${userEmailKey}/uuDaiRieng`).update({ giaTri: 0, daDung: true });
+            var chuoiSo = (popItemDangChon.gia || "0").toLowerCase().replace(/[^0-9k]/g, '');
+            var phiGoc = chuoiSo.includes('k') ? (parseFloat(chuoiSo.replace('k', '')) * 1000) : (parseFloat(chuoiSo) || 0);
+            soDuConLai = Math.max(0, vDangChon.giaTri - phiGoc);
+          }
+
+          if (soDuConLai > 0) {
+            db.ref(`thanhVienSky/${emailKey}/uuDaiRieng`).update({ giaTri: soDuConLai, daDung: false });
+          } else {
+            db.ref(`thanhVienSky/${emailKey}/uuDaiRieng`).update({ giaTri: 0, daDung: true });
           }
         }
 
@@ -574,7 +631,6 @@
         var callback = function(snap) {
           var don = snap.val();
 
-          // Dọn dẹp đơn bị xóa khỏi database
           if (!don) {
             myOrderIds = myOrderIds.filter(function(id) { return id !== orderId; });
             localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
@@ -598,24 +654,32 @@
               <div style="font-size:11.5px; color:#64748b; margin:4px 0;">📅 Hẹn: ${don.thoiGianHen || "N/A"}</div>
           `;
 
-          // PHÂN NHÁNH RÕ RÀNG:
+          // PHÂN NHÁNH 3 CỘT:
           if (don.trangThai === "hoan_thanh") {
-            delete danhSachDonDangChayKhach[orderId];
-            cardHTML += `
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
-                <span style="color:#16a34a; font-size:11.5px; font-weight:bold;">✔️ Hoàn tất (${don.staffNhan || "🌸"})</span>
-                <button type="button" onclick="xoaDonKhoiMayKhach('${orderId}')" style="background:#f1f5f9; color:#64748b; border:none; font-size:10.5px; padding:2px 8px; border-radius:9999px; cursor:pointer;">Xóa ✕</button>
-              </div>
-            </div>`;
-            boxDone.innerHTML += cardHTML;
-          } else if (don.daNhan) {
-            // Đơn tim: CHỈ ĐÓNG BONG BÓNG KHI daHoanTatTim === true (ĐÃ NHẬN ĐỦ TIM)
-            if (don.thanhToan === "Tim_Sky" && don.daHoanTatTim) {
+            // Đơn tiền hoàn thành: đóng bong bóng chat ngay
+            // Đơn tim: CHỈ ĐÓNG KHI daHoanTatTim === true (HẾT NỢ TIM)
+            if (don.thanhToan !== "Tim_Sky" || don.daHoanTatTim) {
               delete danhSachDonDangChayKhach[orderId];
             } else {
               danhSachDonDangChayKhach[orderId] = don;
             }
 
+            var nutXoaHTML = "";
+            if (don.thanhToan === "Tim_Sky" && !don.daHoanTatTim) {
+              nutXoaHTML = `<span style="font-size:10px; color:#ea580c;">(Đang trả tim dần)</span>`;
+            } else {
+              nutXoaHTML = `<button type="button" onclick="xoaDonKhoiMayKhach('${orderId}')" style="background:#f1f5f9; color:#64748b; border:none; font-size:10.5px; padding:2px 8px; border-radius:9999px; cursor:pointer;">Xóa ✕</button>`;
+            }
+
+            cardHTML += `
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+                <span style="color:#16a34a; font-size:11.5px; font-weight:bold;">✔️ Hoàn tất (${don.staffNhan || "🌸"})</span>
+                ${nutXoaHTML}
+              </div>
+            </div>`;
+            boxDone.innerHTML += cardHTML;
+          } else if (don.daNhan) {
+            danhSachDonDangChayKhach[orderId] = don;
             cardHTML += `
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
                 <span style="color:#0284c7; font-weight:bold; font-size:12px;">Staff: ${don.staffNhan}</span>
@@ -705,7 +769,18 @@
       var orderCallback = function(snap) {
         if (activeChatOrderId !== orderId) return;
         var don = snap.val();
-        if (!don || don.trangThai === "hoan_thanh") { dongChatKhach(); return; }
+        
+        // ĐƠN TIỀN HOÀN THÀNH -> TỰ ĐỘNG ĐÓNG CHAT
+        if (!don || (don.trangThai === "hoan_thanh" && don.thanhToan !== "Tim_Sky")) { 
+          dongChatKhach(); 
+          return; 
+        }
+        // ĐƠN TIM HOÀN TẤT ĐỦ TIM -> TỰ ĐỘNG ĐÓNG CHAT
+        if (don.thanhToan === "Tim_Sky" && don.daHoanTatTim) {
+          dongChatKhach();
+          return;
+        }
+
         currentDonHangData = don;
         currentTenKhach = don.tenKhach;
         currentStaffCuaDon = don.staffNhan;
@@ -717,7 +792,8 @@
 
         if (don.thanhToan === "Tim_Sky") {
           boxTienDo.style.display = "block";
-          var tongTim = parseInt((don.giaNiemYet || "2").replace(/[^0-9]/g, '')) || 2;
+          var chuoiTim = (don.giaNiemYet || "2").replace(/[^0-9]/g, '');
+          var tongTim = parseInt(chuoiTim) || 2;
           var daNhan = don.timDaNhan || 0;
           var conLai = Math.max(0, tongTim - daNhan);
           document.getElementById("txtTienDoTimKhach").innerText = `${daNhan}/${tongTim} Tim (Còn nợ: ${conLai} Tim)`;
@@ -830,29 +906,40 @@
       document.getElementById("fbStaffNameTxt").innerText = "Staff " + (dh.staffNhan || "🌸");
       var boxTraTim = document.getElementById("boxKeHoachTraTim");
 
-      if (dh.thanhToan === "Tim_Sky") {
-        boxTraTim.style.display = "block";
-        document.getElementById("fbTongTimTxt").innerText = dh.giaNiemYet || "2 Tim";
-        tinhSoNgayTraTim();
+      // NẾU LÀ ĐƠN TIM VÀ VẪN CÒN NỢ TIM -> MỚI HIỆN BẢNG HỎI
+      if (dh.thanhToan === "Tim_Sky" && !dh.daHoanTatTim) {
+        var chuoiTim = (dh.giaNiemYet || "2").replace(/[^0-9]/g, '');
+        var tongTim = parseInt(chuoiTim) || 2;
+        var daNhan = dh.timDaNhan || 0;
+        var conLai = Math.max(0, tongTim - daNhan);
+
+        if (conLai > 0) {
+          boxTraTim.style.display = "block";
+          document.getElementById("fbTongTimTxt").innerText = `${conLai} Tim`;
+          tinhSoNgayTraTim();
+        } else {
+          boxTraTim.style.display = "none";
+        }
       } else {
         boxTraTim.style.display = "none";
       }
 
-      setRating(5); // Mặc định 5 sao
+      setRating(5);
       document.getElementById("modalFeedback").style.display = "flex";
     }
 
-    // TÍNH TOÁN SỐ NGÀY DỰA TRÊN SỐ TIM KHÁCH NHẬP
     function tinhSoNgayTraTim() {
       if (!currentDonHangData) return;
-      var chuoi = (currentDonHangData.giaNiemYet || "2").replace(/[^0-9]/g, '');
-      var tongTim = parseInt(chuoi) || 2;
+      var chuoiTim = (currentDonHangData.giaNiemYet || "2").replace(/[^0-9]/g, '');
+      var tongTim = parseInt(chuoiTim) || 2;
+      var daNhan = currentDonHangData.timDaNhan || 0;
+      var conLai = Math.max(1, tongTim - daNhan);
       var timMoiNgay = parseInt(document.getElementById("numTimMoiNgay").value) || 1;
-      var soNgay = Math.ceil(tongTim / timMoiNgay);
+      var soNgay = Math.ceil(conLai / timMoiNgay);
       document.getElementById("fbDuKienTraTim").innerText = `Dự kiến bạn sẽ thanh toán xong trong: ${soNgay} ngày (mỗi ngày gửi ${timMoiNgay} Tim).`;
     }
 
-    // ĐÁNH GIÁ SAO KIỂU THƯƠNG MẠI ĐIỆN TỬ
+    // ĐÁNH GIÁ 5 SAO CHUẨN SÀN THƯƠNG MẠI ĐIỆN TỬ
     function renderStars(rating) {
       var stars = document.querySelectorAll("#starBox span");
       stars.forEach(function(s, idx) {
@@ -876,7 +963,6 @@
       return t.charAt(0) + "****" + t.charAt(t.length - 1);
     }
 
-    // LƯU ĐÁNH GIÁ (SẠCH SẼ, KHÔNG HIỆN CHỮ PHƯƠNG THỨC TT)
     function guiFeedback() {
       var txt = document.getElementById("loiNhanFeedback").value.trim();
       var timMoiNgay = document.getElementById("numTimMoiNgay").value;
@@ -892,14 +978,14 @@
           thoiGian: Date.now()
         });
 
-        // TÍCH ĐIỂM GMAIL CHO HỘI VIÊN KHI HOÀN TẤT
+        // TÍCH ĐIỂM GMAIL
         if (currentDonHangData && currentDonHangData.emailKey) {
           db.ref(`thanhVienSky/${currentDonHangData.emailKey}/soDonDaDat`).transaction(function(curr) {
             return (curr || 0) + 1;
           });
         }
 
-        if (currentDonHangData && currentDonHangData.thanhToan === "Tim_Sky") {
+        if (currentDonHangData && currentDonHangData.thanhToan === "Tim_Sky" && !currentDonHangData.daHoanTatTim) {
           db.ref('donHangSky/' + activeChatOrderId).update({
             soTimMoiNgay: timMoiNgay
           });
@@ -907,7 +993,11 @@
 
         document.getElementById("modalFeedback").style.display = "none";
         alert("Cảm ơn bạn đã gửi đánh giá! Chúc bạn có những phút giây vui vẻ cùng Sky.");
-        dongChatKhach();
+        
+        // ĐƠN TIỀN HOẶC ĐƠN TIM ĐÃ THANH TOÁN XONG -> ĐÓNG CHAT NGAY
+        if (!currentDonHangData || currentDonHangData.thanhToan !== "Tim_Sky" || currentDonHangData.daHoanTatTim) {
+          dongChatKhach();
+        }
         theoDoiCacDonCuaKhach();
       };
 
@@ -957,15 +1047,13 @@
       var isInShift = false, sH = 0, eH = 0;
 
       if (caLamHienTai && caLamHienTai.gioBatDau && caLamHienTai.gioKetThuc) {
-        // KIỂM TRA SO SÁNH ĐÚNG NGÀY
         var matchDate = true;
         var ngayDat = (caLamHienTai.ngay || "").trim().toLowerCase();
 
         if (ngayDat !== "hôm nay" && ngayDat !== "hàng ngày" && ngayDat !== "thứ 2 - cn") {
-          // Định dạng DD/MM/YYYY
           var dStr = now.getDate().toString().padStart(2, '0') + "/" + (now.getMonth()+1).toString().padStart(2, '0') + "/" + now.getFullYear();
           if (ngayDat !== dStr) {
-            matchDate = false; // Khác ngày thực tế -> Tắt ca trực
+            matchDate = false;
           }
         }
 
@@ -1063,7 +1151,6 @@
       });
     });
 
-    // HIỂN THỊ TƯỜNG FEEDBACK (CHỈ CÒN TÊN ẨN DANH m****i, BỎ CHỮ PHƯƠNG THỨC TT)
     db.ref('feedbacks').on('value', function(snap) {
       var data = snap.val(), box = document.getElementById("feedbackWall");
       box.innerHTML = "";
