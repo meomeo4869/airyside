@@ -211,18 +211,48 @@
       </div>
     </section>
 
-    <!-- 7. QUẢN LÝ HỘI VIÊN GMAIL & TẶNG VOUCHER (TIỀN / TIM) -->
+    <!-- 7. QUẢN LÝ HỘI VIÊN GMAIL & VOUCHER (TOÀN SERVER & KHÁCH LẺ) -->
     <section class="admin-section" style="border-left: 4px solid #0284c7 !important;">
       <div class="section-title-box">
-        <h3>📧 Danh Sách Hội Viên Gmail & Quản Lý Ưu Đãi</h3>
+        <h3>📧 Quản Lý Voucher & Hội Viên</h3>
       </div>
+
+      <!-- Khung Phát Voucher Toàn Server -->
+      <div style="background: rgba(240, 249, 255, 0.85); border: 1px solid #bae6fd; border-radius: 14px; padding: 14px; margin-bottom: 16px;">
+        <h4 style="margin: 0 0 8px 0; color: #0284c7; font-size: 13.5px;">🌐 Phát Voucher Toàn Server (Áp dụng cho mọi khách hàng)</h4>
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr auto auto; gap: 8px; align-items: flex-end;">
+          <div>
+            <label>Tên / Dịp Voucher:</label>
+            <input type="text" id="admTenVoucherServer" placeholder="vd: Tri ân mùa Sky, Cuối tuần..." style="margin-bottom:0 !important;">
+          </div>
+          <div>
+            <label>Loại Giảm:</label>
+            <select id="admLoaiVoucherServer" style="margin-bottom:0 !important;">
+              <option value="tien">💵 Tiền mặt (VND)</option>
+              <option value="tim">💖 Tim Sky</option>
+            </select>
+          </div>
+          <div>
+            <label>Mức Giảm:</label>
+            <input type="number" id="admGiaTriVoucherServer" placeholder="vd: 5000 hoặc 1" style="margin-bottom:0 !important;">
+          </div>
+          <button type="button" onclick="phatVoucherToanServer()" style="background:#0284c7; color:white; height:38px;">Phát Ngay 🚀</button>
+          <button type="button" onclick="tatVoucherToanServer()" style="background:#e2e8f0; color:#334155; height:38px;">Tắt</button>
+        </div>
+        <div id="statusVoucherServer" style="margin-top: 8px; font-size: 12px; color: #0369a1; font-weight: 600;">
+          Đang tải trạng thái voucher toàn server...
+        </div>
+      </div>
+
+      <!-- Danh Sách Hội Viên & Tặng Voucher Riêng -->
+      <label>Danh Sách Hội Viên Khách Lẻ:</label>
       <div class="table-responsive">
         <table class="admin-table">
           <thead>
             <tr>
               <th>Gmail Hội Viên</th>
               <th>Số Đơn Đã Đặt</th>
-              <th>Ưu Đãi Đang Có</th>
+              <th>Voucher Riêng</th>
               <th>Thao Tác Tặng & Quản Lý</th>
             </tr>
           </thead>
@@ -672,6 +702,47 @@
         `;
       });
     });
+
+    // LẮNG NGHE & PHÁT VOUCHER TOÀN SERVER
+    db.ref('voucherToanServer').on('value', function(snap) {
+      var v = snap.val();
+      var box = document.getElementById("statusVoucherServer");
+      if (v && v.dangBat) {
+        var loaiTxt = v.loai === "tim" ? `${v.giaTri} Tim` : `${v.giaTri.toLocaleString()}đ`;
+        box.innerHTML = `🟢 <strong>Đang kích hoạt:</strong> ${v.ten} (Giảm ${loaiTxt}) cho toàn bộ khách hàng.`;
+      } else {
+        box.innerHTML = "⚪ Hiện không có voucher toàn server nào được kích hoạt.";
+      }
+    });
+
+    function phatVoucherToanServer() {
+      var ten = document.getElementById("admTenVoucherServer").value.trim() || "Ưu đãi toàn server";
+      var loai = document.getElementById("admLoaiVoucherServer").value;
+      var giaTri = parseFloat(document.getElementById("admGiaTriVoucherServer").value) || 0;
+
+      if (giaTri <= 0) {
+        alert("Vui lòng nhập mức giảm lớn hơn 0!");
+        return;
+      }
+
+      db.ref('voucherToanServer').set({
+        ten: ten,
+        loai: loai,
+        giaTri: giaTri,
+        dangBat: true,
+        thoiGianTao: Date.now()
+      }).then(function() {
+        alert("Đã phát voucher toàn server thành công!");
+      });
+    }
+
+    function tatVoucherToanServer() {
+      if (confirm("Tắt voucher toàn server?")) {
+        db.ref('voucherToanServer').update({ dangBat: false }).then(function() {
+          alert("Đã tắt voucher toàn server!");
+        });
+      }
+    }
 
     function tangVoucher(k) {
       var loai = prompt("Bạn muốn tặng loại voucher nào?\n1: Giảm Tiền Mặt (VND)\n2: Giảm Tim Sky (Tim)", "1");
