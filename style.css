@@ -21,6 +21,7 @@
 
 * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
+/* 1. NỀN TOÀN TRANG */
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   background-color: #fdfaf7;
@@ -49,9 +50,7 @@ body.admin-layout, body.lobby-layout, body.staff-layout {
   padding-bottom: 80px;
 }
 
-/* ================================================= */
-/* 1. INPUT, SELECT, BUTTON GỌN GÀNG                */
-/* ================================================= */
+/* 2. INPUT, SELECT, TEXTAREA GỌN GÀNG */
 label {
   display: block !important;
   text-align: left !important;
@@ -90,11 +89,12 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.18) !important;
 }
 
+/* 3. BUTTON STYLE */
 button {
   font-family: inherit !important;
   font-size: 13px !important;
   font-weight: 700 !important;
-  padding: 9px 18px !important;
+  padding: 8px 18px !important;
   background: var(--sky-gradient) !important;
   color: #ffffff !important;
   border: none !important;
@@ -117,9 +117,7 @@ button.btn-dark { background: #0f172a !important; box-shadow: 0 4px 12px rgba(15
 button.btn-xoa { background: #fee2e2 !important; color: #dc2626 !important; box-shadow: none !important; padding: 4px 10px !important; font-size: 11.5px !important; }
 button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
 
-/* ================================================= */
-/* 2. KHUNG KÍNH LIQUID GLASS CONTAINER             */
-/* ================================================= */
+/* 4. KHUNG LIQUID GLASS */
 .card, .admin-section, .lobby-section, .order-col-box, .realtime-calendar-card, .schedule-table-wrap {
   background: var(--liquid-glass) !important;
   backdrop-filter: blur(28px) saturate(190%) !important;
@@ -153,9 +151,7 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
 .lobby-section { padding: 24px 26px; margin-bottom: 22px; }
 .admin-section { padding: 22px 26px; margin-bottom: 20px; }
 
-/* ================================================= */
-/* 3. POPUP MODAL FIT VIEWPORT                       */
-/* ================================================= */
+/* 5. POPUP MODAL */
 .modal-overlay {
   position: fixed !important;
   top: 0 !important; left: 0 !important;
@@ -198,9 +194,7 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
 }
 .btn-dong-modal:hover { background: rgba(239, 68, 68, 0.15) !important; color: #dc2626 !important; }
 
-/* ================================================= */
-/* 4. ĐÁNH GIÁ 5 SAO CHUẨN SÀN THƯƠNG MẠI ĐIỆN TỬ     */
-/* ================================================= */
+/* 6. ĐÁNH GIÁ 5 SAO CHUẨN SÀN THƯƠNG MẠI ĐIỆN TỬ */
 .star-rating-box {
   display: flex;
   justify-content: center;
@@ -211,18 +205,18 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
 
 .star-rating-box span {
   font-size: 28px;
-  color: #cbd5e1; /* Xám rỗng mặc định */
+  color: #cbd5e1;
   transition: color 0.15s ease, transform 0.15s ease;
   user-select: none;
 }
 
 .star-rating-box span.active {
-  color: #f59e0b; /* Sáng vàng khi được chọn/hover */
+  color: #f59e0b;
   transform: scale(1.15);
 }
 
 /* ================================================= */
-/* 5. BONG BÓNG CHAT & KHUNG CHAT MINI               */
+/* 7. FIX KHUNG CHAT STAFF & KHÁCH ĐỒNG BỘ 100%      */
 /* ================================================= */
 .chatheads-container {
   position: fixed !important;
@@ -250,6 +244,7 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
 }
 .chathead-bubble:hover { transform: scale(1.1) !important; }
 
+/* KHUNG CHAT KÍCH THƯỚC CHUẨN CẢ KHÁCH VÀ STAFF */
 .chat-container {
   display: none;
   position: fixed !important;
@@ -258,7 +253,8 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
   width: 330px !important;
   height: 470px !important;
   max-width: 90vw !important;
-  background: rgba(255, 255, 255, 0.97) !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(28px) !important;
   border: 1.5px solid var(--liquid-border) !important;
   border-radius: 22px !important;
   box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.2) !important;
@@ -267,48 +263,65 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
   overflow: hidden !important;
 }
 
+/* HEADER CHAT: GỌN GÀNG, CÁC NÚT ĐỒNG BỘ */
 .chat-header {
-  background: rgba(248, 250, 252, 0.95);
-  border-bottom: 1px solid #e2e8f0;
-  padding: 10px 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 13px;
-  font-weight: 700;
+  background: rgba(248, 250, 252, 0.95) !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  padding: 10px 14px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  min-height: 48px !important;
+}
+
+.chat-header button {
+  box-shadow: none !important;
+  font-size: 11px !important;
+  padding: 4px 10px !important;
+  height: 28px !important;
+  line-height: 1 !important;
 }
 
 .chat-body {
-  flex: 1;
-  padding: 12px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 13px;
+  flex: 1 !important;
+  padding: 12px !important;
+  overflow-y: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  font-size: 13px !important;
 }
 
-/* ĐÁY KHUNG CHAT: Ô GÕ RỘNG RÃI, CÂN ĐỐI */
+/* FOOTER CHAT: Ô NHẬP RỘNG RÃI, KHÔNG PHỒNG NÚT */
 .chat-footer {
-  border-top: 1px solid #e2e8f0;
-  padding: 8px 12px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  background: rgba(248, 250, 252, 0.9);
+  border-top: 1px solid #e2e8f0 !important;
+  padding: 8px 12px !important;
+  display: flex !important;
+  gap: 8px !important;
+  align-items: center !important;
+  background: rgba(248, 250, 252, 0.95) !important;
+  min-height: 52px !important;
 }
 
 .chat-footer input {
   flex: 1 !important;
   margin-bottom: 0 !important;
-  padding: 8px 12px !important;
-  font-size: 12.5px !important;
+  padding: 8px 14px !important;
+  font-size: 13px !important;
+  height: 38px !important;
 }
 
 .chat-footer button {
-  padding: 8px 14px !important;
-  font-size: 13px !important;
-  border-radius: var(--radius-capsule) !important;
+  width: 38px !important;
+  height: 38px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
 }
 
 .msg { padding: 8px 12px; border-radius: 14px; max-width: 80%; line-height: 1.4; word-break: break-word; }
@@ -316,9 +329,7 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
 .msg.right { background: var(--sky-gradient); color: white; align-self: flex-end; }
 .msg.system { background: #fef3c7; color: #b45309; align-self: center; font-size: 11px; text-align: center; width: 95%; }
 
-/* ================================================= */
-/* 6. SIDEBAR STAFF & NAVBAR CAPSULE                 */
-/* ================================================= */
+/* 8. SIDEBAR STAFF & NAVBAR */
 .side-panel {
   position: fixed !important;
   top: 0 !important;
