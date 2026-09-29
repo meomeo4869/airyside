@@ -570,7 +570,7 @@
       }
     }
 
-    // 5. Đơn hàng đang chạy & Duyệt tiền mặt
+    // 5. Đơn hàng đang chạy & Hóa đơn hoàn thành (Đồng bộ chuẩn hóa tên trường)
     db.ref('donHangSky').on('value', function(snap) {
       var data = snap.val();
       var tbRunning = document.getElementById("bangDonDangChay");
@@ -583,17 +583,18 @@
       var countXong = 0;
       Object.keys(data).reverse().forEach(function(k) {
         var dh = data[k];
+        var tenDichVu = dh.cuThe || dh.dichVu || dh.mangDichVu || "Dịch vụ Sky";
 
         if (dh.trangThai === "hoan_thanh") {
           countXong++;
           tbDone.innerHTML += `
             <tr>
               <td><code>${k.substring(1,7)}</code></td>
-              <td><strong>${dh.tenKhach}</strong></td>
-              <td>${(dh.mangDichVu||"").toUpperCase()} - ${dh.cuThe}</td>
-              <td>${dh.thoiGianHen}</td>
+              <td><strong>${dh.tenKhach || "Khách"}</strong></td>
+              <td>${tenDichVu}</td>
+              <td>${dh.thoiGianHen || "N/A"}</td>
               <td>${dh.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền mặt"}</td>
-              <td><strong>${dh.staffNhan || "-"}</strong></td>
+              <td><strong>${dh.staffNhan || "Staff"}</strong></td>
               <td><button class="btn-xoa" onclick="xoaDonHoanThanh('${k}')">Xóa 🗑️</button></td>
             </tr>
           `;
@@ -608,9 +609,9 @@
 
           tbRunning.innerHTML += `
             <tr>
-              <td><strong>${dh.tenKhach}</strong></td>
-              <td>${(dh.mangDichVu||"").toUpperCase()} - ${dh.cuThe}</td>
-              <td>${dh.thoiGianHen}</td>
+              <td><strong>${dh.tenKhach || "Khách"}</strong></td>
+              <td>${tenDichVu}</td>
+              <td>${dh.thoiGianHen || "N/A"}</td>
               <td>${dh.thanhToan === "Tim_Sky" ? "💖 Tim Sky" : "💵 Tiền mặt"}</td>
               <td>${staffStatus}</td>
               <td>${nutDuyet}</td>
