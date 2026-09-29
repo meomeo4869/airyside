@@ -38,7 +38,7 @@
 
     <!-- ==================== TRANG 1: TRANG CHỦ ==================== -->
     <section id="tab-home" class="lobby-page active-page">
-      <!-- WIDGET ĐỒNG HỒ ĐẾM NGƯỢC RÚT DẦN -->
+      <!-- WIDGET ĐỒNG HỒ ĐẾM NGƯỢC RÚT DẦN (ĐỒNG BỘ CHUẨN THEO NGÀY) -->
       <div class="lobby-section" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
         <div style="max-width: 440px;">
           <div style="font-size: 24px; margin-bottom: 4px;">⏱️</div>
@@ -118,7 +118,7 @@
     <section id="tab-orders" class="lobby-page" style="display: none;">
       <div class="lobby-section">
         <h2>📦 Đơn Hàng Của Bạn</h2>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Theo dõi tiến trình, trò chuyện với Staff và nhận bàn giao ca:</p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Theo dõi tiến trình, trò chuyện với Staff và thanh lý đơn:</p>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px;">
           <!-- Cột 1: Chờ Staff Nhận -->
@@ -244,7 +244,7 @@
       <button type="button" id="btnCopyMaKhach" onclick="copyMaKBKhach()" style="display:none; padding:2px 8px; font-size:10px; background:#0284c7; color:white;">Sao chép</button>
     </div>
 
-    <!-- TIẾN ĐỘ THANH TOÁN TIM (HIỂN THỊ TIẾN TRÌNH THEO NGÀY) -->
+    <!-- TIẾN ĐỘ THANH TOÁN TIM THEO NGÀY -->
     <div id="boxTienDoTimKhach" style="display:none; background:#fff7ed; border-bottom:1px solid #fed7aa; padding:6px 12px; font-size:12px; color:#c2410c; text-align:center;">
       💖 Tiến độ gửi Tim: <strong id="txtTienDoTimKhach">0/0 Tim</strong> (Hằng ngày gửi tim cho Staff)
     </div>
@@ -257,7 +257,7 @@
         <p style="font-size: 11px; margin: 0; color: #78350f;">Vui lòng chuyển khoản để Admin duyệt tiền mở mã kết bạn nhé.</p>
       </div>
 
-      <!-- Ô GỬI MÃ KẾT BẠN SKY (CẢ 2 BÊN ĐỀU GỬI ĐƯỢC) -->
+      <!-- Ô GỬI MÃ KẾT BẠN SKY 2 CHIỀU -->
       <div id="manHinhKetBanKhach" style="text-align: center; padding: 10px; background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0; margin-bottom:8px;">
         <p style="font-size: 12px; color: var(--text-muted); margin: 0 0 6px 0;">Gửi link/mã kết bạn Sky cho Staff:</p>
         <div style="display:flex; gap:6px;">
@@ -271,7 +271,7 @@
     </div>
 
     <div class="chat-footer">
-      <input type="text" id="nhapTinKhach" placeholder="Nhập tin nhắn..." disabled onkeypress="if(event.key==='Enter') guiTinKhach()" style="margin-bottom:0 !important;">
+      <input type="text" id="nhapTinKhach" placeholder="Nhập tin nhắn..." disabled onkeypress="if(event.key==='Enter') guiTinKhach()">
       <button type="button" id="btnGuiTinKhach" disabled onclick="guiTinKhach()">➤</button>
       <button type="button" id="btnXacNhanHoanThanhKhach" onclick="xacNhanXongKhach()" style="background:#10b981;" title="Bấm hoàn thành ca">✔ Xong</button>
     </div>
@@ -288,29 +288,32 @@
     </div>
   </div>
 
-  <!-- POPUP ĐÁNH GIÁ FEEDBACK (CÓ ẢNH & ĐƠN THANH TOÁN TIM) -->
+  <!-- POPUP ĐÁNH GIÁ FEEDBACK (5 SAO TMĐT & HỎI SỐ TIM/NGÀY DUY NHẤT) -->
   <div id="modalFeedback" class="modal-overlay">
     <div class="modal-content-compact" style="width: 420px; text-align: center;">
       <h3 style="margin-top:0; color:#0284c7;">Hoàn Tất Đơn Hàng 🎉</h3>
       <p style="font-size: 13px; color: var(--text-muted); margin-top: -4px;">Cảm ơn bạn đã đồng hành cùng <strong id="fbStaffNameTxt">Staff</strong>!</p>
       
-      <!-- HÓA ĐƠN THANH TOÁN TIM THEO NGÀY -->
+      <!-- HỎI DUY NHẤT SỐ TIM/NGÀY -->
       <div id="boxKeHoachTraTim" style="display: none; background: #fff7ed; border: 1px solid #ffedd5; border-radius: 12px; padding: 10px; margin-bottom: 12px; text-align: left; font-size: 12.5px;">
         <strong style="color: #c2410c; display: block; margin-bottom: 4px;">💖 Hóa đơn thanh toán Tim:</strong>
         <p style="margin: 0 0 6px 0; color: #78350f;">Tổng số tim đơn hàng: <strong id="fbTongTimTxt">0 Tim</strong></p>
-        <label>Bạn có thể gửi bao nhiêu tim mỗi ngày? (Tùy số acc bạn có):</label>
-        <input type="number" id="numTimMoiNgay" value="1" min="1" max="10" oninput="tinhSoNgayTraTim()" style="margin-bottom:4px !important;">
+        <label>Bạn có thể gửi bao nhiêu tim mỗi ngày?:</label>
+        <input type="number" id="numTimMoiNgay" value="1" min="1" max="100" oninput="tinhSoNgayTraTim()" style="margin-bottom:4px !important;">
         <span id="fbDuKienTraTim" style="font-size: 11.5px; color: #ea580c; font-weight: bold; display: block; margin-top: 4px;">Dự kiến thanh toán xong trong: - ngày</span>
       </div>
 
-      <label style="text-align: center !important;">Đánh giá Staff:</label>
-      <div style="font-size: 24px; color: #f59e0b; cursor: pointer; margin-bottom: 8px;" id="starBox">
-        <span onclick="setRating(1)">★</span><span onclick="setRating(2)">★</span><span onclick="setRating(3)">★</span><span onclick="setRating(4)">★</span><span onclick="setRating(5)">★</span>
+      <label style="text-align: center !important;">Đánh giá chất lượng dịch vụ:</label>
+      <div class="star-rating-box" id="starBox">
+        <span onclick="setRating(1)" onmouseover="hoverRating(1)" onmouseout="resetHoverRating()">★</span>
+        <span onclick="setRating(2)" onmouseover="hoverRating(2)" onmouseout="resetHoverRating()">★</span>
+        <span onclick="setRating(3)" onmouseover="hoverRating(3)" onmouseout="resetHoverRating()">★</span>
+        <span onclick="setRating(4)" onmouseover="hoverRating(4)" onmouseout="resetHoverRating()">★</span>
+        <span onclick="setRating(5)" onmouseover="hoverRating(5)" onmouseout="resetHoverRating()">★</span>
       </div>
 
       <input type="text" id="loiNhanFeedback" placeholder="Đôi lời nhận xét về chuyến đi..." style="margin-bottom: 8px !important;">
       
-      <!-- NÚT TẢI ẢNH FEEDBACK -->
       <div style="background: rgba(248, 250, 252, 0.9); border: 1px dashed #cbd5e1; border-radius: 10px; padding: 8px; margin-bottom: 12px; text-align: left;">
         <label style="margin: 0 0 4px 0 !important; font-size: 11.5px;">Tải ảnh kỷ niệm chuyến đi 📸 (Tùy chọn):</label>
         <input type="file" id="fileFeedbackAnh" accept="image/*" style="font-size: 11px; margin-bottom: 0 !important;">
@@ -595,7 +598,7 @@
               <div style="font-size:11.5px; color:#64748b; margin:4px 0;">📅 Hẹn: ${don.thoiGianHen || "N/A"}</div>
           `;
 
-          // PHÂN NHÁNH RÕ RÀNG KHÔNG TRÙNG LẶP:
+          // PHÂN NHÁNH RÕ RÀNG:
           if (don.trangThai === "hoan_thanh") {
             delete danhSachDonDangChayKhach[orderId];
             cardHTML += `
@@ -606,7 +609,7 @@
             </div>`;
             boxDone.innerHTML += cardHTML;
           } else if (don.daNhan) {
-            // Đơn tim: chỉ đóng bong bóng khi daHoanTatTim === true
+            // Đơn tim: CHỈ ĐÓNG BONG BÓNG KHI daHoanTatTim === true (ĐÃ NHẬN ĐỦ TIM)
             if (don.thanhToan === "Tim_Sky" && don.daHoanTatTim) {
               delete danhSachDonDangChayKhach[orderId];
             } else {
@@ -641,7 +644,6 @@
     }
     theoDoiCacDonCuaKhach();
 
-    // HÀM ĐẾM CHUẨN XÁC TRỰC TIẾP TRÊN GIAO DIỆN
     function capNhatSoLuongBadgeThucTe() {
       var pCards = document.querySelectorAll("#listOrdersPending .customer-order-card").length;
       var rCards = document.querySelectorAll("#listOrdersRunning .customer-order-card").length;
@@ -713,7 +715,6 @@
         var boxKB = document.getElementById("manHinhKetBanKhach");
         var boxTienDo = document.getElementById("boxTienDoTimKhach");
 
-        // HIỂN THỊ TIẾN ĐỘ TRẢ TIM NẾU LÀ ĐƠN TIM
         if (don.thanhToan === "Tim_Sky") {
           boxTienDo.style.display = "block";
           var tongTim = parseInt((don.giaNiemYet || "2").replace(/[^0-9]/g, '')) || 2;
@@ -724,7 +725,6 @@
           boxTienDo.style.display = "none";
         }
 
-        // ĐƠN TIỀN MẶT: BẮT BUỘC ADMIN DUYỆT MỚI MỞ MÃ KẾT BẠN
         if (don.thanhToan === "Tien_VND" && !don.daThanhToanFull) {
           boxTT.style.display = "block";
           boxKB.style.display = "none";
@@ -757,7 +757,6 @@
 
         if (boxTT.style.display === "block") return;
 
-        // GHIM MÃ KẾT BẠN 2 CHIỀU LÊN HEADER
         if (data && data.maKetBan) {
           ghimTxt.innerText = `📌 Mã Sky: ${data.maKetBan}`;
           btnCopy.style.display = "block";
@@ -817,7 +816,7 @@
       activeChatOrderId = null;
     }
 
-    // 5. LOGIC HOÀN TẤT: KHÁCH BẤM TRƯỚC -> MỞ POPUP FEEDBACK
+    // 5. KHÁCH BẤM TRƯỚC -> MỞ POPUP FEEDBACK
     function xacNhanXongKhach() {
       if (!activeChatOrderId) return;
       if (confirm("Bạn xác nhận đã đi xong dịch vụ này cùng Staff?")) {
@@ -839,9 +838,11 @@
         boxTraTim.style.display = "none";
       }
 
+      setRating(5); // Mặc định 5 sao
       document.getElementById("modalFeedback").style.display = "flex";
     }
 
+    // TÍNH TOÁN SỐ NGÀY DỰA TRÊN SỐ TIM KHÁCH NHẬP
     function tinhSoNgayTraTim() {
       if (!currentDonHangData) return;
       var chuoi = (currentDonHangData.giaNiemYet || "2").replace(/[^0-9]/g, '');
@@ -851,13 +852,23 @@
       document.getElementById("fbDuKienTraTim").innerText = `Dự kiến bạn sẽ thanh toán xong trong: ${soNgay} ngày (mỗi ngày gửi ${timMoiNgay} Tim).`;
     }
 
-    function setRating(n) {
-      selectedStar = n;
+    // ĐÁNH GIÁ SAO KIỂU THƯƠNG MẠI ĐIỆN TỬ
+    function renderStars(rating) {
       var stars = document.querySelectorAll("#starBox span");
-      stars.forEach(function(s, idx) { s.style.opacity = idx < n ? "1" : "0.3"; });
+      stars.forEach(function(s, idx) {
+        if (idx < rating) s.classList.add("active");
+        else s.classList.remove("active");
+      });
     }
 
-    // ĐỊNH DẠNG TÊN ẨN DANH m****i
+    function setRating(n) {
+      selectedStar = n;
+      renderStars(selectedStar);
+    }
+
+    function hoverRating(n) { renderStars(n); }
+    function resetHoverRating() { renderStars(selectedStar); }
+
     function formatTenAnDanh(ten) {
       if (!ten) return "k****h";
       var t = ten.trim();
@@ -865,7 +876,7 @@
       return t.charAt(0) + "****" + t.charAt(t.length - 1);
     }
 
-    // LƯU FEEDBACK (BỎ HOÀN TOÀN CHỮ PHƯƠNG THỨC THANH TOÁN)
+    // LƯU ĐÁNH GIÁ (SẠCH SẼ, KHÔNG HIỆN CHỮ PHƯƠNG THỨC TT)
     function guiFeedback() {
       var txt = document.getElementById("loiNhanFeedback").value.trim();
       var timMoiNgay = document.getElementById("numTimMoiNgay").value;
@@ -880,6 +891,13 @@
           anhFeedback: anhUrl || "none",
           thoiGian: Date.now()
         });
+
+        // TÍCH ĐIỂM GMAIL CHO HỘI VIÊN KHI HOÀN TẤT
+        if (currentDonHangData && currentDonHangData.emailKey) {
+          db.ref(`thanhVienSky/${currentDonHangData.emailKey}/soDonDaDat`).transaction(function(curr) {
+            return (curr || 0) + 1;
+          });
+        }
 
         if (currentDonHangData && currentDonHangData.thanhToan === "Tim_Sky") {
           db.ref('donHangSky/' + activeChatOrderId).update({
@@ -918,7 +936,7 @@
       });
     }
 
-    // 6. Đồng hồ iOS Timer đếm ngược rút dần theo ca
+    // 6. ĐỒNG HỒ ĐẾM NGƯỢC RÚT DẦN (SO SÁNH CHÍNH XÁC NGÀY THỰC TẾ)
     var caLamHienTai = null;
     db.ref('caiDatPage/lichChiTiet').on('value', function(snap) {
       caLamHienTai = snap.val();
@@ -937,11 +955,26 @@
       document.getElementById("iosDigitalClock").innerText = `${h}:${m}`;
 
       var isInShift = false, sH = 0, eH = 0;
+
       if (caLamHienTai && caLamHienTai.gioBatDau && caLamHienTai.gioKetThuc) {
-        var pS = caLamHienTai.gioBatDau.split(':'), pE = caLamHienTai.gioKetThuc.split(':');
-        sH = parseFloat(pS[0]) + parseFloat(pS[1]) / 60;
-        eH = parseFloat(pE[0]) + parseFloat(pE[1]) / 60;
-        isInShift = (sH <= eH) ? (curHourDec >= sH && curHourDec <= eH) : (curHourDec >= sH || curHourDec <= eH);
+        // KIỂM TRA SO SÁNH ĐÚNG NGÀY
+        var matchDate = true;
+        var ngayDat = (caLamHienTai.ngay || "").trim().toLowerCase();
+
+        if (ngayDat !== "hôm nay" && ngayDat !== "hàng ngày" && ngayDat !== "thứ 2 - cn") {
+          // Định dạng DD/MM/YYYY
+          var dStr = now.getDate().toString().padStart(2, '0') + "/" + (now.getMonth()+1).toString().padStart(2, '0') + "/" + now.getFullYear();
+          if (ngayDat !== dStr) {
+            matchDate = false; // Khác ngày thực tế -> Tắt ca trực
+          }
+        }
+
+        if (matchDate) {
+          var pS = caLamHienTai.gioBatDau.split(':'), pE = caLamHienTai.gioKetThuc.split(':');
+          sH = parseFloat(pS[0]) + parseFloat(pS[1]) / 60;
+          eH = parseFloat(pE[0]) + parseFloat(pE[1]) / 60;
+          isInShift = (sH <= eH) ? (curHourDec >= sH && curHourDec <= eH) : (curHourDec >= sH || curHourDec <= eH);
+        }
       }
 
       var pill = document.getElementById("clockStatusPill");
