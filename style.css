@@ -40,7 +40,6 @@ body.login-layout {
   align-items: center !important;
   justify-content: center !important;
   min-height: 100vh !important;
-  width: 100vw !important;
   padding: 20px !important;
 }
 
@@ -68,6 +67,7 @@ input[type="email"],
 input[type="password"],
 input[type="datetime-local"],
 input[type="time"],
+input[type="number"],
 select,
 textarea {
   display: block !important;
@@ -154,7 +154,7 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
 .admin-section { padding: 22px 26px; margin-bottom: 20px; }
 
 /* ================================================= */
-/* 3. POPUP ĐẶT ĐƠN ÉP GỌN 1 KHUNG (HẾT CUỘN TRANG)  */
+/* 3. POPUP MODAL FIT VIEWPORT                       */
 /* ================================================= */
 .modal-overlay {
   position: fixed !important;
@@ -162,7 +162,6 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
   width: 100vw !important; height: 100vh !important;
   background: rgba(15, 23, 42, 0.45) !important;
   backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
   display: none;
   justify-content: center;
   align-items: center;
@@ -180,7 +179,6 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
   width: 440px !important;
   max-width: 94vw !important;
   box-sizing: border-box !important;
-  overflow: visible !important; /* KHÔNG BỊ THANH CUỘN */
 }
 
 .btn-dong-modal {
@@ -191,17 +189,40 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
   border: none !important;
   width: 28px !important; height: 28px !important;
   border-radius: 50% !important;
-  box-shadow: none !important;
   padding: 0 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   font-size: 14px !important;
+  cursor: pointer !important;
 }
 .btn-dong-modal:hover { background: rgba(239, 68, 68, 0.15) !important; color: #dc2626 !important; }
 
 /* ================================================= */
-/* 4. HỆ THỐNG BONG BÓNG MINI CHAT ĐA NHIỆM          */
+/* 4. ĐÁNH GIÁ 5 SAO CHUẨN SÀN THƯƠNG MẠI ĐIỆN TỬ     */
+/* ================================================= */
+.star-rating-box {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.star-rating-box span {
+  font-size: 28px;
+  color: #cbd5e1; /* Xám rỗng mặc định */
+  transition: color 0.15s ease, transform 0.15s ease;
+  user-select: none;
+}
+
+.star-rating-box span.active {
+  color: #f59e0b; /* Sáng vàng khi được chọn/hover */
+  transform: scale(1.15);
+}
+
+/* ================================================= */
+/* 5. BONG BÓNG CHAT & KHUNG CHAT MINI               */
 /* ================================================= */
 .chatheads-container {
   position: fixed !important;
@@ -214,60 +235,32 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
 }
 
 .chathead-bubble {
-  width: 54px !important;
-  height: 54px !important;
+  width: 52px !important;
+  height: 52px !important;
   border-radius: 50% !important;
   background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(14px) !important;
   border: 2px solid #38bdf8 !important;
-  box-shadow: 0 8px 24px -2px rgba(2, 132, 199, 0.4), inset 0 1px 2px #fff !important;
+  box-shadow: 0 8px 24px -2px rgba(2, 132, 199, 0.4) !important;
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-size: 24px !important;
-  position: relative !important;
-  transition: transform 0.25s var(--smooth-bounce) !important;
-  animation: pulseHead 2.5s infinite ease-in-out !important;
+  font-size: 22px !important;
+  transition: transform 0.2s var(--smooth-bounce) !important;
 }
+.chathead-bubble:hover { transform: scale(1.1) !important; }
 
-.chathead-bubble:hover {
-  transform: scale(1.1) translateY(-3px) !important;
-}
-
-.chathead-badge-unread {
-  position: absolute !important;
-  top: -2px !important; right: -2px !important;
-  background: #ef4444 !important;
-  color: white !important;
-  width: 18px !important; height: 18px !important;
-  border-radius: 50% !important;
-  font-size: 10px !important;
-  font-weight: 800 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border: 2px solid white !important;
-}
-
-@keyframes pulseHead {
-  0%, 100% { box-shadow: 0 8px 24px -2px rgba(2, 132, 199, 0.4); }
-  50% { box-shadow: 0 8px 30px 4px rgba(56, 189, 248, 0.6); }
-}
-
-/* KHUNG CHAT CONTAINER */
 .chat-container {
   display: none;
   position: fixed !important;
-  right: 88px !important;
+  right: 84px !important;
   bottom: 24px !important;
-  width: 340px !important;
-  height: 480px !important;
+  width: 330px !important;
+  height: 470px !important;
   max-width: 90vw !important;
-  background: rgba(255, 255, 255, 0.96) !important;
-  backdrop-filter: blur(28px) !important;
+  background: rgba(255, 255, 255, 0.97) !important;
   border: 1.5px solid var(--liquid-border) !important;
-  border-radius: 24px !important;
+  border-radius: 22px !important;
   box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.2) !important;
   flex-direction: column !important;
   z-index: 999999 !important;
@@ -277,17 +270,17 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
 .chat-header {
   background: rgba(248, 250, 252, 0.95);
   border-bottom: 1px solid #e2e8f0;
-  padding: 12px 16px;
+  padding: 10px 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 700;
 }
 
 .chat-body {
   flex: 1;
-  padding: 14px;
+  padding: 12px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -295,21 +288,36 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
   font-size: 13px;
 }
 
+/* ĐÁY KHUNG CHAT: Ô GÕ RỘNG RÃI, CÂN ĐỐI */
 .chat-footer {
   border-top: 1px solid #e2e8f0;
-  padding: 10px 14px;
+  padding: 8px 12px;
   display: flex;
   gap: 8px;
-  background: rgba(248, 250, 252, 0.85);
+  align-items: center;
+  background: rgba(248, 250, 252, 0.9);
+}
+
+.chat-footer input {
+  flex: 1 !important;
+  margin-bottom: 0 !important;
+  padding: 8px 12px !important;
+  font-size: 12.5px !important;
+}
+
+.chat-footer button {
+  padding: 8px 14px !important;
+  font-size: 13px !important;
+  border-radius: var(--radius-capsule) !important;
 }
 
 .msg { padding: 8px 12px; border-radius: 14px; max-width: 80%; line-height: 1.4; word-break: break-word; }
 .msg.left { background: #f1f5f9; align-self: flex-start; color: var(--text-primary); }
 .msg.right { background: var(--sky-gradient); color: white; align-self: flex-end; }
-.msg.system { background: #fef3c7; color: #b45309; align-self: center; font-size: 11.5px; text-align: center; width: 90%; }
+.msg.system { background: #fef3c7; color: #b45309; align-self: center; font-size: 11px; text-align: center; width: 95%; }
 
 /* ================================================= */
-/* 5. SIDEBAR THÔNG BÁO STAFF (ĐÃ CỐ ĐỊNH CHUẨN)     */
+/* 6. SIDEBAR STAFF & NAVBAR CAPSULE                 */
 /* ================================================= */
 .side-panel {
   position: fixed !important;
@@ -319,18 +327,13 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
   height: 100vh !important;
   background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(28px) !important;
-  -webkit-backdrop-filter: blur(28px) !important;
   box-shadow: -10px 0 35px rgba(15, 23, 42, 0.12) !important;
   transition: right 0.35s var(--smooth-bounce) !important;
   padding: 24px !important;
   z-index: 100000 !important;
   overflow-y: auto !important;
-  box-sizing: border-box !important;
 }
-
-.side-panel.panel-open {
-  right: 0 !important;
-}
+.side-panel.panel-open { right: 0 !important; }
 
 .toggle-btn {
   position: fixed !important;
@@ -347,7 +350,6 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
   font-size: 12px !important;
 }
 
-/* NAVBAR CAPSULE */
 .navbar-capsule-container { position: sticky; top: 18px; z-index: 1000; display: flex; justify-content: center; padding: 0 20px; }
 .navbar-capsule {
   background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(28px) saturate(180%);
@@ -360,7 +362,6 @@ button.btn-xoa:hover { background: #ef4444 !important; color: #fff !important; }
 .nav-item.active { background: #ffffff !important; color: var(--text-primary) !important; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important; font-weight: 700 !important; }
 .btn-nav-order { background: var(--sky-gradient); color: white; border: none; border-radius: var(--radius-capsule); padding: 8px 18px; font-size: 13px; font-weight: 700; box-shadow: 0 6px 18px -3px rgba(2, 132, 199, 0.45); }
 
-/* BẢNG BIỂU ADMIN & LỊCH EXCEL */
 .table-responsive { width: 100%; overflow-x: auto; border-radius: var(--radius-inner); border: 1px solid rgba(226, 232, 240, 0.9); background: rgba(255, 255, 255, 0.65); }
 .admin-table, .schedule-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
 .admin-table th, .schedule-table th { background: rgba(241, 245, 249, 0.95); color: var(--text-primary); font-weight: 700; padding: 12px 14px; border-bottom: 1.5px solid rgba(226, 232, 240, 1); white-space: nowrap; }
