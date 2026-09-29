@@ -98,21 +98,21 @@
     </div>
   </div>
 
-  <!-- KHUNG CHAT MINI LIQUID GLASS CHO STAFF (FOOTER THU GỌN CÂN ĐỐI) -->
+  <!-- KHUNG CHAT MINI LIQUID GLASS CHO STAFF (KÍCH THƯỚC CHUẨN GỌN NHẸ 100% NHƯ KHÁCH) -->
   <div id="chatBoxStaff" class="chat-container">
     <div class="chat-header">
-      <span id="chatTitleStaff">Chat Với Khách</span>
+      <span id="chatTitleStaff" style="max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Chat Với Khách</span>
       <div style="display: flex; gap: 6px; align-items:center;">
-        <button type="button" id="btnHoanThanhStaff" disabled onclick="xacNhanXongStaff()" style="background:#cbd5e1; color:#64748b; font-size:11px; padding:3px 8px; border-radius:9999px;" title="Chờ khách bấm hoàn thành trước">✔ Xong</button>
-        <button type="button" onclick="moPopupReportStaff()" style="background:#fee2e2; color:#dc2626; border:none; padding:3px 8px; font-size:11px; border-radius:9999px;">🚩 Báo cáo</button>
-        <button type="button" onclick="dongChatStaff()" style="background:#f1f5f9; border:none; width:24px; height:24px; border-radius:50%; cursor:pointer;">✕</button>
+        <button type="button" id="btnHoanThanhStaff" disabled onclick="xacNhanXongStaff()" style="background:#cbd5e1; color:#64748b; font-size:11px; padding:3px 8px; border-radius:9999px;" title="Chờ khách bấm hoàn thành trước">Chờ Khách ✔</button>
+        <button type="button" onclick="moPopupReportStaff()" style="background:#0284c7; color:white; border:none; padding:4px 10px; font-size:11.5px; border-radius:9999px;">🚩 Báo cáo</button>
+        <button type="button" onclick="dongChatStaff()" style="background:#38bdf8; color:white; border:none; width:26px; height:26px; border-radius:50%; cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center;">✕</button>
       </div>
     </div>
 
     <!-- GHIM MÃ KẾT BẠN 2 CHIỀU -->
     <div id="boxGhimMaKBStaff" style="background:#f0f9ff; border-bottom:1px solid #bae6fd; padding:6px 12px; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
-      <span id="txtGhimMaKBStaff">📌 Chưa có mã kết bạn Sky</span>
-      <button type="button" id="btnCopyMaStaff" onclick="copyMaKBStaff()" style="display:none; padding:2px 8px; font-size:10px; background:#0284c7; color:white;">Sao chép</button>
+      <span id="txtGhimMaKBStaff" style="font-weight:600; color:#0369a1;">📌 Chưa có mã kết bạn Sky</span>
+      <button type="button" id="btnCopyMaStaff" onclick="copyMaKBStaff()" style="display:none; padding:3px 10px; font-size:11px; background:#0284c7; color:white; border-radius:9999px;">Sao chép</button>
     </div>
 
     <!-- THANH XÁC NHẬN NHẬN TIM HÀNG NGÀY -->
@@ -143,21 +143,25 @@
       <div id="tinNhanStaff" style="display: flex; flex-direction: column; gap: 8px;"></div>
     </div>
 
-    <!-- FOOTER CHAT GỌN GÀNG, KHÔNG BỊ PHỒNG NÚT -->
+    <!-- FOOTER CHAT GỌN GÀNG -->
     <div class="chat-footer">
       <input type="text" id="nhapTinStaff" placeholder="Nhập tin nhắn..." disabled onkeypress="if(event.key==='Enter') guiTinStaff()">
-      <button type="button" id="btnGuiTinStaff" disabled onclick="guiTinStaff()">➤</button>
+      <button type="button" id="btnGuiTinStaff" disabled onclick="guiTinStaff()" style="padding:8px 12px !important;">➤</button>
     </div>
   </div>
 
-  <!-- POPUP BÁO CÁO CỦA STAFF -->
+  <!-- POPUP BÁO CÁO CỦA STAFF (KÈM ẢNH BẰNG CHỨNG TÙY CHỌN) -->
   <div id="modalReportStaff" class="modal-overlay">
     <div class="modal-content-compact" style="width: 380px;">
       <button type="button" class="btn-dong-modal" onclick="dongPopupReportStaff()">✕</button>
       <h3 style="margin-top:0; color:#dc2626;">🚩 Báo Cáo Khách Hàng</h3>
       <label>Lý do khiếu nại khách:</label>
       <textarea id="reportLyDoStaff" rows="3" placeholder="Mô tả sự cố..."></textarea>
-      <button type="button" onclick="guiBaoCaoStaff()" style="width:100%; background:#dc2626; color:white; margin-top:8px;">Gửi Báo Cáo</button>
+      
+      <label>Ảnh bằng chứng (Tùy chọn):</label>
+      <input type="file" id="reportFileStaff" accept="image/*" style="font-size:12px; margin-bottom:10px !important;">
+
+      <button type="button" onclick="guiBaoCaoStaff()" style="width:100%; background:#dc2626; color:white;">Gửi Báo Cáo</button>
     </div>
   </div>
 
@@ -295,9 +299,6 @@
       Object.keys(list).reverse().forEach(function(k) {
         var dh = list[k];
 
-        // LOGIC BONG BÓNG CHAT STAFF:
-        // Đơn tiền: ĐÓNG KHI HOÀN THÀNH
-        // Đơn tim: CHỈ ĐÓNG KHI ĐÃ NHẬN ĐỦ 100% TIM (daHoanTatTim === true)
         var moBongBong = false;
         if (dh.daNhan && dh.staffNhan === iconCuaToi) {
           if (dh.thanhToan === "Tim_Sky") {
@@ -315,7 +316,6 @@
           ? `<button disabled style="background:#cbd5e1; color:#475569; width:100%; border:none; padding:8px; border-radius:9999px;">ĐÃ NHẬN (${dh.staffNhan})</button>`
           : `<button onclick="event.stopPropagation(); chotDon('${k}')" style="background:#0f172a; color:white; width:100%; border:none; padding:8px; border-radius:9999px; cursor:pointer;">Nhận Đơn Ngay</button>`;
 
-        // Bấm vào thẻ để xem popup chi tiết đơn
         box.innerHTML += `
           <div class="lobby-section" style="padding:16px; cursor:pointer;" onclick='moModalChiTiet("${k}", ${JSON.stringify(dh)})'>
             <h4 style="margin:0 0 6px 0; color:#0284c7;">${(dh.mangDichVu||"").toUpperCase()} - ${dh.cuThe}</h4>
@@ -329,7 +329,6 @@
       capNhatBongBongStaff();
     });
 
-    // POPUP XEM FULL THÔNG TIN ĐƠN HÀNG
     function moModalChiTiet(k, dh) {
       document.getElementById("dtKhachHang").innerText = dh.tenKhach;
       document.getElementById("dtDichVu").innerText = `${(dh.mangDichVu||"").toUpperCase()} - ${dh.cuThe}`;
@@ -392,12 +391,10 @@
       var orderCb = function(snap) {
         var don = snap.val();
         
-        // ĐƠN TIỀN HOÀN THÀNH -> TỰ ĐỘNG ĐÓNG CHAT
         if (!don || (don.trangThai === "hoan_thanh" && don.thanhToan !== "Tim_Sky")) { 
           dongChatStaff(); 
           return; 
         }
-        // ĐƠN TIM HOÀN TẤT ĐỦ TIM -> TỰ ĐỘNG ĐÓNG CHAT
         if (don.thanhToan === "Tim_Sky" && don.daHoanTatTim) {
           dongChatStaff();
           return;
@@ -410,6 +407,24 @@
         var choKB = document.getElementById("manHinhKetBanStaff");
         var boxTruTim = document.getElementById("boxTruTimStaff");
         var btnXong = document.getElementById("btnHoanThanhStaff");
+
+        // ẨN NÚT HOÀN TẤT NẾU CẢ 2 BÊN ĐÃ XÁC NHẬN XONG CA ĐI MAP
+        if (don.khachHoanThanh && don.staffHoanThanh) {
+          btnXong.style.display = "none";
+        } else {
+          btnXong.style.display = "inline-flex";
+          if (don.khachHoanThanh) {
+            btnXong.disabled = false;
+            btnXong.style.background = "#10b981";
+            btnXong.style.color = "white";
+            btnXong.innerText = "✔ Hoàn Tất";
+          } else {
+            btnXong.disabled = true;
+            btnXong.style.background = "#cbd5e1";
+            btnXong.style.color = "#64748b";
+            btnXong.innerText = "Chờ Khách ✔";
+          }
+        }
 
         if (don.thanhToan === "Tim_Sky") {
           boxTruTim.style.display = "flex";
@@ -441,19 +456,6 @@
           }
         } else {
           boxTruTim.style.display = "none";
-        }
-
-        // ĐIỀU KIỆN MỞ NÚT HOÀN TẤT: KHÁCH PHẢI BẤM TRƯỚC
-        if (don.khachHoanThanh) {
-          btnXong.disabled = false;
-          btnXong.style.background = "#10b981";
-          btnXong.style.color = "white";
-          btnXong.innerText = "✔ Hoàn Tất";
-        } else {
-          btnXong.disabled = true;
-          btnXong.style.background = "#cbd5e1";
-          btnXong.style.color = "#64748b";
-          btnXong.innerText = "Chờ Khách ✔";
         }
 
         if (don.thanhToan === "Tien_VND" && !don.daThanhToanFull) {
@@ -524,7 +526,6 @@
       }
     }
 
-    // XÁC NHẬN NHẬN TIM THEO NGÀY
     function staffXacNhanNhanTim() {
       if (!activeStaffChatId || !currentStaffOrderData) return;
       var chuoiTim = (currentStaffOrderData.giaNiemYet || "2").replace(/[^0-9]/g, '');
@@ -575,7 +576,6 @@
       activeStaffChatId = null;
     }
 
-    // NÚT HOÀN THÀNH CỦA STAFF
     function xacNhanXongStaff() {
       if (!activeStaffChatId || !currentStaffOrderData) return;
       if (!currentStaffOrderData.khachHoanThanh) {
@@ -592,7 +592,6 @@
             dongChatStaff();
           });
         } else {
-          // Đơn tim: chỉ đánh dấu xong chuyến đi map, khung chat vẫn mở nếu chưa đủ tim
           if (currentStaffOrderData.daHoanTatTim) {
             updateObj.trangThai = "hoan_thanh";
             dongChatStaff();
@@ -606,21 +605,35 @@
 
     function moPopupReportStaff() { document.getElementById("modalReportStaff").style.display = "flex"; }
     function dongPopupReportStaff() { document.getElementById("modalReportStaff").style.display = "none"; }
+    
     function guiBaoCaoStaff() {
       var lyDo = document.getElementById("reportLyDoStaff").value.trim();
+      var fAnh = document.getElementById("reportFileStaff").files[0];
       if (!lyDo) { alert("Vui lòng ghi rõ lý do báo cáo khách!"); return; }
-      db.ref('danhSachBaoCao').push({
-        nguoiBaoCao: myStaffName,
-        doiTuongBiBaoCao: "Khách: " + (currentStaffOrderData ? currentStaffOrderData.tenKhach : "Khách"),
-        lyDo: lyDo,
-        thoiGian: Date.now()
-      }).then(function() {
-        alert("Đã gửi báo cáo vi phạm tới Admin!");
-        dongPopupReportStaff();
-      });
+
+      var sendReport = function(imgData) {
+        db.ref('danhSachBaoCao').push({
+          nguoiBaoCao: myStaffName,
+          doiTuongBiBaoCao: "Khách: " + (currentStaffOrderData ? currentStaffOrderData.tenKhach : "Khách"),
+          lyDo: lyDo,
+          anhBangChung: imgData || "Không có ảnh",
+          thoiGian: Date.now()
+        }).then(function() {
+          alert("Đã gửi báo cáo kèm ảnh bằng chứng tới Admin!");
+          dongPopupReportStaff();
+        });
+      };
+
+      if (fAnh) {
+        var r = new FileReader();
+        r.onload = function(e) { sendReport(e.target.result); };
+        r.readAsDataURL(fAnh);
+      } else {
+        sendReport(null);
+      }
     }
 
-    // 5. Feedback hiển thị chuẩn
+    // 5. Feedback
     db.ref('feedbacks').on('value', function(snap) {
       var data = snap.val(), box = document.getElementById("staffFeedbackGrid");
       box.innerHTML = "";
