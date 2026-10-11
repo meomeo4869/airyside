@@ -655,8 +655,17 @@
 
     function adminDuyetTien(k) {
       if (confirm("Admin xác nhận đã nhận đủ tiền chuyển khoản cho đơn này?")) {
-        db.ref('donHangSky/' + k).update({ daThanhToanFull: true });
-        db.ref('phongChat/' + k + '/tinNhan').push({ nguoiGui: "Hệ thống", noiDung: "Admin đã xác nhận nhận tiền. Gửi mã kết bạn đã mở!" });
+        db.ref('donHangSky/' + k).once('value').then(function(snap) {
+          var don = snap.val();
+          if (!don) throw new Error("Không tìm thấy đơn hàng.");
+          var update = { daThanhToanFull: true };
+          if (don.thanhToan === "Tien_VND" && don.daNhan && don.trangThai !== "hoan_thanh") update.trangThai = "trao_doi";
+          return db.ref('donHangSky/' + k).update(update);
+        }).then(function() {
+          return db.ref('phongChat/' + k + '/tinNhan').push({ nguoiGui: "Hệ thống", noiDung: "Admin đã xác nhận nhận tiền. Gửi mã kết bạn đã mở!" });
+        }).catch(function(err) {
+          alert("Chưa duyệt được thanh toán: " + err.message);
+        });
       }
     }
 

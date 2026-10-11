@@ -17,7 +17,9 @@
   <nav class="navbar-capsule-container">
     <div class="navbar-capsule">
       <div class="nav-brand">
-        <span class="nav-logo">☁️</span>
+        <span class="nav-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5.2 15.6a4 4 0 0 1 .7-7.9 6.2 6.2 0 0 1 11.8 1.1 3.4 3.4 0 0 1 .2 6.8H5.2Z"/><path d="m18.5 3.2.8 1.8 1.8.8-1.8.8-.8 1.8-.8-1.8-1.8-.8 1.8-.8.8-1.8Z"/></svg>
+        </span>
         <strong>Sky Service</strong>
       </div>
       
@@ -28,8 +30,9 @@
         <button type="button" class="nav-item" onclick="chuyenTrang('feedback', this)">Đánh Giá</button>
       </div>
 
-      <button type="button" class="btn-nav-order" onclick="chuyenTrang('orders', null)">
-        Đơn Hàng Của Bạn 📦
+      <button type="button" class="btn-nav-order" onclick="chuyenTrang('orders', this)">
+        <svg class="nav-order-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m10 2.8 6.2 3.1v8.1L10 17.2l-6.2-3.2V5.9L10 2.8Z"/><path d="m3.8 5.9 6.2 3.2 6.2-3.2M10 9.1v8.1"/><path d="m15.8 2.1.5 1.1 1.1.5-1.1.5-.5 1.1-.5-1.1-1.1-.5 1.1-.5.5-1.1Z"/></svg>
+        <span>Đơn Hàng Của Bạn</span>
       </button>
     </div>
   </nav>
@@ -41,8 +44,7 @@
       <!-- WIDGET ĐỒNG HỒ ĐẾM NGƯỢC RÚT DẦN (ĐỒNG BỘ CHUẨN THEO NGÀY) -->
       <div class="lobby-section" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
         <div style="max-width: 440px;">
-          <div style="font-size: 24px; margin-bottom: 4px;">⏱️</div>
-          <h3 style="margin: 0 0 6px 0; font-size: 18px;">Thời Gian Làm Việc Hôm Nay</h3>
+          <h3 class="home-title" style="margin: 0 0 6px 0; font-size: 18px;"><svg class="home-title-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M9 2h6m-3 3v2m5.7 1.3 1.4-1.4M12 9v4l2.7 1.8"/></svg><span>Thời Gian Làm Việc Hôm Nay</span></h3>
           <p id="clockShiftDesc" style="margin: 0 0 10px 0; font-size: 13px; color: var(--text-muted); line-height: 1.5;">Đang đồng bộ ca trực từ Admin...</p>
           <div id="clockStatusPill" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; background: #f1f5f9; color: #64748b;">
             <span>●</span> <span id="clockStatusTxt">Resting...</span>
@@ -58,14 +60,19 @@
         </div>
       </div>
 
+      <aside id="lobbyAnnouncement" class="lobby-announcement" hidden aria-live="polite">
+        <span class="announcement-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 14.5h3.2L17 19V5l-8.8 4.5H5v5Z"/><path d="M8.2 14.5 10 20h3l-2.1-6.8M19 9a5 5 0 0 1 0 6"/></svg></span>
+        <span class="announcement-copy"><strong>Thông báo từ Airyside</strong><span id="lobbyAnnouncementText"></span><small id="lobbyAnnouncementDate"></small></span>
+      </aside>
+
       <!-- Giới thiệu Page -->
       <div class="lobby-section">
-        <h2>✨ Giới Thiệu Về Sky Service</h2>
+        <h2 class="home-title"><svg class="home-title-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 2 1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2Z"/><path d="m19 15 .9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z"/></svg><span>Giới Thiệu Về Sky Service</span></h2>
         <p id="gioiThieuPageTxt" style="line-height: 1.7; color: var(--text-muted); font-size: 14px; white-space: pre-line;">
           Chào mừng bạn đến với Sky Service - dịch vụ đồng hành ấm áp tại vương quốc Sky.
         </p>
 
-        <h3 style="font-size: 15px; margin: 24px 0 10px 0;">📸 Góc Kỷ Niệm Của Page</h3>
+        <h3 class="home-title" style="font-size: 15px; margin: 24px 0 10px 0;"><svg class="home-title-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8h3l1.5-2h7L17 8h3v11H4V8Z"/><circle cx="12" cy="13.5" r="3.5"/><path d="M7 10h.01"/></svg><span>Góc Kỷ Niệm Của Page</span></h3>
         <div id="pageGalleryBox" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px;">
           <p style="color: var(--text-muted); font-size: 12px;">Đang tải ảnh kỷ niệm...</p>
         </div>
@@ -73,7 +80,7 @@
 
       <!-- Đội ngũ nhân sự thẻ treo -->
       <div class="lobby-section">
-        <h2>👥 Đội Ngũ Nhân Sự Đồng Hành</h2>
+        <h2 class="home-title"><svg class="home-title-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M16 5.5a3 3 0 0 1 0 5.8M17 14a5 5 0 0 1 3.5 5"/></svg><span>Đội Ngũ Nhân Sự Đồng Hành</span></h2>
         <div id="danhSachTheTreoStaff" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px;">
           <p style="color: var(--text-muted);">Đang tải danh sách nhân sự...</p>
         </div>
@@ -114,37 +121,31 @@
       </div>
     </section>
 
-    <!-- ==================== TRANG 4: ĐƠN HÀNG CỦA BẠN (3 CỘT) ==================== -->
+    <!-- ==================== TRANG 4: ĐƠN HÀNG CỦA BẠN (4 CỘT) ==================== -->
     <section id="tab-orders" class="lobby-page" style="display: none;">
       <div class="lobby-section">
-        <h2>📦 Đơn Hàng Của Bạn</h2>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Theo dõi tiến trình, trò chuyện với Staff và thanh lý đơn:</p>
+        <h2 class="home-title"><svg class="home-title-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4"/></svg><span>Đơn Hàng Của Bạn</span></h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Theo dõi tiến trình, trò chuyện với Staff và thanh toán đơn.</p>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px;">
-          <!-- Cột 1: Chờ Staff Nhận -->
-          <div class="order-col-box" style="border-top: 4px solid #f59e0b !important; padding: 20px 16px;">
-            <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0;">
-              <span>⏳ Chờ Staff Nhận</span> <span id="badgePendingCount" style="background:#fef3c7; color:#b45309; padding:2px 8px; border-radius:9999px; font-size:11px;">0</span>
-            </div>
-            <div id="listOrdersPending"><p style="font-size: 12px; color: #94a3b8; text-align: center;">Không có đơn chờ.</p></div>
-          </div>
+        <div class="orders-summary-grid">
+          <div class="orders-summary-card"><span>Tổng đơn</span><strong id="countOrdersAll">0</strong><span class="orders-summary-icon orders-summary-icon--all" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4"/></svg></span></div>
+          <div class="orders-summary-card"><span>Đang trao đổi</span><strong id="countOrdersExchange">0</strong><span class="orders-summary-icon orders-summary-icon--exchange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v12h-8l-5 4v-4H4zM8 9h8M8 13h5"/></svg></span></div>
+          <div class="orders-summary-card"><span>Chờ thanh toán</span><strong id="countOrdersPayment">0</strong><span class="orders-summary-icon orders-summary-icon--payment" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3c-3.2 4.2-6 7.2-6 10.4a6 6 0 0 0 12 0C18 10.2 15.2 7.2 12 3Z"/><path d="M9 14a3 3 0 0 0 3 3"/></svg></span></div>
+          <div class="orders-summary-card"><span>Đã hoàn thành</span><strong id="countOrdersDone">0</strong><span class="orders-summary-icon orders-summary-icon--done" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4.5 4.5L19 7"/></svg></span></div>
+        </div>
 
-          <!-- Cột 2: Đang Trao Đổi / Đã Có Staff -->
-          <div class="order-col-box" style="border-top: 4px solid #0284c7 !important; padding: 20px 16px;">
-            <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0;">
-              <span>💬 Đang Trao Đổi</span> <span id="badgeRunningCount" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:9999px; font-size:11px;">0</span>
-            </div>
-            <div id="listOrdersRunning"><p style="font-size: 12px; color: #94a3b8; text-align: center;">Không có đơn đang chạy.</p></div>
-          </div>
-
-          <!-- Cột 3: Đã Hoàn Thành -->
-          <div class="order-col-box" style="border-top: 4px solid #10b981 !important; padding: 20px 16px;">
-            <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0;">
-              <span>✔️ Đã Hoàn Thành</span> <span id="badgeDoneCount" style="background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:9999px; font-size:11px;">0</span>
-            </div>
-            <div id="listOrdersDone"><p style="font-size: 12px; color: #94a3b8; text-align: center;">Chưa có đơn hoàn thành.</p></div>
+        <div class="orders-toolbar">
+          <div><h3>Theo dõi đơn</h3><p>Chọn trạng thái để lọc đơn hàng.</p></div>
+          <div class="orders-filters" role="group" aria-label="Lọc đơn hàng">
+            <button type="button" class="order-filter active" data-filter="all" onclick="locDonHang('all', this)">Tất cả</button>
+            <button type="button" class="order-filter" data-filter="dang_cho" onclick="locDonHang('dang_cho', this)">Chờ xác nhận</button>
+            <button type="button" class="order-filter" data-filter="cho_thanh_toan" onclick="locDonHang('cho_thanh_toan', this)">Chờ thanh toán</button>
+            <button type="button" class="order-filter" data-filter="trao_doi" onclick="locDonHang('trao_doi', this)">Đang trao đổi</button>
+            <button type="button" class="order-filter" data-filter="hoan_thanh" onclick="locDonHang('hoan_thanh', this)">Đã hoàn thành</button>
           </div>
         </div>
+
+        <div id="customerOrdersList" class="customer-orders-list"><p class="orders-empty">Đang tải đơn hàng...</p></div>
       </div>
     </section>
 
@@ -243,8 +244,15 @@
     </div>
 
     <!-- TIẾN ĐỘ THANH TOÁN TIM THEO NGÀY -->
-    <div id="boxTienDoTimKhach" style="display:none; background:#fff7ed; border-bottom:1px solid #fed7aa; padding:6px 12px; font-size:12px; color:#c2410c; text-align:center;">
-      💖 Tiến độ gửi Tim: <strong id="txtTienDoTimKhach">0/0 Tim</strong>
+    <div id="boxTienDoTimKhach" class="tim-progress-panel" style="display:none;">
+      <div class="tim-progress-heading">
+        <span><span class="tim-progress-icon">💖</span> Tiến độ gửi Tim</span>
+        <strong id="txtTienDoTimKhach">0/0 Tim</strong>
+      </div>
+      <div class="tim-progress-track" role="progressbar" aria-label="Tiến độ gửi Tim" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span id="barTienDoTimKhach" class="tim-progress-fill"></span>
+      </div>
+      <div id="txtConNoTimKhach" class="tim-progress-caption">Đang cập nhật tiến độ...</div>
     </div>
 
     <div class="chat-body" id="chatBodyKhach">
@@ -272,7 +280,7 @@
       <input type="text" id="nhapTinKhach" placeholder="Nhập tin nhắn..." disabled onkeypress="if(event.key==='Enter') guiTinKhach()">
       <button type="button" id="btnGuiTinKhach" disabled onclick="guiTinKhach()" style="padding:8px 12px !important;">➤</button>
       <!-- NÚT HOÀN THÀNH DẠNG CON NHỘNG XANH ✔ Xong (SẼ TỰ BIẾN MẤT KHI ĐÃ BẤM) -->
-      <button type="button" id="btnXacNhanHoanThanhKhach" onclick="xacNhanXongKhach()" style="background:#0284c7; color:white; white-space:nowrap; padding:8px 12px !important;" title="Bấm hoàn thành ca">✔ Xong</button>
+      <button type="button" id="btnXacNhanHoanThanhKhach" class="chat-complete-btn" onclick="xacNhanXongKhach()" title="Xác nhận đã hoàn thành dịch vụ">✔ Xác nhận xong</button>
     </div>
   </div>
 
@@ -298,7 +306,7 @@
       <p style="font-size: 13px; color: var(--text-muted); margin-top: -4px;">Cảm ơn bạn đã đồng hành cùng <strong id="fbStaffNameTxt">Staff</strong>!</p>
       
       <!-- HỎI DUY NHẤT SỐ TIM/NGÀY -->
-      <div id="boxKeHoachTraTim" style="display: none; background: #fff7ed; border: 1px solid #ffedd5; border-radius: 12px; padding: 10px; margin-bottom: 12px; text-align: left; font-size: 12.5px;">
+      <div id="boxKeHoachTraTim" class="heart-plan-card" style="display: none; background: #fff7ed; border: 1px solid #ffedd5; border-radius: 12px; padding: 10px; margin-bottom: 12px; text-align: left; font-size: 12.5px;">
         <strong style="color: #c2410c; display: block; margin-bottom: 4px;">💖 Hóa đơn thanh toán Tim:</strong>
         <p style="margin: 0 0 6px 0; color: #78350f;">Số tim cần thanh toán: <strong id="fbTongTimTxt">0 Tim</strong></p>
         <label>Bạn có thể gửi bao nhiêu tim mỗi ngày?:</label>
@@ -357,7 +365,7 @@
       var target = document.getElementById('tab-' + tenTrang);
       if (target) target.style.display = 'block';
 
-      document.querySelectorAll('.nav-item').forEach(function(item) { item.classList.remove('active'); });
+      document.querySelectorAll('.nav-item, .btn-nav-order').forEach(function(item) { item.classList.remove('active'); });
       if (btnElement) btnElement.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -594,29 +602,23 @@
         localStorage.setItem("myOrderIdsList", JSON.stringify(myOrderIds));
         dongPopupDatDon();
         alert("Đặt đơn thành công! Theo dõi tiến trình tại mục Đơn Hàng Của Bạn.");
-        chuyenTrang('orders', null);
+        chuyenTrang('orders', document.querySelector('.btn-nav-order'));
         theoDoiCacDonCuaKhach();
       });
     }
 
-    // 3. THEO DÕI VÀ ĐỒNG BỘ CHÍNH XÁC SỐ LƯỢNG BADGE & CỘT
+    // 3. THEO DÕI ĐƠN HÀNG, THỐNG KÊ VÀ LỌC THEO TRẠNG THÁI
     var orderListenersMap = {};
+    var boLocDonHangHienTai = "all";
 
     function theoDoiCacDonCuaKhach() {
-      var boxPending = document.getElementById("listOrdersPending");
-      var boxRunning = document.getElementById("listOrdersRunning");
-      var boxDone = document.getElementById("listOrdersDone");
-
-      boxPending.innerHTML = "";
-      boxRunning.innerHTML = "";
-      boxDone.innerHTML = "";
+      var boxOrders = document.getElementById("customerOrdersList");
+      boxOrders.innerHTML = "";
 
       danhSachDonDangChayKhach = {};
 
       if (!myOrderIds || myOrderIds.length === 0) {
-        boxPending.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Không có đơn chờ.</p>";
-        boxRunning.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Không có đơn đang chạy.</p>";
-        boxDone.innerHTML = "<p style='font-size:12px; color:#94a3b8; text-align:center;'>Chưa có đơn hoàn thành.</p>";
+        boxOrders.innerHTML = "<p class='orders-empty'>Chưa có đơn hàng nào.</p>";
         capNhatSoLuongBadgeThucTe();
         capNhatBongBongChat();
         return;
@@ -642,59 +644,69 @@
           var existingCard = document.getElementById("card-order-" + orderId);
           if (existingCard) existingCard.remove();
 
+          var nhomDon = xacDinhNhomDonKhach(don);
+          var nhanTrangThai = {
+            dang_cho: "Chờ xác nhận",
+            cho_thanh_toan: "Chờ thanh toán",
+            trao_doi: "Đang trao đổi",
+            hoan_thanh: "Đã hoàn thành"
+          }[nhomDon];
           var cardHTML = `
-            <div class="customer-order-card" id="card-order-${orderId}">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <strong>${(don.mangDichVu || "").toUpperCase()} - ${don.cuThe}</strong>
-                <span style="color:#ea580c; font-weight:bold;">${don.giaNiemYet}</span>
+            <article class="customer-order-card" data-status="${nhomDon}" id="card-order-${orderId}">
+              <div class="order-card-topline">
+                <div class="order-card-tags">
+                  <span class="order-type-tag">${don.thanhToan === "Tim_Sky" ? "TIM · SKY" : "VND · DỊCH VỤ"}</span>
+                  <span class="order-status-tag order-status-tag--${nhomDon}">${nhanTrangThai}</span>
+                </div>
+                <span class="order-card-price">${don.giaNiemYet || ""}</span>
               </div>
-              <div style="font-size:11.5px; color:#64748b; margin:4px 0;">📅 Hẹn: ${don.thoiGianHen || "N/A"}</div>
+              <strong class="order-card-title">${(don.mangDichVu || "").toUpperCase()} - ${don.cuThe}</strong>
+              <div class="order-card-date">Lịch hẹn · ${don.thoiGianHen || "Chưa cập nhật"}</div>
           `;
 
-          // PHÂN NHÁNH 3 CỘT:
-          if (don.trangThai === "hoan_thanh") {
-            if (don.thanhToan !== "Tim_Sky" || don.daHoanTatTim) {
-              delete danhSachDonDangChayKhach[orderId];
-            } else {
-              danhSachDonDangChayKhach[orderId] = don;
-            }
-
-            var nutXoaHTML = "";
-            if (don.thanhToan === "Tim_Sky" && !don.daHoanTatTim) {
-              nutXoaHTML = `<span style="font-size:10px; color:#ea580c;">(Đang trả tim dần)</span>`;
-            } else {
-              nutXoaHTML = `<button type="button" onclick="xoaDonKhoiMayKhach('${orderId}')" style="background:#f1f5f9; color:#64748b; border:none; font-size:10.5px; padding:2px 8px; border-radius:9999px; cursor:pointer;">Xóa ✕</button>`;
-            }
+          if (nhomDon === "hoan_thanh") {
+            delete danhSachDonDangChayKhach[orderId];
+            var nutXoaHTML = `<button type="button" class="order-card-action order-card-action--subtle" onclick="xoaDonKhoiMayKhach('${orderId}')">Xóa</button>`;
 
             cardHTML += `
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
-                <span style="color:#16a34a; font-size:11.5px; font-weight:bold;">✔️ Hoàn tất (${don.staffNhan || "🌸"})</span>
+                <span style="color:#16a34a; font-size:11.5px; font-weight:bold;">Hoàn tất cùng ${don.staffNhan || "Staff"}</span>
                 ${nutXoaHTML}
               </div>
-            </div>`;
-            boxDone.innerHTML += cardHTML;
-          } else if (don.daNhan) {
+            </article>`;
+          } else if (nhomDon === "cho_thanh_toan") {
+            danhSachDonDangChayKhach[orderId] = don;
+            var nhanTim = don.thanhToan === "Tim_Sky"
+              ? ` · Đã nhận ${don.timDaNhan || 0}/${parseInt((don.giaNiemYet || "0").replace(/[^0-9]/g, ""), 10) || 0} Tim`
+              : "";
+            cardHTML += `
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:6px;">
+                <span style="color:#c2410c; font-size:11.5px;">${don.thanhToan === "Tim_Sky" ? `Đã nhận ${nhanTim.replace(" · Đã nhận ", "")}` : "Đang chờ xác nhận thanh toán"}</span>
+                <button type="button" class="order-card-action order-card-action--chat" onclick="moChatChoDon('${orderId}')">Mở chat</button>
+              </div>
+            </article>`;
+          } else if (nhomDon === "trao_doi") {
             danhSachDonDangChayKhach[orderId] = don;
 
             cardHTML += `
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
-                <span style="color:#0284c7; font-weight:bold; font-size:12px;">Staff: ${don.staffNhan}</span>
-                <button type="button" onclick="moChatChoDon('${orderId}')" style="background:#0284c7; color:white; font-size:11px; padding:3px 8px; border-radius:9999px;">Mở Chat 💬</button>
+                <span style="color:#55778a; font-size:11.5px;">Nhân viên · ${don.staffNhan || "Đang phân công"}</span>
+                <button type="button" class="order-card-action order-card-action--chat" onclick="moChatChoDon('${orderId}')">Mở chat</button>
               </div>
-            </div>`;
-            boxRunning.innerHTML += cardHTML;
+            </article>`;
           } else {
             delete danhSachDonDangChayKhach[orderId];
             cardHTML += `
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
-                <span style="color:#d97706; font-size:11.5px;">⏳ Chờ Staff nhận...</span>
-                <button type="button" onclick="khachHuyDonDangCho('${orderId}')" style="background:#fee2e2; color:#dc2626; border:none; font-size:10.5px; padding:2px 8px; border-radius:9999px; cursor:pointer;">Hủy Đơn ✕</button>
+                <span style="color:#9a7b4b; font-size:11.5px;">Đang chờ nhân viên nhận đơn</span>
+                <button type="button" class="order-card-action order-card-action--cancel" onclick="khachHuyDonDangCho('${orderId}')">Hủy đơn</button>
               </div>
-            </div>`;
-            boxPending.innerHTML += cardHTML;
+            </article>`;
           }
 
+          boxOrders.insertAdjacentHTML("beforeend", cardHTML);
           capNhatSoLuongBadgeThucTe();
+          apDungBoLocDonHang();
           capNhatBongBongChat();
         };
 
@@ -705,13 +717,35 @@
     theoDoiCacDonCuaKhach();
 
     function capNhatSoLuongBadgeThucTe() {
-      var pCards = document.querySelectorAll("#listOrdersPending .customer-order-card").length;
-      var rCards = document.querySelectorAll("#listOrdersRunning .customer-order-card").length;
-      var dCards = document.querySelectorAll("#listOrdersDone .customer-order-card").length;
+      var cards = document.querySelectorAll("#customerOrdersList .customer-order-card");
+      document.getElementById("countOrdersAll").innerText = cards.length;
+      document.getElementById("countOrdersExchange").innerText = document.querySelectorAll("#customerOrdersList [data-status='trao_doi']").length;
+      document.getElementById("countOrdersPayment").innerText = document.querySelectorAll("#customerOrdersList [data-status='cho_thanh_toan']").length;
+      document.getElementById("countOrdersDone").innerText = document.querySelectorAll("#customerOrdersList [data-status='hoan_thanh']").length;
+    }
 
-      document.getElementById("badgePendingCount").innerText = pCards;
-      document.getElementById("badgeRunningCount").innerText = rCards;
-      document.getElementById("badgeDoneCount").innerText = dCards;
+    function locDonHang(status, button) {
+      boLocDonHangHienTai = status;
+      document.querySelectorAll(".order-filter").forEach(function(item) { item.classList.toggle("active", item === button); });
+      apDungBoLocDonHang();
+    }
+
+    function apDungBoLocDonHang() {
+      document.querySelectorAll("#customerOrdersList .customer-order-card").forEach(function(card) {
+        card.hidden = boLocDonHangHienTai !== "all" && card.dataset.status !== boLocDonHangHienTai;
+      });
+    }
+
+    function xacDinhNhomDonKhach(don) {
+      if (don.thanhToan === "Tim_Sky") {
+        if (don.daHoanTatTim && don.khachHoanThanh && don.staffHoanThanh) return "hoan_thanh";
+        if (don.khachHoanThanh && don.staffHoanThanh) return "cho_thanh_toan";
+        return don.daNhan ? "trao_doi" : "dang_cho";
+      }
+      if (don.trangThai === "hoan_thanh") return "hoan_thanh";
+      if (!don.daNhan) return "dang_cho";
+      if (!don.daThanhToanFull) return "cho_thanh_toan";
+      return "trao_doi";
     }
 
     function khachHuyDonDangCho(orderId) {
@@ -771,8 +805,8 @@
           dongChatKhach(); 
           return; 
         }
-        // ĐƠN TIM HOÀN TẤT ĐỦ TIM -> TỰ ĐỘNG ĐÓNG CHAT
-        if (don.thanhToan === "Tim_Sky" && don.daHoanTatTim) {
+        // Đơn Tim chỉ đóng chat khi đủ tim và dịch vụ đã được cả hai bên xác nhận.
+        if (don.thanhToan === "Tim_Sky" && don.daHoanTatTim && don.khachHoanThanh && don.staffHoanThanh) {
           dongChatKhach();
           return;
         }
@@ -787,12 +821,9 @@
         var boxTienDo = document.getElementById("boxTienDoTimKhach");
         var btnXong = document.getElementById("btnXacNhanHoanThanhKhach");
 
-        // NẾU CẢ 2 BÊN ĐÃ XÁC NHẬN XONG CA -> ẨN LUÔN NÚT ✔ ĐỂ KHÔNG BỊ BẤM LẠI
-        if (don.khachHoanThanh && don.staffHoanThanh) {
-          btnXong.style.display = "none";
-        } else {
-          btnXong.style.display = "inline-flex";
-        }
+        // Khách chỉ xác nhận hoàn thành dịch vụ một lần; chat vẫn mở trong lúc trả Tim.
+        btnXong.classList.toggle("is-hidden", Boolean(don.khachHoanThanh));
+        btnXong.disabled = Boolean(don.khachHoanThanh);
 
         if (don.thanhToan === "Tim_Sky") {
           boxTienDo.style.display = "block";
@@ -800,7 +831,12 @@
           var tongTim = parseInt(chuoiTim) || 2;
           var daNhan = don.timDaNhan || 0;
           var conLai = Math.max(0, tongTim - daNhan);
-          document.getElementById("txtTienDoTimKhach").innerText = `${daNhan}/${tongTim} Tim (Còn nợ: ${conLai} Tim)`;
+          var progressPct = Math.min(100, Math.round((daNhan / tongTim) * 100));
+          var progressTrack = document.querySelector("#boxTienDoTimKhach .tim-progress-track");
+          document.getElementById("txtTienDoTimKhach").innerText = `${daNhan}/${tongTim} Tim`;
+          document.getElementById("txtConNoTimKhach").innerText = conLai > 0 ? `Còn ${conLai} Tim · chat vẫn mở để hai bên cập nhật tiến độ` : "Đã nhận đủ số Tim của đơn";
+          document.getElementById("barTienDoTimKhach").style.width = progressPct + "%";
+          progressTrack.setAttribute("aria-valuenow", String(progressPct));
         } else {
           boxTienDo.style.display = "none";
         }
@@ -899,11 +935,26 @@
 
     // 5. KHÁCH BẤM TRƯỚC -> MỞ POPUP FEEDBACK
     function xacNhanXongKhach() {
-      if (!activeChatOrderId) return;
+      if (!activeChatOrderId || !currentDonHangData || currentDonHangData.khachHoanThanh) return;
       if (confirm("Bạn xác nhận đã đi xong dịch vụ này cùng Staff?")) {
-        db.ref('donHangSky/' + activeChatOrderId).update({ khachHoanThanh: true });
-        db.ref('phongChat/' + activeChatOrderId + '/tinNhan').push({ nguoiGui: "Hệ thống", noiDung: "Khách đã bấm xác nhận hoàn tất ca!" });
-        moModalFeedbackKhach(currentDonHangData);
+        var orderId = activeChatOrderId;
+        var confirmedOrder = currentDonHangData;
+        var btnXong = document.getElementById("btnXacNhanHoanThanhKhach");
+        btnXong.disabled = true;
+        btnXong.classList.add("is-hidden");
+        confirmedOrder.khachHoanThanh = true;
+
+        db.ref('donHangSky/' + orderId).update({ khachHoanThanh: true }).then(function() {
+          db.ref('phongChat/' + orderId + '/tinNhan').push({ nguoiGui: "Hệ thống", noiDung: "Khách đã bấm xác nhận hoàn tất ca!" });
+          moModalFeedbackKhach(confirmedOrder);
+        }).catch(function(err) {
+          confirmedOrder.khachHoanThanh = false;
+          if (activeChatOrderId === orderId) {
+            btnXong.disabled = false;
+            btnXong.classList.remove("is-hidden");
+          }
+          alert("Chưa lưu được xác nhận hoàn thành. Vui lòng thử lại: " + err.message);
+        });
       }
     }
 
@@ -996,7 +1047,8 @@
         document.getElementById("modalFeedback").style.display = "none";
         alert("Cảm ơn bạn đã gửi đánh giá! Chúc bạn có những phút giây vui vẻ cùng Sky.");
         
-        if (!currentDonHangData || currentDonHangData.thanhToan !== "Tim_Sky" || currentDonHangData.daHoanTatTim) {
+        if (!currentDonHangData || currentDonHangData.thanhToan !== "Tim_Sky" ||
+            (currentDonHangData.daHoanTatTim && currentDonHangData.khachHoanThanh && currentDonHangData.staffHoanThanh)) {
           dongChatKhach();
         }
         theoDoiCacDonCuaKhach();
@@ -1129,6 +1181,23 @@
       document.getElementById("noiDungLuatUber").innerText = set.luatUber || "• Khách online đúng giờ.";
       document.getElementById("noiDungLuatHost").innerText = set.luatHost || "• Lịch sự văn minh.";
       document.getElementById("noiDungLuatLogAcc").innerText = set.luatLogAcc || "• Không login đè.";
+    });
+
+    db.ref('thongBaoLobby').on('value', function(snap) {
+      var thongBao = snap.val();
+      var box = document.getElementById("lobbyAnnouncement");
+      var text = document.getElementById("lobbyAnnouncementText");
+      var date = document.getElementById("lobbyAnnouncementDate");
+      if (!thongBao || !thongBao.noiDung) {
+        box.hidden = true;
+        text.innerText = "";
+        date.innerText = "";
+        return;
+      }
+
+      text.innerText = thongBao.noiDung;
+      date.innerText = thongBao.capNhat ? "Cập nhật " + new Date(thongBao.capNhat).toLocaleString("vi-VN") : "";
+      box.hidden = false;
     });
 
     db.ref('anhKyNiemPage').on('value', function(snap) {
